@@ -230,6 +230,7 @@ public:
 	void set_tooltip(int p_column, const String& p_tooltip);
 	String get_tooltip(int p_column) const;
 
+
 	void clear_children();
 
 	void move_to_top();
@@ -414,6 +415,8 @@ friend class TreeItem;
 
 	ValueEvaluator *evaluator;
 
+	bool hide_folding;
+
 protected:
 	static void _bind_methods();
 	
@@ -472,6 +475,11 @@ public:
 	void set_value_evaluator(ValueEvaluator *p_evaluator);
 
 	VScrollBar *get_vscroll_bar() { return v_scroll; }
+
+	void set_hide_folding(bool p_hide);
+	bool is_folding_hidden() const;
+
+
 
 	Tree();
 	~Tree();	

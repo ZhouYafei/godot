@@ -3586,6 +3586,8 @@ PropertyEditor::PropertyEditor() {
 	//custom_editor->connect("select_node_request", this, "_select_node_request");
 	custom_editor->set_value_evaluator(evaluator);
 	
+	tree->set_hide_folding(true);
+
 	capitalize_paths=true;
 	autoclear=false;
 	tree->set_column_title(0,"Property");

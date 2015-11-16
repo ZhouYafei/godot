@@ -247,6 +247,12 @@ public:
 		SCRIPT_ACTION_ENCRYPT
 	};
 
+	enum SampleAction {
+
+		SAMPLE_ACTION_NONE,
+		SAMPLE_ACTION_COMPRESS_RAM,
+	};
+
 protected:
 
 	struct ImageGroup {
@@ -275,6 +281,10 @@ protected:
 
 	ScriptAction script_action;
 	String script_key;
+
+	SampleAction sample_action;
+	int sample_action_max_hz;
+	bool sample_action_trim;
 
 	static EditorImportExport* singleton;
 
@@ -344,6 +354,15 @@ public:
 
 	void script_set_encryption_key(const String& p_key);
 	String script_get_encryption_key() const;
+
+	void sample_set_action(SampleAction p_action);
+	SampleAction sample_get_action() const;
+
+	void sample_set_max_hz(int p_hz);
+	int sample_get_max_hz() const;
+
+	void sample_set_trim(bool p_trim);
+	bool sample_get_trim() const;
 
 	void load_config();
 	void save_config();
