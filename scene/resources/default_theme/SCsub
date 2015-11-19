@@ -76,5 +76,3 @@ else:
 env.add_source_files(env.scene_sources,"*.cpp")
 
 Export('env')
-
-

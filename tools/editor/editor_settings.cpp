@@ -461,7 +461,7 @@ void EditorSettings::_load_defaults() {
 	hints["global/default_project_path"]=PropertyInfo(Variant::STRING,"global/default_project_path",PROPERTY_HINT_GLOBAL_DIR);
 	set("global/default_project_export_path","");
 	hints["global/default_project_export_path"]=PropertyInfo(Variant::STRING,"global/default_project_export_path",PROPERTY_HINT_GLOBAL_DIR);
-
+	set("global/show_script_in_scene_tabs",false);
 	set("editor_layout/layout",0);
 	hints["editor_layout/layout"]=PropertyInfo(Variant::INT,"editor_layout/layout",PROPERTY_HINT_ENUM,"Default,Side-by-Side");
 

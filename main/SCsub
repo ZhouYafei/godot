@@ -16,5 +16,3 @@ Export('env')
 lib = env.Library("main",env.main_sources)
 
 env.Prepend(LIBS=[lib])
-
-

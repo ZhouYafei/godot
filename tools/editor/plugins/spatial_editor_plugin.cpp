@@ -232,15 +232,6 @@ void SpatialEditorViewport::_select(Spatial *p_node, bool p_append,bool p_single
 
 }
 
-
-struct _RayResult {
-
-	Spatial* item;
-	float depth;
-	int handle;
-	_FORCE_INLINE_ bool operator<(const _RayResult& p_rr) const { return depth<p_rr.depth; }
-};
-
 ObjectID SpatialEditorViewport::_select_ray(const Point2& p_pos, bool p_append,bool &r_includes_current,int *r_gizmo_handle,bool p_alt_select) {
 
 	if (r_gizmo_handle)
@@ -377,6 +368,70 @@ ObjectID SpatialEditorViewport::_select_ray(const Point2& p_pos, bool p_append,b
 
 	return s->get_instance_ID();
 
+}
+
+void SpatialEditorViewport::_find_items_at_pos(const Point2& p_pos,bool &r_includes_current,Vector<_RayResult> &results,bool p_alt_select) {
+
+	Vector3 ray=_get_ray(p_pos);
+	Vector3 pos=_get_ray_pos(p_pos);
+
+	Vector<RID> instances=VisualServer::get_singleton()->instances_cull_ray(pos,ray,get_tree()->get_root()->get_world()->get_scenario() );
+	Set<Ref<SpatialEditorGizmo> > found_gizmos;
+
+	r_includes_current=false;
+
+	for (int i=0;i<instances.size();i++) {
+
+		uint32_t id=VisualServer::get_singleton()->instance_get_object_instance_ID(instances[i]);
+		Object *obj=ObjectDB::get_instance(id);
+		if (!obj)
+			continue;
+
+		Spatial *spat=obj->cast_to<Spatial>();
+
+		if (!spat)
+			continue;
+
+		Ref<SpatialEditorGizmo> seg = spat->get_gizmo();
+
+		if (!seg.is_valid())
+			continue;
+
+		if (found_gizmos.has(seg))
+			continue;
+
+		found_gizmos.insert(seg);
+		Vector3 point;
+		Vector3 normal;
+
+		int handle=-1;
+		bool inters = seg->intersect_ray(camera,p_pos,point,normal,NULL,p_alt_select);
+
+		if (!inters)
+			continue;
+
+		float dist = pos.distance_to(point);
+
+		if (dist<0)
+			continue;
+
+
+
+		if (editor_selection->is_selected(spat))
+			r_includes_current=true;
+
+		_RayResult res;
+		res.item=spat;
+		res.depth=dist;
+		res.handle=handle;
+		results.push_back(res);
+	}
+
+
+	if (results.empty())
+		return;
+
+	results.sort();
 }
 
 
@@ -725,6 +780,7 @@ void SpatialEditorViewport::_sinput(const InputEvent &p_event) {
 				} break;
 				case BUTTON_RIGHT: {
 
+					NavigationScheme nav_scheme = _get_navigation_schema("3d_editor/navigation_scheme");
 
 					if (b.pressed && _edit.gizmo.is_valid()) {
 						//restore
@@ -832,6 +888,57 @@ void SpatialEditorViewport::_sinput(const InputEvent &p_event) {
 						surface->update();
 						//VisualServer::get_singleton()->poly_clear(indicators);
 						set_message(_TR("Transform Aborted."),3);
+					}
+
+					if (!b.pressed && (spatial_editor->get_tool_mode()==SpatialEditor::TOOL_MODE_SELECT && b.mod.alt)) {
+
+						if (nav_scheme == NAVIGATION_MAYA)
+							break;
+
+						_find_items_at_pos(Vector2( b.x, b.y ),clicked_includes_current,selection_results,b.mod.shift);
+
+						clicked_wants_append=b.mod.shift;
+
+						if (selection_results.size() == 1) {
+
+							clicked=selection_results[0].item->get_instance_ID();
+							selection_results.clear();
+
+							if (clicked) {
+								_select_clicked(clicked_wants_append,true);
+								clicked=0;
+							}
+
+						} else if (!selection_results.empty()) {
+
+							NodePath root_path = get_tree()->get_edited_scene_root()->get_path();
+							StringName root_name = root_path.get_name(root_path.get_name_count()-1);
+
+							for (int i = 0; i < selection_results.size(); i++) {
+
+								Spatial *spat=selection_results[i].item;
+
+								Ref<Texture> icon;
+								if (spat->has_meta("_editor_icon"))
+									icon=spat->get_meta("_editor_icon");
+								else
+									icon=get_icon( has_icon(spat->get_type(),"EditorIcons")?spat->get_type():String("Object"),"EditorIcons");
+
+								String node_path="/"+root_name+"/"+root_path.rel_path_to(spat->get_path());
+
+								selection_menu->add_item(spat->get_name());
+								selection_menu->set_item_icon(i, icon );
+								selection_menu->set_item_metadata(i, node_path);
+								selection_menu->set_item_tooltip(i,String(spat->get_name())+
+										"\nType: "+spat->get_type()+"\nPath: "+node_path);
+							}
+
+							selection_menu->set_global_pos(Vector2( b.global_x, b.global_y ));
+							selection_menu->popup();
+							selection_menu->call_deferred("grab_click_focus");
+
+							break;
+						}
 					}
 				} break;
 				case BUTTON_MIDDLE: {
@@ -1994,11 +2101,11 @@ void SpatialEditorViewport::_menu_option(int p_option) {
 				if (!se)
 					continue;
 
-				Vector3 original_scale = sp->get_scale();
-				sp->set_global_transform(camera_transform);
-				sp->set_scale(original_scale);
-				undo_redo->add_do_method(sp,"set_global_transform",sp->get_global_transform());
-				undo_redo->add_undo_method(sp,"set_global_transform",se->original);
+				Transform xform = camera_transform;
+				xform.scale_basis(sp->get_scale());
+
+				undo_redo->add_do_method(sp,"set_global_transform",xform);
+				undo_redo->add_undo_method(sp,"set_global_transform",sp->get_global_transform());
 			}
 			undo_redo->commit_action();
 		} break;
@@ -2133,6 +2240,26 @@ void SpatialEditorViewport::_toggle_camera_preview(bool p_activate) {
 	}
 }
 
+void SpatialEditorViewport::_selection_result_pressed(int p_result) {
+
+	if (selection_results.size() <= p_result)
+		return;
+
+	clicked=selection_results[p_result].item->get_instance_ID();
+
+	if (clicked) {
+		_select_clicked(clicked_wants_append,true);
+		clicked=0;
+	}
+}
+
+void SpatialEditorViewport::_selection_menu_hide() {
+
+	selection_results.clear();
+	selection_menu->clear();
+	selection_menu->set_size(Vector2(0, 0));
+}
+
 void SpatialEditorViewport::set_can_preview(Camera* p_preview) {
 
 	preview=p_preview;
@@ -2247,6 +2374,8 @@ void SpatialEditorViewport::_bind_methods(){
 	ObjectTypeDB::bind_method(_MD("_toggle_camera_preview"),&SpatialEditorViewport::_toggle_camera_preview);
 	ObjectTypeDB::bind_method(_MD("_preview_exited_scene"),&SpatialEditorViewport::_preview_exited_scene);
 	ObjectTypeDB::bind_method(_MD("update_transform_gizmo_view"),&SpatialEditorViewport::update_transform_gizmo_view);
+	ObjectTypeDB::bind_method(_MD("_selection_result_pressed"),&SpatialEditorViewport::_selection_result_pressed);
+	ObjectTypeDB::bind_method(_MD("_selection_menu_hide"),&SpatialEditorViewport::_selection_menu_hide);
 
 	ADD_SIGNAL( MethodInfo("toggle_maximize_view", PropertyInfo(Variant::OBJECT, "viewport")) );
 }
@@ -2343,6 +2472,12 @@ SpatialEditorViewport::SpatialEditorViewport(SpatialEditor *p_spatial_editor, Ed
 	previewing=NULL;
 	preview=NULL;
 	gizmo_scale=1.0;
+
+	selection_menu = memnew( PopupMenu );
+	add_child(selection_menu);
+	selection_menu->set_custom_minimum_size(Vector2(100, 0));
+	selection_menu->connect("item_pressed", this, "_selection_result_pressed");
+	selection_menu->connect("popup_hide", this, "_selection_menu_hide");
 
 	if (p_index==0) {
 		view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_AUDIO_LISTENER),true);
@@ -2762,7 +2897,7 @@ void SpatialEditor::_menu_item_pressed(int p_option) {
 		} break;
 		case MENU_TRANSFORM_CONFIGURE_SNAP: {
 
-			snap_dialog->popup_centered(Size2(200,160));
+			snap_dialog->popup_centered(Size2(200,180));
 		} break;
 		case MENU_TRANSFORM_LOCAL_COORDS: {
 
@@ -3835,12 +3970,13 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	l->set_pos(Point2(5,5));
 	snap_dialog->add_child(l);
 
+	VBoxContainer *snap_dialog_vbc = memnew( VBoxContainer );
+	snap_dialog->add_child(snap_dialog_vbc);
+	snap_dialog->set_child_rect(snap_dialog_vbc);
+
 	snap_translate = memnew( LineEdit );
-	snap_translate->set_anchor( MARGIN_RIGHT, ANCHOR_END );
-	snap_translate->set_begin( Point2(15,22) );
-	snap_translate->set_end( Point2(15,35) );
 	snap_translate->set_text("1");
-	snap_dialog->add_child(snap_translate);
+	snap_dialog_vbc->add_margin_child("Translate Snap:",snap_translate);
 
 	l = memnew(Label);
 	l->set_text(_TR("Rotate Snap (deg.):"));
@@ -3848,11 +3984,8 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	snap_dialog->add_child(l);
 
 	snap_rotate = memnew( LineEdit );
-	snap_rotate->set_anchor( MARGIN_RIGHT, ANCHOR_END );
-	snap_rotate->set_begin( Point2(15,62) );
-	snap_rotate->set_end( Point2(15,75) );
 	snap_rotate->set_text("5");
-	snap_dialog->add_child(snap_rotate);
+	snap_dialog_vbc->add_margin_child("Rotate Snap (deg.):",snap_rotate);
 
 
 	l = memnew(Label);
@@ -3861,15 +3994,10 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	snap_dialog->add_child(l);
 
 	snap_scale = memnew( LineEdit );
-	snap_scale->set_anchor( MARGIN_RIGHT, ANCHOR_END );
-	snap_scale->set_begin( Point2(15,102) );
-	snap_scale->set_end( Point2(15,115) );
 	snap_scale->set_text("5");
-	snap_dialog->add_child(snap_scale);
+	snap_dialog_vbc->add_margin_child("Scale Snap (%):",snap_scale);
 
-	//snap_dialog->get_cancel()->hide();
-
-	/* SNAP DIALOG */
+	/* SETTINGS DIALOG */
 
 	settings_dialog = memnew( ConfirmationDialog );
 	settings_dialog->set_title(_TR("Viewport Settings"));
@@ -3955,7 +4083,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	xform_dialog = memnew( ConfirmationDialog );
 	xform_dialog->set_title(_TR("Transform Change"));
 	add_child(xform_dialog);
-	l = memnew(Label);
+	Label *l = memnew(Label);
 	l->set_text(_TR("Translate:"));
 	l->set_pos(Point2(5,5));
 	xform_dialog->add_child(l);

@@ -722,8 +722,8 @@ void SceneTreeEditor::_renamed() {
 	String new_name=which->get_text(0);
 	if (new_name.find(".") != -1 || new_name.find("/") != -1) {
 
-		error->set_text(_TR("Invalid node name, contain illegal character(s):\n ('.', '/')"));
-		error->popup_centered_minsize(Size2(400,80));
+		error->set_text("Invalid node name, the following characters are not allowed:\n  \".\", \"/\"");
+		error->popup_centered_minsize();
 		new_name=n->get_name();
 	}
 
