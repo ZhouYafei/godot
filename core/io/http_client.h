@@ -193,6 +193,8 @@ public:
 
 	Error poll();
 
+    String query_string_from_dict(const Dictionary& p_dict);
+
 	HTTPClient();
 	~HTTPClient();
 };

@@ -172,12 +172,30 @@ def get_flags():
 		('openssl','builtin'), #use builtin openssl
 		('theora','no'),
 	]
+def build_res_file( target, source, env ):
+
+	cmdbase = ""
+	if (env["bits"] == "32"):
+		cmdbase = env['mingw_prefix']
+	else:
+		cmdbase = env['mingw_prefix_64']
+	CPPPATH = env['CPPPATH']
+	cmdbase = cmdbase + 'windres --include-dir . '
+	import subprocess
+	for x in range(len(source)):
+		cmd = cmdbase + '-i ' + str(source[x]) + ' -o ' + str(target[x])
+		try:
+			out = subprocess.Popen(cmd,shell = True,stderr = subprocess.PIPE).communicate()
+			if len(out[1]):
+				return 1
+		except:
+			return 1
+	return 0
 
 def configure(env):
 
 	env.Append(CPPPATH=['#platform/windows'])
-
-
+	env['is_mingw']=False
 	if (os.name=="nt" and os.getenv("VSINSTALLDIR")!=None):
 		#build using visual studio
 		env['ENV']['TMP'] = os.environ['TMP']
@@ -201,14 +219,14 @@ def configure(env):
 			env.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
 		elif (env["target"]=="debug_release"):
 
-			env.Append(CCFLAGS=['/Zi','/Od'])
+			env.Append(CCFLAGS=['/Z7','/Od'])
 			env.Append(LINKFLAGS=['/DEBUG'])
 			env.Append(LINKFLAGS=['/SUBSYSTEM:WINDOWS'])
 			env.Append(LINKFLAGS=['/ENTRY:mainCRTStartup'])
 
 		elif (env["target"]=="debug"):
 
-			env.Append(CCFLAGS=['/Zi','/DDEBUG_ENABLED','/DDEBUG_MEMORY_ENABLED','/DD3D_DEBUG_INFO','/Od'])
+			env.Append(CCFLAGS=['/Z7','/DDEBUG_ENABLED','/DDEBUG_MEMORY_ENABLED','/DD3D_DEBUG_INFO','/Od'])
 			env.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
 			env.Append(LINKFLAGS=['/DEBUG'])
 
@@ -358,7 +376,7 @@ def configure(env):
 		env.Append(LIBS=['mingw32','opengl32', 'dsound', 'ole32', 'd3d9','winmm','gdi32','iphlpapi','shlwapi','wsock32','kernel32'])
 
 		# if (env["bits"]=="32"):
-# #			env.Append(LIBS=['gcc_s'])
+			# env.Append(LIBS=['gcc_s'])
 			# #--with-arch=i686
 			# env.Append(CPPFLAGS=['-march=i686'])
 			# env.Append(LINKFLAGS=['-march=i686'])
@@ -369,6 +387,10 @@ def configure(env):
 		#'d3dx9d'
 		env.Append(CPPFLAGS=['-DMINGW_ENABLED'])
 		env.Append(LINKFLAGS=['-g'])
+
+		# resrc
+		env['is_mingw']=True
+		env.Append( BUILDERS = { 'RES' : env.Builder(action = build_res_file, suffix = '.o',src_suffix = '.rc') } )
 
 	import methods
 	env.Append( BUILDERS = { 'GLSL120' : env.Builder(action = methods.build_legacygl_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )
@@ -382,45 +404,3 @@ class __Godot__TempFileMunge(object):
 	# Tested with scons-2.3.1
 	# Reference: http://four.pairlist.net/pipermail/scons-users/2013-March/001145.html
 	
-	def __init__(self, cmd):
-		self.cmd = cmd
-
-	def __call__(self, target, source, env, for_signature):
-
-		import tempfile
-		import os
-		import SCons.Util
-		import SCons.Subst
-		import SCons.Action
-
-		if for_signature:
-			return self.cmd
-		cmd = env.subst_list(self.cmd, SCons.Subst.SUBST_CMD, target, source)[0]
-		try:
-			maxline = int(env.subst('$MAXLINELENGTH'))
-		except ValueError:
-			maxline = 2048
-		length = 0
-		for c in cmd:
-			length += len(c)
-		if length <= maxline:
-			return self.cmd
-		(fd, tmp) = tempfile.mkstemp('.lnk', text=True)
-		native_tmp = SCons.Util.get_native_path(os.path.normpath(tmp))
-		if env['SHELL'] and env['SHELL'] == 'sh':
-			native_tmp = native_tmp.replace('\\', r'\\\\')
-			rm = env.Detect('rm') or 'del'
-		else:
-			rm = 'del'
-		prefix = env.subst('$TEMPFILEPREFIX')
-		if not prefix:
-			prefix = '@'
-		args = list(map(SCons.Subst.quote_spaces, cmd[1:]))
-		os.write(fd, (" ".join(args) + "\n").replace("\\", r"\\\\"))
-		os.close(fd)
-		if SCons.Action.print_actions:
-			print("Using tempfile "+native_tmp+" for command line:\n"+
-				str(cmd[0]) + " " + " ".join(args))
-		return [ cmd[0], prefix + native_tmp + '\n' + rm, native_tmp ]
-
-

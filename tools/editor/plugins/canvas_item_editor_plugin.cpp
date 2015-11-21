@@ -1001,7 +1001,7 @@ void CanvasItemEditor::_viewport_input_event(const InputEvent& p_event) {
 
 		if (b.button_index==BUTTON_RIGHT) {
 
-			if (!b.pressed && tool==TOOL_SELECT && b.mod.alt) {
+			if (b.pressed && tool==TOOL_SELECT && b.mod.alt) {
 
 				Point2 click=Point2(b.x,b.y);
 
@@ -1490,7 +1490,7 @@ void CanvasItemEditor::_viewport_input_event(const InputEvent& p_event) {
 					Matrix32 rot;
 					rot.elements[1] = (dfrom - center).normalized();
 					rot.elements[0] = rot.elements[1].tangent();
-					node->set_rot(snap_angle(rot.xform_inv(dto-center).atan2(), node->get_rot()));
+					node->set_rot(snap_angle(rot.xform_inv(dto-center).angle(), node->get_rot()));
 					display_rotate_to = dto;
 					display_rotate_from = center;
 					viewport->update();

@@ -194,6 +194,8 @@ void ProjectExportDialog::_prop_edited(String what) {
 
 	_save_export_cfg();
 
+	_validate_platform();
+
 }
 
 void ProjectExportDialog::_filters_edited(String what) {
