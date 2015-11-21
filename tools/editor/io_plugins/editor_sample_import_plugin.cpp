@@ -618,8 +618,8 @@ Error EditorSampleImportPlugin::import(const String& p_path, const Ref<ResourceI
 
 
 			//byte interleave
-			Vector<float> left;
-			Vector<float> right;
+			Vector<real_t> left;
+			Vector<real_t> right;
 
 			int tlen = data.size()/2;
 			left.resize(tlen);

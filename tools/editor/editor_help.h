@@ -42,7 +42,6 @@
 #include "tools/editor/code_editor.h"
 #include "tools/doc/doc_data.h"
 
-#include "core/translation.h"
 
 class EditorNode;
 
@@ -190,12 +189,6 @@ public:
 	~EditorHelp();
 };
 
-	virtual String get_name() const { return _TR("Help"); }
-	bool has_main_screen() const { return true; }
-	virtual void edit(Object *p_node);
-	virtual bool handles(Object *p_node) const;
-	virtual void make_visible(bool p_visible);
-	virtual void selected_notify();
 
 
 

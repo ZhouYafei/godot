@@ -1509,7 +1509,8 @@ void CanvasItemEditor::_viewport_input_event(const InputEvent& p_event) {
 					Matrix32 rot;
 					rot.elements[1] = (dfrom - center).normalized();
 					rot.elements[0] = rot.elements[1].tangent();
-					float ang = rot.xform_inv(dto-center).atan2();
+					Vector2 inv = rot.xform_inv(dto-center);
+					float ang = Math::atan2(inv.x, inv.y);
 					canvas_item->edit_rotate(ang);
 				}
 				display_rotate_to = dto;

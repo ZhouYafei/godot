@@ -93,7 +93,7 @@ import sys
 
 def is_active():
 	return True
-
+        
 def get_name():
         return "Windows"
 
@@ -102,7 +102,7 @@ def can_build():
 	if (os.name=="nt"):
 		#building natively on windows!
 		if (os.getenv("VSINSTALLDIR")):
-			return True
+			return True 
 		else:
 			print("\nMSVC not detected, attempting Mingw.")
 			mingw32 = ""
@@ -139,7 +139,7 @@ def can_build():
 			return True
 			
 	return False
-
+		
 def get_opts():
 
 	mingw=""
@@ -164,7 +164,7 @@ def get_opts():
 		('mingw_prefix','Mingw Prefix',mingw32),
 		('mingw_prefix_64','Mingw Prefix 64 bits',mingw64),
 	]
-
+  
 def get_flags():
 
 	return [
@@ -172,6 +172,7 @@ def get_flags():
 		('openssl','builtin'), #use builtin openssl
 		('theora','no'),
 	]
+			
 def build_res_file( target, source, env ):
 
 	cmdbase = ""
@@ -337,7 +338,7 @@ def configure(env):
 			# sys.exit(255)
 
 		if (env["target"]=="release"):
-
+			
 			env.Append(CCFLAGS=['-O3','-ffast-math','-fomit-frame-pointer','-msse2'])
 			env.Append(LINKFLAGS=['-Wl,--subsystem,windows'])
 
@@ -346,7 +347,7 @@ def configure(env):
 			env.Append(CCFLAGS=['-O2','-DDEBUG_ENABLED'])
 
 		elif (env["target"]=="debug"):
-
+					
 			env.Append(CCFLAGS=['-g', '-Wall','-DDEBUG_ENABLED','-DDEBUG_MEMORY_ENABLED'])
 
 		if (env["freetype"]!="no"):
@@ -363,12 +364,6 @@ def configure(env):
 
 		#env['CC'] = "winegcc"
 		#env['CXX'] = "wineg++"
-
-		env["TEMPFILE"]		= __Godot__TempFileMunge
-		env['CCCOM']		= "${TEMPFILE('%s')}" % env['CCCOM']
-		env['ASCOM']		= "${TEMPFILE('%s')}" % env['ASCOM']
-		env['CXXCOM']		= "${TEMPFILE('%s')}" % env['CXXCOM']
-		env['ARCOM']		= "${TEMPFILE('%s')}" % env['ARCOM']
 
 		env.Append(CCFLAGS=['-DWINDOWS_ENABLED','-mwindows'])
 		env.Append(CPPFLAGS=['-DRTAUDIO_ENABLED'])
@@ -398,9 +393,4 @@ def configure(env):
 	env.Append( BUILDERS = { 'HLSL9' : env.Builder(action = methods.build_hlsl_dx9_headers, suffix = 'hlsl.h',src_suffix = '.hlsl') } )
 	env.Append( BUILDERS = { 'GLSL120GLES' : env.Builder(action = methods.build_gles2_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )
 
-class __Godot__TempFileMunge(object):
-	# Workaround MingW windows long command line argument limitation
-	# Based on TempFileMunge implementation from SCons\Platform\__init__.py
-	# Tested with scons-2.3.1
-	# Reference: http://four.pairlist.net/pipermail/scons-users/2013-March/001145.html
 	
