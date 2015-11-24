@@ -306,3 +306,4 @@ cscope.po.out
 godot.creator.*
 
 projects/
+platform/windows/godot_res.res

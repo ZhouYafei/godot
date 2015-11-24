@@ -320,9 +320,11 @@ void AcceptDialog::_bind_methods() {
 	ADD_SIGNAL( MethodInfo("confirmed") );
 	ADD_SIGNAL( MethodInfo("custom_action",PropertyInfo(Variant::STRING,"action")) );
 
-	ADD_PROPERTY( PropertyInfo(Variant::STRING, "dialog/text",PROPERTY_HINT_MULTILINE_TEXT,"",PROPERTY_USAGE_DEFAULT_INTL), _SCS("set_text"),_SCS("get_text"));
 	ADD_PROPERTY( PropertyInfo(Variant::STRING,"dialog/ok_text",PROPERTY_HINT_NONE,"",PROPERTY_USAGE_DEFAULT_INTL),_SCS("set_ok_text"),_SCS("get_ok_text"));
 	
+	ADD_PROPERTYNZ( PropertyInfo(Variant::STRING,"dialog/text",PROPERTY_HINT_MULTILINE_TEXT,"",PROPERTY_USAGE_DEFAULT_INTL),_SCS("set_text"),_SCS("get_text"));
+	ADD_PROPERTY( PropertyInfo(Variant::BOOL, "dialog/hide_on_ok"),_SCS("set_hide_on_ok"),_SCS("get_hide_on_ok") );
+
 }
 
 
