@@ -67,4 +67,14 @@
       <Filter>platform\windows</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\platform\windows\godot_res.rc">
+      <Filter>platform\windows</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\platform\windows\godot.ico">
+      <Filter>platform\windows</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
