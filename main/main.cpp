@@ -437,7 +437,6 @@ Error Main::setup(const char *execpath,int argc, char *argv[],bool p_second_phas
 		} else if (I->get()=="-e" || I->get()=="-editor") { // fonud editor
 
 			editor=true;
-			init_maximized=true;
 		} else if (I->get()=="-nowindow") { // fullscreen
 
 			OS::get_singleton()->set_no_window_mode(true);
@@ -656,6 +655,7 @@ Error Main::setup(const char *execpath,int argc, char *argv[],bool p_second_phas
 
 	if (editor) {
 		main_args.push_back("-editor");
+		init_maximized=true;
 		use_custom_res=false;
 	}
 
@@ -877,21 +877,14 @@ Error Main::setup2() {
 		String boot_logo_path=GLOBAL_DEF("application/boot_splash",String());
 		bool boot_logo_scale=GLOBAL_DEF("application/boot_splash_fullsize",true);
 		Globals::get_singleton()->set_custom_property_info("application/boot_splash",PropertyInfo(Variant::STRING,"application/boot_splash",PROPERTY_HINT_FILE,"*.png"));
-		print_line("BOOT SPLASH: "+boot_logo_path);
 
 		Image boot_logo;
 
 		boot_logo_path = boot_logo_path.strip_edges();
-		print_line("BOOT SPLASH IS : "+boot_logo_path);
 
 		if (boot_logo_path!=String() /*&& FileAccess::exists(boot_logo_path)*/) {
+			print_line("Boot splash path: "+boot_logo_path);
 			Error err = boot_logo.load(boot_logo_path);
-			if (err!=OK) {
-				print_line("?RROR LOADING BOOT LOGO SPLASH :"+boot_logo_path);
-			} else {
-				print_line("BOOT SPLASH OK!");
-
-			}
 		}
 
 		if (!boot_logo.empty()) {
@@ -908,7 +901,7 @@ Error Main::setup2() {
 		} else {
 #ifndef NO_DEFAULT_BOOT_LOGO
 
-			MAIN_PRINT("Main: Create botsplash");
+			MAIN_PRINT("Main: Create bootsplash");
 			Image splash(boot_splash_png);
 
 			MAIN_PRINT("Main: ClearColor");
@@ -951,10 +944,10 @@ Error Main::setup2() {
 
 	if (String(Globals::get_singleton()->get("display/custom_mouse_cursor"))!=String()) {
 
-		print_line("use custom cursor");
+		//print_line("use custom cursor");
 		Ref<Texture> cursor=ResourceLoader::load(Globals::get_singleton()->get("display/custom_mouse_cursor"));
 		if (cursor.is_valid()) {
-			print_line("loaded ok");
+		//	print_line("loaded ok");
 			Vector2 hotspot = Globals::get_singleton()->get("display/custom_mouse_cursor_hotspot");
 			Input::get_singleton()->set_custom_mouse_cursor(cursor,hotspot);
 		}
@@ -1100,7 +1093,7 @@ bool Main::start() {
 
 #endif
 
-	if(script=="" && game_path=="" && !editor && String(GLOBAL_DEF("application/main_scene",""))!="") {
+	if(script=="" && game_path=="" && String(GLOBAL_DEF("application/main_scene",""))!="") {
 		game_path=GLOBAL_DEF("application/main_scene","");
 	}
 
