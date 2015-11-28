@@ -462,6 +462,9 @@
     <ClInclude Include="..\..\core\math\triangulator.h">
       <Filter>core\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\variant_parser.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\array.cpp">
@@ -834,6 +837,9 @@
       <Filter>core\math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\variant_construct_string.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\variant_parser.cpp">
       <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>

@@ -82,7 +82,7 @@ public:
 private:
 	static const char * tk_name[TK_MAX];
 
-	static Error _parse_construct(Stream *p_stream, Vector<float>& r_construct, int &line, String &r_err_str);
+	static Error _parse_construct(Stream *p_stream, Vector<real_t>& r_construct, int &line, String &r_err_str);
 	static Error _parse_dictionary(Dictionary &object, Stream *p_stream, int &line, String &r_err_str,ResourceParser *p_res_parser=NULL);
 	static Error _parse_array(Array &array, Stream *p_stream, int &line, String &r_err_str,ResourceParser *p_res_parser=NULL);
 	static Error _parse_tag(Token& token,Stream *p_stream, int &line, String &r_err_str,Tag& r_tag);
