@@ -298,6 +298,7 @@ void ProjectExportDialog::_notification(int p_what) {
 //			_rescan();
 			_update_platform();
 			export_mode->select( EditorImportExport::get_singleton()->get_export_filter() );
+			convert_text_scenes->set_pressed( EditorImportExport::get_singleton()->get_convert_text_scenes() );
 			filters->set_text( EditorImportExport::get_singleton()->get_export_custom_filter() );
 			if (EditorImportExport::get_singleton()->get_export_filter()!=EditorImportExport::EXPORT_SELECTED)
 				tree_vb->hide();
@@ -420,6 +421,8 @@ void ProjectExportDialog::_export_mode_changed(int p_idx) {
 		tree_vb->hide();
 	else
 		tree_vb->show();
+
+	EditorImportExport::get_singleton()->set_convert_text_scenes( convert_text_scenes->is_pressed() );
 
 	_save_export_cfg();
 
@@ -1173,6 +1176,7 @@ ProjectExportDialog::ProjectExportDialog(EditorNode *p_editor) {
 	vb = memnew( VBoxContainer );
 	vb->set_name(_TR("Resources"));
 	sections->add_child(vb);
+
 	export_mode = memnew( OptionButton );
 	export_mode->add_item(_TR("Export selected resources (including dependencies)."));
 	export_mode->add_item(_TR("Export all resources in the project."));
@@ -1180,6 +1184,8 @@ ProjectExportDialog::ProjectExportDialog(EditorNode *p_editor) {
 	export_mode->connect("item_selected",this,"_export_mode_changed");
 
 	vb->add_margin_child(_TR("Export Mode:"),export_mode);
+
+
 
 	tree_vb = memnew( VBoxContainer );
 	vb->add_child(tree_vb);
@@ -1201,6 +1207,10 @@ ProjectExportDialog::ProjectExportDialog(EditorNode *p_editor) {
 	vb->add_margin_child("Filters to export non-resource files (Comma Separated, ie: *.json, *.txt):",filters);
 	filters->connect("text_changed",this,"_filters_edited");
 
+	convert_text_scenes = memnew( CheckButton );
+	convert_text_scenes->set_text("Convert text scenes to binary on export");
+	vb->add_child(convert_text_scenes);
+	convert_text_scenes->connect("toggled",this,"_export_mode_changed");
 
 	image_vb = memnew( VBoxContainer );
 	image_vb->set_name(_TR("Images"));

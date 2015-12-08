@@ -27,14 +27,14 @@ void EditorFileDialog::_notification(int p_what) {
 		dir_prev->set_icon(get_icon("ArrowLeft","EditorIcons"));
 		dir_next->set_icon(get_icon("ArrowRight","EditorIcons"));
 		dir_up->set_icon(get_icon("ArrowUp","EditorIcons"));
+		refresh->set_icon(get_icon("Reload","EditorIcons"));
 		favorite->set_icon(get_icon("Favorites","EditorIcons"));
 
 		fav_up->set_icon(get_icon("MoveUp","EditorIcons"));
 		fav_down->set_icon(get_icon("MoveDown","EditorIcons"));
 		fav_rm->set_icon(get_icon("RemoveSmall","EditorIcons"));
 
-	}
-	if (p_what==NOTIFICATION_PROCESS) {
+	} else if (p_what==NOTIFICATION_PROCESS) {
 
 		if (preview_waiting) {
 			preview_wheel_timeout-=get_process_delta_time();
@@ -47,12 +47,17 @@ void EditorFileDialog::_notification(int p_what) {
 				preview_wheel_timeout=0.1;
 			}
 		}
-	}
-
-	if (p_what==NOTIFICATION_DRAW) {
+	} else if (p_what==NOTIFICATION_DRAW) {
 
 		//RID ci = get_canvas_item();
 		//get_stylebox("panel","PopupMenu")->draw(ci,Rect2(Point2(),get_size()));
+	} else if (p_what==EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
+
+		bool show_hidden = EditorSettings::get_singleton()->get("file_dialog/show_hidden_files");
+
+		if (show_hidden != show_hidden_files) {
+			set_show_hidden_files(show_hidden);
+		}
 	}
 }
 
@@ -1012,7 +1017,7 @@ void EditorFileDialog::_go_forward(){
 
 }
 
-bool EditorFileDialog::default_show_hidden_files=true;
+bool EditorFileDialog::default_show_hidden_files=false;
 
 void EditorFileDialog::set_display_mode(DisplayMode p_mode) {
 
@@ -1141,7 +1146,7 @@ void EditorFileDialog::_save_to_recent() {
 
 EditorFileDialog::EditorFileDialog() {
 
-	show_hidden_files=true;
+	show_hidden_files=default_show_hidden_files;
 	display_mode=DISPLAY_THUMBNAILS;
 	local_history_pos=0;
 
@@ -1169,6 +1174,10 @@ EditorFileDialog::EditorFileDialog() {
 	dir = memnew(LineEdit);
 	pathhb->add_child(dir);
 	dir->set_h_size_flags(SIZE_EXPAND_FILL);
+
+	refresh = memnew( ToolButton );
+	refresh->connect("pressed",this,"_update_file_list");
+	pathhb->add_child(refresh);
 
 	favorite = memnew( ToolButton );
 	favorite->set_toggle_mode(true);

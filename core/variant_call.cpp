@@ -860,6 +860,11 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 		r_ret=Transform(p_args[0]->operator Matrix3(),p_args[1]->operator Vector3());
 	}
 
+	static void Image_init1(Variant& r_ret, const Variant** p_args) {
+
+		r_ret=Image(*p_args[0],*p_args[1],*p_args[2],Image::Format(p_args[3]->operator int()));
+	}
+
 	static void add_constructor(VariantConstructFunc p_func,const Variant::Type p_type,
 			const String& p_name1="", const Variant::Type p_type1=Variant::NIL,
 			const String& p_name2="", const Variant::Type p_type2=Variant::NIL,
@@ -961,7 +966,7 @@ Variant Variant::call(const StringName& p_method,const Variant** p_args,int p_ar
 #define VCALL(m_type,m_method) _VariantCall::_call_##m_type##_##m_method
 
 
-Variant Variant::construct(const Variant::Type p_type,const Variant** p_args,int p_argcount,CallError &r_error) {
+Variant Variant::construct(const Variant::Type p_type, const Variant** p_args, int p_argcount, CallError &r_error, bool p_strict) {
 
 	r_error.error=Variant::CallError::CALL_ERROR_INVALID_METHOD;
 	ERR_FAIL_INDEX_V(p_type,VARIANT_MAX,Variant());
@@ -1037,7 +1042,7 @@ Variant Variant::construct(const Variant::Type p_type,const Variant** p_args,int
 
 	} else if (p_argcount==1 && p_args[0]->type==p_type) {
 		return *p_args[0]; //copy construct
-	} else if (p_argcount==1 && Variant::can_convert(p_args[0]->type,p_type)) {
+	} else if (p_argcount==1 && (!p_strict || Variant::can_convert(p_args[0]->type,p_type))) {
 		//near match construct
 
 		switch(p_type) {
@@ -1587,6 +1592,8 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 
 	_VariantCall::add_constructor(_VariantCall::Transform_init1,Variant::TRANSFORM,"x_axis",Variant::VECTOR3,"y_axis",Variant::VECTOR3,"z_axis",Variant::VECTOR3,"origin",Variant::VECTOR3);
 	_VariantCall::add_constructor(_VariantCall::Transform_init2,Variant::TRANSFORM,"basis",Variant::MATRIX3,"origin",Variant::VECTOR3);
+
+	_VariantCall::add_constructor(_VariantCall::Image_init1,Variant::IMAGE,"width",Variant::INT,"height",Variant::INT,"mipmaps",Variant::BOOL,"format",Variant::INT);
 
 	/* REGISTER CONSTANTS */
 

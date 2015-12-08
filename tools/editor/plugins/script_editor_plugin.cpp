@@ -1137,12 +1137,14 @@ void ScriptEditor::_menu_option(int p_option) {
 					return;
 				int line = tx->cursor_get_line();
 				int next_line = line + 1;
+				int column = tx->cursor_get_column();
 
-				if (line == tx->get_line_count() || next_line > tx->get_line_count())
-					return;
+				if (line >= tx->get_line_count() - 1)
+					tx->set_line(line, tx->get_line(line) + "\n");
 
 				String line_clone = tx->get_line(line);
 				tx->insert_at(line_clone, next_line);
+				tx->cursor_set_column(column);
 				tx->update();
 
 			} break;
@@ -1835,6 +1837,7 @@ void ScriptEditor::edit(const Ref<Script>& p_script) {
 	ScriptTextEditor *ste = memnew( ScriptTextEditor );
 	ste->set_edited_script(p_script);
 	ste->get_text_edit()->set_tooltip_request_func(this,"_get_debug_tooltip",ste);
+	ste->get_text_edit()->set_auto_brace_completion(EditorSettings::get_singleton()->get("text_editor/auto_brace_complete"));
 	tab_container->add_child(ste);
 	_go_to_tab(tab_container->get_tab_count()-1);
 

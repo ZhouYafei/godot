@@ -102,6 +102,7 @@
 #include "tools/editor/io_plugins/editor_sample_import_plugin.h"
 #include "tools/editor/io_plugins/editor_translation_import_plugin.h"
 #include "tools/editor/io_plugins/editor_mesh_import_plugin.h"
+#include "tools/editor/io_plugins/editor_export_scene.h"
 #include "tools/editor/io_plugins/editor_export_res.h"
 
 #include "plugins/editor_preview_plugins.h"
@@ -1563,6 +1564,10 @@ void EditorNode::_edit_current() {
 		scene_tree_dock->set_selected(NULL);
 		property_editor->edit( NULL );
 		object_menu->set_disabled(true);
+
+		if (editor_plugin_over)
+			editor_plugin_over->make_visible(false);
+
 		return;
 	}
 
@@ -2038,7 +2043,7 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 				return;
 			};
 			// fallthrough to save_as
-		} break;
+		};
 		case FILE_SAVE_AS_SCENE: {
 			
 			Node *scene = editor_data.get_edited_scene_root();
@@ -4591,6 +4596,7 @@ EditorNode::EditorNode() {
 
 	ResourceLoader::set_abort_on_missing_resources(false);
 	FileDialog::set_default_show_hidden_files(EditorSettings::get_singleton()->get("file_dialog/show_hidden_files"));
+	EditorFileDialog::set_default_show_hidden_files(EditorSettings::get_singleton()->get("file_dialog/show_hidden_files"));
 	ResourceLoader::set_error_notify_func(this,_load_error_notify);
 	ResourceLoader::set_dependency_error_notify_func(this,_dependency_error_report);
 
@@ -5687,6 +5693,7 @@ EditorNode::EditorNode() {
 	editor_import_export->add_export_plugin( Ref<EditorTextureExportPlugin>( memnew(EditorTextureExportPlugin)));
 	editor_import_export->add_export_plugin( Ref<EditorExportResources>( memnew(EditorExportResources)));
 	editor_import_export->add_export_plugin( Ref<EditorSampleExportPlugin>( memnew(EditorSampleExportPlugin)));
+	editor_import_export->add_export_plugin( Ref<EditorSceneExportPlugin>( memnew(EditorSceneExportPlugin)));
 
 	add_editor_plugin( memnew( CanvasItemEditorPlugin(this) ) );
 	add_editor_plugin( memnew( SpatialEditorPlugin(this) ) );

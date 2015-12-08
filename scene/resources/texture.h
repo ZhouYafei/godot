@@ -149,6 +149,7 @@ public:
 	void fix_alpha_edges();
 	void premultiply_alpha();
 	void normal_to_xy();
+	void shrink_x2_and_keep_size();
 
 
 	void set_size_override(const Size2& p_size);
