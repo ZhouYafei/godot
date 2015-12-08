@@ -449,7 +449,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 			value=Variant();
 		else if (id=="Vector2"){
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -462,7 +462,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 			return OK;
 		} else if (id=="Vector3"){
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -475,7 +475,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 			return OK;
 		} else if (id=="Matrix32"){
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -491,7 +491,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 			return OK;
 		} else if (id=="Plane") {
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -504,7 +504,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 			return OK;
 		} else if (id=="Quat") {
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -518,7 +518,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 
 		} else if (id=="AABB"){
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -532,7 +532,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 
 		} else if (id=="Matrix3"){
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -545,7 +545,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 			return OK;
 		} else if (id=="Transform"){
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -559,7 +559,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 
 		} else if (id=="Color") {
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -1030,16 +1030,16 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 
 		} else if (id=="FloatArray") {
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
 
-			DVector<float> arr;
+			DVector<real_t> arr;
 			{
 				int len=args.size();
 				arr.resize(len);
-				DVector<float>::Write w = arr.write();
+				DVector<real_t>::Write w = arr.write();
 				for(int i=0;i<len;i++) {
 					w[i]=args[i];
 				}
@@ -1101,7 +1101,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 
 		} else if (id=="Vector2Array") {
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -1122,7 +1122,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 
 		} else if (id=="Vector3Array") {
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;
@@ -1143,7 +1143,7 @@ Error VariantParser::parse_value(Token& token,Variant &value,Stream *p_stream,in
 
 		} else if (id=="ColorArray") {
 
-			Vector<float> args;
+			Vector<real_t> args;
 			Error err = _parse_construct<float>(p_stream,args,line,r_err_str);
 			if (err)
 				return err;

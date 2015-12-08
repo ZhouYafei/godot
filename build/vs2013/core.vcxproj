@@ -258,6 +258,7 @@
     <ClInclude Include="..\..\core\ustring.h" />
     <ClInclude Include="..\..\core\variant.h" />
     <ClInclude Include="..\..\core\variant_call_bind.h" />
+    <ClInclude Include="..\..\core\variant_parser.h" />
     <ClInclude Include="..\..\core\vector.h" />
     <ClInclude Include="..\..\core\version.h" />
     <ClInclude Include="..\..\core\vmap.h" />
@@ -386,6 +387,7 @@
     <ClCompile Include="..\..\core\variant_call.cpp" />
     <ClCompile Include="..\..\core\variant_construct_string.cpp" />
     <ClCompile Include="..\..\core\variant_op.cpp" />
+    <ClCompile Include="..\..\core\variant_parser.cpp" />
     <ClCompile Include="..\..\core\vmap.cpp" />
     <ClCompile Include="..\..\core\vset.cpp" />
     <ClCompile Include="..\..\platform\android\globals\global_defaults.cpp">
