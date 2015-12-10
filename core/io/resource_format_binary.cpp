@@ -690,7 +690,7 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant& r_v)  {
 				break;
 			}
 			if (sizeof(Color)==16) {
-				f->get_buffer((uint8_t*)w.ptr(),len*sizeof(real_t)*4);
+				f->get_buffer((uint8_t*)w.ptr(),len*sizeof(Color));
 #ifdef BIG_ENDIAN_ENABLED
 			{
 				uint32_t *ptr=(uint32_t*)w.ptr();
