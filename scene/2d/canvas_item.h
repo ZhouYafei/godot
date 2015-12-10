@@ -191,6 +191,7 @@ public:
 	bool is_hidden() const;
 	void show();
 	void hide();
+	void set_hidden(bool p_hidden);
 
 	void update();
 
