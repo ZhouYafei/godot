@@ -316,6 +316,9 @@
     <Filter Include="drivers\opus\silk\float">
       <UniqueIdentifier>{1e3c8a37-c550-490c-b6b3-c26f016a4b99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="drivers\webp\demux">
+      <UniqueIdentifier>{3f118ed5-2140-4813-be2b-c4f5631e4f26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\drivers\register_driver_types.cpp">
@@ -545,159 +548,6 @@
     </ClCompile>
     <ClCompile Include="..\..\drivers\webp\image_loader_webp.cpp">
       <Filter>drivers\webp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\alpha.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\buffer.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\frame.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\idec.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\io.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\layer.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\quant.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\tree.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\vp8.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\vp8l.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dec\webp.c">
-      <Filter>drivers\webp\dec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\cpu.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\dec.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\dec_neon.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\dec_sse2.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\enc.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\enc_sse2.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\lossless.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\upsampling.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\upsampling_sse2.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\dsp\yuv.c">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\alpha.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\analysis.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\backward_references.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\config.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\cost.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\filter.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\frame.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\histogram.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\iterator.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\layer.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\picture.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\quant.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\syntax.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\tree.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\vp8l.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\enc\webpenc.c">
-      <Filter>drivers\webp\enc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\mux\demux.c">
-      <Filter>drivers\webp\mux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\mux\muxedit.c">
-      <Filter>drivers\webp\mux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\mux\muxinternal.c">
-      <Filter>drivers\webp\mux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\mux\muxread.c">
-      <Filter>drivers\webp\mux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\bit_reader.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\bit_writer.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\color_cache.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\filters.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\huffman.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\huffman_encode.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\quant_levels.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\rescaler.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\thread.c">
-      <Filter>drivers\webp\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\webp\utils\utils.c">
-      <Filter>drivers\webp\utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\drivers\windows\dir_access_windows.cpp">
       <Filter>drivers\windows</Filter>
@@ -3582,6 +3432,312 @@
     <ClCompile Include="..\..\drivers\lua\src\lctype.c">
       <Filter>drivers\lua\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\alpha.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\buffer.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\frame.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\idec.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\io.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\quant.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\tree.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\vp8.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\vp8l.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dec\webp.c">
+      <Filter>drivers\webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\demux\anim_decode.c">
+      <Filter>drivers\webp\demux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\demux\demux.c">
+      <Filter>drivers\webp\demux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\alpha_processing.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\alpha_processing_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\alpha_processing_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\alpha_processing_sse41.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\argb.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\argb_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\argb_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\cost.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\cost_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\cost_mips32.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\cost_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\cpu.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_clip_tables.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_mips32.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_neon.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_sse41.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\enc.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\enc_avx2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\enc_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\enc_mips32.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\enc_neon.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\enc_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\enc_sse41.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\filters.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\filters_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\filters_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_enc.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_enc_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_enc_mips32.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_enc_neon.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_enc_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_enc_sse41.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_neon.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\lossless_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\rescaler.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\rescaler_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\rescaler_mips32.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\rescaler_neon.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\rescaler_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\upsampling.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\upsampling_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\upsampling_neon.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\upsampling_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\yuv.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\yuv_mips_dsp_r2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\yuv_mips32.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\yuv_sse2.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\alpha.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\analysis.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\backward_references.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\config.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\cost.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\delta_palettization.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\filter.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\frame.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\histogram.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\iterator.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\near_lossless.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\picture.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\picture_csp.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\picture_psnr.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\picture_rescale.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\picture_tools.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\quant.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\syntax.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\token.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\tree.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\vp8l.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\enc\webpenc.c">
+      <Filter>drivers\webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\mux\anim_encode.c">
+      <Filter>drivers\webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\mux\muxedit.c">
+      <Filter>drivers\webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\mux\muxinternal.c">
+      <Filter>drivers\webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\mux\muxread.c">
+      <Filter>drivers\webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\bit_reader.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\bit_writer.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\color_cache.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\filters.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\huffman.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\huffman_encode.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\quant_levels.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\quant_levels_dec.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\random.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\rescaler.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\thread.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\utils\utils.c">
+      <Filter>drivers\webp\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\drivers\register_driver_types.h">
@@ -3895,75 +4051,6 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\webp\types.h">
       <Filter>drivers\webp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\dec\decode_vp8.h">
-      <Filter>drivers\webp\dec</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\dec\vp8i.h">
-      <Filter>drivers\webp\dec</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\dec\vp8li.h">
-      <Filter>drivers\webp\dec</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\dec\webpi.h">
-      <Filter>drivers\webp\dec</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\dsp\dsp.h">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\dsp\lossless.h">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\dsp\yuv.h">
-      <Filter>drivers\webp\dsp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\enc\backward_references.h">
-      <Filter>drivers\webp\enc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\enc\cost.h">
-      <Filter>drivers\webp\enc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\enc\histogram.h">
-      <Filter>drivers\webp\enc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\enc\vp8enci.h">
-      <Filter>drivers\webp\enc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\enc\vp8li.h">
-      <Filter>drivers\webp\enc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\mux\muxi.h">
-      <Filter>drivers\webp\mux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\bit_reader.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\bit_writer.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\color_cache.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\filters.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\huffman.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\huffman_encode.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\quant_levels.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\rescaler.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\thread.h">
-      <Filter>drivers\webp\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\webp\utils\utils.h">
-      <Filter>drivers\webp\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\drivers\windows\dir_access_windows.h">
       <Filter>drivers\windows</Filter>
@@ -5368,6 +5455,105 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\lua\src\lua.hpp">
       <Filter>drivers\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dec\alphai.h">
+      <Filter>drivers\webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dec\common.h">
+      <Filter>drivers\webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dec\decode_vp8.h">
+      <Filter>drivers\webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dec\vp8i.h">
+      <Filter>drivers\webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dec\vp8li.h">
+      <Filter>drivers\webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dec\webpi.h">
+      <Filter>drivers\webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\dsp.h">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\lossless.h">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\mips_macro.h">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\neon.h">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\yuv.h">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\yuv_tables_sse2.h">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\enc\vp8li.h">
+      <Filter>drivers\webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\enc\backward_references.h">
+      <Filter>drivers\webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\enc\cost.h">
+      <Filter>drivers\webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\enc\delta_palettization.h">
+      <Filter>drivers\webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\enc\histogram.h">
+      <Filter>drivers\webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\enc\vp8enci.h">
+      <Filter>drivers\webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\mux\muxi.h">
+      <Filter>drivers\webp\mux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\utils.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\bit_reader.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\bit_reader_inl.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\bit_writer.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\color_cache.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\endian_inl.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\filters.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\huffman.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\huffman_encode.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\quant_levels.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\quant_levels_dec.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\random.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\rescaler.h">
+      <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\utils\thread.h">
+      <Filter>drivers\webp\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
