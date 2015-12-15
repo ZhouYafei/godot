@@ -41,8 +41,9 @@ class TextureButton : public BaseButton {
 	Ref<Texture> disabled;
 	Ref<Texture> focused;
 	Ref<BitMap> click_mask;
-	Size2 pressed_scale;
+	Size2 scale;
 	Color modulate;
+	Size2 pressed_scale;
 
 
 protected:
@@ -67,6 +68,9 @@ public:
 	Ref<Texture> get_disabled_texture() const;
 	Ref<Texture> get_focused_texture() const;
 	Ref<BitMap> get_click_mask() const;
+
+	void set_texture_scale(Size2 p_scale);
+	Size2 get_texture_scale() const;
 
 	void set_pressed_scale(Size2 p_scale);
 	Size2 get_pressed_scale() const;

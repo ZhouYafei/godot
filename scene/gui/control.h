@@ -103,16 +103,16 @@ private:
 	struct Data {
 			
 		Point2 pos_cache;
-		float angle_cache;
-		Size2 scale_cache;
 		Size2 size_cache;
-
-		float angle;
-		Size2 scale;
 
 		float margin[4];
 		AnchorType anchor[4];
-		FocusMode focus_mode;		
+		FocusMode focus_mode;
+
+		float rotation;
+		Vector2 scale;
+		float rotation_cache;
+		Size2 scale_cache;
 
 		bool pending_resize;
 
@@ -130,7 +130,7 @@ private:
 		bool modal;
 		bool modal_exclusive;
 		Ref<Theme> theme;
-		Control *theme_owner;
+		Control *theme_owner;		
 		String tooltip;
 		CursorShape default_cursor;
 
@@ -160,20 +160,16 @@ private:
 		int mouse_focus_button;
 		Control *key_focus;
 		Control *mouse_over;
-#ifndef TOOLTIP_DISABLED
 		Control *tooltip;
 		Panel *tooltip_popup;
 		Label *tooltip_label;
 		Point2 tooltip_pos;
-#endif
 		Point2 last_mouse_pos;
 		Point2 drag_accum;
 		bool drag_attempted;
 		Variant drag_data;
 		Control *drag_preview;
-#ifndef TOOLTIP_DISABLED
 		Timer *tooltip_timer;
-#endif
 		List<Control*> modal_stack;
 		unsigned int cancelled_input_ID;
 		Matrix32 focus_inv_xform;
@@ -220,8 +216,8 @@ private:
 	void _size_changed();
 	String _get_tooltip() const;
 
-	void _set_rotd(float p_angle);
-	float _get_rotd() const;
+	void _set_rotation_deg(float p_rot);
+	float _get_rotation_deg() const;
 
 protected:	
 	bool window_has_modal_stack() const;
@@ -259,7 +255,6 @@ public:
 	virtual Variant edit_get_state() const;
 	virtual void edit_set_state(const Variant& p_state);
 	virtual void edit_set_rect(const Rect2& p_edit_rect);
-	virtual void edit_rotate(float p_rot);
 	virtual Size2 edit_get_minimum_size() const;
 
 	void accept_event();
@@ -302,19 +297,22 @@ public:
 	Point2 get_end() const;
 		
 	void set_pos(const Point2& p_point);
-	void set_rot(float p_angle);
-	void set_scale(const Size2& p_scale);
 	void set_size(const Size2& p_size);
 	void set_global_pos(const Point2& p_point);
-
+	
 	Point2 get_pos() const;
-	float get_rot() const;
-	Size2 get_scale() const;
 	Point2 get_global_pos() const;
 	Size2 get_size() const;
 	Rect2 get_rect() const;
 	Rect2 get_global_rect() const;
 	Rect2 get_window_rect() const; ///< use with care, as it blocks waiting for the visual server
+
+	void set_rotation(float p_rotation);
+	float get_rotation() const;
+
+	void set_scale(const Vector2& p_scale);
+	Vector2 get_scale() const;
+
 	
 	void set_area_as_parent_rect(int p_margin=0);
 	
@@ -398,7 +396,7 @@ public:
 
 	void warp_mouse(const Point2& p_to_pos);
 
-    virtual bool is_text_field() const;
+	virtual bool is_text_field() const;
 
 	Control();	
 	~Control();

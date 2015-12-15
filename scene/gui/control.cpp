@@ -41,7 +41,7 @@
 #include "scene/gui/label.h"
 #include <stdio.h>
 
-#ifndef TOOLTIP_DISABLED
+
 class TooltipPanel : public Panel {
 
 	OBJ_TYPE(TooltipPanel,Panel)
@@ -57,7 +57,6 @@ public:
 	TooltipLabel() {};
 
 };
-#endif
 
 Control::Window::Window() {
 
@@ -69,11 +68,9 @@ Control::Window::Window() {
 	disable_input=false;
 
 	cancelled_input_ID=0;
-#ifndef TOOLTIP_DISABLED
 	tooltip=NULL;
 	tooltip_popup=NULL;
 	tooltip_label=NULL;
-#endif
 	subwindow_order_dirty=false;
 }
 
@@ -83,7 +80,7 @@ Variant Control::edit_get_state() const {
 	Array state;
 	state.push_back(get_pos());
 	state.push_back(get_size());
-	state.push_back(get_rot());
+	state.push_back(get_rotation());
 	state.push_back(get_scale());
 
 	return state;
@@ -96,7 +93,7 @@ void Control::edit_set_state(const Variant& p_state) {
 
 	set_pos(state[0]);
 	set_size(state[1]);
-	set_rot(state[2]);
+	set_rotation(state[2]);
 	set_scale(state[3]);
 }
 
@@ -140,19 +137,13 @@ void Control::edit_set_rect(const Rect2& p_edit_rect) {
 	Point2 new_pos = p_edit_rect.pos + p_edit_rect.size*zero_offset;//p_edit_rect.pos - r.pos;
 
 	Matrix32 postxf;
-	postxf.set_rotation_and_scale(data.angle,data.scale);
+	postxf.set_rotation_and_scale(data.rotation,data.scale);
 	new_pos = get_pos() + postxf.xform(new_pos);
 
 	Size2 new_size=p_edit_rect.size.snapped(Vector2(1,1));
 
 	set_pos(new_pos);
 	set_size(new_size);
-}
-
-void Control::edit_rotate(float p_rot) {
-
-	data.angle+=p_rot;
-	_size_changed();
 }
 
 bool Control::_set(const StringName& p_name, const Variant& p_value) {
@@ -388,7 +379,6 @@ void Control::_notification(int p_notification) {
 				add_to_group("_vp_gui_input"+itos(get_viewport()->get_instance_ID()));
 				add_to_group("windows");
 
-#ifndef TOOLTIP_DISABLED
 				window->tooltip_timer = memnew( Timer );
 				add_child(window->tooltip_timer);
 				window->tooltip_timer->force_parent_owned();
@@ -402,7 +392,6 @@ void Control::_notification(int p_notification) {
 				window->tooltip_popup->add_child(window->tooltip_label);
 				window->tooltip_popup->set_as_toplevel(true);
 				window->tooltip_popup->hide();
-#endif
 				window->drag_attempted=false;
 				window->drag_preview=NULL;
 
@@ -436,17 +425,14 @@ void Control::_notification(int p_notification) {
 					data.window->window->key_focus=NULL;
 				if (data.window->window->mouse_over == this)
 					data.window->window->mouse_over=NULL;
-#ifndef TOOLTIP_DISABLED
 				if (data.window->window->tooltip == this)
 					data.window->window->tooltip=NULL;
-#endif
 			}
 
 			if (window) {
 
 				remove_from_group("_vp_gui_input"+itos(get_viewport()->get_instance_ID()));
 				remove_from_group("windows");
-#ifndef TOOLTIP_DISABLED
 				if (window->tooltip_timer)
 					memdelete(window->tooltip_timer);
 				window->tooltip_timer=NULL;
@@ -454,7 +440,7 @@ void Control::_notification(int p_notification) {
 				if (window->tooltip_popup)
 					memdelete(window->tooltip_popup);
 				window->tooltip_popup=NULL;
-#endif
+
 				memdelete(window);
 				window=NULL;
 
@@ -614,9 +600,8 @@ void Control::_notification(int p_notification) {
 		} break;
 		case NOTIFICATION_DRAW: {
 
-			Matrix32 xform;
-			xform.set_origin(get_pos());
-			xform.set_rotation_and_scale(get_rot(),get_scale());
+			Matrix32 xform=Matrix32(data.rotation,get_pos());
+			xform.scale_basis(data.scale);
 			VisualServer::get_singleton()->canvas_item_set_transform(get_canvas_item(),xform);
 			VisualServer::get_singleton()->canvas_item_set_custom_rect( get_canvas_item(),true, Rect2(Point2(),get_size()));
 			//emit_signal(SceneStringNames::get_singleton()->draw);
@@ -649,30 +634,26 @@ void Control::_notification(int p_notification) {
 
 			if (!is_visible()) {
 
-				if(data.window != NULL) {
-
-					if (data.window->window->mouse_focus == this) {
-						data.window->window->mouse_focus=NULL;
-					}
-					if (data.window==this) {
-						window->drag_data=Variant();
-						if (window->drag_preview) {
-							memdelete( window->drag_preview);
-							window->drag_preview=NULL;
-						}
-					}
-
-					if (data.window->window->key_focus == this)
-						data.window->window->key_focus=NULL;
-					if (data.window->window->mouse_over == this)
-						data.window->window->mouse_over=NULL;
-#ifndef TOOLTIP_DISABLED
-					if (data.window->window->tooltip == this)
-						data.window->window->tooltip=NULL;
-					if (data.window->window->tooltip == this)
-						data.window->window->tooltip=NULL;
-#endif
+				if (data.window->window->mouse_focus == this) {
+					data.window->window->mouse_focus=NULL;
 				}
+				if (data.window==this) {
+					window->drag_data=Variant();
+					if (window->drag_preview) {
+						memdelete( window->drag_preview);
+						window->drag_preview=NULL;
+					}
+				}
+
+				if (data.window->window->key_focus == this)
+					data.window->window->key_focus=NULL;
+				if (data.window->window->mouse_over == this)
+					data.window->window->mouse_over=NULL;
+				if (data.window->window->tooltip == this)
+					data.window->window->tooltip=NULL;
+				if (data.window->window->tooltip == this)
+					data.window->window->tooltip=NULL;
+
 				_modal_stack_remove();
 				minimum_size_changed();
 
@@ -851,10 +832,8 @@ Control* Control::_find_control_at_pos(CanvasItem* p_node,const Point2& p_global
 
 		for(int i=p_node->get_child_count()-1;i>=0;i--) {
 
-#ifndef TOOLTIP_DISABLED
 			if (p_node==data.window->window->tooltip_popup)
 				continue;
-#endif
 
 			CanvasItem *ci = p_node->get_child(i)->cast_to<CanvasItem>();
 			if (!ci || ci->is_set_as_toplevel())
@@ -905,18 +884,16 @@ bool Control::window_has_modal_stack() const {
 
 void Control::_window_cancel_tooltip() {
 
-#ifndef TOOLTIP_DISABLED
 	window->tooltip=NULL;
 	if (window->tooltip_timer)
 		window->tooltip_timer->stop();
 	if (window->tooltip_popup)
 		window->tooltip_popup->hide();
-#endif
+
 }
 
 void Control::_window_show_tooltip() {
 
-#ifndef TOOLTIP_DISABLED
 	if (!window->tooltip) {
 		return;
 	}
@@ -954,7 +931,6 @@ void Control::_window_show_tooltip() {
 	window->tooltip_popup->raise();
 
 	window->tooltip_popup->show();
-#endif
 }
 
 
@@ -1106,9 +1082,7 @@ void Control::_window_input_event(InputEvent p_event) {
 				get_tree()->call_group(SceneTree::GROUP_CALL_REALTIME,"windows","_cancel_input_ID",p_event.ID);
 				get_tree()->set_input_as_handled();
 
-#ifndef TOOLTIP_DISABLED
 				window->tooltip_popup->hide();
-#endif
 
 			} else {
 
@@ -1239,7 +1213,6 @@ void Control::_window_input_event(InputEvent p_event) {
 			p_event.mouse_motion.relative_x=rel.x;
 			p_event.mouse_motion.relative_y=rel.y;
 
-#ifndef TOOLTIP_DISABLED
 			if (p_event.mouse_motion.button_mask==0 && window->tooltip_timer) {
 				//nothing pressed
 
@@ -1259,7 +1232,7 @@ void Control::_window_input_event(InputEvent p_event) {
 					window->tooltip_timer->start();
 				}
 			}
-#endif
+
 
 			pos = window->focus_inv_xform.xform(pos);
 
@@ -1756,10 +1729,10 @@ void Control::_size_changed() {
 	new_size_cache.y = MAX( minimum_size.y, new_size_cache.y );
 
 
-	if (new_pos_cache == data.pos_cache && new_size_cache == data.size_cache && data.angle == data.angle_cache && data.scale == data.scale_cache)
+	if (new_pos_cache == data.pos_cache && new_size_cache == data.size_cache && data.rotation == data.rotation_cache && data.scale == data.scale_cache)
 		return; // did not change, don't emit signal
 
-	data.angle_cache=data.angle;
+	data.rotation_cache=data.rotation;
 	data.scale_cache=data.scale;
 	data.pos_cache=new_pos_cache;
 	data.size_cache=new_size_cache;
@@ -1880,8 +1853,8 @@ void Control::_change_notify_margins() {
 	_change_notify("margin/bottom");
 	_change_notify("rect/pos");
 	_change_notify("rect/size");
-	_change_notify("transform/rot");
-	_change_notify("transform/scale");
+	_change_notify("rect/rotation");
+	_change_notify("rect/scale");
 
 }
 
@@ -1936,7 +1909,7 @@ void Control::set_global_pos(const Point2& p_point) {
 	}
 
 	set_pos(inv.xform(p_point));
-	set_rot(inv.get_rotation());
+	set_rotation(inv.get_rotation());
 	set_scale(inv.get_scale());
 }
 
@@ -1968,27 +1941,6 @@ void Control::set_pos(const Size2& p_point) {
 	_size_changed();
 }
 
-void Control::set_rot(float p_angle) {
-
-	data.angle=p_angle;
-	_size_changed();
-}
-
-void Control::_set_rotd(float p_angle) {
-
-	set_rot(Math::deg2rad(p_angle));
-}
-
-void Control::set_scale(const Size2& p_scale) {
-
-	data.scale=p_scale;
-	if (data.scale.x==0)
-		data.scale.x=CMP_EPSILON;
-	if (data.scale.y==0)
-		data.scale.y=CMP_EPSILON;
-	_size_changed();
-}
-
 void Control::set_size(const Size2& p_size) {
 		
 	Size2 new_size=p_size;
@@ -2011,27 +1963,13 @@ void Control::set_size(const Size2& p_size) {
 	data.margin[3] = _s2a( y+h, data.anchor[3], ph );
 	
 	_size_changed();
+
 }
 
 
 Size2 Control::get_pos() const {
 
 	return data.pos_cache;
-}
-
-float Control::get_rot() const {
-
-	return data.angle;
-}
-
-float Control::_get_rotd() const {
-
-	return Math::rad2deg(get_rot());
-}
-
-Size2 Control::get_scale() const {
-
-	return data.scale;
 }
 
 Size2 Control::get_size() const {
@@ -2511,10 +2449,9 @@ Control::CursorShape Control::get_cursor_shape(const Point2& p_pos) const {
 
 Matrix32 Control::get_transform() const {
 
-	Matrix32 xf;
-	xf.set_origin(get_pos());
-	xf.set_rotation_and_scale(get_rot(),get_scale());
-	return xf;
+	Matrix32 xform=Matrix32(data.rotation,get_pos());
+	xform.scale_basis(data.scale);
+	return xform;
 }
 
 String Control::_get_tooltip() const {
@@ -2828,6 +2765,39 @@ bool Control::is_text_field() const {
     return false;
 }
 
+
+void Control::_set_rotation_deg(float p_rot) {
+	set_rotation(Math::deg2rad(p_rot));
+}
+
+float Control::_get_rotation_deg() const {
+	return Math::rad2deg(get_rotation());
+}
+
+void Control::set_rotation(float p_rotation) {
+
+	data.rotation=p_rotation;
+	update();
+	_notify_transform();
+}
+
+float Control::get_rotation() const{
+
+	return data.rotation;
+}
+
+void Control::set_scale(const Vector2& p_scale){
+
+	data.scale=p_scale;
+	update();
+	_notify_transform();
+}
+Vector2 Control::get_scale() const{
+
+	return data.scale;
+}
+
+
 void Control::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("_window_input_event"),&Control::_window_input_event);
@@ -2840,12 +2810,9 @@ void Control::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("_window_show_tooltip"),&Control::_window_show_tooltip);
 	ObjectTypeDB::bind_method(_MD("_size_changed"),&Control::_size_changed);
 	ObjectTypeDB::bind_method(_MD("_update_minimum_size"),&Control::_update_minimum_size);
-	ObjectTypeDB::bind_method(_MD("_get_rotd"),&Control::_get_rotd);
-	ObjectTypeDB::bind_method(_MD("_set_rotd"),&Control::_set_rotd);
 
 	ObjectTypeDB::bind_method(_MD("accept_event"),&Control::accept_event);
 	ObjectTypeDB::bind_method(_MD("get_minimum_size"),&Control::get_minimum_size);
-	ObjectTypeDB::bind_method(_MD("has_point"),&Control::has_point);
 	ObjectTypeDB::bind_method(_MD("get_combined_minimum_size"),&Control::get_combined_minimum_size);
 	ObjectTypeDB::bind_method(_MD("is_window"),&Control::is_window);
 	ObjectTypeDB::bind_method(_MD("get_window"),&Control::get_window);
@@ -2856,22 +2823,24 @@ void Control::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("set_begin","pos"),&Control::set_begin);
 	ObjectTypeDB::bind_method(_MD("set_end","pos"),&Control::set_end);
 	ObjectTypeDB::bind_method(_MD("set_pos","pos"),&Control::set_pos);
-	ObjectTypeDB::bind_method(_MD("set_rot","rot"),&Control::set_rot);
-	ObjectTypeDB::bind_method(_MD("set_scale","scale"),&Control::set_scale);
 	ObjectTypeDB::bind_method(_MD("set_size","size"),&Control::set_size);
 	ObjectTypeDB::bind_method(_MD("set_custom_minimum_size","size"),&Control::set_custom_minimum_size);
 	ObjectTypeDB::bind_method(_MD("set_global_pos","pos"),&Control::set_global_pos);
+	ObjectTypeDB::bind_method(_MD("set_rotation","rotation"),&Control::set_rotation);
+	ObjectTypeDB::bind_method(_MD("_set_rotation_deg","rotation"),&Control::_set_rotation_deg);
+	ObjectTypeDB::bind_method(_MD("set_scale","scale"),&Control::set_scale);
 	ObjectTypeDB::bind_method(_MD("get_margin","margin"),&Control::get_margin);
 	ObjectTypeDB::bind_method(_MD("get_begin"),&Control::get_begin);
 	ObjectTypeDB::bind_method(_MD("get_end"),&Control::get_end);
 	ObjectTypeDB::bind_method(_MD("get_pos"),&Control::get_pos);
-	ObjectTypeDB::bind_method(_MD("get_rot"),&Control::get_rot);
-	ObjectTypeDB::bind_method(_MD("get_scale"),&Control::get_scale);
 	ObjectTypeDB::bind_method(_MD("get_size"),&Control::get_size);
+	ObjectTypeDB::bind_method(_MD("get_rotation"),&Control::get_rotation);
+	ObjectTypeDB::bind_method(_MD("get_scale"),&Control::get_scale);
 	ObjectTypeDB::bind_method(_MD("get_custom_minimum_size"),&Control::get_custom_minimum_size);
 	ObjectTypeDB::bind_method(_MD("get_parent_area_size"),&Control::get_size);
 	ObjectTypeDB::bind_method(_MD("get_global_pos"),&Control::get_global_pos);
 	ObjectTypeDB::bind_method(_MD("get_rect"),&Control::get_rect);
+	ObjectTypeDB::bind_method(_MD("_get_rotation_deg"),&Control::_get_rotation_deg);
 	ObjectTypeDB::bind_method(_MD("get_global_rect"),&Control::get_global_rect);
 	ObjectTypeDB::bind_method(_MD("set_area_as_parent_rect","margin"),&Control::set_area_as_parent_rect,DEFVAL(0));
 	ObjectTypeDB::bind_method(_MD("show_modal","exclusive"),&Control::show_modal,DEFVAL(false));
@@ -2953,8 +2922,8 @@ void Control::_bind_methods() {
 	ADD_PROPERTYNZ( PropertyInfo(Variant::VECTOR2,"rect/pos", PROPERTY_HINT_NONE, "",PROPERTY_USAGE_EDITOR), _SCS("set_pos"),_SCS("get_pos") );
 	ADD_PROPERTYNZ( PropertyInfo(Variant::VECTOR2,"rect/size", PROPERTY_HINT_NONE, "",PROPERTY_USAGE_EDITOR), _SCS("set_size"),_SCS("get_size") );
 	ADD_PROPERTYNZ( PropertyInfo(Variant::VECTOR2,"rect/min_size"), _SCS("set_custom_minimum_size"),_SCS("get_custom_minimum_size") );
-	ADD_PROPERTY(PropertyInfo(Variant::REAL,"transform/rot",PROPERTY_HINT_RANGE,"-1440,1440,0.1"),_SCS("_set_rotd"),_SCS("_get_rotd"));
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2,"transform/scale"),_SCS("set_scale"),_SCS("get_scale"));
+	ADD_PROPERTYNZ( PropertyInfo(Variant::REAL,"rect/rotation",PROPERTY_HINT_RANGE,"-1080,1080,0.01"), _SCS("_set_rotation_deg"),_SCS("_get_rotation_deg") );
+	ADD_PROPERTYNO( PropertyInfo(Variant::VECTOR2,"rect/scale"), _SCS("set_scale"),_SCS("get_scale") );
 	ADD_PROPERTYNZ( PropertyInfo(Variant::STRING,"hint/tooltip", PROPERTY_HINT_MULTILINE_TEXT), _SCS("set_tooltip"),_SCS("_get_tooltip") );
 	ADD_PROPERTYINZ( PropertyInfo(Variant::NODE_PATH,"focus_neighbour/left" ), _SCS("set_focus_neighbour"),_SCS("get_focus_neighbour"),MARGIN_LEFT );
 	ADD_PROPERTYINZ( PropertyInfo(Variant::NODE_PATH,"focus_neighbour/top" ), _SCS("set_focus_neighbour"),_SCS("get_focus_neighbour"),MARGIN_TOP );
@@ -3037,6 +3006,10 @@ Control::Control() {
 	data.v_size_flags=SIZE_FILL;
 	data.expand=1;
 	data.pending_min_size_update=false;
+	data.rotation=0;
+	data.scale=Vector2(1,1);
+	data.rotation_cache=0;
+	data.scale_cache=Vector2(1,1);
 
 
 	for (int i=0;i<4;i++) {
@@ -3046,10 +3019,8 @@ Control::Control() {
 	data.focus_mode=FOCUS_NONE;
 	data.modal_prev_focus_owner=0;
 
-	data.angle=0;
-	data.scale=Size2(1,1);
-	data.angle_cache=0;
-	data.scale_cache=Size2(1,1);
+
+
 
 			
 }
