@@ -47,6 +47,7 @@
 #include "servers/visual/visual_server_wrap_mt.h"
 #include "main/main.h"
 #include "os/keyboard.h"
+#include "dir_access_osx.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -879,6 +880,11 @@ OS::VideoMode OS_OSX::get_default_video_mode() const {
 void OS_OSX::initialize_core() {
 
 	OS_Unix::initialize_core();
+
+	DirAccess::make_default<DirAccessOSX>(DirAccess::ACCESS_RESOURCES);
+	DirAccess::make_default<DirAccessOSX>(DirAccess::ACCESS_USERDATA);
+	DirAccess::make_default<DirAccessOSX>(DirAccess::ACCESS_FILESYSTEM);
+
 	SemaphoreOSX::make_default();
 
 }

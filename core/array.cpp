@@ -241,6 +241,24 @@ String Array::to_json() const {
 	return JSON::print(*this);
 }
 
+void Array::push_front(const Variant& p_value) {
+
+	_p->array.insert(0,p_value);
+}
+
+void Array::pop_back(){
+
+	if (!_p->array.empty())
+		_p->array.resize( _p->array.size() -1 );
+
+}
+void Array::pop_front(){
+
+	if (!_p->array.empty())
+		_p->array.remove(0);
+
+}
+
 
 Array::Array(const Array& p_from) {
 

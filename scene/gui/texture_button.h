@@ -70,6 +70,8 @@ public:
 
 	void set_pressed_scale(Size2 p_scale);
 	Size2 get_pressed_scale() const;
+	void set_texture_scale(Size2 p_scale);
+	Size2 get_texture_scale() const;
 
 	void set_modulate(const Color& p_modulate);
 	Color get_modulate() const;

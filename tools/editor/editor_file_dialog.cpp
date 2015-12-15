@@ -6,6 +6,8 @@
 #include "editor_resource_preview.h"
 #include "editor_settings.h"
 #include "scene/gui/margin_container.h"
+#include "os/file_access.h"
+
 EditorFileDialog::GetIconFunc EditorFileDialog::get_icon_func=NULL;
 EditorFileDialog::GetIconFunc EditorFileDialog::get_large_icon_func=NULL;
 
@@ -193,6 +195,9 @@ void EditorFileDialog::_thumbnail_done(const String& p_path,const Ref<Texture>& 
 }
 
 void EditorFileDialog::_request_single_thumbnail(const String& p_path) {
+
+	if (!FileAccess::exists(p_path))
+		return;
 
 	EditorResourcePreview::get_singleton()->queue_resource_preview(p_path,this,"_thumbnail_done",p_path);
 	//print_line("want file "+p_path);
@@ -435,6 +440,8 @@ void EditorFileDialog::update_file_list() {
 
 	}
 
+	String cdir = dir_access->get_current_dir();
+	bool skip_pp = access==ACCESS_RESOURCES && cdir=="res://";
 
 	dir_access->list_dir_begin();
 
@@ -455,7 +462,7 @@ void EditorFileDialog::update_file_list() {
 		if (show_hidden || !ishidden) {
 			if (!isdir)
 				files.push_back(item);
-			else
+			else if (item!=".." || !skip_pp)
 				dirs.push_back(item);
 		}
 	}

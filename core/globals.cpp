@@ -309,7 +309,7 @@ Error Globals::setup(const String& p_path,const String & p_main_pack) {
 
 		print_line("has res dir: "+resource_path);
 		if (!_load_resource_pack("res://data.pck"))
-			_load_resource_pack("res://data.pcz");
+			_load_resource_pack("res://data.zip");
 		// make sure this is load from the resource path
 		print_line("exists engine cfg? "+itos(FileAccess::exists("/engine.cfg")));
 		if (_load_settings("res://engine.cfg")==OK || _load_settings_binary("res://engine.cfb")==OK) {
@@ -340,7 +340,7 @@ Error Globals::setup(const String& p_path,const String & p_main_pack) {
 			//try to load settings in ascending through dirs shape!
 
 			//tries to open pack, but only first time
-			if (first_time && (_load_resource_pack(current_dir+"/"+exec_name+".pck") || _load_resource_pack(current_dir+"/"+exec_name+".pcz") )) {
+			if (first_time && (_load_resource_pack(current_dir+"/"+exec_name+".pck") || _load_resource_pack(current_dir+"/"+exec_name+".zip") )) {
 				if (_load_settings("res://engine.cfg")==OK || _load_settings_binary("res://engine.cfb")==OK) {
 
 					_load_settings("res://override.cfg");
@@ -349,7 +349,7 @@ Error Globals::setup(const String& p_path,const String & p_main_pack) {
 
 				}
 				break;
-			} else if (first_time && (_load_resource_pack(current_dir+"/data.pck") || _load_resource_pack(current_dir+"/data.pcz") )) {
+			} else if (first_time && (_load_resource_pack(current_dir+"/data.pck") || _load_resource_pack(current_dir+"/data.zip") )) {
 				if (_load_settings("res://engine.cfg")==OK || _load_settings_binary("res://engine.cfb")==OK) {
 
 					_load_settings("res://override.cfg");
@@ -1414,6 +1414,7 @@ Globals::Globals() {
 	joyb.joy_button.button_index=JOY_BUTTON_0;
 	va.push_back(joyb);
 	set("input/ui_accept",va);
+	input_presets.push_back("input/ui_accept");
 
 	va=Array();
 	key.key.scancode=KEY_SPACE;
@@ -1421,6 +1422,7 @@ Globals::Globals() {
 	joyb.joy_button.button_index=JOY_BUTTON_3;
 	va.push_back(joyb);
 	set("input/ui_select",va);
+	input_presets.push_back("input/ui_select");
 
 	va=Array();
 	key.key.scancode=KEY_ESCAPE;
@@ -1428,17 +1430,20 @@ Globals::Globals() {
 	joyb.joy_button.button_index=JOY_BUTTON_1;
 	va.push_back(joyb);
 	set("input/ui_cancel",va);
+	input_presets.push_back("input/ui_cancel");
 
 	va=Array();
 	key.key.scancode=KEY_TAB;
 	va.push_back(key);
 	set("input/ui_focus_next",va);
+	input_presets.push_back("input/ui_focus_next");
 
 	va=Array();
 	key.key.scancode=KEY_TAB;
 	key.key.mod.shift=true;
 	va.push_back(key);
 	set("input/ui_focus_prev",va);
+	input_presets.push_back("input/ui_focus_prev");
 	key.key.mod.shift=false;
 
 	va=Array();
@@ -1447,6 +1452,7 @@ Globals::Globals() {
 	joyb.joy_button.button_index=JOY_DPAD_LEFT;
 	va.push_back(joyb);
 	set("input/ui_left",va);
+	input_presets.push_back("input/ui_left");
 
 	va=Array();
 	key.key.scancode=KEY_RIGHT;
@@ -1454,6 +1460,7 @@ Globals::Globals() {
 	joyb.joy_button.button_index=JOY_DPAD_RIGHT;
 	va.push_back(joyb);
 	set("input/ui_right",va);
+	input_presets.push_back("input/ui_right");
 
 	va=Array();
 	key.key.scancode=KEY_UP;
@@ -1461,6 +1468,7 @@ Globals::Globals() {
 	joyb.joy_button.button_index=JOY_DPAD_UP;
 	va.push_back(joyb);
 	set("input/ui_up",va);
+	input_presets.push_back("input/ui_up");
 
 	va=Array();
 	key.key.scancode=KEY_DOWN;
@@ -1468,17 +1476,20 @@ Globals::Globals() {
 	joyb.joy_button.button_index=JOY_DPAD_DOWN;
 	va.push_back(joyb);
 	set("input/ui_down",va);
+	input_presets.push_back("input/ui_down");
 
 
 	va=Array();
 	key.key.scancode=KEY_PAGEUP;
 	va.push_back(key);
 	set("input/ui_page_up",va);
+	input_presets.push_back("input/ui_page_up");
 
 	va=Array();
 	key.key.scancode=KEY_PAGEDOWN;
 	va.push_back(key);
 	set("input/ui_page_down",va);
+	input_presets.push_back("input/ui_page_down");
 
 //	set("display/orientation", "landscape");
 

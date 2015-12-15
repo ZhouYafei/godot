@@ -994,7 +994,7 @@ void SceneTreeDialog::_cancel() {
 void SceneTreeDialog::_select() {
 
 	if (tree->get_selected()) {
-	        emit_signal("selected",tree->get_selected()->get_path());
+		emit_signal("selected",tree->get_selected()->get_path());
 		hide();
 	}
 }
@@ -1004,7 +1004,6 @@ void SceneTreeDialog::_bind_methods() {
 	ObjectTypeDB::bind_method("_select",&SceneTreeDialog::_select);
 	ObjectTypeDB::bind_method("_cancel",&SceneTreeDialog::_cancel);
 	ADD_SIGNAL( MethodInfo("selected",PropertyInfo(Variant::NODE_PATH,"path")));
-
 
 }
 
@@ -1017,7 +1016,7 @@ SceneTreeDialog::SceneTreeDialog() {
 	add_child(tree);
 	set_child_rect(tree);
 
-
+	tree->get_scene_tree()->connect("item_activated",this,"_select");
 
 }
 
