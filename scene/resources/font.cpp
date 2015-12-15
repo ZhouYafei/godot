@@ -503,7 +503,6 @@ void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, co
     update_atlas();
 
 	Point2 pos=p_pos;
-	float ofs=0;
 	VisualServer *vs = VisualServer::get_singleton();
 	Vector2 ofs;
 	
@@ -515,10 +514,10 @@ void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, co
 		if (p_clip_w>=0 && (ofs.x+width)>p_clip_w)
 			break; //clip
 
-		if (p_clip_w>=0 && (ofs+c->rect.size.width)>p_clip_w)
+		if (p_clip_w>=0 && (ofs.x+c->rect.size.width)>p_clip_w)
 			break; //clip
 		Point2 cpos=pos;
-		cpos.x+=ofs+c->h_align;
+		cpos.x+=ofs.x+c->h_align;
 		cpos.y-=ascent;
 		cpos.y+=c->v_align;
 		if( c->texture_idx<-1 || c->texture_idx>=textures.size())
@@ -540,8 +539,8 @@ void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, co
 		}
 		//textures[c->texture_idx]->draw_rect_region( p_canvas_item, Rect2( cpos, c->rect.size ), c->rect, p_modulate );
 		
-		ofs+=get_char_size(p_text[i],p_text[i+1]).width;
-		ofs.x+=draw_char(p_canvas_item,p_pos+ofs,p_text[i],p_text[i+1],p_modulate);
+		ofs+=get_char_size(p_text[i],p_text[i+1]);
+		//ofs.x+=draw_char(p_canvas_item,p_pos+ofs,p_text[i],p_text[i+1],p_modulate);
 	}
 }
 
@@ -553,21 +552,21 @@ float Font::draw_char(RID p_canvas_item, const Point2& p_pos, const CharType& p_
 		if (fallback.is_valid())
 			return fallback->draw_char(p_canvas_item,p_pos,p_char,p_next,p_modulate);
 		return 0;
+	}
 
-
-    update_atlas();
+	update_atlas();
 
 	Point2 cpos=p_pos;
 	cpos.x+=c->h_align;
 	cpos.y-=ascent;
 	cpos.y+=c->v_align;
 	if (c->texture_idx<-1 || c->texture_idx>=textures.size())
-    {
-        if (p_char==' ')
-            return 0;
-        else
-    	    ERR_FAIL_COND_V( c->texture_idx<-1 || c->texture_idx>=textures.size(),0)
-    }
+	{
+		if (p_char==' ')
+			return 0;
+		else
+    		ERR_FAIL_COND_V( c->texture_idx<-1 || c->texture_idx>=textures.size(),0)
+	}
 	if (c->texture_idx != -1) {
 
 		Ref<Texture> tex = textures[c->texture_idx];

@@ -261,14 +261,12 @@ Size2 TextureButton::get_texture_scale() const{
 }
 
 void TextureButton::set_pressed_scale(Size2 p_scale) {
-void TextureButton::set_texture_scale(Size2 p_scale) {
 
 	pressed_scale=p_scale;
 	update();
 }
 
 Size2 TextureButton::get_pressed_scale() const{
-Size2 TextureButton::get_texture_scale() const{
 
 	return pressed_scale;
 }

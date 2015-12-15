@@ -172,8 +172,8 @@
     <ClCompile Include="..\..\tools\editor\editor_help.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_icons.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_import_export.cpp" />
-    <ClCompile Include="..\..\tools\editor\editor_layout_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_log.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_name_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_node.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_path.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_plugin.cpp" />
@@ -380,8 +380,8 @@
     <ClInclude Include="..\..\tools\editor\editor_help.h" />
     <ClInclude Include="..\..\tools\editor\editor_icons.h" />
     <ClInclude Include="..\..\tools\editor\editor_import_export.h" />
-    <ClInclude Include="..\..\tools\editor\editor_layout_dialog.h" />
     <ClInclude Include="..\..\tools\editor\editor_log.h" />
+    <ClInclude Include="..\..\tools\editor\editor_name_dialog.h" />
     <ClInclude Include="..\..\tools\editor\editor_node.h" />
     <ClInclude Include="..\..\tools\editor\editor_path.h" />
     <ClInclude Include="..\..\tools\editor\editor_plugin.h" />

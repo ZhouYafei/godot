@@ -756,11 +756,11 @@
     <ClCompile Include="..\..\tools\pe_bliss\version_info_editor.cpp">
       <Filter>tools\pe_bliss</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tools\editor\editor_layout_dialog.cpp">
-      <Filter>tools\editor</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_export_scene.cpp">
       <Filter>tools\editor\io_plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\editor\editor_name_dialog.cpp">
+      <Filter>tools\editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1544,7 +1544,7 @@
     <ClInclude Include="..\..\tools\pe_bliss\version_info_viewer.h">
       <Filter>tools\pe_bliss</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\tools\editor\editor_layout_dialog.h">
+    <ClInclude Include="..\..\tools\editor\editor_name_dialog.h">
       <Filter>tools\editor</Filter>
     </ClInclude>
   </ItemGroup>

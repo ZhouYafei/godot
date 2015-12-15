@@ -218,8 +218,6 @@ private:
 
 	void _set_rotation_deg(float p_rot);
 	float _get_rotation_deg() const;
-	void _set_rotation_deg(float p_rot);
-	float _get_rotation_deg() const;
 
 protected:	
 	bool window_has_modal_stack() const;
