@@ -99,18 +99,30 @@ public:
 
 		Spine::SpineResource *res = memnew(Spine::SpineResource);
 		Ref<Spine::SpineResource> ref(res);
+		if (p_path.ends_with(".json")) {
 
-		String p_atlas = p_path.replace(".json", ".atlas");
-		res->atlas = spAtlas_createFromFile(p_atlas.utf8().get_data(), 0);
-		ERR_FAIL_COND_V(res->atlas == NULL, RES());
-		spSkeletonJson *json = spSkeletonJson_create(res->atlas);
-		ERR_FAIL_COND_V(json == NULL, RES());
-		json->scale = 1;
+			String p_atlas = p_path.replace(".json", ".atlas");
+			res->atlas = spAtlas_createFromFile(p_atlas.utf8().get_data(), 0);
+			ERR_FAIL_COND_V(res->atlas == NULL, RES());
+			spSkeletonJson *json = spSkeletonJson_create(res->atlas);
+			ERR_FAIL_COND_V(json == NULL, RES());
+			json->scale = 1;
 
-		res->data = spSkeletonJson_readSkeletonDataFile(json, p_path.utf8().get_data());
-		ERR_EXPLAIN(json->error ? json->error : "");
-		ERR_FAIL_COND_V(res->data == NULL, RES());
-		spSkeletonJson_dispose(json);
+			res->data = spSkeletonJson_readSkeletonDataFile(json, p_path.utf8().get_data());
+			ERR_EXPLAIN(json->error ? json->error : "");
+			ERR_FAIL_COND_V(res->data == NULL, RES());
+			spSkeletonJson_dispose(json);
+		}
+		else if (p_path.ends_with(".skel")) {
+
+			String p_atlas = p_path.replace(".skel", ".atlas");
+			res->atlas = spAtlas_createFromFile(p_atlas.utf8().get_data(), 0);
+			ERR_FAIL_COND_V(res->atlas == NULL, RES());
+
+			res->data = spSkeletonBinary_readSkeletonData(p_path.utf8().get_data(), res->atlas, 1);
+			ERR_EXPLAIN("Invalid spine binary: " + p_path);
+			ERR_FAIL_COND_V(res->data == NULL, RES());
+		}
 
 		res->set_path(p_path);
 		return ref;
@@ -119,6 +131,7 @@ public:
 	virtual void get_recognized_extensions(List<String> *p_extensions) const {
 
 		p_extensions->push_back("json");
+		p_extensions->push_back("skel");
 	}
 
 	virtual bool handles_type(const String& p_type) const {

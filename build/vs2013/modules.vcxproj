@@ -223,6 +223,7 @@
     <ClCompile Include="..\..\modules\spine\src\spine\MeshAttachment.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\RegionAttachment.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\Skeleton.c" />
+    <ClCompile Include="..\..\modules\spine\src\spine\SkeletonBinary.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonBounds.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonData.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonJson.c" />
@@ -291,6 +292,7 @@
     <ClInclude Include="..\..\modules\spine\include\spine\MeshAttachment.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\RegionAttachment.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\Skeleton.h" />
+    <ClInclude Include="..\..\modules\spine\include\spine\SkeletonBinary.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonBounds.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonData.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonJson.h" />

@@ -258,6 +258,9 @@
     <ClCompile Include="..\..\modules\luascript\compat51.cpp">
       <Filter>modules\luascript</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\spine\src\spine\SkeletonBinary.c">
+      <Filter>modules\spine\spine-c</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -472,6 +475,9 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\luascript\compat51.h">
       <Filter>modules\luascript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\spine\include\spine\SkeletonBinary.h">
+      <Filter>modules\spine\spine-c</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
