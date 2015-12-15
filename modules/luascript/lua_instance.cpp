@@ -179,6 +179,14 @@ void LuaInstance::get_property_list(List<PropertyInfo> *p_properties) const {
 	}
 }
 
+Variant::Type LuaInstance::get_property_type(const StringName& p_name,bool *r_is_valid) const {
+
+	// TODO:
+	if (r_is_valid)
+		*r_is_valid=false;
+	return Variant::NIL;
+}
+
 void LuaInstance::get_method_list(List<MethodInfo> *p_list) const {
 
 //	const LuaScript *sptr=script.ptr();

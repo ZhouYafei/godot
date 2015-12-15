@@ -605,8 +605,6 @@ class EditorFontImportDialog : public ConfirmationDialog {
 			dest->get_line_edit()->set_text(dest->get_line_edit()->get_text().get_base_dir() + "/" + source->get_line_edit()->get_text().get_file().basename() + ".fnt" );
 		}
 
-		Ref<ResourceImportMetadata> rimd = get_rimd();
-
 		if (rimd.is_null()) {
 			error_dialog->set_text(_TR("Can't load/process source font"));
 			error_dialog->popup_centered(Size2(200,100));

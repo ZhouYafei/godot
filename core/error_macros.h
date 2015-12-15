@@ -210,8 +210,8 @@ void _set_err_error_exists(bool p_exists);
 
 #define ERR_PRINTS(m_string) \
 	{ \
-		_err_print_error(FUNCTION_STR,__FILE__,__LINE__,String(m_string).utf8().get_data());	\
-		_err_error_exists=false;\
+		_err_print_error(FUNCTION_STR,__FILE__,__LINE__,(m_string).utf8().get_data());	\
+		_set_err_error_exists(false);\
 	} \
 
 /** Print a warning string.

@@ -172,6 +172,7 @@
     <ClCompile Include="..\..\tools\editor\editor_help.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_icons.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_import_export.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_layout_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_log.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_node.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_path.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="..\..\tools\editor\inspector_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_atlas.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_export_res.cpp" />
+    <ClCompile Include="..\..\tools\editor\io_plugins\editor_export_scene.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_font_import_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_import_collada.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_mesh_import_plugin.cpp" />
@@ -378,6 +380,7 @@
     <ClInclude Include="..\..\tools\editor\editor_help.h" />
     <ClInclude Include="..\..\tools\editor\editor_icons.h" />
     <ClInclude Include="..\..\tools\editor\editor_import_export.h" />
+    <ClInclude Include="..\..\tools\editor\editor_layout_dialog.h" />
     <ClInclude Include="..\..\tools\editor\editor_log.h" />
     <ClInclude Include="..\..\tools\editor\editor_node.h" />
     <ClInclude Include="..\..\tools\editor\editor_path.h" />
