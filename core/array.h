@@ -55,7 +55,7 @@ public:
 	bool empty() const;
 	void clear();
 
-    bool is_shared() const;
+	bool is_shared() const;
 
 	bool operator==(const Array& p_array) const;
 
@@ -79,6 +79,10 @@ public:
 
 	Error parse_json(const String& p_json);
 	String to_json() const;
+
+	void push_front(const Variant& p_value);
+	void pop_back();
+	void pop_front();
 
 	Array(const Array& p_from);
 	Array(bool p_shared=false);

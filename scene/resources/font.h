@@ -96,6 +96,7 @@ private:
 	Vector<Variant> _get_textures() const;
 	void _reload_hook(const RID& p_hook);
 
+	Ref<Font> fallback;
 protected:
 	
 	static void _bind_methods();
@@ -127,7 +128,7 @@ public:
 	int get_kerning_pair(CharType p_A,CharType p_B) const;
 	Vector<KerningPairKey> get_kerning_pair_keys() const;
 
-	_FORCE_INLINE_ Size2 get_char_size(CharType p_char,CharType p_next=0) const;
+	inline Size2 get_char_size(CharType p_char,CharType p_next=0) const;
 	Size2 get_string_size(const String& p_string) const;
 
     bool set_ttf_path(const String& p_path, int p_size);
@@ -136,6 +137,10 @@ public:
     void set_ttf_options(const Dictionary& p_options);
     const Dictionary& get_ttf_options() const;
 	
+
+	void set_fallback(const Ref<Font> &p_fallback);
+	Ref<Font> get_fallback() const;
+
 	void clear();
 
 	void set_distance_field_hint(bool p_distance_field);
@@ -154,8 +159,11 @@ Size2 Font::get_char_size(CharType p_char,CharType p_next) const {
 
 	const Character * c = get_character_p(p_char);
 
-	if (!c)
+	if (!c) {
+		if (fallback.is_valid())
+			return fallback->get_char_size(p_char,p_next);
 		return Size2();
+	}
 
 	Size2 ret(c->advance,c->rect.size.y);
 

@@ -1544,6 +1544,10 @@ bool Object::is_connected(const StringName& p_signal, Object *p_to_object, const
 		bool signal_is_valid = ObjectTypeDB::has_signal(get_type_name(),p_signal);
 		if (signal_is_valid)
 			return false;
+
+		if (!script.is_null() && Ref<Script>(script)->has_script_signal(p_signal))
+			return false;
+
 		ERR_EXPLAIN("Nonexistent signal: "+p_signal);
 		ERR_FAIL_COND_V(!s,false);
 	}
@@ -1750,7 +1754,7 @@ void Object::_bind_methods() {
 		ObjectTypeDB::bind_native_method(METHOD_FLAGS_DEFAULT,"call_deferred",&Object::_call_deferred_bind,mi,defargs);
 	}
 
-	ObjectTypeDB::bind_method(_MD("callv:var","method","arg_array"),&Object::callv);
+	ObjectTypeDB::bind_method(_MD("callv:Variant","method","arg_array"),&Object::callv);
 
 	ObjectTypeDB::bind_method(_MD("has_method"),&Object::has_method);
 

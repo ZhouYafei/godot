@@ -90,12 +90,22 @@ void CustomPropertyEditor::_menu_option(int p_which) {
 				case OBJ_MENU_LOAD: {
 
 					file->set_mode(EditorFileDialog::MODE_OPEN_FILE);
-					List<String> extensions;
 					String type=(hint==PROPERTY_HINT_RESOURCE_TYPE)?hint_text:String();
 
-					ResourceLoader::get_recognized_extensions_for_type(type,&extensions);
-					file->clear_filters();
+					List<String> extensions;
+					for (int i=0;i<type.get_slice_count(",");i++) {
+
+						ResourceLoader::get_recognized_extensions_for_type(type.get_slice(",",i),&extensions);
+					}
+
+					Set<String> valid_extensions;
 					for (List<String>::Element *E=extensions.front();E;E=E->next()) {
+
+						valid_extensions.insert(E->get());
+					}
+
+					file->clear_filters();
+					for (Set<String>::Element *E=valid_extensions.front();E;E=E->next()) {
 
 						file->add_filter("*."+E->get()+" ; "+E->get().to_upper() );
 
@@ -906,15 +916,25 @@ void CustomPropertyEditor::_color_changed(const Color& p_color) {
 
 void CustomPropertyEditor::_node_path_selected(NodePath p_path) {
 
-	if (owner && owner->is_type("Node")) {
+	if (owner) {
 
-		Node *node = owner->cast_to<Node>();
-		Node *tonode=node->get_node(p_path);
-		if (tonode) {
+		Node *node=NULL;
 
-			p_path=node->get_path_to(tonode);
+		if (owner->is_type("Node"))
+			node = owner->cast_to<Node>();
+		else if (owner->is_type("ArrayPropertyEdit"))
+			node = owner->cast_to<ArrayPropertyEdit>()->get_node();
+
+		if (!node) {
+			v=p_path;
+			emit_signal("variant_changed");
+			return;
 		}
 
+		Node *tonode=node->get_node(p_path);
+		if (tonode) {
+			p_path=node->get_path_to(tonode);
+		}
 	}
 
 	v=p_path;
@@ -2609,7 +2629,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CHECK );
 				item->set_text(1,"On");
 				item->set_checked( 1, obj->get( p.name ) );
-				item->set_icon( 0, get_icon("Bool","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("Bool","EditorIcons") );
 				item->set_editable(1,!read_only);
 
 			} break;
@@ -2621,7 +2642,8 @@ void PropertyEditor::update_tree() {
 					item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 					item->set_text(1, String::num(obj->get( p.name ),2) );
 					item->set_editable(1,!read_only);
-					item->set_icon( 0, get_icon("Curve","EditorIcons"));
+					if (show_type_icons)
+						item->set_icon( 0, get_icon("Curve","EditorIcons"));
 
 					break;
 
@@ -2695,7 +2717,8 @@ void PropertyEditor::update_tree() {
 
 //					int c = p.hint_string.get_slice_count(",");
 					item->set_text(1,p.hint_string);
-					item->set_icon( 0,get_icon("Enum","EditorIcons") );
+					if (show_type_icons)
+						item->set_icon( 0,get_icon("Enum","EditorIcons") );
 					item->set_range(1, obj->get( p.name ) );
 					item->set_editable(1,!read_only);
 					break;
@@ -2711,11 +2734,13 @@ void PropertyEditor::update_tree() {
 				};
 
 				if (p.type==Variant::REAL) {
-					item->set_icon( 0, get_icon("Real","EditorIcons"));
+					if (show_type_icons)
+						item->set_icon( 0, get_icon("Real","EditorIcons"));
 					item->set_range(1, obj->get( p.name ) );
 
 				} else {
-					item->set_icon( 0,get_icon("Integer","EditorIcons") );
+					if (show_type_icons)
+						item->set_icon( 0,get_icon("Integer","EditorIcons") );
 					item->set_range(1, obj->get( p.name ) );
 				}
 
@@ -2735,7 +2760,8 @@ void PropertyEditor::update_tree() {
 
 						item->set_cell_mode( 1, TreeItem::CELL_MODE_STRING );
 						item->set_editable(1,!read_only);
-						item->set_icon( 0, get_icon("File","EditorIcons") );
+						if (show_type_icons)
+							item->set_icon( 0, get_icon("File","EditorIcons") );
 						item->set_text(1,obj->get(p.name));
 						item->add_button(1,get_icon("Folder","EditorIcons"));
 
@@ -2755,7 +2781,8 @@ void PropertyEditor::update_tree() {
 						item->set_text(1, p.hint_string);
 						item->set_range(1,idx);
 						item->set_editable( 1, !read_only );
-						item->set_icon( 0,get_icon("Enum","EditorIcons") );
+						if (show_type_icons)
+							item->set_icon( 0,get_icon("Enum","EditorIcons") );
 
 
 					} break;
@@ -2763,7 +2790,8 @@ void PropertyEditor::update_tree() {
 
 						item->set_cell_mode( 1, TreeItem::CELL_MODE_STRING );
 						item->set_editable(1,!read_only);
-						item->set_icon( 0, get_icon("String","EditorIcons") );
+						if (show_type_icons)
+							item->set_icon( 0, get_icon("String","EditorIcons") );
 						item->set_text(1,obj->get(p.name));
 						if (p.hint==PROPERTY_HINT_MULTILINE_TEXT)
 							item->add_button(1,get_icon("MultiLine","EditorIcons") );
@@ -2783,7 +2811,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"Array["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"Array[]");
-				item->set_icon( 0, get_icon("ArrayData","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("ArrayData","EditorIcons") );
 
 
 			} break;
@@ -2798,7 +2827,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"IntArray["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"IntArray[]");
-				item->set_icon( 0, get_icon("ArrayInt","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("ArrayInt","EditorIcons") );
 
 
 			} break;
@@ -2812,7 +2842,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"FloatArray["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"FloatArray[]");
-				item->set_icon( 0, get_icon("ArrayReal","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("ArrayReal","EditorIcons") );
 
 
 			} break;
@@ -2826,7 +2857,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"String["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"String[]");
-				item->set_icon( 0, get_icon("ArrayString","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("ArrayString","EditorIcons") );
 
 
 			} break;
@@ -2840,7 +2872,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"Byte["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"Byte[]");
-				item->set_icon( 0, get_icon("ArrayData","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("ArrayData","EditorIcons") );
 
 
 			} break;
@@ -2854,7 +2887,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"Vector2["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"Vector2[]");
-				item->set_icon( 0, get_icon("Vector2","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("Vector2","EditorIcons") );
 
 
 			} break;
@@ -2868,7 +2902,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"Vector3["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"Vector3[]");
-				item->set_icon( 0, get_icon("Vector","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("Vector","EditorIcons") );
 
 
 			} break;
@@ -2882,7 +2917,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"Color["+itos(v.call("size"))+"]");
 				else
 					item->set_text(1,"Color[]");
-				item->set_icon( 0, get_icon("Color","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0, get_icon("Color","EditorIcons") );
 
 
 			} break;
@@ -2891,7 +2927,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 				item->set_editable( 1, true );
 				item->set_text(1,obj->get(p.name));
-				item->set_icon( 0,get_icon("Vector2","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Vector2","EditorIcons") );
 
 			} break;
 			case Variant::RECT2: {
@@ -2899,7 +2936,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 				item->set_editable( 1, true );
 				item->set_text(1,obj->get(p.name));
-				item->set_icon( 0,get_icon("Rect2","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Rect2","EditorIcons") );
 
 			} break;
 			case Variant::VECTOR3: {
@@ -2907,7 +2945,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 				item->set_editable( 1, true );
 				item->set_text(1,obj->get(p.name));
-				item->set_icon( 0,get_icon("Vector","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Vector","EditorIcons") );
 
 			} break;
 			case Variant::MATRIX32:
@@ -2922,7 +2961,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 				item->set_editable( 1, true );
 				item->set_text(1,obj->get(p.name));
-				item->set_icon( 0,get_icon("Matrix","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Matrix","EditorIcons") );
 
 			} break;
 			case Variant::PLANE: {
@@ -2930,7 +2970,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 				item->set_editable( 1, true );
 				item->set_text(1,obj->get(p.name));
-				item->set_icon( 0,get_icon("Plane","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Plane","EditorIcons") );
 
 			} break;
 			case Variant::_AABB: {
@@ -2938,7 +2979,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 				item->set_editable( 1, true );
 				item->set_text(1,"AABB");
-				item->set_icon( 0,get_icon("Rect3","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Rect3","EditorIcons") );
 			} break;
 
 			case Variant::QUAT: {
@@ -2946,7 +2988,8 @@ void PropertyEditor::update_tree() {
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
 				item->set_editable( 1, true );
 				item->set_text(1,obj->get(p.name));
-				item->set_icon( 0,get_icon("Quat","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Quat","EditorIcons") );
 
 			} break;
 			case Variant::COLOR: {
@@ -2955,7 +2998,8 @@ void PropertyEditor::update_tree() {
 				item->set_editable( 1, !read_only );
 //				item->set_text(1,obj->get(p.name));
 				item->set_custom_bg_color(1,obj->get(p.name));
-				item->set_icon( 0,get_icon("Color","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Color","EditorIcons") );
 
 			} break;
 			case Variant::IMAGE: {
@@ -2967,7 +3011,8 @@ void PropertyEditor::update_tree() {
 					item->set_text(1,"[Image (empty)]");
 				else
 					item->set_text(1,"[Image "+itos(img.get_width())+"x"+itos(img.get_height())+"]");
-				item->set_icon( 0,get_icon("Image","EditorIcons") );
+				if (show_type_icons)
+					item->set_icon( 0,get_icon("Image","EditorIcons") );
 
 			} break;
 			case Variant::NODE_PATH: {
@@ -3655,6 +3700,7 @@ PropertyEditor::PropertyEditor() {
 	use_doc_hints=false;
 	use_filter=false;
 	subsection_selectable=false;
+	show_type_icons=EDITOR_DEF("inspector/show_type_icons",false);
 
 }
 
