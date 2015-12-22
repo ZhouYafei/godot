@@ -196,7 +196,12 @@ void ScenesDock::_notification(int p_what) {
 		case NOTIFICATION_EXIT_TREE: {
 
 		} break;
+		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
 
+			display_mode->set_pressed(int(EditorSettings::get_singleton()->get("file_dialog/display_mode"))==EditorFileDialog::DISPLAY_LIST);
+
+			_change_file_display();
+		} break;
 	}
 
 }
@@ -1097,6 +1102,11 @@ void ScenesDock::open(const String& p_path) {
 		}
 	}
 
+}
+
+void ScenesDock::set_use_thumbnails(bool p_use) {
+
+	display_mode->set_pressed(!p_use);
 }
 
 void ScenesDock::_bind_methods() {

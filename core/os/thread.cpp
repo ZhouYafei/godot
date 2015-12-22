@@ -67,6 +67,11 @@ void Thread::wait_to_finish(Thread *p_thread) {
 		
 }
 
+Error Thread::set_name(const String &p_name) {
+
+	return ERR_UNAVAILABLE;
+};
+
 Thread::Thread()
 {
 }
