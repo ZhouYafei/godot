@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -98,6 +98,7 @@ const char* GDTokenizer::token_names[TK_MAX]={
 "assert",
 "yield",
 "signal",
+"breakpoint",
 "'['",
 "']'",
 "'{'",
@@ -110,6 +111,7 @@ const char* GDTokenizer::token_names[TK_MAX]={
 "'?'",
 "':'",
 "'\\n'",
+"PI",
 "Error",
 "EOF",
 "Cursor"};
@@ -259,6 +261,7 @@ void GDTokenizerText::_advance() {
 				}
 
 				INCPOS(1);
+				line++;
 
 				while(GETCHAR(0)==' ' || GETCHAR(0)=='\t') {
 					INCPOS(1);
@@ -855,6 +858,7 @@ void GDTokenizerText::_advance() {
 								{TK_PR_FUNCTION,"function"},
 								{TK_PR_CLASS,"class"},
 								{TK_PR_EXTENDS,"extends"},
+								{TK_PR_ONREADY,"onready"},
 								{TK_PR_TOOL,"tool"},
 								{TK_PR_STATIC,"static"},
 								{TK_PR_EXPORT,"export"},
@@ -864,6 +868,7 @@ void GDTokenizerText::_advance() {
 								{TK_PR_ASSERT,"assert"},
 								{TK_PR_YIELD,"yield"},
 								{TK_PR_SIGNAL,"signal"},
+								{TK_PR_BREAKPOINT,"breakpoint"},
 								{TK_PR_CONST,"const"},
 								//controlflow
 								{TK_CF_IF,"if"},
@@ -878,6 +883,7 @@ void GDTokenizerText::_advance() {
 								{TK_CF_RETURN,"return"},
 								{TK_CF_PASS,"pass"},
 								{TK_SELF,"self"},
+								{TK_CONST_PI,"PI"},
 								{TK_ERROR,NULL}
 							};
 
@@ -1044,7 +1050,7 @@ void GDTokenizerText::advance(int p_amount) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define BYTECODE_VERSION 5
+#define BYTECODE_VERSION 10
 
 Error GDTokenizerBuffer::set_code_buffer(const Vector<uint8_t> & p_buffer) {
 

@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -72,22 +72,23 @@ public:
 	void set_step(double p_step);
 	void set_page(double p_page);
 	void set_unit_value(double p_value);
-	void set_rounded_values(bool);
-	
+
 	double get_val() const;
 	double get_min() const;
 	double get_max() const;
 	double get_step() const;
 	double get_page() const;
 	double get_unit_value() const;
-	bool get_rounded_values() const;
+
+	void set_rounded_values(bool p_enable);
+	bool is_rounded_values() const;
 
 	void set_exp_unit_value(bool p_enable);
 	bool is_unit_value_exp() const;
 
 	void share(Range *p_range);
 	void unshare();
-	
+
 	Range();	
 	~Range();
 

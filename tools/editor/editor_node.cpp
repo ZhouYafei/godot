@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -416,7 +416,7 @@ void EditorNode::_rebuild_import_menu()
 {
 	PopupMenu* p = import_menu->get_popup();
 	p->clear();
-	p->add_item("Sub-Scene", FILE_IMPORT_SUBSCENE);
+	p->add_item("Node from scene", FILE_IMPORT_SUBSCENE);
 	p->add_separator();
 	for (int i = 0; i < editor_import_export->get_import_plugin_count(); i++) {
 		p->add_item(editor_import_export->get_import_plugin(i)->get_visible_name(), IMPORT_PLUGIN_BASE + i);
@@ -512,13 +512,21 @@ void EditorNode::save_resource_as(const Ref<Resource>& p_resource) {
 	file->set_mode(EditorFileDialog::MODE_SAVE_FILE);
 	bool relpaths =  (p_resource->has_meta("__editor_relpaths__") && p_resource->get_meta("__editor_relpaths__").operator bool());
 
+	current_option=RESOURCE_SAVE_AS;
 	List<String> extensions;
 	Ref<PackedScene> sd = memnew( PackedScene );
 	ResourceSaver::get_recognized_extensions(p_resource,&extensions);
 	file->clear_filters();
+
+	List<String> preferred;
 	for(int i=0;i<extensions.size();i++) {
 
+		if (p_resource->is_type("Script") && extensions[i]=="tres" || extensions[i]=="res" || extensions[i]=="xml") {
+			//this serves no purpose and confused people
+			continue;
+		}
 		file->add_filter("*."+extensions[i]+" ; "+extensions[i].to_upper());
+		preferred.push_back(extensions[i]);
 	}
 
 	//file->set_current_path(current_path);
@@ -530,11 +538,11 @@ void EditorNode::save_resource_as(const Ref<Resource>& p_resource) {
 				file->set_current_path(p_resource->get_path().replacen("."+ext,"."+extensions.front()->get()));
 			}
 		}
-	} else {
+	} else if (preferred.size()) {
 
 		String existing;
 		if (extensions.size()) {
-			existing="new_"+p_resource->get_type().to_lower()+"."+extensions.front()->get().to_lower();
+			existing="new_"+p_resource->get_type().to_lower()+"."+preferred.front()->get().to_lower();
 		}
 		file->set_current_path(existing);
 
@@ -585,59 +593,66 @@ void EditorNode::_dialog_display_file_error(String p_file,Error p_error) {
 
 }
 
-void EditorNode::_get_scene_metadata() {
+void EditorNode::_get_scene_metadata(const String& p_file) {
 
 	Node *scene = editor_data.get_edited_scene_root();
 
 	if (!scene)
 		return;
 
+	String path = EditorSettings::get_singleton()->get_project_settings_path().plus_file(p_file.get_file()+"-editstate-"+p_file.md5_text()+".cfg");
 
-	if (scene->has_meta("__editor_plugin_states__")) {
+	Ref<ConfigFile> cf;
+	cf.instance();
 
-		Dictionary md = scene->get_meta("__editor_plugin_states__");
-		editor_data.set_editor_states(md);
+	Error err = cf->load(path);
+	if (err!=OK)
+		return; //must not exist
 
-	}
+	List<String> esl;
+	cf->get_section_keys("editor_states",&esl);
 
-	if (scene->has_meta("__editor_run_settings__")) {
+	Dictionary md;
+	for (List<String>::Element *E=esl.front();E;E=E->next()) {
 
-		Dictionary md = scene->get_meta("__editor_run_settings__");
-		if (md.has("run_mode"))
-			run_settings_dialog->set_run_mode(md["run_mode"]);
-		if (md.has("custom_args"))
-			run_settings_dialog->set_custom_arguments(md["custom_args"]);
-	}
-
-
-}
-
-void EditorNode::_set_scene_metadata() {
-
-	Node *scene = editor_data.get_edited_scene_root();
-
-	if (!scene)
-		return;
-
-	{ /* Editor States */
-		Dictionary md = editor_data.get_editor_states();
-
-		if (!md.empty()) {
-			scene->set_meta("__editor_plugin_states__",md);
+		Variant st=cf->get_value("editor_states",E->get());
+		if (st.get_type()) {
+			md[E->get()]=st;
 		}
 	}
 
-	{ /* Run Settings */
 
 
-		Dictionary md;
-		md["run_mode"]=run_settings_dialog->get_run_mode();
-		md["custom_args"]=run_settings_dialog->get_custom_arguments();
-		scene->set_meta("__editor_run_settings__",md);
+	editor_data.set_editor_states(md);
+
+}
+
+void EditorNode::_set_scene_metadata(const String& p_file) {
+
+	Node *scene = editor_data.get_edited_scene_root();
+
+	if (!scene)
+		return;
+
+	scene->set_meta("__editor_run_settings__",Variant()); //clear it (no point in keeping it)
+	scene->set_meta("__editor_plugin_states__",Variant());
+
+	String path = EditorSettings::get_singleton()->get_project_settings_path().plus_file(p_file.get_file()+"-editstate-"+p_file.md5_text()+".cfg");
+
+	Ref<ConfigFile> cf;
+	cf.instance();
+
+	Dictionary md = editor_data.get_editor_states();
+	List<Variant> keys;
+	md.get_key_list(&keys);
+
+	for(List<Variant>::Element *E=keys.front();E;E=E->next()) {
+
+		cf->set_value("editor_states",E->get(),md[E->get()]);
 	}
 
-
-
+	Error err = cf->save(path);
+	ERR_FAIL_COND(err!=OK);
 
 }
 
@@ -955,7 +970,7 @@ void EditorNode::_save_scene(String p_file) {
 	}
 
 
-	_set_scene_metadata();
+	_set_scene_metadata(p_file);
 
 
 	Ref<PackedScene> sdata;
@@ -1440,8 +1455,13 @@ void EditorNode::_dialog_action(String p_file) {
 			Ref<ConfigFile> config;
 			config.instance();
 			Error err = config->load(EditorSettings::get_singleton()->get_settings_path().plus_file("editor_layouts.cfg"));
-			if (err!=OK && err!=ERR_FILE_NOT_FOUND) {
-				return; //no config
+
+			if (err==ERR_CANT_OPEN) {
+				config.instance(); // new config
+			} else if (err!=OK) {
+				confirm_error->set_text("Error trying to save layout!");
+				confirm_error->popup_centered_minsize();
+				return;
 			}
 
 			_save_docks_to_config(config, p_file);
@@ -1466,11 +1486,8 @@ void EditorNode::_dialog_action(String p_file) {
 			Ref<ConfigFile> config;
 			config.instance();
 			Error err = config->load(EditorSettings::get_singleton()->get_settings_path().plus_file("editor_layouts.cfg"));
-			if (err!=OK) {
-				return; //no config
-			}
 
-			if (!config->has_section(p_file)) {
+			if (err!=OK || !config->has_section(p_file)) {
 				confirm_error->set_text("Layout name not found!");
 				confirm_error->popup_centered_minsize();
 				return;
@@ -3519,11 +3536,13 @@ Error EditorNode::load_scene(const String& p_scene, bool p_ignore_broken_deps,bo
 	}
 
 
-	for(int i=0;i<editor_data.get_edited_scene_count();i++) {
+	if(!p_set_inherited) {
+		for(int i=0;i<editor_data.get_edited_scene_count();i++) {
 
-		if (editor_data.get_scene_path(i)==p_scene) {
-			_scene_tab_changed(i);
-			return OK;
+			if (editor_data.get_scene_path(i)==p_scene) {
+				_scene_tab_changed(i);
+				return OK;
+			}
 		}
 	}
 
@@ -3653,7 +3672,7 @@ Error EditorNode::load_scene(const String& p_scene, bool p_ignore_broken_deps,bo
 	new_scene->set_scene_instance_state(Ref<SceneState>());
 
 	set_edited_scene(new_scene);
-	_get_scene_metadata();
+	_get_scene_metadata(p_scene);
 	/*
 	editor_data.set_edited_scene_root(new_scene);
 
@@ -5174,7 +5193,7 @@ EditorNode::EditorNode() {
 	p->add_separator();
 	p->add_item("Revert Scene",EDIT_REVERT);
 	p->add_separator();
-	p->add_item("Quit to Project List",RUN_PROJECT_MANAGER,KEY_MASK_SHIFT+KEY_MASK_CMD+KEY_Q);
+	p->add_item("Quit to Project List",RUN_PROJECT_MANAGER,KEY_MASK_SHIFT+KEY_MASK_ALT+KEY_Q);
 	p->add_item("Quit",FILE_QUIT,KEY_MASK_CMD+KEY_Q);
 
 	recent_scenes = memnew( PopupMenu );
@@ -5941,6 +5960,7 @@ EditorNode::EditorNode() {
 	resource_preview->add_preview_generator( Ref<EditorScriptPreviewPlugin>( memnew(EditorScriptPreviewPlugin )));
 	resource_preview->add_preview_generator( Ref<EditorSamplePreviewPlugin>( memnew(EditorSamplePreviewPlugin )));
 	resource_preview->add_preview_generator( Ref<EditorMeshPreviewPlugin>( memnew(EditorMeshPreviewPlugin )));
+	resource_preview->add_preview_generator( Ref<EditorBitmapPreviewPlugin>( memnew(EditorBitmapPreviewPlugin )));
 
 	circle_step_msec=OS::get_singleton()->get_ticks_msec();
 	circle_step_frame=OS::get_singleton()->get_frames_drawn();

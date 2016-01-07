@@ -45,10 +45,6 @@ def can_build():
 		print("xinerama not found.. x11 disabled.")
 		return False
 
-	x11_error=os.system("pkg-config libevdev --modversion > /dev/null ")
-	if (x11_error):
-		print("evdev not found.. x11 disabled.")
-		return False
 
 	return True # X11 enabled
   
@@ -59,6 +55,7 @@ def get_opts():
 	('use_sanitizer','Use llvm compiler sanitize address','no'),
 	('use_leak_sanitizer','Use llvm compiler sanitize memory leaks','no'),
 	('pulseaudio','Detect & Use pulseaudio','yes'),
+	('gamepad','Gamepad support, requires libudev and libevdev','yes'),
 	('new_wm_api', 'Use experimental window management API','no'),
 	('debug_release', 'Add debug symbols to release version','no'),
 	]
@@ -133,7 +130,6 @@ def configure(env):
 	env.ParseConfig('pkg-config x11 --cflags --libs')
 	env.ParseConfig('pkg-config xinerama --cflags --libs')
 	env.ParseConfig('pkg-config xcursor --cflags --libs')
-	env.ParseConfig('pkg-config libevdev --cflags --libs')
 
 	if (env["openssl"]=="yes"):
 		env.ParseConfig('pkg-config openssl --cflags --libs')
@@ -150,12 +146,29 @@ def configure(env):
 			env.Append(CPPPATH=['#tools/freetype/freetype/include'])
 
 
-
-	
 	env.Append(CPPFLAGS=['-DOPENGL_ENABLED','-DGLEW_ENABLED'])
 	if platform.system() == 'Linux':
 		env.Append(CPPFLAGS=["-DALSA_ENABLED"])
-		env.Append(LIBS=['asound', 'udev'])
+		env.Append(LIBS=['asound'])
+
+	if (env["gamepad"]=="yes" and platform.system() == "Linux"):
+		# pkg-config returns 0 when the lib exists...
+		found_udev = not os.system("pkg-config --exists libudev")
+		found_evdev = not os.system("pkg-config --exists libevdev")
+		
+		if (found_udev and found_evdev):
+			print("Enabling gamepad support with udev/evdev")
+			env.Append(CPPFLAGS=["-DJOYDEV_ENABLED"])
+			env.ParseConfig('pkg-config libudev --cflags --libs')
+			env.ParseConfig('pkg-config libevdev --cflags --libs')
+		else:
+			if (not found_udev):
+				print("libudev development libraries not found")
+			if (not found_evdev):
+				print("libevdev development libraries not found")
+			print("Some libraries are missing for the required gamepad support, aborting!")
+			print("Install the mentioned libraries or build with 'gamepad=no' to disable gamepad support.")
+			sys.exit(255)
 
 	if (env["pulseaudio"]=="yes"):
 		if not os.system("pkg-config --exists libpulse-simple"):

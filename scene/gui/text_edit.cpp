@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -3768,10 +3768,10 @@ void TextEdit::_bind_methods() {
 	
 	ObjectTypeDB::bind_method(_MD("get_line_count"),&TextEdit::get_line_count);
 	ObjectTypeDB::bind_method(_MD("get_text"),&TextEdit::get_text);
-	ObjectTypeDB::bind_method(_MD("get_line"),&TextEdit::get_line);
+	ObjectTypeDB::bind_method(_MD("get_line","line"),&TextEdit::get_line);
 	
-	ObjectTypeDB::bind_method(_MD("cursor_set_column","column"),&TextEdit::cursor_set_column);
-	ObjectTypeDB::bind_method(_MD("cursor_set_line","line"),&TextEdit::cursor_set_line);
+	ObjectTypeDB::bind_method(_MD("cursor_set_column","column","adjust_viewport"),&TextEdit::cursor_set_column,DEFVAL(false));
+	ObjectTypeDB::bind_method(_MD("cursor_set_line","line","adjust_viewport"),&TextEdit::cursor_set_line,DEFVAL(false));
 	
 	ObjectTypeDB::bind_method(_MD("cursor_get_column"),&TextEdit::cursor_get_column);
 	ObjectTypeDB::bind_method(_MD("cursor_get_line"),&TextEdit::cursor_get_line);

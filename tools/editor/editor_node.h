@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -420,8 +420,8 @@ class EditorNode : public Node {
 
 	void _node_renamed();
 	void _editor_select(int p_which);
-	void _set_scene_metadata();
-	void _get_scene_metadata();
+	void _set_scene_metadata(const String &p_file);
+	void _get_scene_metadata(const String& p_file);
 	void _update_title();
 	void _update_scene_tabs();
 	void _close_messages();

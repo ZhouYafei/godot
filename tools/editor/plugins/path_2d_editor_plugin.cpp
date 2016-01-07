@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -535,6 +535,7 @@ void Path2DEditor::edit(Node *p_path2d) {
 		if (!node->is_connected("visibility_changed", this, "_node_visibility_changed"))
 			node->connect("visibility_changed", this, "_node_visibility_changed");
 
+
 	} else {
 
 		if (canvas_item_editor->get_viewport_control()->is_connected("draw",this,"_canvas_draw"))
@@ -615,7 +616,7 @@ Path2DEditor::Path2DEditor(EditorNode *p_editor) {
 	editor=p_editor;
 	undo_redo = editor->get_undo_redo();
 
-	add_child( memnew( VSeparator ) );
+	mode=MODE_EDIT;
 
 	curve_edit = memnew( ToolButton );
 	curve_edit->set_icon( CanvasItemEditor::get_singleton()->get_icon( "CurveEdit", "EditorIcons" ) );

@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -708,7 +708,7 @@ void Tabs::add_tab(const String& p_str,const Ref<Texture>& p_icon) {
 	t.text=p_str;
 	t.icon=p_icon;
 
-	t.close_button = get_icon("Close","EditorIcons");
+	t.close_button = get_icon("close");
 
 	tabs.push_back(t);
 

@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -316,6 +316,8 @@ void ScriptTextEditor::_load_theme_settings() {
 	get_text_edit()->add_keyword_color("Color",basetype_color);
 	get_text_edit()->add_keyword_color("Image",basetype_color);
 	get_text_edit()->add_keyword_color("InputEvent",basetype_color);
+	get_text_edit()->add_keyword_color("Rect2",basetype_color);
+	get_text_edit()->add_keyword_color("NodePath",basetype_color);
 
 	//colorize engine types
 	Color type_color= EDITOR_DEF("text_editor/engine_type_color",Color(0.0,0.2,0.4));
@@ -2039,6 +2041,15 @@ void ScriptEditor::_editor_settings_changed() {
 		autosave_timer->start();
 	} else {
 		autosave_timer->stop();
+	}
+
+	for(int i=0;i<tab_container->get_child_count();i++) {
+
+		ScriptTextEditor *ste = tab_container->get_child(i)->cast_to<ScriptTextEditor>();
+		if (!ste)
+			continue;
+
+		ste->get_text_edit()->set_auto_brace_completion(EditorSettings::get_singleton()->get("text_editor/auto_brace_complete"));
 	}
 
 }

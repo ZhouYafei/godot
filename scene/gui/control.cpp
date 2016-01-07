@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2015 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -936,6 +936,7 @@ void Control::_window_show_tooltip() {
 
 void Control::_window_call_input(Control *p_control,const InputEvent& p_input) {
 
+	_block();
 
 	while(p_control) {
 
@@ -962,6 +963,9 @@ void Control::_window_call_input(Control *p_control,const InputEvent& p_input) {
 		}
 		//p_control=p_control->data.parent;
 	}
+
+	_unblock();
+
 }
 
 void Control::_window_input_event(InputEvent p_event) {
@@ -1097,6 +1101,7 @@ void Control::_window_input_event(InputEvent p_event) {
 
 						Size2 pos = mpos;
 						pos = window->focus_inv_xform.xform(pos);
+
 						window->mouse_over->drop_data(pos,window->drag_data);
 						window->drag_data=Variant();
 						//change mouse accordingly
