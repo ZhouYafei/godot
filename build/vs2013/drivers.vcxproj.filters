@@ -85,9 +85,6 @@
     <Filter Include="drivers\gles2\shaders">
       <UniqueIdentifier>{c03de4c3-3531-4ca9-a6c5-b1f7b1abbf39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\jpg">
-      <UniqueIdentifier>{ab17253d-4283-4111-a893-606e2f631318}</UniqueIdentifier>
-    </Filter>
     <Filter Include="drivers\mpc">
       <UniqueIdentifier>{10a58bd1-f16c-4bc6-9e24-24b6c8afc1ea}</UniqueIdentifier>
     </Filter>
@@ -318,6 +315,12 @@
     </Filter>
     <Filter Include="drivers\webp\demux">
       <UniqueIdentifier>{3f118ed5-2140-4813-be2b-c4f5631e4f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="drivers\jpegd">
+      <UniqueIdentifier>{ab17253d-4283-4111-a893-606e2f631318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="drivers\pnm">
+      <UniqueIdentifier>{fe99385f-86ef-4db2-9249-3e06b538968c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -716,15 +719,6 @@
     </ClCompile>
     <ClCompile Include="..\..\drivers\gles2\shader_gles2.cpp">
       <Filter>drivers\gles2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\jpg\image_loader_jpg.cpp">
-      <Filter>drivers\jpg</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\jpg\jidctflt.c">
-      <Filter>drivers\jpg</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\jpg\tinyjpeg.c">
-      <Filter>drivers\jpg</Filter>
     </ClCompile>
     <ClCompile Include="..\..\drivers\mpc\audio_stream_mpc.cpp">
       <Filter>drivers\mpc</Filter>
@@ -3738,6 +3732,15 @@
     <ClCompile Include="..\..\drivers\webp\utils\utils.c">
       <Filter>drivers\webp\utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\image_loader_jpegd.cpp">
+      <Filter>drivers\jpegd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\jpgd.cpp">
+      <Filter>drivers\jpegd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\pnm\bitmap_loader_pnm.cpp">
+      <Filter>drivers\pnm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\drivers\register_driver_types.h">
@@ -4219,15 +4222,6 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\gles2\shaders\material.glsl.h">
       <Filter>drivers\gles2\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\jpg\image_loader_jpg.h">
-      <Filter>drivers\jpg</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\jpg\tinyjpeg-internal.h">
-      <Filter>drivers\jpg</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\jpg\tinyjpeg.h">
-      <Filter>drivers\jpg</Filter>
     </ClInclude>
     <ClInclude Include="..\..\drivers\mpc\audio_stream_mpc.h">
       <Filter>drivers\mpc</Filter>
@@ -5554,6 +5548,15 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\webp\utils\thread.h">
       <Filter>drivers\webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\jpgd.h">
+      <Filter>drivers\jpegd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\image_loader_jpegd.h">
+      <Filter>drivers\jpegd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\pnm\bitmap_loader_pnm.h">
+      <Filter>drivers\pnm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

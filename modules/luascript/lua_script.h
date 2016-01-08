@@ -166,6 +166,7 @@ public:
 
 	virtual bool has_script_signal(const StringName &) const { return false; }
 	virtual void get_script_signal_list(List<MethodInfo,DefaultAllocator> *) const {}
+	virtual bool get_property_default_value(const StringName& p_property,Variant& r_value) const;
 
 	virtual String get_node_type() const;
 	void set_script_path(const String& p_path) { path=p_path; } //because subclasses need a path too...
@@ -339,6 +340,7 @@ public:
 	virtual String make_function(const String& p_class,const String& p_name,const StringArray& p_args) const;
 	virtual void auto_indent_code(String& p_code,int p_from_line,int p_to_line) const;
 	virtual Error complete_keyword(const String& p_code, int p_line, const String& p_base_path,const String& p_keyword, List<String>* r_options);
+	virtual void add_global_constant(const StringName& p_variable,const Variant& p_value);
 
 	/* DEBUGGER FUNCTIONS */
 

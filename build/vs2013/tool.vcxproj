@@ -160,7 +160,6 @@
     <ClCompile Include="..\..\tools\editor\call_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\code_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\connections_dialog.cpp" />
-    <ClCompile Include="..\..\tools\editor\console.cpp" />
     <ClCompile Include="..\..\tools\editor\create_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\default_saver.cpp" />
     <ClCompile Include="..\..\tools\editor\dependency_editor.cpp" />
@@ -364,7 +363,6 @@
     <ClInclude Include="..\..\tools\editor\call_dialog.h" />
     <ClInclude Include="..\..\tools\editor\code_editor.h" />
     <ClInclude Include="..\..\tools\editor\connections_dialog.h" />
-    <ClInclude Include="..\..\tools\editor\console.h" />
     <ClInclude Include="..\..\tools\editor\create_dialog.h" />
     <ClInclude Include="..\..\tools\editor\default_saver.h" />
     <ClInclude Include="..\..\tools\editor\dependency_editor.h" />

@@ -34,6 +34,9 @@
     <ClCompile Include="..\..\platform\windows\packet_peer_udp_winsock.cpp">
       <Filter>platform\windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\platform\windows\joystick.cpp">
+      <Filter>platform\windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\platform\windows\context_gl_win.h">
@@ -64,6 +67,9 @@
       <Filter>platform\windows</Filter>
     </ClInclude>
     <ClInclude Include="..\..\platform\windows\packet_peer_udp_winsock.h">
+      <Filter>platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\platform\windows\joystick.h">
       <Filter>platform\windows</Filter>
     </ClInclude>
   </ItemGroup>
