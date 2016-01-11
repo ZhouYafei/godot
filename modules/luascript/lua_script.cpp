@@ -813,6 +813,23 @@ Error LuaScript::reload() {
 	return OK;
 }
 
+
+bool LuaScript::get_property_default_value(const StringName& p_property,Variant& r_value) const {
+
+#ifdef TOOLS_ENABLED
+
+	//for (const Map<StringName,Variant>::Element *I=member_default_values.front();I;I=I->next()) {
+	//	print_line("\t"+String(String(I->key())+":"+String(I->get())));
+	//}
+	const Map<StringName,Variant>::Element *E=member_default_values.find(p_property);
+	if (E) {
+		r_value=E->get();
+		return true;
+	}
+#endif
+	return false;
+}
+
 String LuaScript::get_node_type() const {
 
 	return ""; // ?

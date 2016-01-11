@@ -827,9 +827,8 @@
     <ClCompile Include="..\..\drivers\gles2\shader_gles2.cpp" />
     <ClCompile Include="..\..\drivers\gl_context\context_gl.cpp" />
     <ClCompile Include="..\..\drivers\gl_context\glew.c" />
-    <ClCompile Include="..\..\drivers\jpg\image_loader_jpg.cpp" />
-    <ClCompile Include="..\..\drivers\jpg\jidctflt.c" />
-    <ClCompile Include="..\..\drivers\jpg\tinyjpeg.c" />
+    <ClCompile Include="..\..\drivers\jpegd\image_loader_jpegd.cpp" />
+    <ClCompile Include="..\..\drivers\jpegd\jpgd.cpp" />
     <ClCompile Include="..\..\drivers\lua\src\lapi.c" />
     <ClCompile Include="..\..\drivers\lua\src\lauxlib.c" />
     <ClCompile Include="..\..\drivers\lua\src\lbaselib.c" />
@@ -1062,6 +1061,7 @@
     <ClCompile Include="..\..\drivers\png\pngwtran.c" />
     <ClCompile Include="..\..\drivers\png\pngwutil.c" />
     <ClCompile Include="..\..\drivers\png\resource_saver_png.cpp" />
+    <ClCompile Include="..\..\drivers\pnm\bitmap_loader_pnm.cpp" />
     <ClCompile Include="..\..\drivers\pvr\BitScale.cpp" />
     <ClCompile Include="..\..\drivers\pvr\MortonTable.cpp" />
     <ClCompile Include="..\..\drivers\pvr\PvrTcDecoder.cpp" />
@@ -1749,9 +1749,8 @@
     <ClInclude Include="..\..\drivers\gl_context\glew.h" />
     <ClInclude Include="..\..\drivers\gl_context\glxew.h" />
     <ClInclude Include="..\..\drivers\gl_context\wglew.h" />
-    <ClInclude Include="..\..\drivers\jpg\image_loader_jpg.h" />
-    <ClInclude Include="..\..\drivers\jpg\tinyjpeg-internal.h" />
-    <ClInclude Include="..\..\drivers\jpg\tinyjpeg.h" />
+    <ClInclude Include="..\..\drivers\jpegd\image_loader_jpegd.h" />
+    <ClInclude Include="..\..\drivers\jpegd\jpgd.h" />
     <ClInclude Include="..\..\drivers\lua\src\lapi.h" />
     <ClInclude Include="..\..\drivers\lua\src\lauxlib.h" />
     <ClInclude Include="..\..\drivers\lua\src\lcode.h" />
@@ -1879,6 +1878,7 @@
     <ClInclude Include="..\..\drivers\png\pngpriv.h" />
     <ClInclude Include="..\..\drivers\png\pngstruct.h" />
     <ClInclude Include="..\..\drivers\png\resource_saver_png.h" />
+    <ClInclude Include="..\..\drivers\pnm\bitmap_loader_pnm.h" />
     <ClInclude Include="..\..\drivers\pvr\AlphaBitmap.h" />
     <ClInclude Include="..\..\drivers\pvr\Bitmap.h" />
     <ClInclude Include="..\..\drivers\pvr\BitScale.h" />

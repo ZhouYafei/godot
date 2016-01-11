@@ -1058,6 +1058,11 @@ String LuaScriptLanguage::make_function(const String& p_class,const String& p_na
 void LuaScriptLanguage::auto_indent_code(String& p_code,int p_from_line,int p_to_line) const {
 }
 
+void LuaScriptLanguage::add_global_constant(const StringName& p_variable,const Variant& p_value) {
+
+	_add_global(p_variable, p_value);
+}
+
 Error LuaScriptLanguage::complete_keyword(const String& p_code, int p_line, const String& p_base_path, const String& p_base, List<String>* r_options) {
 
 //	GDParser p;
