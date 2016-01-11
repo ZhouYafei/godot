@@ -882,6 +882,13 @@ bool Control::window_has_modal_stack() const {
 	return data.window->window->modal_stack.size();
 }
 
+bool Control::is_window_modal_on_top() const {
+
+	if (window_has_modal_stack())
+		return data.window->window->modal_stack.back()->get()==this;
+	return false;
+}
+
 void Control::_window_cancel_tooltip() {
 
 	window->tooltip=NULL;
@@ -936,7 +943,7 @@ void Control::_window_show_tooltip() {
 
 void Control::_window_call_input(Control *p_control,const InputEvent& p_input) {
 
-	_block();
+//	_block();
 
 	while(p_control) {
 
@@ -964,7 +971,7 @@ void Control::_window_call_input(Control *p_control,const InputEvent& p_input) {
 		//p_control=p_control->data.parent;
 	}
 
-	_unblock();
+	//_unblock();
 
 }
 
