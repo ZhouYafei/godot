@@ -123,6 +123,15 @@ void ProjectExportDialog::_tree_changed() {
 
 }
 
+void ProjectExportDialog::popup_export() {
+	popup_centered_ratio();
+	if (pending_update_tree) {
+		_update_tree();
+		_update_group_tree();
+		pending_update_tree=false;
+	}
+}
+
 void ProjectExportDialog::_update_tree() {
 
 
@@ -168,6 +177,11 @@ void ProjectExportDialog::_scan_finished() {
 	print_line("**********SCAN DONEEE********");
 	print_line("**********SCAN DONEEE********");
 	print_line("**********SCAN DONEEE********");*/
+
+	if (!is_visible()) {
+		pending_update_tree=true;
+		return;
+	}
 
 	_update_tree();
 	_update_group_tree();
@@ -259,6 +273,7 @@ void ProjectExportDialog::_sample_convert_edited(int what) {
 	EditorImportExport::get_singleton()->sample_set_action( EditorImportExport::SampleAction(sample_mode->get_selected()));
 	EditorImportExport::get_singleton()->sample_set_max_hz(  sample_max_hz->get_val() );
 	EditorImportExport::get_singleton()->sample_set_trim(  sample_trim->is_pressed() );
+	_save_export_cfg();
 
 }
 
@@ -1492,7 +1507,7 @@ ProjectExportDialog::ProjectExportDialog(EditorNode *p_editor) {
 
 	ei="EditorIcons";
 	ot="Object";
-
+	pending_update_tree=true;
 }
 
 
@@ -1525,6 +1540,8 @@ void ProjectExport::popup_export() {
 
 
 	popup_centered(Size2(300,100));
+
+
 
 }
 Error ProjectExport::export_project(const String& p_preset) {
@@ -1925,6 +1942,7 @@ ProjectExport::ProjectExport(EditorData* p_data) {
 	set_hide_on_ok(false);
 	error = memnew( AcceptDialog );
 	add_child(error);
+
 
 }
 

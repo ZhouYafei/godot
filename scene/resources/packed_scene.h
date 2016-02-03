@@ -36,6 +36,8 @@
 class SceneState : public Reference {
 
 	OBJ_TYPE( SceneState, Reference );
+
+
 	Vector<StringName> names;
 	Vector<Variant> variants;
 	Vector<NodePath> node_paths;
@@ -50,7 +52,6 @@ class SceneState : public Reference {
 		FLAG_INSTANCE_IS_PLACEHOLDER=(1<<30),
 		FLAG_MASK=(1<<24)-1,
 		NO_PARENT_SAVED=0x7FFFFFFF,
-		TYPE_INSTANCED=0x7FFFFFFF,
 
 	};
 
@@ -104,7 +105,18 @@ class SceneState : public Reference {
 	_FORCE_INLINE_ Ref<SceneState> _get_base_scene_state() const;
 
 	static bool disable_placeholders;
+
+	DVector<String> _get_node_groups(int p_idx) const;
+
+protected:
+
+	static void _bind_methods();
+
 public:
+
+	enum {
+		TYPE_INSTANCED=0x7FFFFFFF
+	};
 
 	static void set_disable_placeholders(bool p_disable);
 
@@ -195,6 +207,7 @@ public:
 	Node *instance(bool p_gen_edit_state=false) const;
 
 	void recreate_state();
+	void replace_state(Ref<SceneState> p_by);
 
 	virtual void set_path(const String& p_path,bool p_take_over=false);
 #ifdef TOOLS_ENABLED

@@ -1391,9 +1391,12 @@ MethodInfo GDFunctions::get_info(Function p_func) {
 			return mi;
 		} break;
 		case TYPE_OF: {
+
 			MethodInfo mi("typeof",PropertyInfo(Variant::NIL,"what"));
 			mi.return_val.type=Variant::INT;
-		};
+			return mi;
+
+		} break;
 		case TEXT_STR: {
 
 			MethodInfo mi("str",PropertyInfo(Variant::NIL,"what"),PropertyInfo(Variant::NIL,"..."));

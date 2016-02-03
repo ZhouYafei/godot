@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<doc version="2.0.alpha.custom_build" name="Engine Types">
+<doc version="2.0.beta.custom_build" name="Engine Types">
 <class name="@GDScript" category="Core">
 	<brief_description>
 	Built-in GDScript functions.
@@ -432,31 +432,29 @@
 		<method name="convert">
 			<return type="Object">
 			</return>
-			<argument index="0" name="what" type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
 			<argument index="1" name="type" type="int">
 			</argument>
 			<description>
-			Convert from a type to another in the best way possible. The "type" parameter uses the enum TYPE_* in Global Scope.
+			Convert from a type to another in the best way possible. The "type" parameter uses the enum TYPE_* in [@Global Scope].
 			</description>
 		</method>
-		<method name="str">
-			<return type="String">
+		<method name="typeof">
+			<return type="int">
 			</return>
-			<argument index="0" name="what" type="var">
-			</argument>
-			<argument index="1" name="..." type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
 			<description>
-			Convert one or more arguments to strings in the best way possible.
+			Returns the internal type of the given Variant object, using the TYPE_* enum in [@Global Scope].
 			</description>
 		</method>
 		<method name="str">
 			<return type="String">
 			</return>
-			<argument index="0" name="what" type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
-			<argument index="1" name="..." type="var">
+			<argument index="1" name="..." type="Variant">
 			</argument>
 			<description>
 			Convert one or more arguments to strings in the best way possible.
@@ -465,9 +463,9 @@
 		<method name="print">
 			<return type="Nil">
 			</return>
-			<argument index="0" name="what" type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
-			<argument index="1" name="..." type="var">
+			<argument index="1" name="..." type="Variant">
 			</argument>
 			<description>
 			Print one or more arguments to strings in the best way possible to a console line.
@@ -476,9 +474,9 @@
 		<method name="printt">
 			<return type="Nil">
 			</return>
-			<argument index="0" name="what" type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
-			<argument index="1" name="..." type="var">
+			<argument index="1" name="..." type="Variant">
 			</argument>
 			<description>
 			Print one or more arguments to the console with a tab between each argument.
@@ -487,9 +485,9 @@
 		<method name="prints">
 			<return type="Nil">
 			</return>
-			<argument index="0" name="what" type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
-			<argument index="1" name="..." type="var">
+			<argument index="1" name="..." type="Variant">
 			</argument>
 			<description>
 			</description>
@@ -497,9 +495,9 @@
 		<method name="printerr">
 			<return type="Nil">
 			</return>
-			<argument index="0" name="what" type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
-			<argument index="1" name="..." type="var">
+			<argument index="1" name="..." type="Variant">
 			</argument>
 			<description>
 			Print one or more arguments to strings in the best way possible to standard error line.
@@ -508,9 +506,9 @@
 		<method name="printraw">
 			<return type="Nil">
 			</return>
-			<argument index="0" name="what" type="var">
+			<argument index="0" name="what" type="Variant">
 			</argument>
-			<argument index="1" name="..." type="var">
+			<argument index="1" name="..." type="Variant">
 			</argument>
 			<description>
 			Print one or more arguments to strings in the best way possible to console. No newline is added at the end.
@@ -519,25 +517,40 @@
 		<method name="var2str">
 			<return type="String">
 			</return>
-			<argument index="0" name="var" type="var">
+			<argument index="0" name="var" type="Variant">
 			</argument>
 			<description>
 			Converts the value of a variable to a String.
 			</description>
 		</method>
-		<method name="str2var:Variant">
-			<return type="Nil">
+		<method name="str2var">
+			<return type="Variant">
 			</return>
 			<argument index="0" name="string" type="String">
 			</argument>
 			<description>
-			Converts the value of a String to a Variant.
+			</description>
+		</method>
+		<method name="var2bytes">
+			<return type="RawArray">
+			</return>
+			<argument index="0" name="var" type="Variant">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="bytes2var">
+			<return type="Variant">
+			</return>
+			<argument index="0" name="bytes" type="RawArray">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="range">
 			<return type="Array">
 			</return>
-			<argument index="0" name="..." type="var">
+			<argument index="0" name="..." type="Variant">
 			</argument>
 			<description>
 			Return an array with the given range. Range can be 1 argument N (0 to N-1), two arguments (initial, final-1) or three arguments (initial,final-1,increment).
@@ -573,10 +586,24 @@
 		<method name="hash">
 			<return type="int">
 			</return>
-			<argument index="0" name="var:Variant" type="var">
+			<argument index="0" name="var:Variant" type="Variant">
 			</argument>
 			<description>
 			Hashes the variable passed and returns an integer.
+			</description>
+		</method>
+		<method name="Color8">
+			<return type="Color">
+			</return>
+			<argument index="0" name="r8" type="int">
+			</argument>
+			<argument index="1" name="g8" type="int">
+			</argument>
+			<argument index="2" name="b8" type="int">
+			</argument>
+			<argument index="3" name="a8" type="int">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="print_stack">
@@ -654,9 +681,9 @@
 		</member>
 		<member name="PS2D" type="Physics2DServer">
 		</member>
-		<member name="SpatialSoundServer" type="SpatialSound2DServer">
+		<member name="SpatialSoundServer" type="SpatialSoundServer">
 		</member>
-		<member name="SS" type="SpatialSound2DServer">
+		<member name="SS" type="SpatialSoundServer">
 		</member>
 		<member name="SpatialSound2DServer" type="SpatialSound2DServer">
 		</member>
@@ -1370,6 +1397,10 @@
 		<constant name="JOY_ANALOG_2_X" value="4">
 		</constant>
 		<constant name="JOY_ANALOG_2_Y" value="5">
+		</constant>
+		<constant name="JOY_ANALOG_L2" value="6">
+		</constant>
+		<constant name="JOY_ANALOG_R2" value="7">
 		</constant>
 		<constant name="OK" value="0">
 			Functions that return [Error] return OK when everything went ok. Most functions don't return error anyway and/or just print errors to stdout.
@@ -4087,7 +4118,8 @@
 			<argument index="2" name="length" type="int">
 			</argument>
 			<description>
-			Create an audio sample, return a [RID] referencing it. The sample will be created with a given format (from the SAMPLE_FORMAT_* enum), a total length (in frames, not samples or bytes), in either stereo or mono.
+			Create an audio sample, return a [RID] referencing it. The sample will be created with a given format (from the SAMPLE_FORMAT_* enum), a total length (in samples, not bytes), in either stereo or mono.
+			Even if a stereo sample consists of a left sample and a right sample, it still counts as one sample for length purposes.
 			</description>
 		</method>
 		<method name="sample_set_description">
@@ -4123,7 +4155,7 @@
 			<argument index="0" name="sample" type="RID">
 			</argument>
 			<description>
-			Return wether the sample is stereo (2 channels)
+			Return whether the sample is stereo (2 channels).
 			</description>
 		</method>
 		<method name="sample_get_length" qualifiers="const">
@@ -4132,7 +4164,7 @@
 			<argument index="0" name="sample" type="RID">
 			</argument>
 			<description>
-			Return the length in frames of the audio sample (not samples or bytes).
+			Return the length in samples (not bytes) of the audio sample. Even if a stereo sample consists of a left sample and a right sample, it still counts as one sample for length purposes.
 			</description>
 		</method>
 		<method name="sample_set_signed_data">
@@ -4142,6 +4174,8 @@
 			</argument>
 			<description>
 			Set the sample data for a given sample as an array of floats. The length must be equal to the sample lenght or an error will be produced.
+			For this method, a stereo sample is made from two samples. Thus, in case of a stereo sample, the array length must be twice the length returned by [method sample_get_length].
+			Trying to alter a SAMPLE_FORMAT_IMA_ADPCM sample is not supported. It will throw an error to the console, but will not alter the sample data.
 			</description>
 		</method>
 		<method name="sample_set_data">
@@ -4150,7 +4184,11 @@
 			<argument index="1" name="data" type="RawArray">
 			</argument>
 			<description>
-			Set the sample data for a given sample as an array of bytes. The length must be equal to the sample lenght expected in bytes or an error will be produced.
+			Set the sample data for a given sample as an array of bytes. The length must be equal to the sample lenght expected in bytes or an error will be produced. The byte length can be calculated as follows:
+			Get the sample length ([method get_sample_length]).
+			If the sample format is SAMPLE_FORMAT_PCM16, multiply it by 2.
+			If the sample format is SAMPLE_FORMAT_IMA_ADPCM, divide it by 2 (rounding any fraction up), then add 4.
+			If the sample is stereo ([method sample_is_stereo]), multiply it by 2.
 			</description>
 		</method>
 		<method name="sample_get_data" qualifiers="const">
@@ -4465,24 +4503,28 @@
 			<argument index="0" name="scale" type="float">
 			</argument>
 			<description>
+			Set global scale for all voices (not including streams). Default is 1.0.
 			</description>
 		</method>
 		<method name="get_fx_global_volume_scale" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the global scale for all voices.
 			</description>
 		</method>
 		<method name="set_event_voice_global_volume_scale">
 			<argument index="0" name="scale" type="float">
 			</argument>
 			<description>
+			Set global scale for event-based stream ([EventStream]) playback. Default is 1.0.
 			</description>
 		</method>
 		<method name="get_event_voice_global_volume_scale" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the global scale for event-based stream playback.
 			</description>
 		</method>
 	</methods>
@@ -4491,7 +4533,7 @@
 			Sample format is 8 bits, signed.
 		</constant>
 		<constant name="SAMPLE_FORMAT_PCM16" value="1">
-			Sample format is 16 bits, signed.
+			Sample format is 16 bits, little-endian, signed.
 		</constant>
 		<constant name="SAMPLE_FORMAT_IMA_ADPCM" value="2">
 			Sample format is IMA-ADPCM compressed.
@@ -4539,8 +4581,11 @@
 </class>
 <class name="AudioServerSW" inherits="AudioServer" category="Core">
 	<brief_description>
+	Software implementation of [AudioServer].
 	</brief_description>
 	<description>
+	This is a software audio server. It does not use any kind of hardware acceleration.
+	This class does not expose any new method.
 	</description>
 	<methods>
 	</methods>
@@ -7561,6 +7606,14 @@
 		</member>
 		<member name="v" type="float">
 		</member>
+		<member name="r8" type="int">
+		</member>
+		<member name="g8" type="int">
+		</member>
+		<member name="b8" type="int">
+		</member>
+		<member name="a8" type="int">
+		</member>
 	</members>
 	<constants>
 	</constants>
@@ -7573,15 +7626,6 @@
 	Array of Color, can only contains colors. Optimized for memory usage, can't fragment the memory.
 	</description>
 	<methods>
-		<method name="get">
-			<return type="Color">
-			</return>
-			<argument index="0" name="idx" type="int">
-			</argument>
-			<description>
-			Get an index in the array.
-			</description>
-		</method>
 		<method name="push_back">
 			<argument index="0" name="color" type="Color">
 			</argument>
@@ -7625,7 +7669,7 @@
 	<constants>
 	</constants>
 </class>
-<class name="ColorPicker" inherits="HBoxContainer" category="Core">
+<class name="ColorPicker" inherits="BoxContainer" category="Core">
 	<brief_description>
 	Color picker control.
 	</brief_description>
@@ -7647,14 +7691,14 @@
 			Return the current (edited) color.
 			</description>
 		</method>
-		<method name="set_mode">
-			<argument index="0" name="mode" type="int">
+		<method name="set_raw_mode">
+			<argument index="0" name="mode" type="bool">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="get_mode" qualifiers="const">
-			<return type="int">
+		<method name="is_raw_mode" qualifiers="const">
+			<return type="bool">
 			</return>
 			<description>
 			</description>
@@ -7668,6 +7712,12 @@
 		<method name="is_editing_alpha" qualifiers="const">
 			<return type="bool">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="add_preset">
+			<argument index="0" name="arg0" type="Color">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -7693,6 +7743,10 @@
 		<theme_item name="label_width" type="int">
 		</theme_item>
 		<theme_item name="hseparator" type="int">
+		</theme_item>
+		<theme_item name="add_preset" type="Texture">
+		</theme_item>
+		<theme_item name="screen_picker" type="Texture">
 		</theme_item>
 	</theme_items>
 </class>
@@ -7968,6 +8022,8 @@
 			</argument>
 			<argument index="1" name="key" type="String">
 			</argument>
+			<argument index="2" name="default" type="var" default="NULL">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -8149,20 +8205,6 @@
 			<return type="Vector2">
 			</return>
 			<description>
-			</description>
-		</method>
-		<method name="is_window" qualifiers="const">
-			<return type="bool">
-			</return>
-			<description>
-			Return wether this control is a [i]window[/i]. Controls are considered windows when their parent [Node] is not a Control.
-			</description>
-		</method>
-		<method name="get_window" qualifiers="const">
-			<return type="Object">
-			</return>
-			<description>
-			Return the [i]window[/i] for this control, ascending the scene tree (see [method is_window]).
 			</description>
 		</method>
 		<method name="set_anchor">
@@ -8447,6 +8489,14 @@
 			Override a single icon ([Texture]) in the theme of this Control. If texture is empty, override is cleared.
 			</description>
 		</method>
+		<method name="add_shader_override">
+			<argument index="0" name="name" type="String">
+			</argument>
+			<argument index="1" name="shader" type="Shader">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="add_style_override">
 			<argument index="0" name="name" type="String">
 			</argument>
@@ -8682,6 +8732,10 @@
 			</argument>
 			<description>
 			Emitted when an input event is received. Connecting in realtime is recommended for accepting the events.
+			</description>
+		</signal>
+		<signal name="modal_close">
+			<description>
 			</description>
 		</signal>
 		<signal name="mouse_exit">
@@ -10187,172 +10241,204 @@ This approximation makes straight segments between each point, then subdivides t
 </class>
 <class name="EventPlayer" inherits="Node" category="Core">
 	<brief_description>
+	Class for event stream playback.
 	</brief_description>
 	<description>
+	Class for event stream playback. Event streams are music expressed as a series of events (note on, note off, instrument change...), as opposed to audio streams, which are just audio data. Examples of event-based streams are MIDI files, or MOD music.
+	Currently, only MOD, S3M, IT, and XM music is supported.
 	</description>
 	<methods>
 		<method name="set_stream">
 			<argument index="0" name="stream" type="EventStream">
 			</argument>
 			<description>
+			Set the [EventStream] this player will play.
 			</description>
 		</method>
 		<method name="get_stream" qualifiers="const">
 			<return type="EventStream">
 			</return>
 			<description>
+			Return the currently assigned stream.
 			</description>
 		</method>
 		<method name="play">
 			<description>
+			Play the currently assigned stream.
 			</description>
 		</method>
 		<method name="stop">
 			<description>
+			Stop playing.
 			</description>
 		</method>
 		<method name="is_playing" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether this player is playing.
 			</description>
 		</method>
 		<method name="set_paused">
 			<argument index="0" name="paused" type="bool">
 			</argument>
 			<description>
+			Pause stream playback.
 			</description>
 		</method>
 		<method name="is_paused" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether the playback is currently paused.
 			</description>
 		</method>
 		<method name="set_loop">
 			<argument index="0" name="enabled" type="bool">
 			</argument>
 			<description>
+			Set whether the stream will be restarted at the end.
 			</description>
 		</method>
 		<method name="has_loop" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether this player will be restart the playback at the end.
 			</description>
 		</method>
 		<method name="set_volume">
 			<argument index="0" name="volume" type="float">
 			</argument>
 			<description>
+			Set the playback volume for this player. This is a float between 0.0 (silent) and 1.0 (full volume). Values over 1.0 may amplify sound even more, but may introduce distortion. Negative values may just invert the output waveform, which produces no audible difference.
+			The effect of these special values uiltimately depends on the low-level implementation of the file format being played.
 			</description>
 		</method>
 		<method name="get_volume" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the playback volume for this player.
 			</description>
 		</method>
 		<method name="set_pitch_scale">
 			<argument index="0" name="pitch_scale" type="float">
 			</argument>
 			<description>
+			Set the pitch multiplier for all sounds coming from this stream. A value of 2.0 shifts all pitches one octave up, and a value of 0.5 shifts pitches one octave down.
 			</description>
 		</method>
 		<method name="get_pitch_scale" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the pitch scale factor for this player.
 			</description>
 		</method>
 		<method name="set_tempo_scale">
 			<argument index="0" name="tempo_scale" type="float">
 			</argument>
 			<description>
+			Set the tempo multiplier. This allows to slow down or speed up the music, without affecting its pitch.
 			</description>
 		</method>
 		<method name="get_tempo_scale" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the tempo multiplier.
 			</description>
 		</method>
 		<method name="set_volume_db">
 			<argument index="0" name="db" type="float">
 			</argument>
 			<description>
+			Set the playback volume for this player, in decibels. This is a float between -80.0 (silent) and 0.0 (full volume). Values under -79.0 get truncated to -80, but values over 0.0 do not, so the warnings for overamplifying (see [set_volume]) still apply.
 			</description>
 		</method>
 		<method name="get_volume_db" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the playback volume for this player, in decibels.
 			</description>
 		</method>
 		<method name="get_stream_name" qualifiers="const">
 			<return type="String">
 			</return>
 			<description>
+			Return the name of the currently assigned stream. This is not the file name, but a field inside the file. If no stream is assigned, if returns "&lt;No Stream&gt;".
 			</description>
 		</method>
 		<method name="get_loop_count" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>
+			Return the number of times the playback has looped.
 			</description>
 		</method>
 		<method name="get_pos" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the playback position. May be in seconds, but depends on the stream type.
 			</description>
 		</method>
 		<method name="seek_pos">
 			<argument index="0" name="time" type="float">
 			</argument>
 			<description>
+			Set the playback position. May be in seconds, but depends on the stream type.
 			</description>
 		</method>
 		<method name="get_length" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the song length. May be in seconds, but depends on the stream type.
 			</description>
 		</method>
 		<method name="set_autoplay">
 			<argument index="0" name="enabled" type="bool">
 			</argument>
 			<description>
+			Set whether this player will start playing as soon as it enters the scene tree.
 			</description>
 		</method>
 		<method name="has_autoplay" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether this player will start playing as soon as it enters the scene tree.
 			</description>
 		</method>
 		<method name="set_channel_volume">
-			<argument index="0" name="idx" type="int">
+			<argument index="0" name="channel" type="int">
 			</argument>
 			<argument index="1" name="channel_volume" type="float">
 			</argument>
 			<description>
+			Set the volume scale for an individual channel of the stream, with the same value range as [methid set_volume]. The channel number depends on the stream format. For example, MIDIs range from 0 to 15, and MODs from 0 to 63.
+			Many stream formats are multichannel, so this allows to affect only a part of the music.
 			</description>
 		</method>
 		<method name="get_channel_volume" qualifiers="const">
 			<return type="float">
 			</return>
-			<argument index="0" name="idx" type="int">
+			<argument index="0" name="channel" type="int">
 			</argument>
 			<description>
+			Return the volume scale for an individual channel of the stream.
 			</description>
 		</method>
 		<method name="get_channel_last_note_time" qualifiers="const">
 			<return type="float">
 			</return>
-			<argument index="0" name="idx" type="int">
+			<argument index="0" name="channel" type="int">
 			</argument>
 			<description>
+			Return the time at which the last note of a given channel in the stream plays.
 			</description>
 		</method>
 	</methods>
@@ -10361,8 +10447,11 @@ This approximation makes straight segments between each point, then subdivides t
 </class>
 <class name="EventStream" inherits="Resource" category="Core">
 	<brief_description>
+	Base class for all event-based stream drivers.
 	</brief_description>
 	<description>
+	Base class for all event-based stream drivers. Event streams are music expressed as a series of events (note on, note off, instrument change...), as opposed to audio streams, which are just audio data. Examples of event-based streams are MIDI files, of MOD music.
+	This class exposes no methods.
 	</description>
 	<methods>
 	</methods>
@@ -10371,8 +10460,15 @@ This approximation makes straight segments between each point, then subdivides t
 </class>
 <class name="EventStreamChibi" inherits="EventStream" category="Core">
 	<brief_description>
+	Driver for MOD playback.
 	</brief_description>
 	<description>
+	This driver plays MOD music. MOD music, as all event-based streams, is a music format defined by note events ocurring at defined moments, instead of a stream of audio samples.
+	Currently, this driver supports the MOD, S3M, IT, and XM formats.
+	This class exposes no methods.
+	This class can return its playback positon in seconds, but does not allow to set it, failing with only a console warning.
+	This class can not return its song length, returning 1.0 when queried.
+	This class does not limit its volume settings, allowing for overflow/distortion and wave inversion.
 	</description>
 	<methods>
 	</methods>
@@ -10642,6 +10738,8 @@ This approximation makes straight segments between each point, then subdivides t
 		<constant name="WRITE" value="2">
 		</constant>
 		<constant name="READ_WRITE" value="3">
+		</constant>
+		<constant name="WRITE_READ" value="7">
 		</constant>
 	</constants>
 </class>
@@ -11919,6 +12017,24 @@ This approximation makes straight segments between each point, then subdivides t
 			</return>
 			<description>
 			Return an Array containing the list of connections. A connection consists in a structure of the form {from_slot: 0, from: "GraphNode name 0", to_slot: 1, to: "GraphNode name 1" }
+			</description>
+		</method>
+		<method name="get_scroll_ofs" qualifiers="const">
+			<return type="Vector2">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_zoom">
+			<argument index="0" name="p_zoom" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_zoom" qualifiers="const">
+			<return type="float">
+			</return>
+			<description>
 			</description>
 		</method>
 		<method name="set_right_disconnects">
@@ -13625,6 +13741,7 @@ returns:= "username=user&amp;password=pass"
 			<argument index="1" name="button" type="int">
 			</argument>
 			<description>
+			Returns if the joystick button at the given index is currently pressed. (see JOY_* constans in [@Global Scope])
 			</description>
 		</method>
 		<method name="is_action_pressed">
@@ -13635,6 +13752,31 @@ returns:= "username=user&amp;password=pass"
 			<description>
 			</description>
 		</method>
+		<method name="add_joy_mapping">
+			<argument index="0" name="mapping" type="String">
+			</argument>
+			<argument index="1" name="update_existing" type="bool" default="false">
+			</argument>
+			<description>
+			Add a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
+			</description>
+		</method>
+		<method name="remove_joy_mapping">
+			<argument index="0" name="guid" type="String">
+			</argument>
+			<description>
+			Removes all mappings from the internal db that match the given uid.
+			</description>
+		</method>
+		<method name="is_joy_known">
+			<return type="bool">
+			</return>
+			<argument index="0" name="device" type="int">
+			</argument>
+			<description>
+			Returns if the specified device is known by the system. This means that it sets all button and axis indices exactly as defined in the JOY_* constants (see [@Global Scope]). Unknown joysticks are not expected to match these constants, but you can still retrieve events from them.
+			</description>
+		</method>
 		<method name="get_joy_axis">
 			<return type="float">
 			</return>
@@ -13643,6 +13785,7 @@ returns:= "username=user&amp;password=pass"
 			<argument index="1" name="axis" type="int">
 			</argument>
 			<description>
+			Returns the current value of the joystick axis at given index (see JOY_* constants in [@Global Scope])
 			</description>
 		</method>
 		<method name="get_joy_name">
@@ -13651,6 +13794,16 @@ returns:= "username=user&amp;password=pass"
 			<argument index="0" name="device" type="int">
 			</argument>
 			<description>
+			Returns the name of the joystick at the specified device index
+			</description>
+		</method>
+		<method name="get_joy_guid" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="device" type="int">
+			</argument>
+			<description>
+			Returns a SDL2 compatible device guid on platforms that use gamepad remapping. Returns "Default Gamepad" otherwise.
 			</description>
 		</method>
 		<method name="get_accelerometer">
@@ -13717,6 +13870,7 @@ returns:= "username=user&amp;password=pass"
 			<argument index="1" name="connected" type="bool">
 			</argument>
 			<description>
+			Emitted when a joystick device has been connected or disconnected
 			</description>
 		</signal>
 	</signals>
@@ -14714,15 +14868,6 @@ returns:= "username=user&amp;password=pass"
 	Integer Array. Array of integers. Can only contain integers. Optimized for memory usage, can't fragment the memory.
 	</description>
 	<methods>
-		<method name="get">
-			<return type="int">
-			</return>
-			<argument index="0" name="idx" type="int">
-			</argument>
-			<description>
-			Get an index in the array.
-			</description>
-		</method>
 		<method name="push_back">
 			<argument index="0" name="integer" type="int">
 			</argument>
@@ -15479,7 +15624,7 @@ returns:= "username=user&amp;password=pass"
 			</description>
 		</method>
 		<method name="get_collider_metadata" qualifiers="const">
-			<return type="var">
+			<return type="Variant">
 			</return>
 			<description>
 			Return the metadata of the shape that collided with this body. If there is no collision, it will return 0, so collisions must be checked first with [method is_colliding]. Aditionally, this metadata can not be set with [method Object.set_meta], it must be set with [method Physics2DServer.body_set_shape_metadata].
@@ -18971,6 +19116,8 @@ returns:= "username=user&amp;password=pass"
 		</constant>
 		<constant name="NOTIFICATION_UNPAUSED" value="15">
 		</constant>
+		<constant name="NOTIFICATION_INSTANCED" value="20">
+		</constant>
 		<constant name="PAUSE_MODE_INHERIT" value="0">
 		</constant>
 		<constant name="PAUSE_MODE_STOP" value="1">
@@ -19138,7 +19285,7 @@ returns:= "username=user&amp;password=pass"
 			<description>
 			</description>
 		</method>
-		<method name="get_relative_transform" qualifiers="const">
+		<method name="get_relative_transform_to_parent" qualifiers="const">
 			<return type="Matrix32">
 			</return>
 			<argument index="0" name="parent" type="Object">
@@ -19421,6 +19568,19 @@ returns:= "username=user&amp;password=pass"
 			<description>
 			</description>
 		</method>
+		<method name="set_keep_screen_on">
+			<argument index="0" name="enabled" type="bool">
+			</argument>
+			<description>
+			Set keep screen on if true, or goes to sleep by device setting if false. (for Android/iOS)
+			</description>
+		</method>
+		<method name="is_keep_screen_on" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="set_iterations_per_second">
 			<argument index="0" name="iterations_per_second" type="int">
 			</argument>
@@ -19603,7 +19763,7 @@ returns:= "username=user&amp;password=pass"
 			<description>
 			</description>
 		</method>
-		<method name="get_system_time_msec" qualifiers="const">
+		<method name="get_system_time_secs" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>
@@ -20081,7 +20241,7 @@ returns:= "username=user&amp;password=pass"
 			<argument index="1" name="arguments" type="Array" default="Array()">
 			</argument>
 			<description>
-			Add a user signal (can be added anytime). Arguments are optional, but can be added as an array of dictionaries, each containing "name" and "type" (from [@GlobalScope] TYPE_*).
+			Add a user signal (can be added anytime). Arguments are optional, but can be added as an array of dictionaries, each containing "name" and "type" (from [@Global Scope] TYPE_*).
 			</description>
 		</method>
 		<method name="has_user_signal" qualifiers="const">
@@ -20176,6 +20336,14 @@ returns:= "username=user&amp;password=pass"
 			</return>
 			<description>
 			Return the list of signals as an array of dictionaries.
+			</description>
+		</method>
+		<method name="get_signal_connection_list" qualifiers="const">
+			<return type="Array">
+			</return>
+			<argument index="0" name="signal" type="String">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="connect">
@@ -20686,6 +20854,12 @@ returns:= "username=user&amp;password=pass"
 		</method>
 		<method name="can_instance" qualifiers="const">
 			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_state">
+			<return type="SceneState">
 			</return>
 			<description>
 			</description>
@@ -21598,6 +21772,10 @@ returns:= "username=user&amp;password=pass"
 		<method name="pre_process">
 			<argument index="0" name="time" type="float">
 			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="reset">
 			<description>
 			</description>
 		</method>
@@ -26672,14 +26850,6 @@ This method controls whether the position between two cached points is interpola
 	Raw byte array. Contains bytes. Optimized for memory usage, can't fragment the memory.
 	</description>
 	<methods>
-		<method name="get">
-			<return type="int">
-			</return>
-			<argument index="0" name="idx" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="get_string_from_ascii">
 			<return type="String">
 			</return>
@@ -26998,14 +27168,6 @@ This method controls whether the position between two cached points is interpola
 	Real Array. Array of floating point values. Can only contain floats. Optimized for memory usage, can't fragment the memory.
 	</description>
 	<methods>
-		<method name="get">
-			<return type="float">
-			</return>
-			<argument index="0" name="idx" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="push_back">
 			<argument index="0" name="value" type="float">
 			</argument>
@@ -28661,25 +28823,25 @@ This method controls whether the position between two cached points is interpola
 	</signals>
 	<constants>
 		<constant name="MODE_STATIC" value="1">
-		Static mode. The body behaves like a [StaticBody2D], and can only move by user code.
+			Static mode. The body behaves like a [StaticBody2D], and can only move by user code.
 		</constant>
 		<constant name="MODE_KINEMATIC" value="3">
-		Kinematic body. The body behaves like a [KinematicBody2D], and can only move by user code.
+			Kinematic body. The body behaves like a [KinematicBody2D], and can only move by user code.
 		</constant>
 		<constant name="MODE_RIGID" value="0">
-		Rigid body. This is the "natural" state of a rigid body. It is affected by forces, and can move, rotate, and be affected by user code.
+			Rigid body. This is the "natural" state of a rigid body. It is affected by forces, and can move, rotate, and be affected by user code.
 		</constant>
 		<constant name="MODE_CHARACTER" value="2">
-		Character body. This behaves like a rigid body, but can not rotate.
+			Character body. This behaves like a rigid body, but can not rotate.
 		</constant>
 		<constant name="CCD_MODE_DISABLED" value="0">
-		Disables continuous collision detection. This is the fastest way to detect body collisions, but can miss small, fast-moving objects.
+			Disables continuous collision detection. This is the fastest way to detect body collisions, but can miss small, fast-moving objects.
 		</constant>
 		<constant name="CCD_MODE_CAST_RAY" value="1">
-		Enables continuous collision detection by raycasting. It is faster than shapecasting, but less precise.
+			Enables continuous collision detection by raycasting. It is faster than shapecasting, but less precise.
 		</constant>
 		<constant name="CCD_MODE_CAST_SHAPE" value="2">
-		Enables continuous collision detection by shapecasting. It is the slowest CCD method, and the most precise.
+			Enables continuous collision detection by shapecasting. It is the slowest CCD method, and the most precise.
 		</constant>
 	</constants>
 </class>
@@ -28781,8 +28943,8 @@ This method controls whether the position between two cached points is interpola
 			<argument index="2" name="length" type="int">
 			</argument>
 			<description>
-			Create new data for the sample, with format (see FORMAT_* constants), stereo hint, and length in frames (not samples or bytes!).
-			Calling this method overrides previously existing data. Stereo samples are interleaved pairs of left and right points (in that order).
+			Create new data for the sample, with format (see FORMAT_* constants), stereo hint, and length in samples (not bytes).
+			Calling this method overrides previously existing data. Stereo samples are interleaved pairs of left and right points (in that order), but count as one sample for length purposes.
 			</description>
 		</method>
 		<method name="get_format" qualifiers="const">
@@ -28803,15 +28965,18 @@ This method controls whether the position between two cached points is interpola
 			<return type="int">
 			</return>
 			<description>
-			Return the sample length in frames.
+			Return the sample length in samples. Stereo samples count as one, even if they are made of a left and a right sample.
 			</description>
 		</method>
 		<method name="set_data">
 			<argument index="0" name="data" type="RawArray">
 			</argument>
 			<description>
-			Set sample data. Data must be little endian, no matter the host platform, and exactly as long as to fit all frames.
-			For example, if data is stereo, 16 bits, 256 frames, it will be 1024 bytes long.
+			Set sample data. Data must be little endian, no matter the host platform, and exactly as long as to fit all samples. The length of this array can be calculated as follows:
+			Get the sample length ([method get_length]).
+			If the sample format is FORMAT_PCM16, multiply it by 2.
+			If the sample format is FORMAT_IMA_ADPCM, divide it by 2 (rounding any fraction up), then add 4.
+			If the sample is stereo ([method is_stereo]), multiply it by 2.
 			</description>
 		</method>
 		<method name="get_data" qualifiers="const">
@@ -28880,7 +29045,7 @@ This method controls whether the position between two cached points is interpola
 	</methods>
 	<constants>
 		<constant name="FORMAT_PCM8" value="0">
-			8-bits signed little endian PCM audio.
+			8-bits signed PCM audio.
 		</constant>
 		<constant name="FORMAT_PCM16" value="1">
 			16-bits signed little endian PCM audio.
@@ -29589,6 +29754,152 @@ This method controls whether the position between two cached points is interpola
 		</constant>
 	</constants>
 </class>
+<class name="SceneState" inherits="Reference" category="Core">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<methods>
+		<method name="get_node_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_type" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_name" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_path" qualifiers="const">
+			<return type="NodePath">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<argument index="1" name="for_parent" type="bool" default="false">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_owner_path" qualifiers="const">
+			<return type="NodePath">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_instance" qualifiers="const">
+			<return type="PackedScene">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_groups" qualifiers="const">
+			<return type="StringArray">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_property_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_property_name" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<argument index="1" name="prop_idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_node_property_value" qualifiers="const">
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<argument index="1" name="prop_idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_connection_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_connection_source" qualifiers="const">
+			<return type="NodePath">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_connection_signal" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_connection_target" qualifiers="const">
+			<return type="NodePath">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_connection_method" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_connection_flags" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_connection_binds" qualifiers="const">
+			<return type="Array">
+			</return>
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>
 <class name="SceneTree" inherits="MainLoop" category="Core">
 	<brief_description>
 	</brief_description>
@@ -29628,6 +29939,14 @@ This method controls whether the position between two cached points is interpola
 		<method name="get_root" qualifiers="const">
 			<return type="Viewport">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="has_group" qualifiers="const">
+			<return type="bool">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -32223,14 +32542,14 @@ This method controls whether the position between two cached points is interpola
 			Return if the split is collapsed.
 			</description>
 		</method>
-		<method name="set_dragger_visible">
-			<argument index="0" name="visible" type="bool">
+		<method name="set_dragger_visibility">
+			<argument index="0" name="mode" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="is_dragger_visible" qualifiers="const">
-			<return type="bool">
+		<method name="get_dragger_visibility" qualifiers="const">
+			<return type="int">
 			</return>
 			<description>
 			</description>
@@ -32245,6 +32564,12 @@ This method controls whether the position between two cached points is interpola
 		</signal>
 	</signals>
 	<constants>
+		<constant name="DRAGGER_VISIBLE" value="0">
+		</constant>
+		<constant name="DRAGGER_HIDDEN" value="1">
+		</constant>
+		<constant name="DRAGGER_HIDDEN_COLLAPSED" value="2">
+		</constant>
 	</constants>
 </class>
 <class name="SpotLight" inherits="Light" category="Core">
@@ -33196,145 +33521,177 @@ This method controls whether the position between two cached points is interpola
 			<argument index="0" name="stream" type="Stream">
 			</argument>
 			<description>
+			Set the [EventStream] this player will play.
 			</description>
 		</method>
 		<method name="get_stream" qualifiers="const">
 			<return type="Stream">
 			</return>
 			<description>
+			Return the currently assigned stream.
 			</description>
 		</method>
 		<method name="play">
 			<argument index="0" name="offset" type="float" default="0">
 			</argument>
 			<description>
+			Play the currently assigned stream, starting from a given position (in seconds).
 			</description>
 		</method>
 		<method name="stop">
 			<description>
+			Stop the playback.
 			</description>
 		</method>
 		<method name="is_playing" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether this player is playing.
 			</description>
 		</method>
 		<method name="set_paused">
 			<argument index="0" name="paused" type="bool">
 			</argument>
 			<description>
+			Pause stream playback.
 			</description>
 		</method>
 		<method name="is_paused" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether the playback is currently paused.
 			</description>
 		</method>
 		<method name="set_loop">
 			<argument index="0" name="enabled" type="bool">
 			</argument>
 			<description>
+			Set whether the stream will be restarted at the end.
 			</description>
 		</method>
 		<method name="has_loop" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether the stream will be restarted at the end.
 			</description>
 		</method>
 		<method name="set_volume">
 			<argument index="0" name="volume" type="float">
 			</argument>
 			<description>
+			Set the playback volume for this player. This is a float between 0.0 (silent) and 1.0 (full volume). Values over 1.0 will amplify sound even more, but may introduce distortion. Negative values will just invert the output waveform, which produces no audible difference.
 			</description>
 		</method>
 		<method name="get_volume" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the playback volume for this player.
 			</description>
 		</method>
 		<method name="set_volume_db">
 			<argument index="0" name="db" type="float">
 			</argument>
 			<description>
+			Set the playback volume for this player, in decibels. This is a float between -80.0 (silent) and 0.0 (full volume). Values under -79.0 get truncated to -80, but values over 0.0 do not, so the warnings for overamplifying (see [set_volume]) still apply.
 			</description>
 		</method>
 		<method name="get_volume_db" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the playback volume for this player, in decibels.
 			</description>
 		</method>
 		<method name="set_buffering_msec">
 			<argument index="0" name="msec" type="int">
 			</argument>
 			<description>
+			Set the size (in milliseconds) of the audio buffer. A long audio buffer protects better against slowdowns, but responds worse to changes (in volume, stream played...). A shorter buffer takes less time to respond to changes, but may stutter if the application suffers some slowdown.
+			Default is 500 milliseconds.
 			</description>
 		</method>
 		<method name="get_buffering_msec" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>
+			Return the size of the audio buffer.
 			</description>
 		</method>
 		<method name="set_loop_restart_time">
 			<argument index="0" name="secs" type="float">
 			</argument>
 			<description>
+			Set the point in time the stream will rewind to, when looping.
 			</description>
 		</method>
 		<method name="get_loop_restart_time" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the point in time the stream will rewind to, when looping.
 			</description>
 		</method>
 		<method name="get_stream_name" qualifiers="const">
 			<return type="String">
 			</return>
 			<description>
+			Return the name of the currently assigned stream. This is not the file name, but a field inside the file. If no stream is assigned, if returns "&lt;No Stream&gt;".
 			</description>
 		</method>
 		<method name="get_loop_count" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>
+			Return the number of times the playback has looped.
 			</description>
 		</method>
 		<method name="get_pos" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the playback position, in seconds.
 			</description>
 		</method>
 		<method name="seek_pos">
 			<argument index="0" name="time" type="float">
 			</argument>
 			<description>
+			Set the playback position, in seconds.
 			</description>
 		</method>
 		<method name="set_autoplay">
 			<argument index="0" name="enabled" type="bool">
 			</argument>
 			<description>
+			Set whether this player will start playing as soon as it enters the scene tree.
 			</description>
 		</method>
 		<method name="has_autoplay" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
+			Return whether this player will start playing as soon as it enters the scene tree.
 			</description>
 		</method>
 		<method name="get_length" qualifiers="const">
 			<return type="float">
 			</return>
 			<description>
+			Return the length of the stream, in seconds.
 			</description>
 		</method>
 	</methods>
+	<signals>
+		<signal name="finished">
+			<description>
+			This signal triggers when the player stops playing. It will not trigger on each loop.
+			</description>
+		</signal>
+	</signals>
 	<constants>
 	</constants>
 </class>
@@ -33360,6 +33717,18 @@ This method controls whether the position between two cached points is interpola
 			</argument>
 			<description>
 			Return true if the strings begins with the given string.
+			</description>
+		</method>
+		<method name="c_escape">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="c_unescape">
+			<return type="String">
+			</return>
+			<description>
 			</description>
 		</method>
 		<method name="capitalize">
@@ -33508,6 +33877,12 @@ This method controls whether the position between two cached points is interpola
 			</return>
 			<description>
 			Check whether the string contains a valid IP address.
+			</description>
+		</method>
+		<method name="json_escape">
+			<return type="String">
+			</return>
+			<description>
 			</description>
 		</method>
 		<method name="left">
@@ -33771,14 +34146,6 @@ This method controls whether the position between two cached points is interpola
 	String Array. Array of strings. Can only contain strings. Optimized for memory usage, can't fragment the memory.
 	</description>
 	<methods>
-		<method name="get">
-			<return type="String">
-			</return>
-			<argument index="0" name="idx" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="push_back">
 			<argument index="0" name="string" type="String">
 			</argument>
@@ -34517,6 +34884,12 @@ This method controls whether the position between two cached points is interpola
 			<description>
 			</description>
 		</method>
+		<method name="ensure_tab_visible">
+			<argument index="0" name="idx" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 	</methods>
 	<signals>
 		<signal name="tab_close">
@@ -34545,13 +34918,11 @@ This method controls whether the position between two cached points is interpola
 		</constant>
 		<constant name="ALIGN_RIGHT" value="2">
 		</constant>
-		<constant name="SHOW_ACTIVE_ONLY" value="1">
+		<constant name="CLOSE_BUTTON_SHOW_ACTIVE_ONLY" value="1">
 		</constant>
-		<constant name="SHOW_ALWAYS" value="0">
+		<constant name="CLOSE_BUTTON_SHOW_ALWAYS" value="2">
 		</constant>
-		<constant name="SHOW_HOVER" value="2">
-		</constant>
-		<constant name="SHOW_NEVER" value="3">
+		<constant name="CLOSE_BUTTON_SHOW_NEVER" value="0">
 		</constant>
 	</constants>
 	<theme_items>
@@ -34572,6 +34943,8 @@ This method controls whether the position between two cached points is interpola
 		<theme_item name="decrement_hilite" type="Texture">
 		</theme_item>
 		<theme_item name="increment" type="Texture">
+		</theme_item>
+		<theme_item name="close" type="Texture">
 		</theme_item>
 		<theme_item name="decrement" type="Texture">
 		</theme_item>
@@ -38297,15 +38670,6 @@ This method controls whether the position between two cached points is interpola
 	An Array specifically designed to hold Vector2.
 	</description>
 	<methods>
-		<method name="get">
-			<return type="Vector2">
-			</return>
-			<argument index="0" name="idx" type="int">
-			</argument>
-			<description>
-			Returns the Vector2 at the given index.
-			</description>
-		</method>
 		<method name="push_back">
 			<argument index="0" name="vector2" type="Vector2">
 			</argument>
@@ -38562,15 +38926,6 @@ This method controls whether the position between two cached points is interpola
 	An Array specifically designed to hold Vector3.
 	</description>
 	<methods>
-		<method name="get">
-			<return type="Vector3">
-			</return>
-			<argument index="0" name="idx" type="int">
-			</argument>
-			<description>
-			Returns the Vector3 at the given index.
-			</description>
-		</method>
 		<method name="push_back">
 			<argument index="0" name="vector3" type="Vector3">
 			</argument>
@@ -39292,6 +39647,24 @@ This method controls whether the position between two cached points is interpola
 		<method name="warp_mouse">
 			<argument index="0" name="to_pos" type="Vector2">
 			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="gui_has_modal_stack" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_disable_input">
+			<argument index="0" name="disable" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="is_input_disabled" qualifiers="const">
+			<return type="bool">
+			</return>
 			<description>
 			</description>
 		</method>

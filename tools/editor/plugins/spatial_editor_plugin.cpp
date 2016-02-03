@@ -39,6 +39,9 @@
 #include "scene/resources/surface_tool.h"
 #include "tools/editor/spatial_editor_gizmos.h"
 #include "globals.h"
+#include "tools/editor/plugins/animation_player_editor_plugin.h"
+#include "tools/editor/animation_editor.h"
+
 #define DISTANCE_DEFAULT 4
 
 
@@ -1691,7 +1694,7 @@ void SpatialEditorViewport::_sinput(const InputEvent &p_event) {
 					if (!get_selected_count() || _edit.mode!=TRANSFORM_NONE)
 						break;
 
-					if (!editor->get_animation_editor()->has_keying()) {
+					if (!AnimationPlayerEditor::singleton->get_key_editor()->has_keying()) {
 						set_message("Keying is disabled (no key inserted).");
 						break;
 					}
@@ -2412,6 +2415,7 @@ SpatialEditorViewport::SpatialEditorViewport(SpatialEditor *p_spatial_editor, Ed
 	add_child(c);
 	c->set_area_as_parent_rect();
 	viewport = memnew( Viewport );
+	viewport->set_disable_input(true);
 	c->add_child(viewport);
 	surface = memnew( Control );
 	add_child(surface);
@@ -2629,6 +2633,13 @@ Dictionary SpatialEditor::get_state() const {
 
 	Dictionary d;
 
+	d["snap_enabled"]=snap_enabled;
+	d["translate_snap"]=get_translate_snap();
+	d["rotate_snap"]=get_rotate_snap();
+	d["scale_snap"]=get_scale_snap();
+
+	int local_coords_index=transform_menu->get_popup()->get_item_index(MENU_TRANSFORM_LOCAL_COORDS);
+	d["local_coords"]=transform_menu->get_popup()->is_item_checked( local_coords_index );
 
 	int vc=0;
 	if (view_menu->get_popup()->is_item_checked( view_menu->get_popup()->get_item_index(MENU_VIEW_USE_1_VIEWPORT) ))
@@ -2670,37 +2681,52 @@ void SpatialEditor::set_state(const Dictionary& p_state) {
 
 	Dictionary d = p_state;
 
-	ERR_FAIL_COND(!d.has("viewport_mode"));
-	ERR_FAIL_COND(!d.has("viewports"));
-	ERR_FAIL_COND(!d.has("default_light"));
-	ERR_FAIL_COND(!d.has("show_grid"));
-	ERR_FAIL_COND(!d.has("show_origin"));
-	ERR_FAIL_COND(!d.has("fov"));
-	ERR_FAIL_COND(!d.has("znear"));
-	ERR_FAIL_COND(!d.has("zfar"));
-
-	int vc = d["viewport_mode"];
-
-	if (vc==1)
-		_menu_item_pressed(MENU_VIEW_USE_1_VIEWPORT);
-	else if (vc==2)
-		_menu_item_pressed(MENU_VIEW_USE_2_VIEWPORTS);
-	else if (vc==3)
-		_menu_item_pressed(MENU_VIEW_USE_3_VIEWPORTS);
-	else if (vc==4)
-		_menu_item_pressed(MENU_VIEW_USE_4_VIEWPORTS);
-	else if (vc==5)
-		_menu_item_pressed(MENU_VIEW_USE_2_VIEWPORTS_ALT);
-	else if (vc==6)
-		_menu_item_pressed(MENU_VIEW_USE_3_VIEWPORTS_ALT);
-
-	Array vp = d["viewports"];
-	ERR_FAIL_COND(vp.size()>4);
-
-	for(int i=0;i<4;i++) {
-		viewports[i]->set_state(vp[i]);
+	if (d.has("snap_enabled")) {
+		snap_enabled=d["snap_enabled"];
+		int snap_enabled_idx=transform_menu->get_popup()->get_item_index(MENU_TRANSFORM_USE_SNAP);
+		transform_menu->get_popup()->set_item_checked( snap_enabled_idx, snap_enabled );
 	}
 
+	if (d.has("translate_snap"))
+		snap_translate->set_text(d["translate_snap"]);
+
+	if (d.has("rotate_snap"))
+		snap_rotate->set_text(d["rotate_snap"]);
+
+	if (d.has("scale_snap"))
+		snap_scale->set_text(d["scale_snap"]);
+
+	if (d.has("local_coords")) {
+		int local_coords_idx=transform_menu->get_popup()->get_item_index(MENU_TRANSFORM_LOCAL_COORDS);
+		transform_menu->get_popup()->set_item_checked( local_coords_idx, d["local_coords"] );
+		update_transform_gizmo();
+	}
+
+	if (d.has("viewport_mode")) {
+		int vc = d["viewport_mode"];
+
+		if (vc==1)
+			_menu_item_pressed(MENU_VIEW_USE_1_VIEWPORT);
+		else if (vc==2)
+			_menu_item_pressed(MENU_VIEW_USE_2_VIEWPORTS);
+		else if (vc==3)
+			_menu_item_pressed(MENU_VIEW_USE_3_VIEWPORTS);
+		else if (vc==4)
+			_menu_item_pressed(MENU_VIEW_USE_4_VIEWPORTS);
+		else if (vc==5)
+			_menu_item_pressed(MENU_VIEW_USE_2_VIEWPORTS_ALT);
+		else if (vc==6)
+			_menu_item_pressed(MENU_VIEW_USE_3_VIEWPORTS_ALT);
+	}
+
+	if (d.has("viewports")) {
+		Array vp = d["viewports"];
+		ERR_FAIL_COND(vp.size()>4);
+
+		for(int i=0;i<4;i++) {
+			viewports[i]->set_state(vp[i]);
+		}
+	}
 
 	if (d.has("zfar"))
 		settings_zfar->set_val(float(d["zfar"]));
@@ -3507,10 +3533,10 @@ void SpatialEditor::_instance_scene() {
 
 void SpatialEditor::_unhandled_key_input(InputEvent p_event) {
 
-	if (!is_visible())
+	if (!is_visible() || get_viewport()->gui_has_modal_stack())
 		return;
 
-	 {
+	{
 
 		EditorNode *en = editor;
 		EditorPlugin *over_plugin = en->get_editor_plugin_over();
@@ -3997,6 +4023,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	settings_light_base->connect("input_event",this,"_default_light_angle_input");
 	settings_vbc->add_margin_child("Default Light Normal:",settings_light_base);
 	settings_light_vp = memnew( Viewport );
+	settings_light_vp->set_disable_input(true);
 	settings_light_vp->set_use_own_world(true);
 	settings_light_base->add_child(settings_light_vp);
 

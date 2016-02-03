@@ -267,12 +267,17 @@ public:
 	void set_screen_orientation(ScreenOrientation p_orientation);
 	ScreenOrientation get_screen_orientation() const;
 
+	void set_keep_screen_on(bool p_enabled);
+	bool is_keep_screen_on() const;
+
 	void print_line(String p_string, bool new_line = true);
 
 	void set_time_scale(float p_scale);
 	float get_time_scale();
 
 	bool is_ok_left_and_cancel_right() const;
+
+	Error set_thread_name(const String& p_name);
 
 	static _OS *get_singleton() { return singleton; }
 
@@ -519,7 +524,6 @@ protected:
 	Object *target_instance;
 	StringName target_method;
 	Thread *thread;
-	String name;
 	static void _bind_methods();
 	static void _start_func(void *ud);
 public:
@@ -535,7 +539,6 @@ public:
 	String get_id() const;
 	bool is_active() const;
 	Variant wait_to_finish();
-	Error set_name(const String& p_name);
 
 	_Thread();
 	~_Thread();

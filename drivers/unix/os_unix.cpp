@@ -82,11 +82,11 @@ void OS_Unix::print_error(const char* p_function,const char* p_file,int p_line,c
 			break;
 		case ERR_WARNING:
 			print("\E[1;33mWARNING: %s: \E[0m\E[1m%s\n",p_function,err_details);
-			print("\E[0;33m     At: %s:%i.\E[0m\n",p_file,p_line);
+			print("\E[0;33m   At: %s:%i.\E[0m\n",p_file,p_line);
 			break;
 		case ERR_SCRIPT:
 			print("\E[1;35mSCRIPT ERROR: %s: \E[0m\E[1m%s\n",p_function,err_details);
-			print("\E[0;35m          At: %s:%i.\E[0m\n",p_file,p_line);
+			print("\E[0;35m   At: %s:%i.\E[0m\n",p_file,p_line);
 			break;
 	}
 #endif
@@ -155,8 +155,7 @@ void OS_Unix::finalize_core() {
 
 	if (mempool_dynamic)
 		memdelete( mempool_dynamic );
-	if (mempool_static)
-		delete mempool_static;
+	delete mempool_static;
 
 }
 

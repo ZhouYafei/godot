@@ -150,7 +150,7 @@ const char * OS_Windows::get_video_driver_name(int p_driver) const {
 
 OS::VideoMode OS_Windows::get_default_video_mode() const {
 
-	return VideoMode(1280,720,false);
+	return VideoMode(1024,600,false);
 }
 
 int OS_Windows::get_audio_driver_count() const {
@@ -1167,8 +1167,7 @@ void OS_Windows::finalize_core() {
 
 	if (mempool_dynamic)
 		memdelete( mempool_dynamic );
-	if (mempool_static)
-		delete mempool_static;
+	delete mempool_static;
 
 
 	TCPServerWinsock::cleanup();
@@ -2164,6 +2163,13 @@ String OS_Windows::get_data_dir() const {
 
 }
 
+bool OS_Windows::is_joy_known(int p_device) {
+	return input->is_joy_mapped(p_device);
+}
+
+String OS_Windows::get_joy_guid(int p_device) const {
+	return input->get_joy_guid_remapped(p_device);
+}
 
 OS_Windows::OS_Windows(HINSTANCE _hInstance) {
 

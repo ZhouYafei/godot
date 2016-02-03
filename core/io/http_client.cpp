@@ -301,7 +301,7 @@ Error HTTPClient::poll(){
 							status=STATUS_SSL_HANDSHAKE_ERROR;
 							return ERR_CANT_CONNECT;
 						}
-						print_line("SSL! TURNED ON!");
+						//print_line("SSL! TURNED ON!");
 						connection=ssl;
 					}
 					status=STATUS_CONNECTED;
@@ -360,14 +360,15 @@ Error HTTPClient::poll(){
 					for(int i=0;i<responses.size();i++) {
 
 						String s = responses[i].strip_edges();
+						s = s.to_lower();
 						if (s.length()==0)
 							continue;						
-						if (s.begins_with("Content-Length:")) {
+						if (s.begins_with("content-length:")) {
 							body_size = s.substr(s.find(":")+1,s.length()).strip_edges().to_int();
 							body_left=body_size;
 						}
 
-						if (s.begins_with("Transfer-Encoding:")) {
+						if (s.begins_with("transfer-encoding:")) {
 							String encoding = s.substr(s.find(":")+1,s.length()).strip_edges();
 							//print_line("TRANSFER ENCODING: "+encoding);
 							if (encoding=="chunked") {

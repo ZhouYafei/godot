@@ -36,6 +36,7 @@
 Thread* (*Thread::create_func)(ThreadCreateCallback,void *,const Settings&)=NULL;
 Thread::ID (*Thread::get_thread_ID_func)()=NULL;
 void (*Thread::wait_to_finish_func)(Thread*)=NULL;
+Error (*Thread::set_name_func)(const String&)=NULL;
 
 void (*Tls::create_func)(ID&)=NULL;
 void (*Tls::delete_func)(ID&)=NULL;
@@ -68,6 +69,9 @@ void Thread::wait_to_finish(Thread *p_thread) {
 }
 
 Error Thread::set_name(const String &p_name) {
+
+	if (set_name_func)
+		return set_name_func(p_name);
 
 	return ERR_UNAVAILABLE;
 };

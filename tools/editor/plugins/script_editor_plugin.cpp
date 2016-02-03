@@ -327,7 +327,11 @@ void ScriptTextEditor::_load_theme_settings() {
 
 	for(List<StringName>::Element *E=types.front();E;E=E->next()) {
 
-		get_text_edit()->add_keyword_color(E->get(),type_color);
+		String n = E->get();
+		if (n.begins_with("_"))
+			n = n.substr(1, n.length());
+
+		get_text_edit()->add_keyword_color(n,type_color);
 	}
 
 	//colorize comments
@@ -931,6 +935,9 @@ void ScriptEditor::_menu_option(int p_option) {
 			if (!_test_script_times_on_disk())
 				return;
 
+			save_all_scripts();
+
+#if 0
 			for(int i=0;i<tab_container->get_child_count();i++) {
 
 				ScriptTextEditor *ste = tab_container->get_child(i)->cast_to<ScriptTextEditor>();
@@ -947,7 +954,7 @@ void ScriptEditor::_menu_option(int p_option) {
 				editor->save_resource( script );
 			}
 
-
+#endif
 		} break;
 		case SEARCH_HELP: {
 
@@ -1014,8 +1021,10 @@ void ScriptEditor::_menu_option(int p_option) {
 				script_create_dialog->popup_centered(Size2(300, 300));
 			} break;
 			case FILE_SAVE: {
-				if (!_test_script_times_on_disk())
+
+				if (_test_script_times_on_disk())
 					return;
+
 				editor->save_resource( current->get_edited_script() );
 
 			} break;
@@ -1688,7 +1697,7 @@ void ScriptEditor::ensure_select_current() {
 
 			Ref<Script> script = ste->get_edited_script();
 
-			if (!grab_focus_block && is_inside_tree())
+			if (!grab_focus_block && is_visible())
 				ste->get_text_edit()->grab_focus();
 
 			edit_menu->show();
@@ -1932,9 +1941,7 @@ void ScriptEditor::edit(const Ref<Script>& p_script) {
 	}
 }
 
-void ScriptEditor::save_external_data() {
-
-	apply_scripts();
+void ScriptEditor::save_all_scripts() {
 
 
 	for(int i=0;i<tab_container->get_child_count();i++) {
@@ -1943,9 +1950,13 @@ void ScriptEditor::save_external_data() {
 		if (!ste)
 			continue;
 
+		if (ste->get_text_edit()->get_version()==ste->get_text_edit()->get_saved_version())
+			continue;
+
 		Ref<Script> script = ste->get_edited_script();
 		if (script->get_path()!="" && script->get_path().find("local://")==-1 &&script->get_path().find("::")==-1) {
 			//external script, save it
+			ste->apply_code();
 			editor->save_resource(script);
 			//ResourceSaver::save(script->get_path(),script);
 		}
@@ -2057,7 +2068,7 @@ void ScriptEditor::_editor_settings_changed() {
 void ScriptEditor::_autosave_scripts() {
 
 	print_line("autosaving");
-	save_external_data();
+	save_all_scripts();
 }
 
 void ScriptEditor::_tree_changed() {
@@ -2317,18 +2328,15 @@ ScriptEditor::ScriptEditor(EditorNode *p_editor) {
 	menu_hb = memnew( HBoxContainer );
 	add_child(menu_hb);
 
-	v_split = memnew( VSplitContainer );
-	add_child(v_split);
-	v_split->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	script_split = memnew( HSplitContainer );
-	v_split->add_child(script_split);
+	add_child(script_split);
 	script_split->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	script_list = memnew( ItemList );
 	script_split->add_child(script_list);
-	script_list->set_custom_minimum_size(Size2(70,0));
-	script_split->set_split_offset(70);
+	script_list->set_custom_minimum_size(Size2(0,0));
+	script_split->set_split_offset(140);
 
 	tab_container = memnew( TabContainer );
 	tab_container->set_tabs_visible(false);
@@ -2412,7 +2420,7 @@ ScriptEditor::ScriptEditor(EditorNode *p_editor) {
 	debug_menu->get_popup()->add_item("Break",DEBUG_BREAK);
 	debug_menu->get_popup()->add_item("Continue",DEBUG_CONTINUE);
 	debug_menu->get_popup()->add_separator();
-	debug_menu->get_popup()->add_check_item("Show Debugger",DEBUG_SHOW);
+	//debug_menu->get_popup()->add_check_item("Show Debugger",DEBUG_SHOW);
 	debug_menu->get_popup()->add_check_item("Keep Debugger Open",DEBUG_SHOW_KEEP_OPEN);
 	debug_menu->get_popup()->connect("item_pressed", this,"_menu_option");
 
@@ -2541,7 +2549,11 @@ ScriptEditor::ScriptEditor(EditorNode *p_editor) {
 
 	quick_open->connect("goto_line",this,"_goto_script_line2");
 
-	v_split->add_child(debugger);
+
+	Button *db = EditorNode::get_singleton()->add_bottom_panel_item("Debugger",debugger);
+	debugger->set_tool_button(db);
+
+
 	debugger->connect("breaked",this,"_breaked");
 
 	autosave_timer = memnew( Timer );
@@ -2621,7 +2633,7 @@ void ScriptEditorPlugin::clear() {
 
 void ScriptEditorPlugin::save_external_data() {
 
-	script_editor->save_external_data();
+	script_editor->save_all_scripts();
 }
 
 void ScriptEditorPlugin::apply_changes() {

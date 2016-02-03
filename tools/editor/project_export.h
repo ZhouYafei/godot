@@ -70,6 +70,7 @@ private:
 
 	TabContainer *sections;
 	bool updating_tree;
+	bool pending_update_tree;
 	AcceptDialog *error;
 	ConfirmationDialog *confirm;
 
@@ -207,6 +208,7 @@ public:
 
 	Error export_platform(const String& p_platform, const String& p_path, bool p_debug,const String& p_password,bool p_quit_after=false);
 
+	void popup_export();
 	ProjectExportDialog(EditorNode *p_editor);
 	~ProjectExportDialog();
 };

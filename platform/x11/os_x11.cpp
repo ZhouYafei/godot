@@ -78,7 +78,7 @@ const char * OS_X11::get_video_driver_name(int p_driver) const {
 }
 
 OS::VideoMode OS_X11::get_default_video_mode() const {
-	return OS::VideoMode(1280,720,false);
+	return OS::VideoMode(1024,600,false);
 }
 
 int OS_X11::get_audio_driver_count() const {
@@ -1794,6 +1794,14 @@ void OS_X11::run() {
 	};
 	
 	main_loop->finish();
+}
+
+bool OS_X11::is_joy_known(int p_device) {
+	return input->is_joy_mapped(p_device);
+}
+
+String OS_X11::get_joy_guid(int p_device) const {
+	return input->get_joy_guid_remapped(p_device);
 }
 
 OS_X11::OS_X11() {

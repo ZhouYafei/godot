@@ -40,12 +40,8 @@
 Node *SceneTreeEditor::get_scene_node() {
 
 	ERR_FAIL_COND_V(!is_inside_tree(),NULL);
-	if (get_tree()->get_root()->get_child_count() && get_tree()->get_root()->get_child(0)->cast_to<EditorNode>())
-		return get_tree()->get_root()->get_child(0)->cast_to<EditorNode>()->get_edited_scene();
-	else
-		return get_tree()->get_root();
 
-	return NULL;
+	return get_tree()->get_edited_scene_root();
 }
 
 
@@ -726,6 +722,9 @@ void SceneTreeEditor::_renamed() {
 		new_name=n->get_name();
 	}
 
+	if (new_name==n->get_name())
+		return;
+
 	if (!undo_redo) {
 		n->set_name( new_name );
 		which->set_metadata(0,n->get_path());
@@ -788,6 +787,9 @@ void SceneTreeEditor::_update_selection(TreeItem *item) {
 	ERR_FAIL_COND(!item);
 
 	NodePath np = item->get_metadata(0);
+
+	if (!has_node(np))
+		return;
 
 	Node *n=get_node(np);
 
@@ -911,7 +913,7 @@ SceneTreeEditor::SceneTreeEditor(bool p_label,bool p_can_rename, bool p_can_open
 	add_child( tree );
 		
 	tree->connect("cell_selected", this,"_selected_changed");
-	tree->connect("item_edited", this,"_renamed");
+	tree->connect("item_edited", this,"_renamed",varray(),CONNECT_DEFERRED);
 	tree->connect("multi_selected",this,"_cell_multi_selected");
 	tree->connect("button_pressed",this,"_cell_button_pressed");
 //	tree->connect("item_edited", this,"_renamed",Vector<Variant>(),true);
