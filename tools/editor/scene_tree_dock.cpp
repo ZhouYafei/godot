@@ -280,8 +280,8 @@ Node* SceneTreeDock::_instance(const String& p_file, bool p_replace_selected) {
 		//*/
 
 
-		if (editor->get_animation_editor()->get_root()==selected)
-			editor_data->get_undo_redo().add_do_method(editor->get_animation_editor(),"set_root",instanced_scene);
+		//if (editor->get_animation_editor()->get_root()==selected)
+		//	editor_data->get_undo_redo().add_do_method(editor->get_animation_editor(),"set_root",instanced_scene);
 		editor_data->get_undo_redo().add_undo_method(parent,"remove_child",instanced_scene);
 
 
@@ -293,8 +293,8 @@ Node* SceneTreeDock::_instance(const String& p_file, bool p_replace_selected) {
 		editor_data->get_undo_redo().add_undo_method(editor_selection,"add_node",selected);
 		//editor_data->get_undo_redo().add_undo_method(scene_tree,"set_selected",selected,true);
 		editor_data->get_undo_redo().add_undo_method(this,"set_selected",selected);
-		if (editor->get_animation_editor()->get_root()==selected)
-			editor_data->get_undo_redo().add_undo_method(editor->get_animation_editor(),"set_root",selected);		
+		//if (editor->get_animation_editor()->get_root()==selected)
+		//	editor_data->get_undo_redo().add_undo_method(editor->get_animation_editor(),"set_root",selected);		
 		for(int i=0; i<selected->get_child_count();++i) {
 			Node *child = selected->get_child(i);
 			if (child->get_owner() != selected->get_owner())

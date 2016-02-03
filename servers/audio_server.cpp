@@ -58,7 +58,7 @@ void AudioServer::sample_set_signed_data(RID p_sample, const DVector<real_t>& p_
 
 	DVector<uint8_t> data;
 	DVector<uint8_t>::Write w;
-	DVector<float>::Read r = p_buffer.read();
+	DVector<real_t>::Read r = p_buffer.read();
 
 	switch(format) {
 		case SAMPLE_FORMAT_PCM8: {

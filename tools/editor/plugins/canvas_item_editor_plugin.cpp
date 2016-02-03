@@ -2818,11 +2818,10 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 					if (key_pos)
 						AnimationPlayerEditor::singleton->get_key_editor()->insert_node_value_key(ctrl,"rect/pos",ctrl->get_pos(),existing);
 					if (key_rot)
-						editor->get_animation_editor()->insert_node_value_key(ctrl,"rect/rotation",Math::rad2deg(ctrl->get_rotation()),existing);
-					if (key_scale) {
-						editor->get_animation_editor()->insert_node_value_key(ctrl,"rect/scale",ctrl->get_scale(),existing);
-						AnimationPlayerEditor::singleton->get_key_editor()->insert_node_value_key(ctrl,"rect/size",ctrl->get_size(),existing);
-					}
+						AnimationPlayerEditor::singleton->get_key_editor()->insert_node_value_key(ctrl,"rect/rotation",Math::rad2deg(ctrl->get_rotation()),existing);
+					if (key_scale)
+						AnimationPlayerEditor::singleton->get_key_editor()->insert_node_value_key(ctrl,"rect/scale",ctrl->get_scale(),existing);
+					AnimationPlayerEditor::singleton->get_key_editor()->insert_node_value_key(ctrl,"rect/size",ctrl->get_size(),existing);
 				}
 
 			}
