@@ -105,16 +105,8 @@ void Control::edit_set_rect(const Rect2& p_edit_rect) {
 	new_rect.pos=pos.snapped(Vector2(1,1));
 	new_rect.size=p_edit_rect.size.snapped(Vector2(1,1));
 
-	Point2 new_pos = p_edit_rect.pos + p_edit_rect.size*zero_offset;//p_edit_rect.pos - r.pos;
-
-	Matrix32 postxf;
-	postxf.set_rotation_and_scale(data.rotation,data.scale);
-	new_pos = get_pos() + postxf.xform(new_pos);
-
-	Size2 new_size=p_edit_rect.size.snapped(Vector2(1,1));
-
-	set_pos(new_pos);
-	set_size(new_size);
+	set_pos(new_rect.pos);
+	set_size(new_rect.size);
 }
 
 bool Control::_set(const StringName& p_name, const Variant& p_value) {
