@@ -3261,6 +3261,9 @@ void PropertyEditor::_item_edited() {
 
 
 	TreeItem * item = tree->get_edited();
+	if (!item)
+		return; //it all happened too fast..
+
 	Dictionary d = item->get_metadata(0);
 
 	String name=d["name"];

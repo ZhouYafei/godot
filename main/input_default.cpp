@@ -157,7 +157,7 @@ void InputDefault::joy_connection_changed(int p_idx, bool p_connected, String p_
 		};
 		js.uid = uidname;
 		//printf("looking for mappings for guid %ls\n", uidname.c_str());
-		int mapping = -1;
+		int mapping = fallback_mapping;
 		for (int i=0; i < map_db.size(); i++) {
 			if (js.uid == map_db[i].uid) {
 				mapping = i;
@@ -449,7 +449,7 @@ static const char *s_ControllerMappings [] =
 	"03000000260900008888000000010000,GameCube {WiseGroup USB box},a:b0,b:b2,y:b3,x:b1,start:b7,leftshoulder:,rightshoulder:b6,dpup:h0.1,dpleft:h0.8,rightstick:,dpdown:h0.4,dpright:h0.2,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:a4,righttrigger:a5,",
 	"03000000280400000140000000010000,Gravis GamePad Pro USB ,x:b0,a:b1,b:b2,y:b3,back:b8,start:b9,leftshoulder:b4,lefttrigger:b6,rightshoulder:b5,righttrigger:b7,leftx:a0,lefty:a1,",
 	"030000004c0500006802000011010000,PS3 Controller,a:b14,b:b13,back:b0,dpdown:b6,dpleft:b7,dpright:b5,dpup:b4,guide:b16,leftshoulder:b10,leftstick:b1,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b11,rightstick:b2,righttrigger:b9,rightx:a2,righty:a3,start:b3,x:b15,y:b12,",
-	"030000004c050000c405000011010000,Sony DualShock 4,a:b1,b:b2,y:b3,x:b0,start:b9,guide:b12,back:b8,leftstick:b10,rightstick:b11,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftx:a0,lefty:a1,rightx:a2,righty:a5,lefttrigger:b6,righttrigger:b7,",
+	"030000004c050000c405000011010000,Sony DualShock 4,a:b1,b:b2,y:b3,x:b0,start:b9,guide:b12,back:b8,leftstick:b10,rightstick:b11,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftx:a0,lefty:a1,rightx:a2,righty:a5,lefttrigger:a3,righttrigger:a4,",
 	"030000004f04000000b3000010010000,Thrustmaster Firestorm Dual Power,a:b0,b:b2,y:b3,x:b1,start:b10,guide:b8,back:b9,leftstick:b11,rightstick:b12,leftshoulder:b4,rightshoulder:b6,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:b5,righttrigger:b7,",
 	"030000004f04000008d0000000010000,Thrustmaster Run N Drive  Wireless,a:b1,b:b2,x:b0,y:b3,start:b9,back:b8,leftstick:b10,rightstick:b11,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftx:a0,lefty:a1,rightx:a2,righty:a5,lefttrigger:b6,righttrigger:b7,",
 	"030000004f04000009d0000000010000,Thrustmaster Run N Drive Wireless PS3,a:b1,b:b2,x:b0,y:b3,start:b9,guide:b12,back:b8,leftstick:b10,rightstick:b11,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:b6,righttrigger:b7,",
@@ -499,6 +499,7 @@ static const char *s_ControllerMappings [] =
 	#endif
 
 	#if defined(__ANDROID__)
+	"Default Android Gamepad,Default Controller,leftx:a0,lefty:a1,dpdown:h0.4,rightstick:b8,rightshoulder:b10,rightx:a2,start:b6,righty:a3,dpleft:h0.8,lefttrigger:a4,x:b2,dpup:h0.1,back:b4,leftstick:b7,leftshoulder:b9,y:b3,a:b0,dpright:h0.2,righttrigger:a5,b:b1,",
 	"4e564944494120436f72706f72617469,NVIDIA Controller,a:b0,b:b1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,leftshoulder:b9,leftstick:b7,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b10,rightstick:b8,righttrigger:a5,rightx:a2,righty:a3,start:b6,x:b2,y:b3,",
 	#endif
 
@@ -535,6 +536,8 @@ InputDefault::InputDefault() {
 	hat_map_default[HAT_LEFT].type = TYPE_BUTTON;
 	hat_map_default[HAT_LEFT].index = JOY_DPAD_LEFT;
 	hat_map_default[HAT_LEFT].value = 0;
+
+	fallback_mapping = -1;
 
 	String env_mapping = OS::get_singleton()->get_environment("SDL_GAMECONTROLLERCONFIG");
 	if (env_mapping != "") {
@@ -876,6 +879,16 @@ void InputDefault::remove_joy_mapping(String p_guid) {
 	}
 }
 
+void InputDefault::set_fallback_mapping(String p_guid) {
+
+	for (int i = 0; i < map_db.size(); i++) {
+		if (map_db[i].uid == p_guid) {
+			fallback_mapping = i;
+			return;
+		}
+	}
+}
+
 //Defaults to simple implementation for platforms with a fixed gamepad layout, like consoles.
 bool InputDefault::is_joy_known(int p_device) {
 
@@ -888,10 +901,10 @@ String InputDefault::get_joy_guid(int p_device) const {
 
 //platforms that use the remapping system can override and call to these ones
 bool InputDefault::is_joy_mapped(int p_device) {
-	return joy_names[p_device].mapping != -1 ? true : false;
+	int mapping = joy_names[p_device].mapping;
+	return mapping != -1 ? (mapping == fallback_mapping) : false;
 }
 
 String InputDefault::get_joy_guid_remapped(int p_device) const {
 	return joy_names[p_device].uid;
 }
-

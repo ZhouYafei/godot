@@ -2486,13 +2486,13 @@ ScriptEditor::ScriptEditor(EditorNode *p_editor) {
 	script_back->connect("pressed",this,"_history_back");
 	menu_hb->add_child(script_back);
 	script_back->set_disabled(true);
-	help_search->set_tooltip("Go to previous edited document.");
+	script_back->set_tooltip("Go to previous edited document.");
 
 	script_forward = memnew( ToolButton );
 	script_forward->connect("pressed",this,"_history_forward");
 	menu_hb->add_child(script_forward);
 	script_forward->set_disabled(true);
-	help_search->set_tooltip("Go to next edited document.");
+	script_forward->set_tooltip("Go to next edited document.");
 
 
 
@@ -2677,7 +2677,7 @@ ScriptEditorPlugin::ScriptEditorPlugin(EditorNode *p_node) {
 	editor=p_node;
 	script_editor = memnew( ScriptEditor(p_node) );
 	editor->get_viewport()->add_child(script_editor);
-	script_editor->set_area_as_parent_rect();
+	script_editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 
 	script_editor->hide();
 

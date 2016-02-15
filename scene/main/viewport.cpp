@@ -535,7 +535,7 @@ void Viewport::_notification(int p_what) {
 
 						Vector2 point = get_canvas_transform().affine_inverse().xform(pos);
 						Physics2DDirectSpaceState::ShapeResult res[64];
-						int rc = ss2d->intersect_point(point,res,64,Set<RID>(),0xFFFFFFFF,0xFFFFFFFF);
+						int rc = ss2d->intersect_point(point,res,64,Set<RID>(),0xFFFFFFFF,0xFFFFFFFF,true);
 						for(int i=0;i<rc;i++) {
 
 							if (res[i].collider_id && res[i].collider) {
@@ -1518,7 +1518,8 @@ Control* Viewport::_gui_find_control(const Point2& p_global)  {
 		CanvasItem *pci = sw->get_parent_item();
 		if (pci)
 			xform=pci->get_global_transform_with_canvas();
-
+		else
+			xform=sw->get_canvas_transform();
 
 		Control *ret = _gui_find_control_at_pos(sw,p_global,xform,gui.focus_inv_xform);
 		if (ret)
@@ -1537,6 +1538,8 @@ Control* Viewport::_gui_find_control(const Point2& p_global)  {
 		CanvasItem *pci = sw->get_parent_item();
 		if (pci)
 			xform=pci->get_global_transform_with_canvas();
+		else
+			xform=sw->get_canvas_transform();
 
 
 		Control *ret = _gui_find_control_at_pos(sw,p_global,xform,gui.focus_inv_xform);
@@ -1656,7 +1659,7 @@ void Viewport::_gui_input_event(InputEvent p_event) {
 
 
 
-					Matrix32 parent_xform;
+					//Matrix32 parent_xform;
 
 					//if (data.parent_canvas_item)
 					//	parent_xform=data.parent_canvas_item->get_global_transform();
@@ -2209,7 +2212,7 @@ void Viewport::_gui_grab_click_focus(Control *p_control) {
 
 		//send unclic
 
-		Point2 click =gui.mouse_focus->get_global_transform().affine_inverse().xform(gui.last_mouse_pos);
+		Point2 click =gui.mouse_focus->get_global_transform_with_canvas().affine_inverse().xform(gui.last_mouse_pos);
 		mb.x=click.x;
 		mb.y=click.y;
 		mb.button_index=gui.mouse_focus_button;
@@ -2218,8 +2221,8 @@ void Viewport::_gui_grab_click_focus(Control *p_control) {
 
 
 		gui.mouse_focus=p_control;
-		gui.focus_inv_xform=gui.mouse_focus->get_global_transform().affine_inverse();
-		click =gui.mouse_focus->get_global_transform().affine_inverse().xform(gui.last_mouse_pos);
+		gui.focus_inv_xform=gui.mouse_focus->get_global_transform_with_canvas().affine_inverse();
+		click =gui.mouse_focus->get_global_transform_with_canvas().affine_inverse().xform(gui.last_mouse_pos);
 		mb.x=click.x;
 		mb.y=click.y;
 		mb.button_index=gui.mouse_focus_button;

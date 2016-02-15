@@ -547,6 +547,10 @@ String OS::get_joy_guid(int p_device) const {
 	return "Default Joystick";
 }
 
+void OS::set_context(int p_context) {
+
+}
+
 OS::OS() {
 	frames_drawn=0;
 	singleton=this;

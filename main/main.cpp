@@ -1330,6 +1330,7 @@ bool Main::start() {
 						}
 					}
 				}
+				OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
 
 				//editor_node->set_edited_scene(game);
 			} else {
@@ -1474,6 +1475,7 @@ bool Main::start() {
 
 			ProjectManager *pmanager = memnew( ProjectManager );
 			sml->get_root()->add_child(pmanager);
+			OS::get_singleton()->set_context(OS::CONTEXT_PROJECTMAN);
 		}
 
 #endif

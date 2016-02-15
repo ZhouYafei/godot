@@ -411,7 +411,7 @@ void CanvasItemEditor::_node_removed(Node *p_node) {
 
 void CanvasItemEditor::_keying_changed() {
 
-	if (AnimationPlayerEditor::singleton->get_key_editor()->has_keying())
+	if (AnimationPlayerEditor::singleton->get_key_editor()->is_visible())
 		animation_hb->show();
 	else
 		animation_hb->hide();
@@ -2255,6 +2255,8 @@ void CanvasItemEditor::_notification(int p_what) {
 		p->add_icon_item(get_icon("ControlAlignWide","EditorIcons"),"Full Rect",ANCHOR_ALIGN_WIDE);
 
 
+		AnimationPlayerEditor::singleton->get_key_editor()->connect("visibility_changed",this,"_keying_changed");
+		_keying_changed();
 	}
 
 	if (p_what==NOTIFICATION_READY) {
@@ -3503,7 +3505,7 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 	box_selecting=false;
 	//zoom=0.5;
 	singleton=this;
-	AnimationPlayerEditor::singleton->get_key_editor()->connect("keying_changed",this,"_keying_changed");
+
 	set_process_unhandled_key_input(true);
 	can_move_pivot=false;
 	drag=DRAG_NONE;
@@ -3554,6 +3556,7 @@ CanvasItemEditorPlugin::CanvasItemEditorPlugin(EditorNode *p_node) {
 
 	editor=p_node;
 	canvas_item_editor = memnew( CanvasItemEditor(editor) );
+	canvas_item_editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	editor->get_viewport()->add_child(canvas_item_editor);
 	canvas_item_editor->set_area_as_parent_rect();
 	canvas_item_editor->hide();

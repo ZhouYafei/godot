@@ -95,13 +95,15 @@ Size2 Control::edit_get_minimum_size() const {
 void Control::edit_set_rect(const Rect2& p_edit_rect) {
 
 
-	Rect2 r = get_item_rect();
+	Matrix32 postxf;
+	postxf.set_rotation_and_scale(data.rotation,data.scale);
+	Vector2 new_pos = postxf.xform(p_edit_rect.pos);
 
-	Vector2 zero_offset;
-	if (r.size.x!=0)
-		zero_offset.x = -r.pos.x / r.size.x;
-	if (r.size.y!=0)
-		zero_offset.y = -r.pos.y / r.size.y;
+	Vector2 pos = get_pos()+new_pos;
+
+	Rect2 new_rect=get_rect();
+	new_rect.pos=pos.snapped(Vector2(1,1));
+	new_rect.size=p_edit_rect.size.snapped(Vector2(1,1));
 
 	Point2 new_pos = p_edit_rect.pos + p_edit_rect.size*zero_offset;//p_edit_rect.pos - r.pos;
 
