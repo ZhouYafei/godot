@@ -165,22 +165,33 @@ void EditorSettings::create() {
 		return; //pointless
 
 	DirAccess *dir=NULL;
-	Object *object;
 	Variant meta;
 
 	String config_path;
 	String config_dir;
 	String config_file="editor_settings.xml";
+	Ref<ConfigFile> extra_config = memnew(ConfigFile);
 
-	if (OS::get_singleton()->has_environment("APPDATA")) {
-		// Most likely under windows, save here
-		config_path=OS::get_singleton()->get_environment("APPDATA");
-		config_dir=String(_MKSTR(VERSION_SHORT_NAME)).capitalize();
-	} else if (OS::get_singleton()->has_environment("HOME")) {
+	String exe_path = OS::get_singleton()->get_executable_path().get_base_dir();
+	DirAccess* d = DirAccess::create_for_path(exe_path);
+	if (d->file_exists(exe_path + "/._sc_")) {
 
-		config_path=OS::get_singleton()->get_environment("HOME");
-		config_dir="."+String(_MKSTR(VERSION_SHORT_NAME)).to_lower();
-	}
+		// editor is self contained
+		config_path = exe_path;
+		config_dir = "editor_data";
+		extra_config->load(exe_path + "/._sc_");
+	} else {
+
+		if (OS::get_singleton()->has_environment("APPDATA")) {
+			// Most likely under windows, save here
+			config_path=OS::get_singleton()->get_environment("APPDATA");
+			config_dir=String(_MKSTR(VERSION_SHORT_NAME)).capitalize();
+		} else if (OS::get_singleton()->has_environment("HOME")) {
+
+			config_path=OS::get_singleton()->get_environment("HOME");
+			config_dir="."+String(_MKSTR(VERSION_SHORT_NAME)).to_lower();
+		}
+	};
 
 	ObjectTypeDB::register_type<EditorSettings>(); //otherwise it can't be unserialized
 	String config_file_path;
@@ -300,10 +311,20 @@ void EditorSettings::create() {
 
 	fail:
 
+	// patch init projects
+	if (extra_config->has_section("init_projects")) {
+		Vector<String> list = extra_config->get_value("init_projects", "list");
+		for (int i=0; i<list.size(); i++) {
+
+			list[i] = exe_path + "/" + list[i];
+		};
+		extra_config->set_value("init_projects", "list", list);
+	};
+
 	singleton = Ref<EditorSettings>( memnew( EditorSettings ) );
 	singleton->config_file_path=config_file_path;
 	singleton->settings_path=config_path+"/"+config_dir;
-	singleton->_load_defaults();
+	singleton->_load_defaults(extra_config);
 	singleton->setup_network();
 	singleton->scan_plugins();
 
@@ -449,7 +470,7 @@ void EditorSettings::destroy() {
 	singleton=Ref<EditorSettings>();
 }
 
-void EditorSettings::_load_defaults() {
+void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 
 	_THREAD_SAFE_METHOD_
 
@@ -561,6 +582,17 @@ void EditorSettings::_load_defaults() {
 	set("resources/auto_reload_modified_images",true);
 
 	set("editor_language/locale","en");
+
+	if (p_extra_config.is_valid() && p_extra_config->has_section("init_projects") && p_extra_config->has_section_key("init_projects", "list")) {
+
+		Vector<String> list = p_extra_config->get_value("init_projects", "list");
+		for (int i=0; i<list.size(); i++) {
+
+			String name = list[i].replace("/", "::");
+			set("projects/"+name, list[i]);
+		};
+	};
+
 }
 
 void EditorSettings::notify_changes() {
