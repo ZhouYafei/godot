@@ -847,7 +847,7 @@ void TextEdit::_notification(int p_what) {
 				}
 			}
 			
-			
+			bool completion_below = false;
 			if (completion_active) {
 				// code completion box
 				Ref<StyleBox> csb = get_stylebox("completion");
@@ -878,11 +878,12 @@ void TextEdit::_notification(int p_what) {
 				}
 				
 				int th = h + csb->get_minimum_size().y;
+				
 				if (cursor_pos.y+get_row_height()+th > get_size().height) {
 					completion_rect.pos.y=cursor_pos.y-th;
 				} else {
 					completion_rect.pos.y=cursor_pos.y+get_row_height()+csb->get_offset().y;
-					
+					completion_below = true;
 				}
 				
 				if (cursor_pos.x-nofs+w+scrollw  > get_size().width) {
@@ -930,8 +931,24 @@ void TextEdit::_notification(int p_what) {
 				completion_line_ofs=line_from;
 				
 			}
-			
+
+			// check to see if the hint should be drawn
+			bool show_hint = false;
 			if (completion_hint!="") {
+				if (completion_active) {
+					if (completion_below && !callhint_below) {
+						show_hint = true;
+					}
+					else if (!completion_below && callhint_below) {
+						show_hint = true;
+					}
+				}
+				else {
+					show_hint = true;
+				}
+			}
+			
+			if (show_hint) {
 				
 				Ref<StyleBox> sb = get_stylebox("panel","TooltipPanel");
 				Ref<Font> font = cache.font;
@@ -967,7 +984,15 @@ void TextEdit::_notification(int p_what) {
 				}
 				
 				
-				Point2 hint_ofs = Vector2(completion_hint_offset,cursor_pos.y-minsize.y);
+				Point2 hint_ofs = Vector2(completion_hint_offset,cursor_pos.y) + callhint_offset;
+
+				if (callhint_below) {
+					hint_ofs.y += get_row_height() + sb->get_offset().y;
+				}
+				else {
+					hint_ofs.y -= minsize.y + sb->get_offset().y;
+				}
+
 				draw_style_box(sb,Rect2(hint_ofs,minsize));
 				
 				spacing=0;
@@ -1652,9 +1677,30 @@ void TextEdit::_input_event(const InputEvent& p_input_event) {
 							ins+="\t";
 						}
 					}
+
+					bool first_line = false;
+					if (k.mod.command) {
+						if (k.mod.shift) {
+							if (cursor.line > 0) {
+								cursor_set_line(cursor.line - 1);
+								cursor_set_column(text[cursor.line].length());
+							}
+							else {
+								cursor_set_column(0);
+								first_line = true;
+							}
+						}
+						else {
+							cursor_set_column(text[cursor.line].length());
+						}
+					}
 					
 					_insert_text_at_cursor(ins);
 					_push_current_op();
+
+					if (first_line) {
+						cursor_set_line(0);
+					}
 					
 				} break;
 				case KEY_ESCAPE: {
