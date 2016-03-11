@@ -896,6 +896,7 @@ void Viewport::_camera_remove(Camera* p_camera) {
 	}
 }
 
+#ifndef _3D_DISABLED
 void Viewport::_camera_make_next_current(Camera* p_exclude) {
 
 	for(Set<Camera*>::Element *E=cameras.front();E;E=E->next()) {
@@ -911,7 +912,7 @@ void Viewport::_camera_make_next_current(Camera* p_exclude) {
 
 	}
 }
-
+#endif
 
 void Viewport::set_transparent_background(bool p_enable) {
 
