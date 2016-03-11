@@ -636,6 +636,12 @@
     <ClCompile Include="..\..\scene\resources\scene_format_text.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\scene\main\http_request.cpp">
+      <Filter>scene\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\scene\gui\link_button.cpp">
+      <Filter>scene\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene\register_scene_types.h">
@@ -1240,6 +1246,12 @@
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\scene_format_text.h">
       <Filter>scene\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scene\main\http_request.h">
+      <Filter>scene\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scene\gui\link_button.h">
+      <Filter>scene\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -176,6 +176,7 @@
     <ClCompile Include="..\..\tools\editor\editor_node.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_path.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_plugin.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_plugin_settings.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_reimport_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_resource_preview.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_run.cpp" />
@@ -345,6 +346,7 @@
     <ClInclude Include="..\..\tools\editor\editor_node.h" />
     <ClInclude Include="..\..\tools\editor\editor_path.h" />
     <ClInclude Include="..\..\tools\editor\editor_plugin.h" />
+    <ClInclude Include="..\..\tools\editor\editor_plugin_settings.h" />
     <ClInclude Include="..\..\tools\editor\editor_reimport_dialog.h" />
     <ClInclude Include="..\..\tools\editor\editor_resource_preview.h" />
     <ClInclude Include="..\..\tools\editor\editor_run.h" />
