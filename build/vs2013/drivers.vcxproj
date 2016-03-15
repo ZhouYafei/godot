@@ -1956,6 +1956,7 @@
     <ClInclude Include="..\..\drivers\speex\vq_bfin.h" />
     <ClInclude Include="..\..\drivers\speex\vq_sse.h" />
     <ClInclude Include="..\..\drivers\speex\_kiss_fft_guts.h" />
+    <ClInclude Include="..\..\drivers\squish\algorithm.h" />
     <ClInclude Include="..\..\drivers\squish\alpha.h" />
     <ClInclude Include="..\..\drivers\squish\clusterfit.h" />
     <ClInclude Include="..\..\drivers\squish\colourblock.h" />
