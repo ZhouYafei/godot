@@ -227,7 +227,7 @@ void _set_err_error_exists(bool p_exists);
 #define WARN_PRINTS(m_string) \
 	{ \
 		_err_print_error(FUNCTION_STR,__FILE__,__LINE__,String(m_string).utf8().get_data(),ERR_HANDLER_WARNING);	\
-		_err_error_exists=false;\
+		_set_err_error_exists(false);\
 	} \
 
 #endif

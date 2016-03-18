@@ -5558,6 +5558,9 @@
     <ClInclude Include="..\..\drivers\pnm\bitmap_loader_pnm.h">
       <Filter>drivers\pnm</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\drivers\squish\algorithm.h">
+      <Filter>drivers\squish</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\drivers\squish\singlecolourlookup.inl">

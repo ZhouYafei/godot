@@ -14,9 +14,7 @@ squish_sources=[
 'squish/image_compress_squish.cpp',
 ]
 
-
-if (env["tools"]=="yes"):
-	env.drivers_sources+=squish_sources
+env.drivers_sources+=squish_sources
 
 #env.add_source_files(env.drivers_sources, squish_sources)
 

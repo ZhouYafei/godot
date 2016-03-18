@@ -16,13 +16,14 @@
 #include "png/resource_saver_png.h"
 #include "jpegd/image_loader_jpegd.h"
 #include "dds/texture_loader_dds.h"
+#include "etc1/texture_loader_pkm.h"
 #include "pvr/texture_loader_pvr.h"
 #include "etc1/image_etc.h"
 #include "chibi/event_stream_chibi.h"
 #include "pnm/bitmap_loader_pnm.h"
 
 
-#ifdef TOOLS_ENABLED
+#ifdef SQUISH_ENABLED
 #include "squish/image_compress_squish.h"
 #endif
 
@@ -77,6 +78,10 @@ static ImageLoaderJPG *image_loader_jpg=NULL;
 
 #ifdef DDS_ENABLED
 static ResourceFormatDDS *resource_loader_dds=NULL;
+#endif
+
+#ifdef ETC1_ENABLED
+static ResourceFormatPKM *resource_loader_pkm=NULL;
 #endif
 
 
@@ -197,6 +202,11 @@ void register_driver_types() {
 	ResourceLoader::add_resource_format_loader(resource_loader_dds );
 #endif
 
+#ifdef ETC1_ENABLED
+	resource_loader_pkm = memnew( ResourceFormatPKM );
+	ResourceLoader::add_resource_format_loader(resource_loader_pkm);
+#endif
+
 #ifdef PVR_ENABLED
 	resource_loader_pvr = memnew( ResourceFormatPVR );
 	ResourceLoader::add_resource_format_loader(resource_loader_pvr );
@@ -233,12 +243,10 @@ void register_driver_types() {
 #endif
 
 
-#ifdef TOOLS_ENABLED
 #ifdef SQUISH_ENABLED
 
 	Image::set_compress_bc_func(image_compress_squish);
 
-#endif
 #endif
 
 #ifdef ETC1_ENABLED
@@ -278,6 +286,10 @@ void unregister_driver_types() {
 
 #ifdef DDS_ENABLED
 	memdelete(resource_loader_dds);
+#endif
+
+#ifdef ETC1_ENABLED
+	memdelete(resource_loader_pkm);
 #endif
 
 #ifdef PVR_ENABLED

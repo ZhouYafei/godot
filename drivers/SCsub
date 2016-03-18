@@ -49,7 +49,7 @@ if (env['speex']=='yes'):
 	SConscript("speex/SCsub");
 if (env['musepack']=='yes'):
 	SConscript("mpc/SCsub");
-if (env["squish"]=="yes" and env["tools"]=="yes"):
+if (env["squish"]=="yes"):
 	SConscript("squish/SCsub");
 if (env["lua"]=='yes'):
 	SConscript("lua/SCsub");

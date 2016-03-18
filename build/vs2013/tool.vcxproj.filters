@@ -642,6 +642,9 @@
     <ClCompile Include="..\..\tools\editor\editor_name_dialog.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tools\editor\editor_plugin_settings.cpp">
+      <Filter>tools\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tools\collada\collada.h">
@@ -1290,6 +1293,9 @@
       <Filter>tools\editor\plugins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\editor_name_dialog.h">
+      <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\editor_plugin_settings.h">
       <Filter>tools\editor</Filter>
     </ClInclude>
   </ItemGroup>

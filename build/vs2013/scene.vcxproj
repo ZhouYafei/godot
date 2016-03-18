@@ -227,6 +227,7 @@
     <ClCompile Include="..\..\scene\gui\item_list.cpp" />
     <ClCompile Include="..\..\scene\gui\label.cpp" />
     <ClCompile Include="..\..\scene\gui\line_edit.cpp" />
+    <ClCompile Include="..\..\scene\gui\link_button.cpp" />
     <ClCompile Include="..\..\scene\gui\margin_container.cpp" />
     <ClCompile Include="..\..\scene\gui\menu_button.cpp" />
     <ClCompile Include="..\..\scene\gui\option_button.cpp" />
@@ -259,6 +260,7 @@
     <ClCompile Include="..\..\scene\io\resource_format_image.cpp" />
     <ClCompile Include="..\..\scene\io\resource_format_wav.cpp" />
     <ClCompile Include="..\..\scene\main\canvas_layer.cpp" />
+    <ClCompile Include="..\..\scene\main\http_request.cpp" />
     <ClCompile Include="..\..\scene\main\instance_placeholder.cpp" />
     <ClCompile Include="..\..\scene\main\misc.cpp" />
     <ClCompile Include="..\..\scene\main\node.cpp" />
@@ -433,6 +435,7 @@
     <ClInclude Include="..\..\scene\gui\item_list.h" />
     <ClInclude Include="..\..\scene\gui\label.h" />
     <ClInclude Include="..\..\scene\gui\line_edit.h" />
+    <ClInclude Include="..\..\scene\gui\link_button.h" />
     <ClInclude Include="..\..\scene\gui\margin_container.h" />
     <ClInclude Include="..\..\scene\gui\menu_button.h" />
     <ClInclude Include="..\..\scene\gui\option_button.h" />
@@ -463,6 +466,7 @@
     <ClInclude Include="..\..\scene\io\resource_format_image.h" />
     <ClInclude Include="..\..\scene\io\resource_format_wav.h" />
     <ClInclude Include="..\..\scene\main\canvas_layer.h" />
+    <ClInclude Include="..\..\scene\main\http_request.h" />
     <ClInclude Include="..\..\scene\main\instance_placeholder.h" />
     <ClInclude Include="..\..\scene\main\misc.h" />
     <ClInclude Include="..\..\scene\main\node.h" />
