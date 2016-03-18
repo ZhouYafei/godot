@@ -199,7 +199,7 @@ NPError NPP_New(NPMIMEType pluginType,
 NPError NPP_Destroy(NPP instance, NPSavedData** save) {
 
 	nacl_cleanup();
-	
+
 	return NPERR_NO_ERROR;
 }
 

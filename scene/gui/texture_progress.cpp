@@ -226,7 +226,7 @@ void TextureProgress::_notification(int p_what){
 					draw_texture_rect_region(progress,Rect2(Point2(),Size2(s.x*get_unit_value(),s.y)),Rect2(Point2(),Size2(s.x*get_unit_value(),s.y)),modulate);
 				}
 
-				
+
 			}
 			if (over.is_valid()) {
 				Size2 s=expand?get_size():over->get_size();
@@ -307,10 +307,10 @@ void TextureProgress::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_radial_initial_angle","mode"),&TextureProgress::set_radial_initial_angle);
 	ObjectTypeDB::bind_method(_MD("get_radial_initial_angle"), &TextureProgress::get_radial_initial_angle);
-	
+
 	ObjectTypeDB::bind_method(_MD("set_radial_center_offset","mode"),&TextureProgress::set_radial_center_offset);
 	ObjectTypeDB::bind_method(_MD("get_radial_center_offset"), &TextureProgress::get_radial_center_offset);
-	
+
 	ObjectTypeDB::bind_method(_MD("set_fill_degrees","mode"),&TextureProgress::set_fill_degrees);
 	ObjectTypeDB::bind_method(_MD("get_fill_degrees"), &TextureProgress::get_fill_degrees);
 

@@ -267,7 +267,7 @@ void _global_lock();
 void _global_unlock();
 
 struct _GlobalLock {
-	
+
 	_GlobalLock() { _global_lock(); }
 	~_GlobalLock() { _global_unlock(); }
 };

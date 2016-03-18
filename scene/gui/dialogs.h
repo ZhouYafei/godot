@@ -144,7 +144,7 @@ public:
 
 
 class ConfirmationDialog : public AcceptDialog {
-	
+
 	OBJ_TYPE(ConfirmationDialog,AcceptDialog);
 	Button *cancel;
 protected:

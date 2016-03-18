@@ -37,10 +37,10 @@
 	@author Juan Linietsky <reduzio@gmail.com>
 */
 class Font : public Resource {
-	
+
 	OBJ_TYPE( Font, Resource );
 	RES_BASE_EXTENSION("fnt");
-	
+
 	mutable Vector< Ref<Texture> > textures;
 
     friend class TtfFont;
@@ -55,13 +55,13 @@ class Font : public Resource {
 
 public:
 	struct Character {
-		
+
 		int texture_idx;
 		Rect2 rect;
 		float v_align;
 		float h_align;
 		float advance;
-		
+
 		Character() { texture_idx=0; v_align=0; }
 	};
 
@@ -80,10 +80,10 @@ public:
 
 private:
 
-	
+
 	HashMap< CharType, Character > char_map;
 	Map<KerningPairKey,int> kerning_map;
-	
+
 	float height;
 	float ascent;
 	bool distance_field_hint;
@@ -98,20 +98,20 @@ private:
 
 	Ref<Font> fallback;
 protected:
-	
+
 	static void _bind_methods();
 
 public:
 
 	Error create_from_fnt(const String& p_file);
-	
+
 	void set_height(float p_height);
 	float get_height() const;
-	
+
 	void set_ascent(float p_ascent);
-	float get_ascent() const;	
+	float get_ascent() const;
 	float get_descent() const;
-	
+
 	void add_texture(const Ref<Texture>& p_texture);
 	void add_char(CharType p_char, int p_texture_idx, const Rect2& p_rect, const Size2& p_align, float p_advance=-1);
 
@@ -138,6 +138,7 @@ public:
     const Dictionary& get_ttf_options() const;
 	
 
+
 	void set_fallback(const Ref<Font> &p_fallback);
 	Ref<Font> get_fallback() const;
 
@@ -145,11 +146,11 @@ public:
 
 	void set_distance_field_hint(bool p_distance_field);
 	bool is_distance_field_hint() const;
-	
+
 	void draw(RID p_canvas_item, const Point2& p_pos, const String& p_text,const Color& p_modulate=Color(1,1,1),int p_clip_w=-1) const;
 	void draw_halign(RID p_canvas_item, const Point2& p_pos, HAlign p_align,float p_width,const String& p_text,const Color& p_modulate=Color(1,1,1)) const;
 	float draw_char(RID p_canvas_item, const Point2& p_pos, const CharType& p_char,const CharType& p_next=0,const Color& p_modulate=Color(1,1,1)) const;
-	
+
 	Font();
 	~Font();
 };
