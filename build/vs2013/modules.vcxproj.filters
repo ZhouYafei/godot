@@ -40,9 +40,6 @@
     <Filter Include="modules\digest\crypt">
       <UniqueIdentifier>{22698689-d4e6-4217-89c1-9a30da428772}</UniqueIdentifier>
     </Filter>
-    <Filter Include="modules\rle_sprite">
-      <UniqueIdentifier>{63272049-f03b-4bca-ac75-0008ed78f845}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\modules\register_module_types.cpp">
@@ -264,12 +261,6 @@
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonBinary.c">
       <Filter>modules\spine\spine-c</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\modules\rle_sprite\register_types.cpp">
-      <Filter>modules\rle_sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\modules\rle_sprite\rle_sprite.cpp">
-      <Filter>modules\rle_sprite</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -487,12 +478,6 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonBinary.h">
       <Filter>modules\spine\spine-c</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\modules\rle_sprite\register_types.h">
-      <Filter>modules\rle_sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\modules\rle_sprite\rle_sprite.h">
-      <Filter>modules\rle_sprite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

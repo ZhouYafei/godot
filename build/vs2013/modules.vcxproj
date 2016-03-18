@@ -191,8 +191,6 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)register_types_luascript.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\modules\register_module_types.cpp" />
-    <ClCompile Include="..\..\modules\rle_sprite\register_types.cpp" />
-    <ClCompile Include="..\..\modules\rle_sprite\rle_sprite.cpp" />
     <ClCompile Include="..\..\modules\sdk\platform.cpp" />
     <ClCompile Include="..\..\modules\sdk\register_types.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_sdk.obj</ObjectFileName>
@@ -274,8 +272,6 @@
     <ClInclude Include="..\..\modules\luascript\lua_script.h" />
     <ClInclude Include="..\..\modules\luascript\register_types.h" />
     <ClInclude Include="..\..\modules\register_module_types.h" />
-    <ClInclude Include="..\..\modules\rle_sprite\register_types.h" />
-    <ClInclude Include="..\..\modules\rle_sprite\rle_sprite.h" />
     <ClInclude Include="..\..\modules\sdk\platform.h" />
     <ClInclude Include="..\..\modules\sdk\register_types.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\Animation.h" />
