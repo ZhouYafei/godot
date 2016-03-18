@@ -732,7 +732,7 @@ void AnimationPlayerEditor::_dialog_action(String p_file) {
 			String current = animation->get_item_text(animation->get_selected());
 			if (current != "") {
 				Ref<Animation> anim = player->get_animation(current);
-				
+
 				ERR_FAIL_COND(!anim->cast_to<Resource>())
 
 					RES current_res = RES(anim->cast_to<Resource>());
@@ -1425,7 +1425,7 @@ AnimationPlayerEditor::AnimationPlayerEditor(EditorNode *p_editor) {
 	add_child(error_dialog);
 
 	name_dialog->connect("confirmed", this,"_animation_name_edited");
-	
+
 	blend_editor.dialog = memnew( AcceptDialog );
 	add_child(blend_editor.dialog);
 	blend_editor.dialog->get_ok()->set_text("Close");
@@ -1442,7 +1442,7 @@ AnimationPlayerEditor::AnimationPlayerEditor(EditorNode *p_editor) {
 	updating_blends=false;
 
 	blend_editor.tree->connect("item_edited",this,"_blend_edited");
-	
+
 
 	autoplay->connect("pressed", this,"_autoplay_pressed");
 	autoplay->set_toggle_mode(true);
@@ -1501,7 +1501,8 @@ bool AnimationPlayerEditorPlugin::handles(Object *p_object) const {
 void AnimationPlayerEditorPlugin::make_visible(bool p_visible) {
 
 	if (p_visible) {
-		anim_editor->show();
+
+		editor->make_bottom_panel_item_visible(anim_editor);
 		anim_editor->set_process(true);
 		anim_editor->ensure_visibility();
 //		editor->animation_panel_make_visible(true);

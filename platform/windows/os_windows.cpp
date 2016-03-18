@@ -178,10 +178,11 @@ void OS_Windows::initialize_core() {
 	//RedirectIOToConsole();
 	maximized=false;
 	minimized=false;
+	borderless=false;
 
-	ThreadWindows::make_default();	
-	SemaphoreWindows::make_default();	
-	MutexWindows::make_default();	
+	ThreadWindows::make_default();
+	SemaphoreWindows::make_default();
+	MutexWindows::make_default();
 
 	FileAccess::make_default<FileAccessWindows>(FileAccess::ACCESS_RESOURCES);
 	FileAccess::make_default<FileAccessWindows>(FileAccess::ACCESS_USERDATA);
@@ -194,7 +195,7 @@ void OS_Windows::initialize_core() {
 	TCPServerWinsock::make_default();
 	StreamPeerWinsock::make_default();
 	PacketPeerUDPWinsock::make_default();
-	
+
 	mempool_static = new MemoryPoolStaticMalloc;
 #if 1
 	mempool_dynamic = memnew( MemoryPoolDynamicStatic );
@@ -204,7 +205,7 @@ void OS_Windows::initialize_core() {
 	mempool_dynamic = memnew( MemoryPoolDynamicPrealloc(buffer,DYNPOOL_SIZE) );
 
 #endif
-	
+
 	   // We need to know how often the clock is updated
 	if( !QueryPerformanceFrequency((LARGE_INTEGER *)&ticks_per_second) )
 		ticks_per_second = 1000;
@@ -427,19 +428,7 @@ LRESULT OS_Windows::WndProc(HWND hWnd,UINT uMsg, WPARAM	wParam,	LPARAM	lParam) {
 			if (main_loop) {
 				input->parse_input_event(event);
 
-				if (input->is_mouse_button_pressed(1) && has_touchscreen_ui_hint()) {
-					InputEvent drag_event;
-					drag_event.type=InputEvent::SCREEN_DRAG;
-					drag_event.ID = ++last_id;
-					drag_event.screen_drag.index=0;
-					drag_event.screen_drag.x=mm.x;
-					drag_event.screen_drag.y=mm.y;
-					drag_event.screen_drag.relative_x = mm.relative_x;
-					drag_event.screen_drag.relative_y = mm.relative_y;
-					input->parse_input_event(drag_event);
-				}
-			}
-			
+
 
 		} break;
 		case WM_LBUTTONDOWN:
@@ -489,7 +478,7 @@ LRESULT OS_Windows::WndProc(HWND hWnd,UINT uMsg, WPARAM	wParam,	LPARAM	lParam) {
 				} break;
 				case WM_MBUTTONUP: {
 					mb.pressed=false;
-					mb.button_index=3;					
+					mb.button_index=3;
 				} break;
 				case WM_RBUTTONDOWN: {
 					mb.pressed=true;
@@ -564,7 +553,7 @@ LRESULT OS_Windows::WndProc(HWND hWnd,UINT uMsg, WPARAM	wParam,	LPARAM	lParam) {
 			mb.button_mask|=(wParam&MK_XBUTTON1)?(1<<5):0;
 			mb.button_mask|=(wParam&MK_XBUTTON2)?(1<<6):0;*/
 			mb.x=GET_X_LPARAM(lParam);
-			mb.y=GET_Y_LPARAM(lParam);			
+			mb.y=GET_Y_LPARAM(lParam);
 
 			if (mouse_mode==MOUSE_MODE_CAPTURED) {
 
@@ -845,11 +834,11 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
     outside=true;
 
 	WNDCLASSEXW	wc;
-	
+
 	video_mode=p_desired;
 	//printf("**************** desired %s, mode %s\n", p_desired.fullscreen?"true":"false", video_mode.fullscreen?"true":"false");
 	RECT WindowRect;
-	
+
 	WindowRect.left=0;
 	WindowRect.right=video_mode.width;
 	WindowRect.top=0;
@@ -863,18 +852,18 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 	wc.cbWndExtra= 0;
 	//wc.hInstance = hInstance;
 	wc.hInstance = godot_hinstance ? godot_hinstance : GetModuleHandle(NULL);
-	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);		
+	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
 	wc.hCursor = NULL;//LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
-	wc.lpszMenuName	= NULL;	
+	wc.lpszMenuName	= NULL;
 	wc.lpszClassName	= L"Engine";
 
 	if (!RegisterClassExW(&wc)) {
 		MessageBox(NULL,"Failed To Register The Window Class.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-		return;											// Return 
+		return;											// Return
 	}
-	
-	
+
+
 	EnumDisplayMonitors(NULL,NULL,MonitorEnumProc,0);
 
 	print_line("DETECTED MONITORS: "+itos(monitor_info.size()));
@@ -884,7 +873,7 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 		DEVMODE current;
 		memset(&current,0,sizeof(current));
 		EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &current);
-		
+
 		WindowRect.right  = current.dmPelsWidth;
 		WindowRect.bottom = current.dmPelsHeight;
 
@@ -907,11 +896,11 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 	DWORD		dwExStyle;
 	DWORD		dwStyle;
 
-	if (video_mode.fullscreen) {
+	if (video_mode.fullscreen||video_mode.borderless_window) {
 
 		dwExStyle=WS_EX_APPWINDOW;
 		dwStyle=WS_POPUP;
-		
+
 	} else {
 		dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 		dwStyle=WS_OVERLAPPEDWINDOW;
@@ -953,14 +942,14 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 		video_mode.fullscreen = false;
 	} else {
 
-		if (!(hWnd=CreateWindowExW(dwExStyle,L"Engine",L"", dwStyle|WS_CLIPSIBLINGS|WS_CLIPCHILDREN, 0, 0,WindowRect.right-WindowRect.left,WindowRect.bottom-WindowRect.top, NULL,NULL,	hInstance,NULL))) {
+		if (!(hWnd=CreateWindowExW(dwExStyle,L"Engine",L"", dwStyle|WS_CLIPSIBLINGS|WS_CLIPCHILDREN, (GetSystemMetrics(SM_CXSCREEN)-WindowRect.right)/2, (GetSystemMetrics(SM_CYSCREEN)-WindowRect.bottom)/2, WindowRect.right-WindowRect.left,WindowRect.bottom-WindowRect.top, NULL,NULL, hInstance,NULL))) {
 			MessageBoxW(NULL,L"Window Creation Error.",L"ERROR",MB_OK|MB_ICONEXCLAMATION);
 			return;								// Return FALSE
 		}
 
 
 	};
-	
+
 #if defined(OPENGL_ENABLED) || defined(GLES2_ENABLED) || defined(LEGACYGL_ENABLED)
 	gl_context = memnew( ContextGL_Win(hWnd,false) );
 	gl_context->initialize();
@@ -1004,7 +993,7 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 
 
   */
-	visual_server->init();	
+	visual_server->init();
 
 	input = memnew( InputDefault );
 	joystick = memnew (joystick_windows(input, &hWnd));
@@ -1312,7 +1301,7 @@ OS::VideoMode OS_Windows::get_video_mode(int p_screen) const {
 }
 void OS_Windows::get_fullscreen_mode_list(List<VideoMode> *p_list,int p_screen) const {
 
-	
+
 }
 
 int OS_Windows::get_screen_count() const {
@@ -1560,6 +1549,14 @@ bool OS_Windows::is_window_maximized() const{
 }
 
 
+void OS_Windows::set_borderless_window(int p_borderless) {
+	video_mode.borderless_window = p_borderless;
+}
+
+bool OS_Windows::get_borderless_window() {
+	return video_mode.borderless_window;
+}
+
 void OS_Windows::print_error(const char* p_function, const char* p_file, int p_line, const char* p_code, const char* p_rationale, ErrorType p_type) {
 
 	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -1746,18 +1743,18 @@ void OS_Windows::delay_usec(uint32_t p_usec) const {
                 Sleep(1);
         else
                 Sleep(p_usec / 1000);
-	
+
 }
 uint64_t OS_Windows::get_ticks_usec() const {
 
       	uint64_t ticks;
-        uint64_t time; 
+        uint64_t time;
         // This is the number of clock ticks since start
         if( !QueryPerformanceCounter((LARGE_INTEGER *)&ticks) )
                 ticks = (UINT64)timeGetTime();
         // Divide by frequency to get the time in seconds
         time = ticks * 1000000L / ticks_per_second;
-        // Subtract the time at game start to get  
+        // Subtract the time at game start to get
         // the time since the game started
         time -= ticks_start;
         return time;
@@ -1769,13 +1766,13 @@ void OS_Windows::process_events() {
 	MSG msg;
 
 	last_id = joystick->process_joysticks(last_id);
-	
+
 	while(PeekMessageW(&msg,NULL,0,0,PM_REMOVE)) {
 
 
 		TranslateMessage(&msg);
 		DispatchMessageW(&msg);
-		
+
 	}
 
 	process_key_events();
@@ -2066,21 +2063,21 @@ void OS_Windows::run() {
 
 	if (!main_loop)
 		return;
-		
+
 	main_loop->init();
-		
+
 	uint64_t last_ticks=get_ticks_usec();
-	
+
 	int frames=0;
 	uint64_t frame=0;
-	
+
 	while (!force_quit) {
-	
+
 		process_events(); // get rid of pending events
 		if (Main::iteration()==true)
 			break;
 	};
-	
+
 	main_loop->finish();
 
 }
@@ -2215,7 +2212,7 @@ OS_Windows::OS_Windows(HINSTANCE _hInstance) {
 }
 
 
-OS_Windows::~OS_Windows() 
+OS_Windows::~OS_Windows()
 {
 #ifdef STDOUT_FILE
 	fclose(stdo);

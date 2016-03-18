@@ -256,7 +256,7 @@ Object::Connection::Connection(const Variant& p_variant) {
 
 
 bool Object::_predelete() {
-	
+
 	_predelete_ok=1;
 	notification(NOTIFICATION_PREDELETE,true);
 	if (_predelete_ok) {
@@ -270,16 +270,16 @@ void Object::_postinitialize() {
 	_type_ptr=_get_type_namev();
 	_initialize_typev();
 	notification(NOTIFICATION_POSTINITIALIZE);
-	
+
 }
 
 void Object::get_valid_parents_static(List<String> *p_parents) {
-	
-	
+
+
 }
 void Object::_get_valid_parents_static(List<String> *p_parents) {
-	
-	
+
+
 }
 #if 0
 //old style set, deprecated
@@ -287,7 +287,7 @@ void Object::_get_valid_parents_static(List<String> *p_parents) {
 void Object::set(const String& p_name, const Variant& p_value) {
 
 	_setv(p_name,p_value);
-	
+
 	//if (!_use_builtin_script())
 //		return;
 
@@ -304,8 +304,8 @@ void Object::set(const String& p_name, const Variant& p_value) {
 	} else if (script_instance) {
 		script_instance->set(p_name,p_value);
 	}
-	
-	
+
+
 }
 #endif
 
@@ -349,7 +349,7 @@ void Object::set(const StringName& p_name, const Variant& p_value, bool *r_valid
 			*r_valid=true;
 		return;
 	} else {
-		//something inside the object... :|		
+		//something inside the object... :|
 		bool success = _setv(p_name,p_value);
 		if (success) {
 			if (r_valid)
@@ -421,7 +421,7 @@ Variant Object::get(const String& p_name) const {
 	Variant ret=_getv(p_name);
 	if (ret.get_type()!=Variant::NIL)
 		return ret;
-		
+
 	bool success;
 	ObjectTypeDB::get_property(const_cast<Object*>(this),p_name,ret,success);
 	if (success) {
@@ -432,11 +432,11 @@ Variant Object::get(const String& p_name) const {
 		return metadata;
 	else if (p_name=="script/script")
 		return script;
-		
+
 	if (script_instance) {
 		return script_instance->get(p_name);
 	}
-	
+
 	return Variant();
 
 }
@@ -450,10 +450,10 @@ void Object::get_property_list(List<PropertyInfo> *p_list,bool p_reversed) const
 	}
 
 	_get_property_listv(p_list,p_reversed);
-	
+
 	if (!_use_builtin_script())
 		return;
-		
+
 	if (!is_type("Script")) // can still be set, but this is for userfriendlyness
 		p_list->push_back( PropertyInfo( Variant::OBJECT, "script/script", PROPERTY_HINT_RESOURCE_TYPE, "Script",PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_STORE_IF_NONZERO));
 	if (!metadata.empty())
@@ -461,15 +461,15 @@ void Object::get_property_list(List<PropertyInfo> *p_list,bool p_reversed) const
 	if (script_instance && !p_reversed) {
 		p_list->push_back( PropertyInfo(Variant::NIL,"Script Variables",PROPERTY_HINT_NONE,String(),PROPERTY_USAGE_CATEGORY));
 		script_instance->get_property_list(p_list);
-	}	
-	
+	}
+
 }
 void Object::get_method_list(List<MethodInfo> *p_list) const {
 
 	ObjectTypeDB::get_method_list(get_type_name(),p_list);
 	if (script_instance) {
 		script_instance->get_method_list(p_list);
-	}	
+	}
 }
 
 
@@ -929,22 +929,22 @@ Variant Object::call(const StringName& p_method,const Variant** p_args,int p_arg
 
 
 void Object::notification(int p_notification,bool p_reversed) {
-	
+
 
 	_notificationv(p_notification,p_reversed);
-	
+
 	if (script_instance) {
 		script_instance->notification(p_notification);
 	}
 }
 
 void Object::_changed_callback(Object *p_changed,const char *p_prop) {
-	
-		
+
+
 }
 
 void Object::add_change_receptor( Object *p_receptor ) {
-	
+
 	change_receptors.insert(p_receptor);
 }
 
@@ -972,8 +972,8 @@ void Object::set_script(const RefPtr& p_script) {
 		memdelete(script_instance);
 		script_instance=NULL;
 	}
-	
-	script=p_script;	
+
+	script=p_script;
 	Ref<Script> s(script);
 
 	if (!s.is_null() && s->can_instance() ) {
@@ -1901,7 +1901,7 @@ bool Object::is_edited() const {
 #endif
 
 Object::Object() {
-	
+
 	_type_ptr=NULL;
 	_block_signals=false;
 	_predelete_ok=0;
@@ -1972,12 +1972,12 @@ Object::~Object() {
 
 
 bool predelete_handler(Object *p_object) {
-	
+
 	return p_object->_predelete();
 }
 
 void postinitialize_handler(Object *p_object) {
-	
+
 	p_object->_postinitialize();
 }
 
@@ -2041,8 +2041,8 @@ void ObjectDB::cleanup() {
 
 	GLOBAL_LOCK_FUNCTION;
 	if (instances.size()) {
-			
-		WARN_PRINT("ObjectDB Instances still exist!");		
+
+		WARN_PRINT("ObjectDB Instances still exist!");
 		if (OS::get_singleton()->is_stdout_verbose()) {
 			const uint32_t *K=NULL;
 			while((K=instances.next(K))) {

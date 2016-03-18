@@ -33,12 +33,12 @@
 /**
  * Error macros. Unlike exceptions and asserts, these macros try to mantain consistency and stability
  * inside the code. It is recommended to always return processable data, so in case of an error, the
- * engine can stay working well. 
+ * engine can stay working well.
  * In most cases, bugs and/or invalid data are not fatal and should never allow a perfectly running application
  * to fail or crash.
  */
 
-/** 
+/**
  * Pointer to the error macro priting function. Reassign to any function to have errors printed
  */
 
@@ -137,7 +137,7 @@ void _set_err_error_exists(bool p_exists);
 		return m_retval;	 \
 	}else _set_err_error_exists(false); }	\
 
-/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert(). 
+/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert().
  * the function will exit.
  */
 
@@ -147,7 +147,7 @@ void _set_err_error_exists(bool p_exists);
 		return;	 \
 	}else _set_err_error_exists(false); }	\
 
-/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert(). 
+/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert().
  * the function will exit.
  * This function returns an error value, if returning Error, please select the most
  * appropriate error condition from error_macros.h
@@ -159,7 +159,7 @@ void _set_err_error_exists(bool p_exists);
 		return m_retval;	 \
 	}else _set_err_error_exists(false); }	\
 
-/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert(). 
+/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert().
  * the loop will skip to the next iteration.
  */
 
@@ -169,7 +169,7 @@ void _set_err_error_exists(bool p_exists);
 		continue;\
 	} else _set_err_error_exists(false);}	\
 
-/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert(). 
+/** An error condition happened (m_cond tested true) (WARNING this is the opposite as assert().
  * the loop will break
  */
 

@@ -2094,7 +2094,7 @@ void RasterizerIPhone::_setup_light(LightInstance* p_instance, int p_idx) {
 
 
 			glPopMatrix();
-			
+
 
 		} break;
 		default: break;

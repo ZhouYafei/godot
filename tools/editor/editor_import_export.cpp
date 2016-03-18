@@ -282,6 +282,7 @@ static void _edit_filter_list(Set<StringName>& r_list,const String& p_filter,boo
 	}
 
 	DirAccess *da = DirAccess::open("res://");
+	ERR_FAIL_NULL(da);
 	_edit_files_with_filter(da,filters,r_list,exclude);
 	memdelete(da);
 }
@@ -672,7 +673,7 @@ Error EditorExportPlatform::export_project_files(EditorExportSaveFunction p_func
 			} break; //use default
 			case EditorImportExport::IMAGE_ACTION_COMPRESS_RAM: {
 				group_format=EditorTextureImportPlugin::IMAGE_FORMAT_COMPRESS_RAM;
-			} break; //use default						
+			} break; //use default
 		}
 
 		String image_list_md5;

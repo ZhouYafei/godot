@@ -574,7 +574,14 @@ void TreeItem::set_custom_color(int p_column,const Color& p_color) {
 	cells[p_column].color=p_color;
 	_changed_notify(p_column);
 }
+Color TreeItem::get_custom_color(int p_column) const {
 
+	ERR_FAIL_INDEX_V( p_column, cells.size(), Color() );
+	if (!cells[p_column].custom_color)
+		return Color();
+	return cells[p_column].color;
+
+}
 void TreeItem::clear_custom_color(int p_column) {
 
 	ERR_FAIL_INDEX( p_column, cells.size() );
@@ -2174,7 +2181,7 @@ void Tree::_input_event(InputEvent p_event) {
 					float diff_y = -b.relative_y;
 					diff_y=Math::pow(ABS(diff_y),1.8)*SGN(diff_y);
 					diff_y*=0.1;
-					range_drag_base=CLAMP(range_drag_base + c.step * diff_y, c.min, c.max);					
+					range_drag_base=CLAMP(range_drag_base + c.step * diff_y, c.min, c.max);
 					popup_edited_item->set_range(popup_edited_item_col,range_drag_base);
 					item_edited(popup_edited_item_col,popup_edited_item);
 
@@ -2753,6 +2760,15 @@ void Tree::clear() {
 		ERR_FAIL_COND(blocked>0);
 	}
 
+	if (pressing_for_editor) {
+		if (range_drag_enabled) {
+			range_drag_enabled = false;
+			Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
+			warp_mouse(range_drag_capture_pos);
+		}
+		pressing_for_editor = false;
+	}
+
 	if (root) {
 		memdelete( root );
 		root = NULL;
@@ -2762,7 +2778,6 @@ void Tree::clear() {
 	edited_item=NULL;
 	popup_edited_item=NULL;
 	selected_item=NULL;
-	pressing_for_editor=false;
 
 	update();
 };

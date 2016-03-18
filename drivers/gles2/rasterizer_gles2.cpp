@@ -4811,9 +4811,12 @@ void RasterizerGLES2::_add_geometry( const Geometry* p_geometry, const InstanceD
 		if (has_blend_alpha || (has_base_alpha && m->depth_draw_mode!=VS::MATERIAL_DEPTH_DRAW_OPAQUE_PRE_PASS_ALPHA))
 			return; //bye
 
-		if (m->shader_cache && !m->shader_cache->writes_vertex && !m->shader_cache->uses_discard && m->depth_draw_mode!=VS::MATERIAL_DEPTH_DRAW_OPAQUE_PRE_PASS_ALPHA) {
+		if (!m->shader_cache || (!m->shader_cache->writes_vertex && !m->shader_cache->uses_discard && m->depth_draw_mode!=VS::MATERIAL_DEPTH_DRAW_OPAQUE_PRE_PASS_ALPHA)) {
 			//shader does not use discard and does not write a vertex position, use generic material
-			m = shadow_mat_ptr;
+			if (p_instance->cast_shadows == VS::SHADOW_CASTING_SETTING_DOUBLE_SIDED)
+				m = shadow_mat_double_sided_ptr;
+			else
+				m = shadow_mat_ptr;
 			if (m->last_pass!=frame) {
 
 				if (m->shader.is_valid()) {
@@ -6407,6 +6410,8 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 	uint8_t prev_sort_flags=0xFF;
 	const BakedLightData *prev_baked_light=NULL;
 	RID prev_baked_light_texture;
+	const float *prev_morph_values=NULL;
+	int prev_receive_shadows_state=-1;
 
 	Geometry::Type prev_geometry_type=Geometry::GEOMETRY_INVALID;
 
@@ -6445,6 +6450,8 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 		const Skeleton *skeleton = e->skeleton;
 		const Geometry *geometry_cmp = e->geometry_cmp;
 		const BakedLightData *baked_light = e->instance->baked_light;
+		const float *morph_values = e->instance->morph_values.ptr();
+		int receive_shadows_state = e->instance->receive_shadows == true ? 1 : 0;
 
 		bool rebind=false;
 		bool bind_baked_light_octree=false;
@@ -6467,6 +6474,8 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 				prev_overrides=NULL; // make it diferent than NULL
 				prev_skeleton =NULL;
 				prev_sort_flags=0xFF;
+				prev_morph_values=NULL;
+				prev_receive_shadows_state=-1;
 				prev_geometry_type=Geometry::GEOMETRY_INVALID;
 				glEnable(GL_BLEND);
 				glDepthMask(GL_TRUE);
@@ -6475,7 +6484,7 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 
 			}
 
-			if (light_type!=prev_light_type) {
+			if (light_type!=prev_light_type || receive_shadows_state!=prev_receive_shadows_state) {
 
 				if (material->flags[VS::MATERIAL_FLAG_UNSHADED] || current_debug==VS::SCENARIO_DEBUG_SHADELESS) {
 					material_shader.set_conditional(MaterialShaderGLES2::LIGHT_TYPE_DIRECTIONAL,false);
@@ -6489,9 +6498,16 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 					material_shader.set_conditional(MaterialShaderGLES2::LIGHT_TYPE_DIRECTIONAL,(light_type&0x3)==VS::LIGHT_DIRECTIONAL);
 					material_shader.set_conditional(MaterialShaderGLES2::LIGHT_TYPE_OMNI,(light_type&0x3)==VS::LIGHT_OMNI);
 					material_shader.set_conditional(MaterialShaderGLES2::LIGHT_TYPE_SPOT,(light_type&0x3)==VS::LIGHT_SPOT);
-					material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_SHADOW,(light_type&0x8));
-					material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_PSSM,(light_type&0x10));
-					material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_PSSM4,(light_type&0x20));
+					if (receive_shadows_state==1) {
+						material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_SHADOW,(light_type&0x8));
+						material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_PSSM,(light_type&0x10));
+						material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_PSSM4,(light_type&0x20));
+					}
+					else {
+						material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_SHADOW,false);
+						material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_PSSM,false);
+						material_shader.set_conditional(MaterialShaderGLES2::LIGHT_USE_PSSM4,false);
+					}
 					material_shader.set_conditional(MaterialShaderGLES2::SHADELESS,false);
 				}
 
@@ -6584,7 +6600,18 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 			material_shader.set_conditional(MaterialShaderGLES2::ENABLE_AMBIENT_LIGHTMAP,false);
 			material_shader.set_conditional(MaterialShaderGLES2::ENABLE_AMBIENT_DP_SAMPLER,false);
 
+			material_shader.set_conditional(MaterialShaderGLES2::ENABLE_AMBIENT_COLOR, false);
+
+
 			if (material->flags[VS::MATERIAL_FLAG_UNSHADED] == false && current_debug != VS::SCENARIO_DEBUG_SHADELESS) {
+
+				if (baked_light != NULL) {
+					if (baked_light->realtime_color_enabled) {
+						float realtime_energy = baked_light->realtime_energy;
+						material_shader.set_conditional(MaterialShaderGLES2::ENABLE_AMBIENT_COLOR, true);
+						material_shader.set_uniform(MaterialShaderGLES2::AMBIENT_COLOR, Vector3(baked_light->realtime_color.r*realtime_energy, baked_light->realtime_color.g*realtime_energy, baked_light->realtime_color.b*realtime_energy));
+					}
+				}
 
 				if (e->instance->sampled_light.is_valid()) {
 
@@ -6679,10 +6706,14 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 			rebind=true;
 		}
 		
-		if  (use_hw_skeleton_xform && skeleton!=prev_skeleton) {
+		if  (use_hw_skeleton_xform && (skeleton!=prev_skeleton||morph_values!=prev_morph_values)) {
 			if (!prev_skeleton || !skeleton)
 				rebind=true; //went from skeleton <-> no skeleton, needs rebind
-			_setup_skeleton(skeleton);
+
+			if (morph_values==NULL)
+				_setup_skeleton(skeleton);
+			else
+				_setup_skeleton(NULL);
 		}
 
 		if (material!=prev_material || rebind) {
@@ -6770,7 +6801,7 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 		}
 
 		if (skeleton != prev_skeleton || rebind) {
-			if (skeleton) {
+			if (skeleton && morph_values == NULL) {
 				material_shader.set_uniform(MaterialShaderGLES2::SKELETON_MATRICES, max_texture_units - 2);
 				material_shader.set_uniform(MaterialShaderGLES2::SKELTEX_PIXEL_SIZE, skeleton->pixel_size);
 			}
@@ -6827,7 +6858,9 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 		prev_light_type=e->light_type;
 		prev_sort_flags=sort_flags;
 		prev_baked_light=baked_light;
+		prev_morph_values=morph_values;
 //		prev_geometry_type=geometry->type;
+		prev_receive_shadows_state=receive_shadows_state;
 	}
 
 	//print_line("shaderchanges: "+itos(p_alpha_pass)+": "+itos(_rinfo.shader_change_count));
@@ -10794,9 +10827,16 @@ bool RasterizerGLES2::_test_depth_shadow_buffer() {
 
 void RasterizerGLES2::init() {
 
+	if (OS::get_singleton()->is_stdout_verbose()) {
+		print_line("Using GLES2 video driver");
+	}
+
 #ifdef GLEW_ENABLED
 	GLuint res = glewInit();
 	ERR_FAIL_COND(res!=GLEW_OK);
+	if (OS::get_singleton()->is_stdout_verbose()) {
+		print_line(String("GLES2: Using GLEW ") + (const char*) glewGetString(GLEW_VERSION));
+	}
 #endif
 
 
@@ -11008,6 +11048,12 @@ void RasterizerGLES2::init() {
 
 	shadow_material = material_create(); //empty with nothing
 	shadow_mat_ptr = material_owner.get(shadow_material);
+
+	// Now create a second shadow material for double-sided shadow instances
+	shadow_material_double_sided = material_create();
+	shadow_mat_double_sided_ptr = material_owner.get(shadow_material_double_sided);
+	shadow_mat_double_sided_ptr->flags[VS::MATERIAL_FLAG_DOUBLE_SIDED] = true;
+
 	overdraw_material = create_overdraw_debug_material();
 	copy_shader.set_conditional(CopyShaderGLES2::USE_8BIT_HDR,!use_fp16_fb);
 	canvas_shader.set_conditional(CanvasShaderGLES2::USE_DEPTH_SHADOWS,read_depth_supported);
