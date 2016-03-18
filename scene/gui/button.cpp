@@ -161,9 +161,6 @@ void Button::_notification(int p_what) {
 
 			_icon->draw(ci,style->get_offset()+Point2(0, Math::floor( (valign-_icon->get_height())/2.0 ) ),is_disabled()?Color(1,1,1,0.4):Color(1,1,1) );
 		}
-#ifdef WIN32
-
-
 
 	}
 }

@@ -6410,7 +6410,7 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 	uint8_t prev_sort_flags=0xFF;
 	const BakedLightData *prev_baked_light=NULL;
 	RID prev_baked_light_texture;
-	const float *prev_morph_values=NULL;
+	const real_t *prev_morph_values=NULL;
 	int prev_receive_shadows_state=-1;
 
 	Geometry::Type prev_geometry_type=Geometry::GEOMETRY_INVALID;
@@ -6450,7 +6450,7 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 		const Skeleton *skeleton = e->skeleton;
 		const Geometry *geometry_cmp = e->geometry_cmp;
 		const BakedLightData *baked_light = e->instance->baked_light;
-		const float *morph_values = e->instance->morph_values.ptr();
+		const real_t *morph_values = e->instance->morph_values.ptr();
 		int receive_shadows_state = e->instance->receive_shadows == true ? 1 : 0;
 
 		bool rebind=false;
