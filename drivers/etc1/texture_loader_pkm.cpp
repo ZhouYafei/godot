@@ -1,5 +1,6 @@
 #include "texture_loader_pkm.h"
 #include "os/file_access.h"
+#include "core/globals.h"
 #include <string.h>
 
 struct ETC1Header {
@@ -52,13 +53,24 @@ RES ResourceFormatPKM::load(const String &p_path, const String& p_original_path,
 	wb=DVector<uint8_t>::Write();
 
 	int mipmaps = h.format;
-	int width = h.origWidth;
-	int height = h.origHeight;
+	int width = h.texWidth;
+	int height = h.texHeight;
 
 	Image img(width,height,mipmaps,Image::FORMAT_ETC,src_data);
 
+	bool global_filter = Globals::get_singleton()->get("image_loader/filter");
+	bool global_mipmaps = Globals::get_singleton()->get("image_loader/gen_mipmaps");
+	bool global_repeat = Globals::get_singleton()->get("image_loader/repeat");
+	int tex_flags=0;
+	if(global_filter)
+		tex_flags |= Texture::FLAG_FILTER;
+	if(global_mipmaps)
+		tex_flags |= Texture::FLAG_MIPMAPS;
+	if(global_repeat)
+		tex_flags |= Texture::FLAG_REPEAT;
+
 	Ref<ImageTexture> texture = memnew( ImageTexture );
-	texture->create_from_image(img);
+	texture->create_from_image(img, tex_flags);
 
 	if (r_error)
 		*r_error=OK;
