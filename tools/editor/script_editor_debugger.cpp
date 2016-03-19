@@ -224,7 +224,7 @@ void ScriptEditorDebugger::_parse_message(const String& p_msg,const Array& p_dat
 		forward->set_disabled(true);
 		dobreak->set_disabled(false);
 		docontinue->set_disabled(true);
-		emit_signal("breaked",false,false);
+		emit_signal("breaked",Variant(false),Variant(false));
 		//tabs->set_current_tab(0);
 
 	} else if (p_msg=="message:click_ctrl") {
@@ -1200,7 +1200,7 @@ void ScriptEditorDebugger::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("live_debug_reparent_node"),&ScriptEditorDebugger::live_debug_reparent_node);
 
 	ADD_SIGNAL(MethodInfo("goto_script_line"));
-	ADD_SIGNAL(MethodInfo("breaked",PropertyInfo(Variant::BOOL,"reallydid")));
+	ADD_SIGNAL(MethodInfo("breaked",PropertyInfo(Variant::BOOL,"reallydid"),PropertyInfo(Variant::BOOL,"can_debug")));
 	ADD_SIGNAL(MethodInfo("show_debugger",PropertyInfo(Variant::BOOL,"reallydid")));
 }
 
