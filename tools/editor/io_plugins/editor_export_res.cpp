@@ -114,23 +114,12 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 		return data;
 	}
 	// save json to marshal-binary
-	else if(p_path.ends_with(".json")) {
+	else if(p_path.ends_with(".json") || p_path.ends_with(".schema")) {
 
-		FileAccess *f=FileAccess::open(p_path,FileAccess::READ);
-		ERR_FAIL_COND_V( f == NULL, Vector<uint8_t>() );
-		// ignore spine json file
-		if (f->file_exists(p_path.replace(".json", ".atlas")))
-			return Vector<uint8_t>();
-
+		Vector<uint8_t> file = FileAccess::get_file_as_array(p_path);
 		String text;
-		String l="";
-
-		while(!f->eof_reached()) {
-			l = f->get_line();
-			text+=l+"\n";
-		}
-
-		memdelete(f);
+		ERR_FAIL_COND_V(text.parse_utf8((const char *) &file[0], file.size()), Vector<uint8_t>());
+		text = text.strip_edges();
 
 		Variant var;
 		Dictionary dict;

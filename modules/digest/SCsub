@@ -3,6 +3,7 @@
 SConscript("snappy/SCsub")
 SConscript("sproto/SCsub")
 SConscript("crypt/SCsub")
+SConscript("text/SCsub")
 env.add_source_files(env.modules_sources,"*.cpp")
 
 Export('env')
