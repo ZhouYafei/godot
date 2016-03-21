@@ -161,6 +161,8 @@
     <ClCompile Include="..\..\modules\digest\sproto_dec.cpp" />
     <ClCompile Include="..\..\modules\digest\sproto_def.cpp" />
     <ClCompile Include="..\..\modules\digest\sproto_enc.cpp" />
+    <ClCompile Include="..\..\modules\digest\text\json_asset.cpp" />
+    <ClCompile Include="..\..\modules\digest\text\text_asset.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_compiler.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_editor.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_functions.cpp" />
@@ -258,6 +260,8 @@
     <ClInclude Include="..\..\modules\digest\sproto.h" />
     <ClInclude Include="..\..\modules\digest\sproto\msvcint.h" />
     <ClInclude Include="..\..\modules\digest\sproto\sproto.h" />
+    <ClInclude Include="..\..\modules\digest\text\json_asset.h" />
+    <ClInclude Include="..\..\modules\digest\text\text_asset.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_compiler.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_functions.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_parser.h" />

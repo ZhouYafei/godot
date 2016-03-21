@@ -40,6 +40,9 @@
     <Filter Include="modules\digest\crypt">
       <UniqueIdentifier>{22698689-d4e6-4217-89c1-9a30da428772}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\digest\text">
+      <UniqueIdentifier>{ec9e8efa-c806-4d4c-9277-c4ecf22d8cee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\modules\register_module_types.cpp">
@@ -261,6 +264,12 @@
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonBinary.c">
       <Filter>modules\spine\spine-c</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\digest\text\json_asset.cpp">
+      <Filter>modules\digest\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\digest\text\text_asset.cpp">
+      <Filter>modules\digest\text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -478,6 +487,12 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonBinary.h">
       <Filter>modules\spine\spine-c</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\digest\text\json_asset.h">
+      <Filter>modules\digest\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\digest\text\text_asset.h">
+      <Filter>modules\digest\text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
