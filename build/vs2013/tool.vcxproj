@@ -163,6 +163,7 @@
     <ClCompile Include="..\..\tools\editor\create_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\default_saver.cpp" />
     <ClCompile Include="..\..\tools\editor\dependency_editor.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_asset_installer.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_data.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_dir_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_file_dialog.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="..\..\tools\editor\editor_help.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_icons.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_import_export.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_initialize_ssl.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_log.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_name_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_node.cpp" />
@@ -333,6 +335,7 @@
     <ClInclude Include="..\..\tools\editor\doc_data_compressed.h" />
     <ClInclude Include="..\..\tools\editor\doc_font.h" />
     <ClInclude Include="..\..\tools\editor\doc_title_font.h" />
+    <ClInclude Include="..\..\tools\editor\editor_asset_installer.h" />
     <ClInclude Include="..\..\tools\editor\editor_data.h" />
     <ClInclude Include="..\..\tools\editor\editor_dir_dialog.h" />
     <ClInclude Include="..\..\tools\editor\editor_file_dialog.h" />
@@ -341,6 +344,7 @@
     <ClInclude Include="..\..\tools\editor\editor_help.h" />
     <ClInclude Include="..\..\tools\editor\editor_icons.h" />
     <ClInclude Include="..\..\tools\editor\editor_import_export.h" />
+    <ClInclude Include="..\..\tools\editor\editor_initialize_ssl.h" />
     <ClInclude Include="..\..\tools\editor\editor_log.h" />
     <ClInclude Include="..\..\tools\editor\editor_name_dialog.h" />
     <ClInclude Include="..\..\tools\editor\editor_node.h" />

@@ -1,6 +1,6 @@
 #include "texture_loader_dds.h"
 #include "os/file_access.h"
-
+#include "core/globals.h"
 
 enum {
 	DDS_MAGIC=0x20534444,
@@ -431,8 +431,19 @@ RES ResourceFormatDDS::load(const String &p_path, const String& p_original_path,
 
 	Image img(width,height,mipmaps-1,info.format,src_data);
 
+	bool global_filter = Globals::get_singleton()->get("image_loader/filter");
+	bool global_mipmaps = Globals::get_singleton()->get("image_loader/gen_mipmaps");
+	bool global_repeat = Globals::get_singleton()->get("image_loader/repeat");
+	int tex_flags=0;
+	if(global_filter)
+		tex_flags |= Texture::FLAG_FILTER;
+	if(global_mipmaps)
+		tex_flags |= Texture::FLAG_MIPMAPS;
+	if(global_repeat)
+		tex_flags |= Texture::FLAG_REPEAT;
+
 	Ref<ImageTexture> texture = memnew( ImageTexture );
-	texture->create_from_image(img);
+	texture->create_from_image(img, tex_flags);
 
 	if (r_error)
 		*r_error=OK;

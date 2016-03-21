@@ -425,10 +425,8 @@ LRESULT OS_Windows::WndProc(HWND hWnd,UINT uMsg, WPARAM	wParam,	LPARAM	lParam) {
 			mm.relative_y=mm.y-old_y;
 			old_x=mm.x;
 			old_y=mm.y;
-			if (main_loop) {
+			if (main_loop)
 				input->parse_input_event(event);
-
-
 
 		} break;
 		case WM_LBUTTONDOWN:

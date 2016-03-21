@@ -3741,6 +3741,9 @@
     <ClCompile Include="..\..\drivers\pnm\bitmap_loader_pnm.cpp">
       <Filter>drivers\pnm</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\drivers\etc1\texture_loader_pkm.cpp">
+      <Filter>drivers\etc1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\drivers\register_driver_types.h">
@@ -5560,6 +5563,9 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\squish\algorithm.h">
       <Filter>drivers\squish</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\etc1\texture_loader_pkm.h">
+      <Filter>drivers\etc1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

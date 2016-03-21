@@ -645,6 +645,12 @@
     <ClCompile Include="..\..\tools\editor\editor_plugin_settings.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tools\editor\editor_asset_installer.cpp">
+      <Filter>tools\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\editor\editor_initialize_ssl.cpp">
+      <Filter>tools\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tools\collada\collada.h">
@@ -1296,6 +1302,12 @@
       <Filter>tools\editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\editor_plugin_settings.h">
+      <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\editor_initialize_ssl.h">
+      <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\editor_asset_installer.h">
       <Filter>tools\editor</Filter>
     </ClInclude>
   </ItemGroup>
