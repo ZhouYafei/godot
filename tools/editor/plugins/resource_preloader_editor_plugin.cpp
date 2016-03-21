@@ -68,17 +68,17 @@ void ResourcePreloaderEditor::_files_load_request(const Vector<String>& p_paths)
 		String path = p_paths[i];
 
 		RES resource;
-
 		resource = ResourceLoader::load(path);
 
 		if (resource.is_null()) {
-			dialog->set_text(_TR("ERROR: Couldn't load resource!"));
-			dialog->set_title(_TR("Error!"));
+			dialog->set_text("ERROR: Couldn't load resource!");
+			dialog->set_title("Error!");
 			//dialog->get_cancel()->set_text("Close");
-			dialog->get_ok()->set_text(_TR("Close"));
+			dialog->get_ok()->set_text("Close");
 			dialog->popup_centered_minsize();
 			return; ///beh should show an error i guess
 		}
+
 
 		String basename = path.get_file().basename();
 		String name=basename;
