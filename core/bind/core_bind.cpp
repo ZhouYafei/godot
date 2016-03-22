@@ -1128,7 +1128,6 @@ void _OS::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("print_line"),&_OS::print_line,DEFVAL(true));
 
-	ObjectTypeDB::bind_method(_MD("native_video_play"),&_OS::native_video_play);
 	ObjectTypeDB::bind_method(_MD("native_video_play","path","volume","audio_track","subtitle_track"),&_OS::native_video_play);
 	ObjectTypeDB::bind_method(_MD("native_video_is_playing"),&_OS::native_video_is_playing);
 	ObjectTypeDB::bind_method(_MD("native_video_stop"),&_OS::native_video_stop);

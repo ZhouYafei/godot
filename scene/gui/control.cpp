@@ -2145,8 +2145,6 @@ void Control::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_size"),&Control::get_size);
 	ObjectTypeDB::bind_method(_MD("get_rotation"),&Control::get_rotation);
 	ObjectTypeDB::bind_method(_MD("get_scale"),&Control::get_scale);
-	ObjectTypeDB::bind_method(_MD("get_rotation"),&Control::get_rotation);
-	ObjectTypeDB::bind_method(_MD("get_scale"),&Control::get_scale);
 	ObjectTypeDB::bind_method(_MD("get_custom_minimum_size"),&Control::get_custom_minimum_size);
 	ObjectTypeDB::bind_method(_MD("get_parent_area_size"),&Control::get_size);
 	ObjectTypeDB::bind_method(_MD("get_global_pos"),&Control::get_global_pos);
