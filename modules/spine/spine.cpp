@@ -493,6 +493,7 @@ void Spine::_animation_process(float p_delta) {
 	if (speed_scale == 0)
 		return;
 	p_delta *= speed_scale;
+	current_pos += p_delta;
 
 	spAnimationState_update(state, forward ? p_delta : -p_delta);
 	spAnimationState_apply(state, skeleton);
@@ -841,7 +842,7 @@ void Spine::reset() {
 
 void Spine::seek(float p_pos) {
 
-	_animation_process(p_pos - current_pos);
+	_animation_process(p_pos);
 }
 
 float Spine::tell() const {
@@ -1270,9 +1271,9 @@ void Spine::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_speed"), &Spine::get_speed);
 	ObjectTypeDB::bind_method(_MD("set_modulate", "modulate"), &Spine::set_modulate);
 	ObjectTypeDB::bind_method(_MD("get_modulate"), &Spine::get_modulate);
-	ObjectTypeDB::bind_method(_MD("set_flip_x", "modulate"), &Spine::set_flip_x);
+	ObjectTypeDB::bind_method(_MD("set_flip_x", "flip"), &Spine::set_flip_x);
 	ObjectTypeDB::bind_method(_MD("is_flip_x"), &Spine::is_flip_x);
-	ObjectTypeDB::bind_method(_MD("set_flip_y", "modulate"), &Spine::set_flip_y);
+	ObjectTypeDB::bind_method(_MD("set_flip_y", "flip"), &Spine::set_flip_y);
 	ObjectTypeDB::bind_method(_MD("is_flip_y"), &Spine::is_flip_y);
 	ObjectTypeDB::bind_method(_MD("set_skin", "skin"), &Spine::set_skin);
 	ObjectTypeDB::bind_method(_MD("set_animation_process_mode","mode"),&Spine::set_animation_process_mode);
