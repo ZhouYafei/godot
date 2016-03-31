@@ -86,6 +86,7 @@ public:
 			err = asset->load(p_path);
 			res = Ref<JsonAsset>(asset);
 		}
+		ERR_FAIL_COND_V(err != OK, RES());
 
 		if(r_error != NULL)
 			*r_error = err;

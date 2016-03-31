@@ -54,11 +54,11 @@ Error JsonAsset::load(const String& p_path) {
 
 	Error retval = OK;
 	if(!txt.empty() && txt[0] == '[') {
-		Array v;
+		Array v(true);
 		retval = v.parse_json(txt);
 		value = v;
 	} else if(!txt.empty() && txt[0] == '{') {
-		Dictionary v;
+		Dictionary v(true);
 		retval = v.parse_json(txt);
 		value = v;
 	}
@@ -68,7 +68,7 @@ Error JsonAsset::load(const String& p_path) {
 	return retval;
 }
 
-const Variant& JsonAsset::get_value() {
+const Variant& JsonAsset::get_value() const {
 
 	return value;
 }

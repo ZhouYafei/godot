@@ -44,7 +44,7 @@ public:
 	~JsonAsset();
 
 	Error load(const String& p_path);
-	const Variant& get_value();
+	const Variant& get_value() const;
 };
 
 #endif // __JSON_ASSET_H__

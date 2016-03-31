@@ -51,7 +51,7 @@ Error TextAsset::load(const String& p_path) {
 	return OK;
 }
 
-const String& TextAsset::get_value() {
+const String& TextAsset::get_value() const {
 
 	return value;
 }

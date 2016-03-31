@@ -44,7 +44,7 @@ public:
 	~TextAsset();
 
 	Error load(const String& p_path);
-	const String& get_value();
+	const String& get_value() const;
 };
 
 #endif // __TEXT_ASSET_H__
