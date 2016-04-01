@@ -63,7 +63,12 @@ public:
 
 		struct Blocks {
 			int index;
-			Vector<Rect2> boxes;
+
+			struct Box {
+				Vector2 pos;
+				float radius;
+			};
+			Vector<Box> boxes;
 		};
 
 		struct Pool {
@@ -92,6 +97,7 @@ public:
 	private:
 		void _fixup_rects();
 	};
+	typedef OSpriteResource::Blocks::Box Box;
 
 private:
 
@@ -113,6 +119,7 @@ private:
 
 	float delay;
 	float current_pos;
+	mutable int frame;
 
 	void _dispose();
 	void _animation_process(float p_delta);
@@ -174,6 +181,8 @@ public:
 	bool is_debug_collisions() const;
 
 	virtual Rect2 get_item_rect() const;
+
+	const Vector<OSprite::Box>& get_collision() const;
 	
 	OSprite();
 	virtual ~OSprite();

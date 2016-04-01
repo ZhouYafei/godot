@@ -124,16 +124,17 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 		blk.boxes.resize(fields.size());
 		for(int j = 0; j < fields.size(); j++) {
 
-			Rect2& box = blk.boxes[j];
+			//Vector<OSprite::OSpriteResource::Blocks::Box> box;
+			OSprite::OSpriteResource::Blocks::Box& box = blk.boxes[j];
 			Dictionary field = fields[j].operator Dictionary();
 			box.pos.x = field["x"];
 			box.pos.y = field["y"];
-			box.size.width = field["width"];
-			box.size.height = field["height"];
+			box.radius = field["width"];
+			// field["height"];
 			// field["reversed"];
-
 			box.pos *= scale;
-			box.size *= scale;
+			box.radius *= (scale / 2);
+			box.pos += Vector2(box.radius, box.radius);
 		}
 	}
 

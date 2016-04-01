@@ -29,8 +29,8 @@
 #ifdef MODULE_OCEAN_ENABLED
 
 //#include "method_bind_ext.inc"
-
 #include "osprite.h"
+#include "osprite_collision.h"
 
 void OSprite::_dispose() {
 
@@ -77,25 +77,26 @@ void OSprite::_animation_draw() {
 	const OSpriteResource::Frame& frame = res->frames[pool.frame];
 	if(pool.frame == -1)
 		return;
-	if(frame.tex.is_null())
-		return;
 
-	const Rect2& rect = pool.rect;
-	const Rect2& src_rect = frame.region;
+	if(frame.tex.is_valid()) {
 
-	const Vector2& shadow_pos = res->shadow_pos;
-	if(shadow_pos.x != 0 && shadow_pos.y != 0)
-		draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color);
-	draw_texture_rect_region(frame.tex, rect, src_rect, modulate);
+		const Rect2& rect = pool.rect;
+		const Rect2& src_rect = frame.region;
+
+		const Vector2& shadow_pos = res->shadow_pos;
+		if(shadow_pos.x != 0 && shadow_pos.y != 0)
+			draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color);
+		draw_texture_rect_region(frame.tex, rect, src_rect, modulate);
+	}
 
 	if(debug_collisions && pool.frame < res->blocks.size()) {
 
 		const OSpriteResource::Blocks& blocks = res->blocks[pool.frame];
 		for(int i = 0; i < blocks.boxes.size(); i++) {
 
-			const Rect2& rect = blocks.boxes[i];
+			const OSprite::Box& rect = blocks.boxes[i];
 			static Color color = Color(0, 1, 1, 0.5);
-			draw_circle(rect.pos + (rect.size / 2), rect.size.width / 2, color);
+			draw_circle(rect.pos, rect.radius, color);
 		}
 	}
 }
@@ -132,7 +133,7 @@ int OSprite::_get_frame(OSprite::OSpriteResource::Action *p_action) const {
 		*p_action = *action;
 
 	int total_frames = (action->to - action->from) + 1;
-	int frame = int(current_pos / res->fps_delta) % int(total_frames);
+	frame = int(current_pos / res->fps_delta) % int(total_frames);
 	if(forward)
 		frame += action->from;
 	else
@@ -226,6 +227,8 @@ void OSprite::_notification(int p_what) {
 			set_fixed_process(false);
 			set_process(false);
 		}
+		OSpriteCollision::get_singleton()->add(this);
+
 	} break;
 	case NOTIFICATION_READY: {
 
@@ -255,6 +258,7 @@ void OSprite::_notification(int p_what) {
 	case NOTIFICATION_EXIT_TREE: {
 
 		stop();
+		OSpriteCollision::get_singleton()->remove(this);
 	} break;
 	}
 }
@@ -300,6 +304,7 @@ bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
 	loop = p_loop;
 	delay = p_delay;
 	current_pos = 0;
+	frame = 0;
 
 	_set_process(true);
 
@@ -450,6 +455,8 @@ OSprite::AnimationProcessMode OSprite::get_animation_process_mode() const {
 
 void OSprite::set_collision_mode(CollisionMode p_mode) {
 
+	if(is_inside_tree())
+		OSpriteCollision::get_singleton()->mode_changed(this, collision_mode, p_mode);
 	collision_mode = p_mode;
 }
 
@@ -518,6 +525,8 @@ void OSprite::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("animation_start", PropertyInfo(Variant::STRING, "action")));
 	ADD_SIGNAL(MethodInfo("animation_end", PropertyInfo(Variant::STRING, "action"), PropertyInfo(Variant::BOOL, "finish")));
+	ADD_SIGNAL(MethodInfo("collision_enter", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
+	ADD_SIGNAL(MethodInfo("collision_leave", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
 
 	BIND_CONSTANT(ANIMATION_PROCESS_FIXED);
 	BIND_CONSTANT(ANIMATION_PROCESS_IDLE);
@@ -535,6 +544,18 @@ Rect2 OSprite::get_item_rect() const {
 
 	const OSpriteResource::Pool& pool = res->pools[frame];
 	return pool.rect;
+}
+
+const Vector<OSprite::Box>& OSprite::get_collision() const {
+
+	static Vector<OSprite::Box> empty;
+	ERR_FAIL_COND_V(!res.is_valid(), empty);
+
+	const OSpriteResource::Pool& pool = res->pools[frame];
+	if(pool.frame >= res->blocks.size())
+		return empty;
+	const OSpriteResource::Blocks& blocks = res->blocks[pool.frame];
+	return blocks.boxes;
 }
 
 OSprite::OSprite() {
@@ -556,6 +577,7 @@ OSprite::OSprite() {
 	flip_x = false;
 	flip_y = false;
 	current_pos = 0;
+	frame = 0;
 }
 
 OSprite::~OSprite() {

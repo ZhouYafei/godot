@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.h                                                     */
+/*  osprite_collision.h                                                  */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -27,80 +27,38 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 #ifdef MODULE_OCEAN_ENABLED
-
-#include "object_type_db.h"
-#include "core/globals.h"
-#include "register_types.h"
+#ifndef OSPRITE_COLLISION_H
+#define OSPRITE_COLLISION_H
 
 #include "osprite.h"
-#include "osprite_collision.h"
 
-#include "core/os/file_access.h"
-#include "core/io/resource_loader.h"
-#include "scene/resources/texture.h"
+class OSpriteCollision : public Node {
+	OBJ_TYPE(OSpriteCollision, Node)
 
-typedef Ref<Texture> TextureRef;
+	typedef Set<size_t> CollisionIds;
+	typedef HashMap<size_t, CollisionIds> CollisionMaps;
+	CollisionMaps objects;
 
-class ResourceFormatLoaderOSprite : public ResourceFormatLoader {
+	void _set_process(bool p_mode);
+	void _check_collision();
+	bool _is_collision(size_t left, size_t right);
+	void _on_collision_enter(size_t left, size_t right);
+	void _on_collision_leave(size_t left, size_t right);
+
+protected:
+	void _notification(int p_what);
+
 public:
+	OSpriteCollision();
+	virtual ~OSpriteCollision();
 
-	virtual RES load(const String &p_path, const String& p_original_path = "", Error *r_error=NULL) {
+	void add(OSprite *sprite);
+	void remove(OSprite *sprite);
+	void mode_changed(OSprite *sprite, OSprite::CollisionMode p_prev, OSprite::CollisionMode p_now);
 
-		if (r_error)
-			*r_error=ERR_CANT_OPEN;
-
-		OSprite::OSpriteResource *res = memnew(OSprite::OSpriteResource);
-
-		Ref<OSprite::OSpriteResource> ref(res);
-		ERR_FAIL_COND_V(res->load(p_path) != OK, RES());
-		res->set_path(p_path);
-		return ref;
-	}
-
-	virtual void get_recognized_extensions(List<String> *p_extensions) const {
-
-		p_extensions->push_back("json");
-		p_extensions->push_back("schema");
-	}
-
-	virtual bool handles_type(const String& p_type) const {
-
-		return p_type=="OSpriteResource";
-	}
-
-	virtual String get_resource_type(const String &p_path) const {
-
-		String el = p_path.extension().to_lower();
-		if (el=="json" || el=="schema")
-			return "OSpriteResource";
-		return "";
-	}
+	static OSpriteCollision *get_singleton();
 };
 
-static ResourceFormatLoaderOSprite *resource_loader_osprite = NULL;
-static OSpriteCollision *osprite_collision = NULL;
 
-void register_ocean_types() {
-
-	ObjectTypeDB::register_type<OSprite>();
-	ObjectTypeDB::register_type<OSpriteCollision>();
-	ObjectTypeDB::register_type<OSprite::OSpriteResource>();
-	resource_loader_osprite = memnew( ResourceFormatLoaderOSprite );
-	ResourceLoader::add_resource_format_loader(resource_loader_osprite);
-	osprite_collision = memnew (OSpriteCollision);
-}
-
-void unregister_ocean_types() {
-
-	if (OSpriteCollision::get_singleton() != NULL)
-		memdelete (osprite_collision);
-	if (resource_loader_osprite)
-		memdelete(resource_loader_osprite);
-}
-
-#else
-
-void register_ocean_types() {}
-void unregister_ocean_types() {}
-
+#endif // OSPRITE_COLLISION_H
 #endif // MODULE_OCEAN_ENABLED
