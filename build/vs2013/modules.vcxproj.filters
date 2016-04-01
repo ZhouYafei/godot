@@ -43,6 +43,9 @@
     <Filter Include="modules\digest\text">
       <UniqueIdentifier>{ec9e8efa-c806-4d4c-9277-c4ecf22d8cee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\ocean">
+      <UniqueIdentifier>{208dd02e-abe6-4b6c-bfa5-7e855b64c437}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\modules\register_module_types.cpp">
@@ -270,6 +273,18 @@
     <ClCompile Include="..\..\modules\digest\text\text_asset.cpp">
       <Filter>modules\digest\text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\ocean\osprite.cpp">
+      <Filter>modules\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\ocean\register_types.cpp">
+      <Filter>modules\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\ocean\osprite_collision.cpp">
+      <Filter>modules\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\ocean\osprite_resource.cpp">
+      <Filter>modules\ocean</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -493,6 +508,15 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\digest\text\text_asset.h">
       <Filter>modules\digest\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\ocean\osprite.h">
+      <Filter>modules\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\ocean\register_types.h">
+      <Filter>modules\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\ocean\osprite_collision.h">
+      <Filter>modules\ocean</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

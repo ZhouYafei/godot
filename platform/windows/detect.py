@@ -217,6 +217,8 @@ def configure(env):
 
 			env.Append(CCFLAGS=['/O2','/DDEBUG_ENABLED'])
 			env.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
+			env.Append(LINKFLAGS=['/DEBUG'])
+			
 		elif (env["target"]=="debug_release"):
 
 			env.Append(CCFLAGS=['/Z7','/Od'])
