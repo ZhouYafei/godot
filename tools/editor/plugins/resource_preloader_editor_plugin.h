@@ -45,6 +45,7 @@ class ResourcePreloaderEditor : public PanelContainer {
 	Button *load;
 	Button *_delete;
 	Button *paste;
+	Button *clear;
 	Tree *tree;
 	bool loading_scene;
 
@@ -60,6 +61,7 @@ class ResourcePreloaderEditor : public PanelContainer {
 	void _load_scene_pressed();
 	void _files_load_request(const Vector<String>& p_paths);
 	void _paste_pressed();
+	void _clear_pressed();
 	void _delete_pressed();
 	void _delete_confirm_pressed();
 	void _update_library();

@@ -198,6 +198,11 @@ void ResourcePreloaderEditor::_paste_pressed() {
 
 }
 
+void ResourcePreloaderEditor::_clear_pressed() {
+
+	preloader->remove_all();
+	_update_library();
+}
 
 void ResourcePreloaderEditor::_delete_pressed() {
 
@@ -287,6 +292,7 @@ void ResourcePreloaderEditor::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("_item_edited"),&ResourcePreloaderEditor::_item_edited);
 	ObjectTypeDB::bind_method(_MD("_delete_pressed"),&ResourcePreloaderEditor::_delete_pressed);
 	ObjectTypeDB::bind_method(_MD("_paste_pressed"),&ResourcePreloaderEditor::_paste_pressed);
+	ObjectTypeDB::bind_method(_MD("_clear_pressed"),&ResourcePreloaderEditor::_clear_pressed);
 	ObjectTypeDB::bind_method(_MD("_delete_confirm_pressed"),&ResourcePreloaderEditor::_delete_confirm_pressed);
 	ObjectTypeDB::bind_method(_MD("_files_load_request"),&ResourcePreloaderEditor::_files_load_request);
 	ObjectTypeDB::bind_method(_MD("_update_library"),&ResourcePreloaderEditor::_update_library);
@@ -315,6 +321,10 @@ ResourcePreloaderEditor::ResourcePreloaderEditor() {
 	paste->set_text(_TR("Paste"));
 	hbc->add_child(paste);
 
+	clear = memnew( Button );
+	clear->set_text("Clear");
+	hbc->add_child(clear);
+
 	file = memnew( EditorFileDialog );
 	add_child(file);
 
@@ -335,6 +345,7 @@ ResourcePreloaderEditor::ResourcePreloaderEditor() {
 	load->connect("pressed", this,"_load_pressed");
 	_delete->connect("pressed", this,"_delete_pressed");
 	paste->connect("pressed", this,"_paste_pressed");
+	clear->connect("pressed", this,"_clear_pressed");
 	file->connect("files_selected", this,"_files_load_request");
 	//dialog->connect("confirmed", this,"_delete_confirm_pressed");
 	tree->connect("item_edited", this,"_item_edited");
