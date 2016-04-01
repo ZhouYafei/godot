@@ -1575,7 +1575,7 @@ Variant::operator String() const {
 				str+=String::rep("  ",tab)+pairs[i].key+" = "+pairs[i].value;
 			}
 
-			return str+"\n"+String::rep("  ",tab)+"}";
+			return str+"\n"+String::rep("  ",tab--)+"}";
 		} break;
 		case VECTOR3_ARRAY: {
 
