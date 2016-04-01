@@ -72,6 +72,10 @@ OSpriteCollision::~OSpriteCollision() {
 
 void OSpriteCollision::add(OSprite *sprite) {
 
+	// ignore object if collision mode is ignored
+	if(sprite->get_collision_mode() == OSprite::COLLISION_IGNORED)
+		return;
+
 	if(objects.empty())
 		_set_process(true);
 
@@ -175,13 +179,13 @@ void OSpriteCollision::_on_collision_enter(size_t left, size_t right) {
 	if(!objects[left].has(right)) {
 
 		objects[left].insert(right);
-		owner->emit_signal("collision_enter", left, right);
+		owner->emit_signal("collision_enter", owner, body);
 		//printf("collision_enter %d %d\n", left, right);
 	}
 	if(!objects[right].has(left)) {
 
 		objects[right].insert(left);
-		body->emit_signal("collision_enter", right, left);
+		body->emit_signal("collision_enter", body, owner);
 		//printf("collision_enter %d %d\n", right, left);
 	}
 }
