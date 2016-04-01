@@ -45,6 +45,7 @@ public:
 		COLLISION_IGNORED,
 		COLLISION_FISH,
 		COLLISION_BULLET,
+		COLLISION_MAX,
 	};
 
 	class OSpriteResource : public Resource {

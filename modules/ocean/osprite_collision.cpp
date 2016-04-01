@@ -45,6 +45,7 @@ void OSpriteCollision::_notification(int p_what) {
 	}
 	break;
 
+	case NOTIFICATION_FIXED_PROCESS:
 	case NOTIFICATION_PROCESS: {
 
 		_check_collision();
@@ -72,9 +73,6 @@ OSpriteCollision::~OSpriteCollision() {
 
 void OSpriteCollision::add(OSprite *sprite) {
 
-	// ignore object if collision mode is ignored
-	if(sprite->get_collision_mode() == OSprite::COLLISION_IGNORED)
-		return;
 
 	if(objects.empty())
 		_set_process(true);
@@ -114,28 +112,29 @@ void OSpriteCollision::_set_process(bool p_mode) {
 		if(is_inside_tree())
 			return;
 		root->call_deferred("add_child", this);
-		set_process(true);
+		set_fixed_process(true);
 	} else {
 
 		root->remove_child(this);
-		set_process(false);
+		set_fixed_process(false);
 	}
 }
 
-void OSpriteCollision::mode_changed(OSprite *sprite, OSprite::CollisionMode p_prev, OSprite::CollisionMode p_now) {
-
-	if(p_prev == OSprite::COLLISION_IGNORED && p_now != OSprite::COLLISION_IGNORED)
-		add(sprite);
-	else if(p_prev != OSprite::COLLISION_IGNORED && p_now == OSprite::COLLISION_IGNORED)
-		remove(sprite);
-}
+static bool sCollisionFlags[OSprite::COLLISION_MAX][OSprite::COLLISION_MAX] = {
+	// ignore
+	{ false, false, false }, // ignore/fish/bullet
+	// fish
+	{ false, false, true },	 // ignore/fish/bullet
+	// bullet
+	{ false, true, false },  // ignore/fish/bullet
+};
 
 bool OSpriteCollision::_is_collision(size_t left, size_t right) {
 
 	OSprite *owner = (OSprite *) left;
 	OSprite *body = (OSprite *) right;
 
-	if(owner->get_collision_mode() == body->get_collision_mode())
+	if(!sCollisionFlags[owner->get_collision_mode()][body->get_collision_mode()])
 		return false;
 
 	const Vector<OSprite::Box>& owner_boxes = owner->get_collision();
@@ -146,10 +145,10 @@ bool OSpriteCollision::_is_collision(size_t left, size_t right) {
 	if(body_boxes.size() == 0)
 		return false;
 
-	Vector2 owner_pos = owner->get_pos();
+	Vector2 owner_pos = owner->get_global_pos();
 	float owner_rot = owner->get_rot();
 
-	Vector2 body_pos = body->get_pos();
+	Vector2 body_pos = body->get_global_pos();
 	float body_rot = body->get_rot();
 
 	for(int i = 0; i < owner_boxes.size(); i++) {
@@ -199,7 +198,7 @@ void OSpriteCollision::_on_collision_leave(size_t left, size_t right) {
 
 		objects[left].erase(right);
 		owner->emit_signal("collision_leave", owner, body);
-		//printf("collision_leave %d %d\n", left, right);
+		//printf("colliison_leave %d %d\n", left, right);
 	}
 	if(objects[right].has(left)) {
 
@@ -210,7 +209,6 @@ void OSpriteCollision::_on_collision_leave(size_t left, size_t right) {
 }
 
 void OSpriteCollision::_check_collision() {
-
 
 	List<size_t> owners;
 	objects.get_key_list(&owners);

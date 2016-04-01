@@ -455,8 +455,6 @@ OSprite::AnimationProcessMode OSprite::get_animation_process_mode() const {
 
 void OSprite::set_collision_mode(CollisionMode p_mode) {
 
-	if(is_inside_tree())
-		OSpriteCollision::get_singleton()->mode_changed(this, collision_mode, p_mode);
 	collision_mode = p_mode;
 }
 

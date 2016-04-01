@@ -54,7 +54,6 @@ public:
 
 	void add(OSprite *sprite);
 	void remove(OSprite *sprite);
-	void mode_changed(OSprite *sprite, OSprite::CollisionMode p_prev, OSprite::CollisionMode p_now);
 
 	static OSpriteCollision *get_singleton();
 };
