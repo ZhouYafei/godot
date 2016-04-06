@@ -128,6 +128,8 @@ private:
 	void _set_process(bool p_process, bool p_force = false);
 	int _get_frame(OSpriteResource::Action *p_action = NULL) const;
 
+	Array _get_collisions(bool p_global_pos = false) const;
+
 protected:
 	bool _set(const StringName& p_name, const Variant& p_value);
 	bool _get(const StringName& p_name, Variant &r_ret) const;
@@ -183,7 +185,7 @@ public:
 
 	virtual Rect2 get_item_rect() const;
 
-	const Vector<OSprite::Box>& get_collision() const;
+	const Vector<OSprite::Box>& get_collisions() const;
 	
 	OSprite();
 	virtual ~OSprite();

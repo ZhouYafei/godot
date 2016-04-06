@@ -137,11 +137,11 @@ bool OSpriteCollision::_is_collision(size_t left, size_t right) {
 	if(!sCollisionFlags[owner->get_collision_mode()][body->get_collision_mode()])
 		return false;
 
-	const Vector<OSprite::Box>& owner_boxes = owner->get_collision();
+	const Vector<OSprite::Box>& owner_boxes = owner->get_collisions();
 	if(owner_boxes.size() == 0)
 		return false;
 
-	const Vector<OSprite::Box>& body_boxes = body->get_collision();
+	const Vector<OSprite::Box>& body_boxes = body->get_collisions();
 	if(body_boxes.size() == 0)
 		return false;
 

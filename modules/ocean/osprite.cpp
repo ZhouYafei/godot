@@ -476,8 +476,8 @@ bool OSprite::is_debug_collisions() const {
 
 void OSprite::_bind_methods() {
 
-	ObjectTypeDB::bind_method(_MD("set_resource", "res"), &OSprite::set_resource);
-	ObjectTypeDB::bind_method(_MD("get_resource"), &OSprite::get_resource);
+	ObjectTypeDB::bind_method(_MD("set_resource", "res:OSpriteResource"), &OSprite::set_resource);
+	ObjectTypeDB::bind_method(_MD("get_resource:OSpriteResource"), &OSprite::get_resource);
 
 	ObjectTypeDB::bind_method(_MD("has", "name"), &OSprite::has);
 	ObjectTypeDB::bind_method(_MD("play", "name", "loop", "delay"), &OSprite::play, false, 0);
@@ -505,6 +505,8 @@ void OSprite::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_collision_mode"),&OSprite::get_collision_mode);
 	ObjectTypeDB::bind_method(_MD("get_animation_names"), &OSprite::get_animation_names);
 
+	ObjectTypeDB::bind_method(_MD("get_collisions", "global_pos"), &OSprite::_get_collisions, false);
+
 	ObjectTypeDB::bind_method(_MD("set_debug_collisions", "enable"), &OSprite::set_debug_collisions);
 	ObjectTypeDB::bind_method(_MD("is_debug_collisions"), &OSprite::is_debug_collisions);
 
@@ -523,8 +525,8 @@ void OSprite::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("animation_start", PropertyInfo(Variant::STRING, "action")));
 	ADD_SIGNAL(MethodInfo("animation_end", PropertyInfo(Variant::STRING, "action"), PropertyInfo(Variant::BOOL, "finish")));
-	ADD_SIGNAL(MethodInfo("collision_enter", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
-	ADD_SIGNAL(MethodInfo("collision_leave", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
+	ADD_SIGNAL(MethodInfo("collision_enter", PropertyInfo(Variant::OBJECT, "owner:OSprite"), PropertyInfo(Variant::OBJECT, "body:OSprite")));
+	ADD_SIGNAL(MethodInfo("collision_leave", PropertyInfo(Variant::OBJECT, "owner:OSprite"), PropertyInfo(Variant::OBJECT, "body:OSprite")));
 
 	BIND_CONSTANT(ANIMATION_PROCESS_FIXED);
 	BIND_CONSTANT(ANIMATION_PROCESS_IDLE);
@@ -544,7 +546,7 @@ Rect2 OSprite::get_item_rect() const {
 	return pool.rect;
 }
 
-const Vector<OSprite::Box>& OSprite::get_collision() const {
+const Vector<OSprite::Box>& OSprite::get_collisions() const {
 
 	static Vector<OSprite::Box> empty;
 	ERR_FAIL_COND_V(!res.is_valid(), empty);
@@ -554,6 +556,26 @@ const Vector<OSprite::Box>& OSprite::get_collision() const {
 		return empty;
 	const OSpriteResource::Blocks& blocks = res->blocks[pool.frame];
 	return blocks.boxes;
+}
+
+Array OSprite::_get_collisions(bool p_global_pos) const {
+
+	const Vector<Box>& boxes = get_collisions();
+	Array result;
+	result.resize(boxes.size());
+	float rot = get_rot();
+
+	Vector2 pos = p_global_pos ? get_global_pos() : Vector2(0, 0);
+	for(int i = 0; i < boxes.size(); i++) {
+
+		const Box& box = boxes[i];
+		Vector2 box_pos = pos + box.pos.rotated(rot);
+		Dictionary d;
+		d["pos"] = box_pos;
+		d["radius"] = box.radius;
+		result[i] = d;
+	}
+	return result;
 }
 
 OSprite::OSprite() {
