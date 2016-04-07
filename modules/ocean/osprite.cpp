@@ -506,6 +506,7 @@ void OSprite::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_animation_names"), &OSprite::get_animation_names);
 
 	ObjectTypeDB::bind_method(_MD("get_collisions", "global_pos"), &OSprite::_get_collisions, false);
+	ObjectTypeDB::bind_method(_MD("get_resource_scale"), &OSprite::get_resource_scale, false);
 
 	ObjectTypeDB::bind_method(_MD("set_debug_collisions", "enable"), &OSprite::set_debug_collisions);
 	ObjectTypeDB::bind_method(_MD("is_debug_collisions"), &OSprite::is_debug_collisions);
@@ -558,12 +559,19 @@ const Vector<OSprite::Box>& OSprite::get_collisions() const {
 	return blocks.boxes;
 }
 
+float OSprite::get_resource_scale() const {
+
+	ERR_FAIL_COND_V(!res.is_valid(), 1);
+	return res->scale;
+}
+
 Array OSprite::_get_collisions(bool p_global_pos) const {
 
 	const Vector<Box>& boxes = get_collisions();
 	Array result;
 	result.resize(boxes.size());
 	float rot = get_rot();
+	float scale = get_resource_scale();
 
 	Vector2 pos = p_global_pos ? get_global_pos() : Vector2(0, 0);
 	for(int i = 0; i < boxes.size(); i++) {
@@ -572,7 +580,7 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 		Vector2 box_pos = pos + box.pos.rotated(rot);
 		Dictionary d;
 		d["pos"] = box_pos;
-		d["radius"] = box.radius;
+		d["radius"] = box.radius * scale;
 		result[i] = d;
 	}
 	return result;

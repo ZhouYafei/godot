@@ -157,6 +157,7 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 
 	Array frames = d["frames"].operator Array();
 	this->frames.resize(frames.size());
+	int last_valid_texi = -1;
 	for(int i = 0; i < frames.size(); i++) {
 
 		Frame& frame = this->frames[i];
@@ -167,6 +168,13 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 		if(f->file_exists(path)) {
 
 			frame.tex = ResourceLoader::load(path, "Texture");
+			// use last valid frame info(tex/region) if current frame texture is not exists
+			if(!frame.tex.is_valid() && last_valid_texi != -1) {
+				frame = (Frame&) frames[last_valid_texi];
+				continue;
+			}
+			last_valid_texi = i;
+
 			if(region.size() == 4)
 				frame.region = Rect2(region[0], region[1], region[2], region[3]);
 			else if(frame.tex.is_valid()) {

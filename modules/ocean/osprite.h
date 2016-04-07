@@ -186,6 +186,7 @@ public:
 	virtual Rect2 get_item_rect() const;
 
 	const Vector<OSprite::Box>& get_collisions() const;
+	float get_resource_scale() const;
 	
 	OSprite();
 	virtual ~OSprite();
