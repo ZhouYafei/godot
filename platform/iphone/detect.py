@@ -109,7 +109,7 @@ def configure(env):
 	if env['store_kit'] == 'yes':
 		env.Append(CPPFLAGS=['-DSTOREKIT_ENABLED'])
 		env.Append(LINKFLAGS=['-framework', 'StoreKit'])
-	
+
 	if env['icloud'] == 'yes':
 		env.Append(CPPFLAGS=['-DICLOUD_ENABLED'])
 
@@ -118,7 +118,7 @@ def configure(env):
 	if (env["target"]=="release"):
 
 		env.Append(CCFLAGS=['-O3', '-DNS_BLOCK_ASSERTIONS=1','-Wall', '-gdwarf-2']) # removed -ffast-math
-		env.Append(LINKFLAGS=['-O3']) # 
+		env.Append(LINKFLAGS=['-O3']) #
 
 	elif env["target"] == "release_debug":
 		env.Append(CCFLAGS=['-Os', '-DNS_BLOCK_ASSERTIONS=1','-Wall','-DDEBUG_ENABLED'])
@@ -152,7 +152,7 @@ def configure(env):
 		env.Append(CPPFLAGS=['-fno-exceptions'])
 	#env['neon_enabled']=True
 	env['S_compiler'] = '$IPHONEPATH/Developer/usr/bin/gcc'
-	
+
 	import methods
 	env.Append( BUILDERS = { 'GLSL120' : env.Builder(action = methods.build_legacygl_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )
 	env.Append( BUILDERS = { 'GLSL' : env.Builder(action = methods.build_glsl_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )

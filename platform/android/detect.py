@@ -56,9 +56,9 @@ def configure(env):
 	# http://www.scons.org/wiki/LongCmdLinesOnWin32
 	import os
 	if (os.name=="nt"):
-	
+
 		import subprocess
-			
+
 		def mySubProcess(cmdline,env):
 			#print "SPAWNED : " + cmdline
 			startupinfo = subprocess.STARTUPINFO()
@@ -72,26 +72,26 @@ def configure(env):
 				print err
 				print "====="
 			return rv
-				
+
 		def mySpawn(sh, escape, cmd, args, env):
-								
+
 			newargs = ' '.join(args[1:])
 			cmdline = cmd + " " + newargs
-				
+
 			rv=0
 			if len(cmdline) > 32000 and cmd.endswith("ar") :
 				cmdline = cmd + " " + args[1] + " " + args[2] + " "
 				for i in range(3,len(args)) :
 					rv = mySubProcess( cmdline + args[i], env )
 					if rv :
-						break	
-			else:				
+						break
+			else:
 				rv = mySubProcess( cmdline, env )
-					
+
 			return rv
-				
+
 		env['SPAWN'] = mySpawn
-	
+
 	ndk_platform=env['ndk_platform']
 
 	if env['android_arch'] not in ['armv7','armv6','x86']:
@@ -224,7 +224,7 @@ def configure(env):
 		elif env["android_arch"]=="armv7":
 			env.Append(CPPPATH=[env["ANDROID_NDK_ROOT"]+"/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a/include"])
 			env.Append(LIBPATH=[env["ANDROID_NDK_ROOT"]+"/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a"])
-		
+
 		env.Append(LIBS=["gnustl_static","supc++"])
 		env.Append(CPPPATH=[env["ANDROID_NDK_ROOT"]+"/sources/cpufeatures"])
 

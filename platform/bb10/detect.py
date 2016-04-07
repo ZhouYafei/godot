@@ -36,7 +36,7 @@ def get_flags():
 		('tools', 'no'),
 		('nedmalloc', 'no'),
 		('theora', 'no'),
-		
+
 	]
 
 def configure(env):
