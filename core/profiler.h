@@ -41,6 +41,10 @@ public:
 	~Profiler();
 };
 
+#ifdef _WIN32
 #define PROFILER(what) Profiler prof(what);
+#else
+#define PROFILER(what)
+#endif
 
 #endif
