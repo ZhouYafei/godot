@@ -183,7 +183,11 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)register_types_gridmap.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\modules\ik\ik.cpp" />
-    <ClCompile Include="..\..\modules\ik\register_types.cpp" />
+    <ClCompile Include="..\..\modules\ik\register_types.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_ik.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)register_types_ik.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)register_types_ik.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\..\modules\luascript\compat51.cpp" />
     <ClCompile Include="..\..\modules\luascript\lua_editor.cpp" />
     <ClCompile Include="..\..\modules\luascript\lua_instance.cpp" />
@@ -197,7 +201,11 @@
     <ClCompile Include="..\..\modules\ocean\osprite.cpp" />
     <ClCompile Include="..\..\modules\ocean\osprite_collision.cpp" />
     <ClCompile Include="..\..\modules\ocean\osprite_resource.cpp" />
-    <ClCompile Include="..\..\modules\ocean\register_types.cpp" />
+    <ClCompile Include="..\..\modules\ocean\register_types.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_ocean.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)register_types_ocean.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)register_types_ocean.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\..\modules\register_module_types.cpp" />
     <ClCompile Include="..\..\modules\sdk\platform.cpp" />
     <ClCompile Include="..\..\modules\sdk\register_types.cpp">
