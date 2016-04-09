@@ -47,33 +47,43 @@ void OSprite::_animation_draw() {
 	if (!res.is_valid())
 		return;
 
-	OSpriteResource::Action action;
-	int index = _get_frame(&action);
-	if(index == -1)
+	if(!has(current_animation)) {
+
+		stop();
 		return;
+	}
+
+	const OSpriteResource::Action *action;
+	// current frame index
+	int index = _get_frame(action);
+	if(index == -1 || action == NULL)
+		return;
+	const OSpriteResource::Data& data = res->datas[action->index];
+	int from = action->from;
+	int to = action->to;
 
 	if(playing) {
 
 		if(!forward) {
-			int tmp = action.from;
-			action.from = action.to;
-			action.to = tmp;
+			int tmp = from;
+			from = to;
+			to = tmp;
 		}
 		//printf("%d %d %d\n", action.from, action.to, index);
 
-		if(index == action.from) {
+		if(index == from) {
 
-			emit_signal("animation_start", action.name);
+			emit_signal("animation_start", action->name);
 
-		} else if(index == action.to) {
+		} else if(index == to) {
 
-			emit_signal("animation_end", action.name, !loop);
+			emit_signal("animation_end", action->name, !loop);
 			if(!loop)
-				set_process(false);
+				_set_process(false);
 		}
 	}
 
-	const OSpriteResource::Pool& pool = res->pools[index];
+	const OSpriteResource::Pool& pool = data.pools[index];
 	const OSpriteResource::Frame& frame = res->frames[pool.frame];
 	if(pool.frame == -1)
 		return;
@@ -86,15 +96,16 @@ void OSprite::_animation_draw() {
 		const Vector2& shadow_pos = res->shadow_pos;
 		if(shadow_pos.x != 0 && shadow_pos.y != 0)
 			draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color);
+
 		draw_texture_rect_region(frame.tex, rect, src_rect, modulate);
 	}
 
-	if(debug_collisions && pool.frame < res->blocks.size()) {
+	if(debug_collisions) {
 
-		const OSpriteResource::Blocks& blocks = res->blocks[pool.frame];
-		for(int i = 0; i < blocks.boxes.size(); i++) {
+		const OSpriteResource::Blocks& blocks = get_collisions();
+		for(int i = 0; i < blocks.size(); i++) {
 
-			const OSprite::Box& rect = blocks.boxes[i];
+			const OSprite::Block& rect = blocks[i];
 			static Color color = Color(0, 1, 1, 0.5);
 			draw_circle(rect.pos, rect.radius, color);
 		}
@@ -119,27 +130,32 @@ void OSprite::_set_process(bool p_process, bool p_force) {
 	}
 }
 
-int OSprite::_get_frame(OSprite::OSpriteResource::Action *p_action) const {
+int OSprite::_get_frame(const OSpriteResource::Action *&p_action) const {
 
+	static OSprite::OSpriteResource::Data dummy;
 	if(!res.is_valid())
 		return -1;
+	ERR_FAIL_COND_V(!has(current_animation), -1);
 
-	if(!has(current_animation))
-		return res->shown_frame;
+	p_action = res->action_names[current_animation];
+	ERR_FAIL_COND_V(p_action == NULL, -1);
 
-	OSpriteResource::Action *action = res->action_names[current_animation];
-	ERR_FAIL_COND_V(action == NULL, -1);
-	if(p_action != NULL)
-		*p_action = *action;
+	int total_frames = p_action->to - p_action->from + 1;
+	int index = int(current_pos / res->fps_delta) % total_frames;
 
-	int total_frames = (action->to - action->from) + 1;
-	frame = int(current_pos / res->fps_delta) % int(total_frames);
+	// index always include([0] <-> [total_frames - 1])
+	if(index < prev_frame && prev_frame != total_frames - 1)
+		index = total_frames - 1;
+	else if(prev_frame == total_frames - 1 && index != 0)
+		index = 0;
+	prev_frame = index;
+
 	if(forward)
-		frame += action->from;
+		index += p_action->from;
 	else
-		frame = action->to - frame;
+		index = p_action->to - index - 1;
 
-	return frame;
+	return index;
 }
 
 bool OSprite::_set(const StringName& p_name, const Variant& p_value) {
@@ -257,7 +273,7 @@ void OSprite::_notification(int p_what) {
 
 	case NOTIFICATION_EXIT_TREE: {
 
-		stop();
+		_set_process(false);
 		OSpriteCollision::get_singleton()->remove(this);
 	} break;
 	}
@@ -298,13 +314,14 @@ bool OSprite::has(const String& p_name) const {
 bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
 
 	ERR_FAIL_COND_V(!res.is_valid(), false);
+	ERR_EXPLAIN("Unknown action: " + p_name);
 	ERR_FAIL_COND_V(!res->action_names.has(p_name), false);
 	current_animation = p_name;
 	playing = true;
 	loop = p_loop;
 	delay = p_delay;
 	current_pos = 0;
-	frame = 0;
+	prev_frame = 0;
 
 	_set_process(true);
 
@@ -315,7 +332,7 @@ void OSprite::stop() {
 
 	_set_process(false);
 	playing = false;
-	//current_animation = "[stop]";
+	current_animation = "[stop]";
 	reset();
 }
 
@@ -344,6 +361,7 @@ void OSprite::reset() {
 
 	ERR_FAIL_COND(!res.is_valid());
 	current_pos = 0;
+	prev_frame = 0;
 }
 
 void OSprite::seek(float p_pos) {
@@ -539,24 +557,36 @@ void OSprite::_bind_methods() {
 
 Rect2 OSprite::get_item_rect() const {
 
-	int frame = _get_frame();
-	if (!res.is_valid() || frame == -1)
+	if(!res.is_valid() || !has(current_animation))
 		return Node2D::get_item_rect();
 
-	const OSpriteResource::Pool& pool = res->pools[frame];
-	return pool.rect;
+	const OSpriteResource::Action *action;
+	// current frame index
+	int index = _get_frame(action);
+	if(index == -1 || action == NULL)
+		return Node2D::get_item_rect();
+	const OSpriteResource::Data& data = res->datas[action->index];
+	return data.pools[index].rect;
 }
 
-const Vector<OSprite::Box>& OSprite::get_collisions() const {
+const OSprite::Blocks& OSprite::get_collisions() const {
 
-	static Vector<OSprite::Box> empty;
+	static OSprite::Blocks empty;
 	ERR_FAIL_COND_V(!res.is_valid(), empty);
 
-	const OSpriteResource::Pool& pool = res->pools[frame];
-	if(pool.frame >= res->blocks.size())
+	const OSpriteResource::Action *action;
+	// current frame index
+	int index = _get_frame(action);
+	if(index == -1 || action == NULL)
 		return empty;
-	const OSpriteResource::Blocks& blocks = res->blocks[pool.frame];
-	return blocks.boxes;
+
+	if(action->blocks.size() > 0)
+		return action->blocks;
+
+	const OSpriteResource::Data& data = res->datas[action->index];
+	if(index >= data.blocks.size())
+		return empty;
+	return data.blocks[index];
 }
 
 float OSprite::get_resource_scale() const {
@@ -567,7 +597,7 @@ float OSprite::get_resource_scale() const {
 
 Array OSprite::_get_collisions(bool p_global_pos) const {
 
-	const Vector<Box>& boxes = get_collisions();
+	const Blocks& boxes = get_collisions();
 	Array result;
 	result.resize(boxes.size());
 	float rot = get_rot();
@@ -576,7 +606,7 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 	Vector2 pos = p_global_pos ? get_global_pos() : Vector2(0, 0);
 	for(int i = 0; i < boxes.size(); i++) {
 
-		const Box& box = boxes[i];
+		const Block& box = boxes[i];
 		Vector2 box_pos = pos + box.pos.rotated(rot);
 		Dictionary d;
 		d["pos"] = box_pos;
@@ -605,7 +635,7 @@ OSprite::OSprite() {
 	flip_x = false;
 	flip_y = false;
 	current_pos = 0;
-	frame = 0;
+	prev_frame = 0;
 }
 
 OSprite::~OSprite() {

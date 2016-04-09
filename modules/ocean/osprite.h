@@ -56,27 +56,38 @@ public:
 
 		Error load(const String& p_path);
 
-		struct Action {
-			String name;
-			int from;
-			int to;
+		struct Block {
+			Vector2 pos;
+			float radius;
 		};
+		typedef Vector<Block> Blocks;
 
-		struct Blocks {
+		struct Action {
 			int index;
-
-			struct Box {
-				Vector2 pos;
-				float radius;
-			};
-			Vector<Box> boxes;
+			int from, to;
+			String name;
+			String desc;
+			Blocks blocks;
 		};
 
 		struct Pool {
-			int index;
 			int frame;
 			Rect2 rect;
 			Rect2 shadow_rect;
+		};
+
+		struct Step {
+		};
+		typedef Vector<Step> Steps;
+
+		struct Data {
+			int width;
+			int height;
+			String name;
+
+			Vector<Blocks> blocks;
+			Vector<Pool> pools;
+			Vector<Steps> steps;
 		};
 
 		struct Frame {
@@ -91,14 +102,17 @@ public:
 		Vector<Frame> frames;
 		Vector<Action> actions;
 		HashMap<String,Action*> action_names;
-		Vector<Blocks> blocks;
-		Vector<Pool> pools;
+		Vector<Data> datas;
 		int shown_frame;
 
 	private:
-		void _fixup_rects();
+		void _post_process();
+		void _parse_blocks(Data& p_data, const Array& p_blocks);
+		void _parse_pools(Data& p_data, const Array& p_pools);
+		void _parse_steps(Data& p_data, const Array& p_steps);
 	};
-	typedef OSpriteResource::Blocks::Box Box;
+	typedef OSpriteResource::Block Block;
+	typedef OSpriteResource::Blocks Blocks;
 
 private:
 
@@ -120,13 +134,13 @@ private:
 
 	float delay;
 	float current_pos;
-	mutable int frame;
+	mutable int prev_frame;
 
 	void _dispose();
 	void _animation_process(float p_delta);
 	void _animation_draw();
 	void _set_process(bool p_process, bool p_force = false);
-	int _get_frame(OSpriteResource::Action *p_action = NULL) const;
+	int _get_frame(const OSpriteResource::Action *&p_action) const;
 
 	Array _get_collisions(bool p_global_pos = false) const;
 
@@ -185,7 +199,7 @@ public:
 
 	virtual Rect2 get_item_rect() const;
 
-	const Vector<OSprite::Box>& get_collisions() const;
+	const Blocks& get_collisions() const;
 	float get_resource_scale() const;
 	
 	OSprite();

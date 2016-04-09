@@ -51,24 +51,100 @@ OSprite::OSpriteResource::OSpriteResource()
 OSprite::OSpriteResource::~OSpriteResource() {
 }
 
-void OSprite::OSpriteResource::_fixup_rects() {
+void OSprite::OSpriteResource::_post_process() {
 
-	for(int i = 0; i < pools.size(); i++) {
+	for(int i = 0; i < datas.size(); i++) {
 
-		OSpriteResource::Pool& pool = pools[i];
-		if(pool.frame == -1)
-			continue;
-		OSpriteResource::Frame& frame = frames[pool.frame];
-		// draw anchor pos
-		pool.rect.pos *= scale;
-		// draw rect size
-		pool.rect.size = frame.region.size * scale;
-		// draw shadow rect
-		pool.shadow_rect = pool.rect;
-		pool.shadow_rect.pos += shadow_pos;
-		pool.shadow_rect.pos *= shadow_scale;
-		pool.shadow_rect.size *= shadow_scale;
+		Data& data = datas[i];
+		for(int j = 0; j < data.pools.size(); j++) {
+
+			Pool& pool = data.pools[j];
+			if(pool.frame == -1)
+				continue;
+			Frame& frame = frames[pool.frame];
+			// draw anchor pos
+			pool.rect.pos *= scale;
+			// draw rect size
+			pool.rect.size = frame.region.size * scale;
+			// draw shadow rect
+			pool.shadow_rect = pool.rect;
+			pool.shadow_rect.pos += shadow_pos;
+			pool.shadow_rect.pos *= shadow_scale;
+			pool.shadow_rect.size *= shadow_scale;
+		}	
 	}
+
+	for(int i = 0; i < actions.size(); i++) {
+
+		Action& act = actions[i];
+		Data& data = datas[act.index];
+		if(act.to == -1)
+			act.to = data.pools.size() - 1;
+	}
+}
+
+void OSprite::OSpriteResource::_parse_blocks(Data& p_data, const Array& p_blocks) {
+
+	p_data.blocks.resize(p_blocks.size());
+	for(int i = 0; i < p_blocks.size(); i++) {
+
+		Blocks& blks = p_data.blocks[i];
+		Dictionary d = p_blocks[i].operator Dictionary();
+		Array boxes = d["fields"].operator Array();
+		blks.resize(boxes.size());
+
+		for(int j = 0; j < boxes.size(); j++) {
+
+			Block& blk = blks[j];
+			Dictionary d = boxes[j].operator Dictionary();
+			// convert box collision to circle(pos+raidus)
+			blk.pos.x = d["x"];
+			blk.pos.y = d["y"];
+			int w = d["width"];
+			int h = d["height"];
+			blk.radius = (w + h) / 4;
+
+			// adjust by scale
+			blk.pos *= scale;
+			blk.radius *= scale;
+			// plus to circle center pos
+			blk.pos += Vector2(blk.radius, blk.radius);
+		}
+	}	
+}
+
+void OSprite::OSpriteResource::_parse_pools(Data& p_data, const Array& p_pools) {
+
+	p_data.pools.resize(p_pools.size());
+	for(int i = 0; i < p_pools.size(); i++) {
+
+		Pool& p = p_data.pools[i];
+		Dictionary d = p_pools[i].operator Dictionary();
+
+		p.frame = d["frame"];
+		p.rect.pos.x = -d["anchor_x"].operator int64_t();
+		p.rect.pos.y = -d["anchor_y"].operator int64_t();
+	}
+}
+
+void OSprite::OSpriteResource::_parse_steps(Data& p_data, const Array& p_steps) {
+
+	p_data.steps.resize(p_steps.size());
+	for(int i = 0; i < p_steps.size(); i++) {
+
+		Steps& steps = p_data.steps[i];
+		Dictionary d = p_steps[i].operator Dictionary();
+		Array boxes = d["fields"].operator Array();
+		steps.resize(boxes.size());
+
+		for(int j = 0; j < boxes.size(); j++) {
+
+			Step& step = steps[j];
+			Dictionary d = boxes[j].operator Dictionary();
+
+			// TODO: parse step data
+		}
+	}	
 }
 
 Error OSprite::OSpriteResource::load(const String& p_path) {
@@ -77,13 +153,12 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 	Ref<JsonAsset> asset = ResourceLoader::load(p_path, "JsonAsset", false, &err);
 	ERR_FAIL_COND_V(asset.is_null(), err);
 	const Dictionary& d = asset->get_value();
-	ERR_FAIL_COND_V(!d.has("action") || !d.has("pool") || !d.has("scale") || !d.has("fps"), ERR_FILE_CORRUPT);
+	ERR_FAIL_COND_V(!d.has("action") || !d.has("data") || !d.has("scale") || !d.has("fps"), ERR_FILE_CORRUPT);
 
 	frames.clear();
 	actions.clear();
 	action_names.clear();
-	blocks.clear();
-	pools.clear();
+	datas.clear();
 	shown_frame = 0;
 
 	bool pixel_alpha = true;
@@ -105,50 +180,51 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 
 		Action& act = this->actions[i];
 
-		Dictionary a = action[i].operator Dictionary();
-		act.name = a["name"];
-		act.from = a["from"];
-		act.to = a["to"];
+		Dictionary d = action[i].operator Dictionary();
+		act.index = d["index"];
+		if(d.has("range")) {
+
+			Array range = d["range"].operator Array();
+			act.from = range[0];
+			act.to = range[1];
+		} else {
+
+			act.from = 0;
+			act.to = -1;
+		}
+		if(d.has("block")) {
+
+			Array block = d["block"].operator Array();
+			Block blk;
+			blk.pos.x = block[0];
+			blk.pos.y = block[1];
+			blk.radius = block[2];
+			act.blocks.push_back(blk);
+		}
+
+		act.name = d["name"];
+		act.desc = d["desc"];
 		action_names.set(act.name, &act);
 	}
 
-	Array block = d["block"].operator Array();
-	this->blocks.resize(block.size());
-	for(int i = 0; i < block.size(); i++) {
+	Array data = d["data"].operator Array();
+	this->datas.resize(data.size());
+	for(int i = 0; i < data.size(); i++) {
 
-		Blocks& blk = this->blocks[i];
+		Data& dat = this->datas[i];
 
-		Dictionary b = block[i].operator Dictionary();
-		blk.index = b["index"];
-		Array fields = b["fields"].operator Array();
-		blk.boxes.resize(fields.size());
-		for(int j = 0; j < fields.size(); j++) {
+		Dictionary d = data[i].operator Dictionary();
+		dat.width = d["width"];
+		dat.height = d["height"];
+		dat.name = d["name"];
+		//d["dummy"];
 
-			//Vector<OSprite::OSpriteResource::Blocks::Box> box;
-			OSprite::OSpriteResource::Blocks::Box& box = blk.boxes[j];
-			Dictionary field = fields[j].operator Dictionary();
-			box.pos.x = field["x"];
-			box.pos.y = field["y"];
-			box.radius = field["width"];
-			// field["height"];
-			// field["reversed"];
-			box.pos *= scale;
-			box.radius *= (scale / 2);
-			box.pos += Vector2(box.radius, box.radius);
-		}
-	}
-
-	Array pool = d["pool"].operator Array();
-	this->pools.resize(pool.size());
-	for(int i = 0; i < pool.size(); i++) {
-
-		Pool& p = this->pools[i];
-
-		Dictionary d = pool[i].operator Dictionary();
-		p.index = d["index"];	
-		p.rect.pos.x = -d["anchor_x"].operator int64_t();
-		p.rect.pos.y = -d["anchor_y"].operator int64_t();
-		p.frame = d["frame"];
+		if(d.has("blocks"))
+			_parse_blocks(dat, d["blocks"]);
+		if(d.has("pools"))
+			_parse_pools(dat, d["pools"]);
+		if(d.has("steps"))
+			_parse_steps(dat, d["pools"]);
 	}
 
 	String tex_path = p_path.substr(0, p_path.rfind(".")) + "/";
@@ -198,7 +274,7 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 	}
 	memdelete(f);
 
-	_fixup_rects();
+	_post_process();
 
 	return OK;
 }
