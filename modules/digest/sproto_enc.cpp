@@ -64,7 +64,7 @@ static int encode_callback(const struct sproto_arg *args) {
 					+ source.get_type_name(source.get_type())
 					+ ")"
 				);
-				ERR_FAIL_V(0);
+				ERR_FAIL_V(SPROTO_CB_NOARRAY);
 			}
 			self->source = source;
 		}
@@ -86,20 +86,20 @@ static int encode_callback(const struct sproto_arg *args) {
 			else if(source.get_type() == Variant::ARRAY) {
 				Array array = source;
 				if(index >= array.size())
-					return 0;
+					return SPROTO_CB_NIL;
 				source = array[index];
 			}
 		} else {
 			if(source.get_type() == Variant::DICTIONARY) {
 				Dictionary dict = source;
 				if(!dict.has(index))
-					return 0;
+					return SPROTO_CB_NIL;
 				source = dict[index];
 			}
 			else if(source.get_type() == Variant::ARRAY) {
 				Array array = source;
 				if(index >= array.size())
-					return 0;
+					return SPROTO_CB_NIL;
 				source = array[index];
 			}
 		}
@@ -112,19 +112,19 @@ static int encode_callback(const struct sproto_arg *args) {
 				+ value.get_type_name(value.get_type())
 				+ ")"
 			);
-			ERR_FAIL_V(0);
+			ERR_FAIL_V(SPROTO_CB_ERROR);
 		}
 		if(value.get_type() == Variant::DICTIONARY) {
 			Dictionary dict = value;
 			if(!dict.has(args->tagname))
-				return 0;
+				return SPROTO_CB_NIL;
 			source = dict[args->tagname];
 		}
 		else if(value.get_type() == Variant::ARRAY) {
 			Array array = value;
 			int idx = atoi(args->tagname);
 			if(idx >= array.size())
-				return 0;
+				return SPROTO_CB_NIL;
 			source = array[idx];
 		}
 	}
@@ -141,7 +141,7 @@ static int encode_callback(const struct sproto_arg *args) {
 				+ source.get_type_name(source.get_type())
 				+ ")"
 			);
-			ERR_FAIL_V(0);
+			ERR_FAIL_V(SPROTO_CB_ERROR);
 		}
 		long v = (double) source;
 		// notice: godot only support 32bit integer
@@ -170,7 +170,7 @@ static int encode_callback(const struct sproto_arg *args) {
 				+ source.get_type_name(source.get_type())
 				+ ")"
 			);
-			ERR_FAIL_V(0);
+			ERR_FAIL_V(SPROTO_CB_ERROR);
 		}
 		double v = source;
 		*(double *)args->value = v;
@@ -186,7 +186,7 @@ static int encode_callback(const struct sproto_arg *args) {
 				+ source.get_type_name(source.get_type())
 				+ ")"
 			);
-			ERR_FAIL_V(0);
+			ERR_FAIL_V(SPROTO_CB_ERROR);
 		}
 		bool v = source;
 		*(int *)args->value = v;
@@ -202,7 +202,7 @@ static int encode_callback(const struct sproto_arg *args) {
 				+ source.get_type_name(source.get_type())
 				+ ")"
 			);
-			ERR_FAIL_V(0);
+			ERR_FAIL_V(SPROTO_CB_ERROR);
 		}
 		String v = source;
 		CharString utf8 = v.utf8();
@@ -256,7 +256,7 @@ static int encode_callback(const struct sproto_arg *args) {
 				+ source.get_type_name(source.get_type())
 				+ ")"
 			);
-			ERR_FAIL_V(0);
+			ERR_FAIL_V(SPROTO_CB_ERROR);
 		}
 		}
 	}
@@ -272,7 +272,7 @@ static int encode_callback(const struct sproto_arg *args) {
 				+ source.get_type_name(source.get_type())
 				+ ")"
 			);
-			ERR_FAIL_V(0);
+			ERR_FAIL_V(SPROTO_CB_ERROR);
 		}
 		sub.st = args->subtype;
 		sub.deep = self->deep + 1;
@@ -282,9 +282,9 @@ static int encode_callback(const struct sproto_arg *args) {
 	}
 	default:
 		ERR_EXPLAIN("Invalid field type: " + String::num(args->type));
-		ERR_FAIL_V(0);
+		ERR_FAIL_V(SPROTO_CB_ERROR);
 	}
-	return 0;
+	return SPROTO_CB_ERROR;
 }
 
 static ByteArray _encode(struct sproto_type *p_st, const Dictionary& p_dict) {

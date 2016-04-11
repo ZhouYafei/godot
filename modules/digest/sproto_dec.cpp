@@ -50,7 +50,7 @@ static int decode_callback(const struct sproto_arg *args) {
 	Variant& array = self->array;
 	Variant value;
 
-	if (args->index > 0) {
+	if (args->index != 0) {
 		// It's array
 		if (args->tagname != self->array_tag) {
 			self->array_tag = args->tagname;
@@ -63,6 +63,10 @@ static int decode_callback(const struct sproto_arg *args) {
 				object[args->tagname] = array;
 			} else {
 				array = object[args->tagname];
+			}
+			if (args->index < 0) {
+				// It's a empty array, return now.
+				return 0;
 			}
 		}
 	}
@@ -135,8 +139,9 @@ static int decode_callback(const struct sproto_arg *args) {
 			// This struct will set into a map, so mark the main index tag.
 			sub.mainindex_tag = args->mainindex;
 			r = sproto_decode(args->subtype, args->value, args->length, decode_callback, &sub);
-			if (r < 0 || r != args->length)
-				return r;
+			if (r < 0)
+				return SPROTO_CB_ERROR;
+			if (r != args->length)
 			// assert(args->index > 0);
 			ERR_FAIL_COND_V(sub.key.get_type() == Variant::NIL, 0);
 			self->array.set(sub.key, value);
@@ -144,7 +149,9 @@ static int decode_callback(const struct sproto_arg *args) {
 		} else {
 			sub.mainindex_tag = -1;
 			r = sproto_decode(args->subtype, args->value, args->length, decode_callback, &sub);
-			if (r < 0 || r != args->length)
+			if (r < 0)
+				return SPROTO_CB_ERROR;
+			if (r != args->length)
 				return r;
 			break;
 		}
