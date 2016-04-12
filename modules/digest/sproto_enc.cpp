@@ -211,7 +211,7 @@ static int encode_callback(const struct sproto_arg *args) {
 			return -1;
 		memcpy(args->value, utf8.get_data(), sz);
 		//printf("%s -> %d bytes\n", args->tagname, sz + 1);
-		return sz + 1;	// The length of empty string is 1.
+		return sz;	// The length of empty string is 1.
 	}
 	case SPROTO_TVARIANT: {
 		switch(source.get_type()) {
@@ -236,7 +236,7 @@ static int encode_callback(const struct sproto_arg *args) {
 			*buf++ = SPROTO_TSTRING;
 			memcpy(buf, utf8.get_data(), sz);
 			//printf("%s -> %d bytes\n", args->tagname, sz + 1);
-			return sz + 1;	// The length of empty string is 1.
+			return sz;	// The length of empty string is 1.
 		}
 		case Variant::BOOL: {
 			bool v = source;

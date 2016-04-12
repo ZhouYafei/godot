@@ -99,7 +99,7 @@ static int decode_callback(const struct sproto_arg *args) {
 			break;
 		case SPROTO_TSTRING: {
 			String s;
-			s.parse_utf8((const char *) buf, args->length - 1);
+			s.parse_utf8((const char *) buf, args->length);
 			value = s;
 		}
 			break;
