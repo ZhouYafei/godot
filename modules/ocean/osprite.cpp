@@ -316,13 +316,17 @@ bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
 	ERR_FAIL_COND_V(!res.is_valid(), false);
 	ERR_EXPLAIN("Unknown action: " + p_name);
 	ERR_FAIL_COND_V(!res->action_names.has(p_name), false);
-	current_animation = p_name;
-	playing = true;
-	loop = p_loop;
-	delay = p_delay;
-	current_pos = 0;
-	prev_frame = 0;
 
+	playing = true;
+	delay = p_delay;
+	// loop & same animation, ignored setup variables
+	if(p_loop && current_animation == p_name && p_loop == loop) {
+	} else {
+		current_animation = p_name;
+		loop = p_loop;
+		current_pos = 0;
+		prev_frame = 0;
+	}
 	_set_process(true);
 
 	return true;
@@ -366,7 +370,7 @@ void OSprite::reset() {
 
 void OSprite::seek(float p_pos) {
 
-	_animation_process(p_pos - current_pos);
+	_animation_process(p_pos);
 }
 
 float OSprite::tell() const {
