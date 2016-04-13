@@ -209,26 +209,26 @@ def configure(env):
 
 		if (env["target"]=="release"):
 
-			env.Append(CCFLAGS=['/O2'])
+			env.Append(CCFLAGS=['/Zi', '/O2'])
 			env.Append(LINKFLAGS=['/SUBSYSTEM:WINDOWS'])
 			env.Append(LINKFLAGS=['/ENTRY:mainCRTStartup'])
 
 		elif (env["target"]=="release_debug"):
 
-			env.Append(CCFLAGS=['/O2','/DDEBUG_ENABLED'])
+			env.Append(CCFLAGS=['/Zi', '/O2','/DDEBUG_ENABLED'])
 			env.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
 			env.Append(LINKFLAGS=['/DEBUG'])
 			
 		elif (env["target"]=="debug_release"):
 
-			env.Append(CCFLAGS=['/Z7','/Od'])
+			env.Append(CCFLAGS=['/Zi','/Od'])
 			env.Append(LINKFLAGS=['/DEBUG'])
 			env.Append(LINKFLAGS=['/SUBSYSTEM:WINDOWS'])
 			env.Append(LINKFLAGS=['/ENTRY:mainCRTStartup'])
 
 		elif (env["target"]=="debug"):
 
-			env.Append(CCFLAGS=['/Z7','/DDEBUG_ENABLED','/DDEBUG_MEMORY_ENABLED','/DD3D_DEBUG_INFO','/Od'])
+			env.Append(CCFLAGS=['/Zi','/DDEBUG_ENABLED','/DDEBUG_MEMORY_ENABLED','/DD3D_DEBUG_INFO','/Od'])
 			env.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
 			env.Append(LINKFLAGS=['/DEBUG'])
 
