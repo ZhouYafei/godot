@@ -42,6 +42,43 @@ void OSprite::_dispose() {
 	update();
 }
 
+void OSprite::_draw_texture_rect_region(const Ref<Texture>& p_texture,const Rect2& p_rect, const Rect2& p_src_rect,const Color& p_modulate, bool p_rotated) {
+
+	if(!p_rotated)
+		return this->draw_texture_rect_region(p_texture, p_rect, p_src_rect, p_modulate);
+
+	Vector<Vector2> points, uvs;
+	Vector<Color> colors;
+
+	float u = p_rect.pos.x;
+	float v = p_rect.pos.y;
+	float u2 = u + p_rect.size.x;
+	float v2 = v + p_rect.size.y;
+
+	points.push_back(Vector2(u,v2));
+	points.push_back(Vector2(u,v));
+	points.push_back(Vector2(u2,v));
+	points.push_back(Vector2(u2,v2));
+	{
+		Size2 size = p_texture->get_size();
+		u = p_src_rect.pos.x / size.width;
+		v = p_src_rect.pos.y / size.height;
+		u2 = (p_src_rect.pos.x + p_src_rect.size.height) / size.width;
+		v2 = (p_src_rect.pos.y + p_src_rect.size.width) / size.height;
+
+		uvs.push_back(Vector2(u,v));
+		uvs.push_back(Vector2(u2,v));
+		uvs.push_back(Vector2(u2,v2));
+		uvs.push_back(Vector2(u,v2));
+	}
+	colors.push_back(p_modulate);
+	colors.push_back(p_modulate);
+	colors.push_back(p_modulate);
+	colors.push_back(p_modulate);
+
+	draw_primitive(points, colors, uvs, p_texture);
+}
+
 void OSprite::_animation_draw() {
 
 	if (!res.is_valid())
@@ -93,11 +130,10 @@ void OSprite::_animation_draw() {
 		const Rect2& rect = pool.rect;
 		const Rect2& src_rect = frame.region;
 
-		const Vector2& shadow_pos = res->shadow_pos;
-		if(shadow_pos.x != 0 && shadow_pos.y != 0)
-			draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color);
+		if(pool.shadow_rect.size.x > 0 && pool.shadow_rect.size.y > 0)
+			_draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
 
-		draw_texture_rect_region(frame.tex, rect, src_rect, modulate);
+		_draw_texture_rect_region(frame.tex, rect, src_rect, modulate, frame.rotated);
 	}
 
 	if(debug_collisions) {
@@ -605,7 +641,7 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 	Array result;
 	result.resize(boxes.size());
 	float rot = get_rot();
-	float scale = get_resource_scale();
+	//float scale = get_resource_scale();
 
 	Vector2 pos = p_global_pos ? get_global_pos() : Vector2(0, 0);
 	for(int i = 0; i < boxes.size(); i++) {
@@ -614,7 +650,7 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 		Vector2 box_pos = pos + box.pos.rotated(rot);
 		Dictionary d;
 		d["pos"] = box_pos;
-		d["radius"] = box.radius * scale;
+		d["radius"] = box.radius;// * scale;
 		result[i] = d;
 	}
 	return result;

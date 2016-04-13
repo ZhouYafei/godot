@@ -93,6 +93,9 @@ public:
 		struct Frame {
 			Ref<Texture> tex;
 			Rect2 region;
+			Vector2 offset;
+			float scale;
+			bool rotated;
 		};
 
 		float fps_delta;
@@ -110,6 +113,9 @@ public:
 		void _parse_blocks(Data& p_data, const Array& p_blocks);
 		void _parse_pools(Data& p_data, const Array& p_pools);
 		void _parse_steps(Data& p_data, const Array& p_steps);
+
+		bool _load_texture_frames(const String& p_path, bool p_pixel_alpha);
+		bool _load_texture_pack(const String& p_path, bool p_pixel_alpha);
 	};
 	typedef OSpriteResource::Block Block;
 	typedef OSpriteResource::Blocks Blocks;
@@ -143,6 +149,7 @@ private:
 	int _get_frame(const OSpriteResource::Action *&p_action) const;
 
 	Array _get_collisions(bool p_global_pos = false) const;
+	void _draw_texture_rect_region(const Ref<Texture>& p_texture,const Rect2& p_rect, const Rect2& p_src_rect,const Color& p_modulate, bool p_rotated);
 
 protected:
 	bool _set(const StringName& p_name, const Variant& p_value);

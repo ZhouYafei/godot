@@ -34,6 +34,7 @@
 //#include "scene/main/resource_preloader.h"
 //#include "method_bind_ext.inc"
 #include "os/file_access.h"
+#include "os/dir_access.h"
 
 #include "modules/digest/text/json_asset.h"
 
@@ -63,14 +64,17 @@ void OSprite::OSpriteResource::_post_process() {
 				continue;
 			Frame& frame = frames[pool.frame];
 			// draw anchor pos
-			pool.rect.pos *= scale;
+			pool.rect.pos += (frame.offset * frame.scale);
+			pool.rect.pos *= this->scale;
 			// draw rect size
-			pool.rect.size = frame.region.size * scale;
+			pool.rect.size = frame.region.size * (this->scale * frame.scale);
 			// draw shadow rect
-			pool.shadow_rect = pool.rect;
-			pool.shadow_rect.pos += shadow_pos;
-			pool.shadow_rect.pos *= shadow_scale;
-			pool.shadow_rect.size *= shadow_scale;
+			if(shadow_pos.x != 0 && shadow_pos.y != 0) {
+				pool.shadow_rect = pool.rect;
+				pool.shadow_rect.pos += (frame.offset + shadow_pos);
+				pool.shadow_rect.pos *= shadow_scale;
+				pool.shadow_rect.size *= shadow_scale;
+			}
 		}	
 	}
 
@@ -145,6 +149,151 @@ void OSprite::OSpriteResource::_parse_steps(Data& p_data, const Array& p_steps) 
 			// TODO: parse step data
 		}
 	}	
+}
+
+static void _parse_rect2(const Dictionary& d, Rect2& rect) {
+
+	rect.pos.x = d["x"];
+	rect.pos.y = d["y"];
+	rect.size.width = d["w"];
+	rect.size.height = d["h"];
+}
+
+static void _parse_size(const Dictionary& d, Size2& size) {
+
+	size.width = d["w"];
+	size.height = d["h"];
+}
+
+bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_pixel_alpha) {
+
+	String base_path = p_path.basename();
+	String pack_path = base_path + "/";
+
+	Error err;
+	DirAccessRef da = DirAccess::open(pack_path, &err);
+	if(err != OK)
+		return false;
+
+	if(da->list_dir_begin())
+		return false;
+
+	bool loaded = false;
+	for(;;) {
+
+		String path = da->get_next();
+		if(path == "")
+			break;
+		if(path == "." || path == "..")
+			continue;
+
+		String ext = path.extension();
+		if(ext != "json")
+			continue;
+
+#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED)
+		String tex_path = pack_path + path.basename() + ".pkm";
+#else
+		String tex_path = pack_path + path.basename() + ".dds";
+#endif
+
+		Ref<Texture> tex = ResourceLoader::load(tex_path, "Texture");
+		if(tex.is_null())
+			continue;
+
+		path = pack_path + path;
+		Ref<JsonAsset> pack = ResourceLoader::load(path, "JsonAsset");
+		if(pack.is_null())
+			continue;
+
+		Dictionary d = pack->get_value();
+		// get texutre pack scale
+		Dictionary meta = d["meta"];
+		float pack_scale = meta["scale"];
+		pack_scale = 1 / pack_scale;
+
+		Dictionary frames = d["frames"];
+		Array names = frames.keys();
+		for(int i = 0; i < names.size(); i++) {
+
+			String name = names[i];
+			String base = name.basename();
+			int index = base.to_int();
+			if(index >= this->frames.size())
+				continue;
+			loaded = true;
+
+			Frame& frame = this->frames[index];
+			frame.tex = tex;
+
+			Dictionary info = frames[name];
+
+			Rect2 sprite_source_size;
+			//Size2 source_size;
+
+			_parse_rect2(info["frame"], frame.region);
+			frame.rotated = info["rotated"];
+			frame.scale = pack_scale;
+			bool trimmed = info["trimmed"];
+			if(trimmed) {
+				_parse_rect2(info["spriteSourceSize"], sprite_source_size);
+				frame.offset = sprite_source_size.pos;
+			}
+			//if(rotated)
+			//	SWAP(frame.region.size.width, frame.region.size.height);
+			//_parse_size(info["sourceSize"], source_size);
+		}
+	}
+	da->list_dir_end();
+	return loaded;
+}
+
+bool OSprite::OSpriteResource::_load_texture_frames(const String& p_path, bool p_pixel_alpha) {
+
+	String base_path = p_path.basename();
+	String tex_path = base_path + "/";
+
+	Error err;
+	DirAccessRef da = DirAccess::open(tex_path, &err);
+	if(err != OK)
+		return false;
+
+	if(da->list_dir_begin())
+		return false;
+
+	bool loaded = false;
+	for(;;) {
+
+		String path = da->get_next();
+		if(path == "")
+			break;
+		if(path == "." || path == "..")
+			continue;
+
+		String base = path.basename();
+		if(!base.is_numeric())
+			continue;
+
+		int index = base.to_int();
+		if(index >= frames.size())
+			continue;
+
+		path = tex_path + path;
+		Frame& frame = frames[index];
+		frame.tex = ResourceLoader::load(path, "Texture");
+		frame.rotated = false;
+		frame.scale = 1;
+		if(frame.tex.is_null())
+			return false;
+		loaded = true;
+
+		frame.region = frame.tex->get_region();
+		// etc1(pixel+alpha) texture
+		if(p_pixel_alpha)
+			frame.region.size.y /= 2;
+	}
+	da->list_dir_end();
+	return loaded;
 }
 
 Error OSprite::OSpriteResource::load(const String& p_path) {
@@ -227,53 +376,29 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 			_parse_steps(dat, d["pools"]);
 	}
 
-	String tex_path = p_path.substr(0, p_path.rfind(".")) + "/";
-
-	FileAccess *f = FileAccess::create(FileAccess::ACCESS_RESOURCES);
-
 	Array frames = d["frames"].operator Array();
 	this->frames.resize(frames.size());
+
+	if(!_load_texture_pack(p_path, pixel_alpha)) {
+		if(!_load_texture_frames(p_path, pixel_alpha)) {
+		}
+	}
+
 	int last_valid_texi = -1;
 	for(int i = 0; i < frames.size(); i++) {
 
 		Frame& frame = this->frames[i];
-
-		Dictionary d = frames[i].operator Dictionary();
-		Array region = d["region"].operator Array();
-		String path = tex_path + d["path"].operator String();
-		if(f->file_exists(path)) {
-
-			frame.tex = ResourceLoader::load(path, "Texture");
-			// use last valid frame info(tex/region) if current frame texture is not exists
-			if(!frame.tex.is_valid() && last_valid_texi != -1) {
+		if(frame.tex.is_null()) {
+			if(last_valid_texi != -1)
 				frame = (Frame&) frames[last_valid_texi];
-				continue;
-			}
-			last_valid_texi = i;
-
-			if(region.size() == 4)
-				frame.region = Rect2(region[0], region[1], region[2], region[3]);
-			else if(frame.tex.is_valid()) {
-
-				frame.region = frame.tex->get_region();
-				// etc1(pixel+alpha) texture
-				if(pixel_alpha)
-					frame.region.size.y /= 2;
-
-				// default shown maximum size texture(if not playing)
-				if(this->frames[shown_frame].tex->get_size() < frame.tex->get_size())
-					shown_frame = i;
-			} else {
-
-				frame.region = Rect2(0, 0, 0, 0);
-			}			
-		} else {
-
-			frame.tex = RES();
+			continue;
 		}
-	}
-	memdelete(f);
+		// default shown maximum size texture(if not playing)
+		if(this->frames[shown_frame].region.get_size() < frame.region.get_size())
+			shown_frame = i;
 
+		last_valid_texi = i;
+	}
 	_post_process();
 
 	return OK;
