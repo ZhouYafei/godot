@@ -71,7 +71,7 @@ void OSprite::OSpriteResource::_post_process() {
 			// draw shadow rect
 			if(shadow_pos.x != 0 && shadow_pos.y != 0) {
 				pool.shadow_rect = pool.rect;
-				pool.shadow_rect.pos += (frame.offset + shadow_pos);
+				pool.shadow_rect.pos += shadow_pos;
 				pool.shadow_rect.pos *= shadow_scale;
 				pool.shadow_rect.size *= shadow_scale;
 			}
