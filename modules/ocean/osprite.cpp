@@ -682,8 +682,8 @@ void OSprite::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("animation_start", PropertyInfo(Variant::STRING, "action")));
 	ADD_SIGNAL(MethodInfo("animation_end", PropertyInfo(Variant::STRING, "action"), PropertyInfo(Variant::BOOL, "finish")));
-	ADD_SIGNAL(MethodInfo("collision_enter", PropertyInfo(Variant::OBJECT, "owner:OSprite"), PropertyInfo(Variant::OBJECT, "body:OSprite")));
-	ADD_SIGNAL(MethodInfo("collision_leave", PropertyInfo(Variant::OBJECT, "owner:OSprite"), PropertyInfo(Variant::OBJECT, "body:OSprite")));
+	ADD_SIGNAL(MethodInfo("collision_enter", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
+	ADD_SIGNAL(MethodInfo("collision_leave", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
 
 	BIND_CONSTANT(ANIMATION_PROCESS_FIXED);
 	BIND_CONSTANT(ANIMATION_PROCESS_IDLE);

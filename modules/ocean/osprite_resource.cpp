@@ -54,15 +54,26 @@ OSprite::OSpriteResource::~OSpriteResource() {
 
 void OSprite::OSpriteResource::_post_process() {
 
+
 	for(int i = 0; i < datas.size(); i++) {
 
 		Data& data = datas[i];
+		// use previous valid pool data, if current frame.tex is null
+		//	for frame texture skip use
+		int last_valid_pool = -1;
 		for(int j = 0; j < data.pools.size(); j++) {
 
 			Pool& pool = data.pools[j];
 			if(pool.frame == -1)
 				continue;
 			Frame& frame = frames[pool.frame];
+			// use previous valid pool data
+			if(frame.tex.is_null()) {
+				if(last_valid_pool != -1)
+					pool = data.pools[last_valid_pool];
+				continue;
+			}
+			last_valid_pool = j;
 			// draw anchor pos
 			pool.rect.pos += (frame.offset * frame.scale);
 			pool.rect.pos *= this->scale;
@@ -388,22 +399,26 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 		}
 	}
 
-	int last_valid_texi = -1;
+	// calc pool frames rect/src_rect
+	_post_process();
+
+	// use previouse frame data, if current frame.tex is null
+	//	for texture frame skip use
+	int last_valid_frame = -1;
 	for(int i = 0; i < frames.size(); i++) {
 
 		Frame& frame = this->frames[i];
 		if(frame.tex.is_null()) {
-			if(last_valid_texi != -1)
-				frame = (Frame&) frames[last_valid_texi];
+			if(last_valid_frame != -1)
+				frame = (Frame&) this->frames[last_valid_frame];
 			continue;
 		}
+		last_valid_frame = i;
+
 		// default shown maximum size texture(if not playing)
 		if(this->frames[shown_frame].region.get_size() < frame.region.get_size())
 			shown_frame = i;
-
-		last_valid_texi = i;
 	}
-	_post_process();
 
 	return OK;
 }
