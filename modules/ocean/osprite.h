@@ -47,6 +47,11 @@ public:
 		COLLISION_BULLET,
 		COLLISION_MAX,
 	};
+	enum TextAlign {
+		ALIGN_LEFT,
+		ALIGN_CENTER,
+		ALIGN_RIGHT,
+	};
 
 	class OSpriteResource : public Resource {
 		OBJ_TYPE(OSpriteResource, Resource);
@@ -67,6 +72,7 @@ public:
 			int from, to;
 			String name;
 			String desc;
+			String pattern;
 			Blocks blocks;
 		};
 
@@ -142,6 +148,11 @@ private:
 	float current_pos;
 	mutable int prev_frame;
 
+	// text render only, with action/pattern fields
+	String text;
+	int text_space;
+	TextAlign text_align;
+
 	void _dispose();
 	void _animation_process(float p_delta);
 	void _animation_draw();
@@ -149,7 +160,14 @@ private:
 	int _get_frame(const OSpriteResource::Action *&p_action) const;
 
 	Array _get_collisions(bool p_global_pos = false) const;
-	void _draw_texture_rect_region(const Ref<Texture>& p_texture,const Rect2& p_rect, const Rect2& p_src_rect,const Color& p_modulate, bool p_rotated);
+	void _draw_texture_rect_region(
+		const Vector2& p_pos,
+		const Ref<Texture>& p_texture,
+		const Rect2& p_rect,
+		const Rect2& p_src_rect,
+		const Color& p_modulate,
+		bool p_rotated
+	);
 
 protected:
 	bool _set(const StringName& p_name, const Variant& p_value);
@@ -208,6 +226,15 @@ public:
 
 	const Blocks& get_collisions() const;
 	float get_resource_scale() const;
+
+	const String& get_text() const;
+	void set_text(const String& p_text);
+
+	int get_text_space() const;
+	void set_text_space(int p_space);
+
+	TextAlign get_text_align() const;
+	void set_text_align(TextAlign p_align);
 	
 	OSprite();
 	virtual ~OSprite();
@@ -215,6 +242,7 @@ public:
 
 VARIANT_ENUM_CAST(OSprite::AnimationProcessMode);
 VARIANT_ENUM_CAST(OSprite::CollisionMode);
+VARIANT_ENUM_CAST(OSprite::TextAlign);
 
 #endif // OCEAN_H
 #endif // MODULE_OCEAN_ENABLED

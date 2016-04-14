@@ -353,6 +353,10 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 
 		act.name = d["name"];
 		act.desc = d["desc"];
+		if(d.has("pattern"))
+			act.pattern = d["pattern"];
+		else
+			act.pattern = "";
 		action_names.set(act.name, &act);
 	}
 
