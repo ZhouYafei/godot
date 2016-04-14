@@ -219,11 +219,12 @@ void OSprite::_animation_draw() {
 	if(debug_collisions) {
 
 		const OSpriteResource::Blocks& blocks = get_collisions();
+		float scale = get_scale().x;
 		for(int i = 0; i < blocks.size(); i++) {
 
 			const OSprite::Block& rect = blocks[i];
 			static Color color = Color(0, 1, 1, 0.5);
-			draw_circle(rect.pos, rect.radius, color);
+			draw_circle(rect.pos, rect.radius * scale, color);
 		}
 	}
 }
@@ -787,7 +788,7 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 	Array result;
 	result.resize(boxes.size());
 	float rot = get_rot();
-	//float scale = get_resource_scale();
+	float scale = get_scale().x;
 
 	Vector2 pos = p_global_pos ? get_global_pos() : Vector2(0, 0);
 	for(int i = 0; i < boxes.size(); i++) {
@@ -796,7 +797,7 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 		Vector2 box_pos = pos + box.pos.rotated(rot);
 		Dictionary d;
 		d["pos"] = box_pos;
-		d["radius"] = box.radius;// * scale;
+		d["radius"] = box.radius * scale;
 		result[i] = d;
 	}
 	return result;
