@@ -34,6 +34,7 @@
 //#include "scene/main/resource_preloader.h"
 //#include "method_bind_ext.inc"
 #include "os/file_access.h"
+#include "os/dir_access.h"
 
 #include "modules/digest/text/json_asset.h"
 
@@ -51,24 +52,259 @@ OSprite::OSpriteResource::OSpriteResource()
 OSprite::OSpriteResource::~OSpriteResource() {
 }
 
-void OSprite::OSpriteResource::_fixup_rects() {
+void OSprite::OSpriteResource::_post_process() {
 
-	for(int i = 0; i < pools.size(); i++) {
 
-		OSpriteResource::Pool& pool = pools[i];
-		if(pool.frame == -1)
-			continue;
-		OSpriteResource::Frame& frame = frames[pool.frame];
-		// draw anchor pos
-		pool.rect.pos *= scale;
-		// draw rect size
-		pool.rect.size = frame.region.size * scale;
-		// draw shadow rect
-		pool.shadow_rect = pool.rect;
-		pool.shadow_rect.pos += shadow_pos;
-		pool.shadow_rect.pos *= shadow_scale;
-		pool.shadow_rect.size *= shadow_scale;
+	for(int i = 0; i < datas.size(); i++) {
+
+		Data& data = datas[i];
+		// use previous valid pool data, if current frame.tex is null
+		//	for frame texture skip use
+		int last_valid_pool = -1;
+		for(int j = 0; j < data.pools.size(); j++) {
+
+			Pool& pool = data.pools[j];
+			if(pool.frame == -1)
+				continue;
+			Frame& frame = frames[pool.frame];
+			// use previous valid pool data
+			if(frame.tex.is_null()) {
+				if(last_valid_pool != -1)
+					pool = data.pools[last_valid_pool];
+				continue;
+			}
+			last_valid_pool = j;
+			// draw anchor pos
+			pool.rect.pos += (frame.offset * frame.scale);
+			pool.rect.pos *= this->scale;
+			// draw rect size
+			pool.rect.size = frame.region.size * (this->scale * frame.scale);
+			// draw shadow rect
+			if(shadow_pos.x != 0 && shadow_pos.y != 0) {
+				pool.shadow_rect = pool.rect;
+				pool.shadow_rect.pos += shadow_pos;
+				pool.shadow_rect.pos *= shadow_scale;
+				pool.shadow_rect.size *= shadow_scale;
+			}
+		}	
 	}
+
+	for(int i = 0; i < actions.size(); i++) {
+
+		Action& act = actions[i];
+		Data& data = datas[act.index];
+		if(act.to == -1)
+			act.to = data.pools.size() - 1;
+	}
+}
+
+void OSprite::OSpriteResource::_parse_blocks(Data& p_data, const Array& p_blocks) {
+
+	p_data.blocks.resize(p_blocks.size());
+	for(int i = 0; i < p_blocks.size(); i++) {
+
+		Blocks& blks = p_data.blocks[i];
+		Dictionary d = p_blocks[i].operator Dictionary();
+		Array boxes = d["fields"].operator Array();
+		blks.resize(boxes.size());
+
+		for(int j = 0; j < boxes.size(); j++) {
+
+			Block& blk = blks[j];
+			Dictionary d = boxes[j].operator Dictionary();
+			// convert box collision to circle(pos+raidus)
+			blk.pos.x = d["x"];
+			blk.pos.y = d["y"];
+			int w = d["width"];
+			int h = d["height"];
+			blk.radius = (w + h) / 4;
+
+			// adjust by scale
+			blk.pos *= scale;
+			blk.radius *= scale;
+			// plus to circle center pos
+			blk.pos += Vector2(blk.radius, blk.radius);
+		}
+	}	
+}
+
+void OSprite::OSpriteResource::_parse_pools(Data& p_data, const Array& p_pools) {
+
+	p_data.pools.resize(p_pools.size());
+	for(int i = 0; i < p_pools.size(); i++) {
+
+		Pool& p = p_data.pools[i];
+		Dictionary d = p_pools[i].operator Dictionary();
+
+		p.frame = d["frame"];
+		p.rect.pos.x = -d["anchor_x"].operator int64_t();
+		p.rect.pos.y = -d["anchor_y"].operator int64_t();
+	}
+}
+
+void OSprite::OSpriteResource::_parse_steps(Data& p_data, const Array& p_steps) {
+
+	p_data.steps.resize(p_steps.size());
+	for(int i = 0; i < p_steps.size(); i++) {
+
+		Steps& steps = p_data.steps[i];
+		Dictionary d = p_steps[i].operator Dictionary();
+		Array boxes = d["fields"].operator Array();
+		steps.resize(boxes.size());
+
+		for(int j = 0; j < boxes.size(); j++) {
+
+			Step& step = steps[j];
+			Dictionary d = boxes[j].operator Dictionary();
+
+			// TODO: parse step data
+		}
+	}	
+}
+
+static void _parse_rect2(const Dictionary& d, Rect2& rect) {
+
+	rect.pos.x = d["x"];
+	rect.pos.y = d["y"];
+	rect.size.width = d["w"];
+	rect.size.height = d["h"];
+}
+
+static void _parse_size(const Dictionary& d, Size2& size) {
+
+	size.width = d["w"];
+	size.height = d["h"];
+}
+
+bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_pixel_alpha) {
+
+	String base_path = p_path.basename();
+	String pack_path = base_path + "/";
+
+	Error err;
+	DirAccessRef da = DirAccess::open(pack_path, &err);
+	if(err != OK)
+		return false;
+
+	if(da->list_dir_begin())
+		return false;
+
+	bool loaded = false;
+	for(;;) {
+
+		String path = da->get_next();
+		if(path == "")
+			break;
+		if(path == "." || path == "..")
+			continue;
+
+		String ext = path.extension();
+		if(ext != "json")
+			continue;
+
+#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED)
+		String tex_path = pack_path + path.basename() + ".pkm";
+#else
+		String tex_path = pack_path + path.basename() + ".dds";
+#endif
+
+		Ref<Texture> tex = ResourceLoader::load(tex_path, "Texture");
+		if(tex.is_null())
+			continue;
+
+		path = pack_path + path;
+		Ref<JsonAsset> pack = ResourceLoader::load(path, "JsonAsset");
+		if(pack.is_null())
+			continue;
+
+		Dictionary d = pack->get_value();
+		// get texutre pack scale
+		Dictionary meta = d["meta"];
+		float pack_scale = meta["scale"];
+		pack_scale = 1 / pack_scale;
+
+		Dictionary frames = d["frames"];
+		Array names = frames.keys();
+		for(int i = 0; i < names.size(); i++) {
+
+			String name = names[i];
+			String base = name.basename();
+			int index = base.to_int();
+			if(index >= this->frames.size())
+				continue;
+			loaded = true;
+
+			Frame& frame = this->frames[index];
+			frame.tex = tex;
+
+			Dictionary info = frames[name];
+
+			Rect2 sprite_source_size;
+			//Size2 source_size;
+
+			_parse_rect2(info["frame"], frame.region);
+			frame.rotated = info["rotated"];
+			frame.scale = pack_scale;
+			bool trimmed = info["trimmed"];
+			if(trimmed) {
+				_parse_rect2(info["spriteSourceSize"], sprite_source_size);
+				frame.offset = sprite_source_size.pos;
+			}
+			//if(rotated)
+			//	SWAP(frame.region.size.width, frame.region.size.height);
+			//_parse_size(info["sourceSize"], source_size);
+		}
+	}
+	da->list_dir_end();
+	return loaded;
+}
+
+bool OSprite::OSpriteResource::_load_texture_frames(const String& p_path, bool p_pixel_alpha) {
+
+	String base_path = p_path.basename();
+	String tex_path = base_path + "/";
+
+	Error err;
+	DirAccessRef da = DirAccess::open(tex_path, &err);
+	if(err != OK)
+		return false;
+
+	if(da->list_dir_begin())
+		return false;
+
+	bool loaded = false;
+	for(;;) {
+
+		String path = da->get_next();
+		if(path == "")
+			break;
+		if(path == "." || path == "..")
+			continue;
+
+		String base = path.basename();
+		if(!base.is_numeric())
+			continue;
+
+		int index = base.to_int();
+		if(index >= frames.size())
+			continue;
+
+		path = tex_path + path;
+		Frame& frame = frames[index];
+		frame.tex = ResourceLoader::load(path, "Texture");
+		frame.rotated = false;
+		frame.scale = 1;
+		if(frame.tex.is_null())
+			return false;
+		loaded = true;
+
+		frame.region = frame.tex->get_region();
+		// etc1(pixel+alpha) texture
+		if(p_pixel_alpha)
+			frame.region.size.y /= 2;
+	}
+	da->list_dir_end();
+	return loaded;
 }
 
 Error OSprite::OSpriteResource::load(const String& p_path) {
@@ -77,13 +313,12 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 	Ref<JsonAsset> asset = ResourceLoader::load(p_path, "JsonAsset", false, &err);
 	ERR_FAIL_COND_V(asset.is_null(), err);
 	const Dictionary& d = asset->get_value();
-	ERR_FAIL_COND_V(!d.has("action") || !d.has("pool") || !d.has("scale") || !d.has("fps"), ERR_FILE_CORRUPT);
+	ERR_FAIL_COND_V(!d.has("action") || !d.has("data") || !d.has("scale") || !d.has("fps"), ERR_FILE_CORRUPT);
 
 	frames.clear();
 	actions.clear();
 	action_names.clear();
-	blocks.clear();
-	pools.clear();
+	datas.clear();
 	shown_frame = 0;
 
 	bool pixel_alpha = true;
@@ -105,92 +340,85 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 
 		Action& act = this->actions[i];
 
-		Dictionary a = action[i].operator Dictionary();
-		act.name = a["name"];
-		act.from = a["from"];
-		act.to = a["to"];
+		Dictionary d = action[i].operator Dictionary();
+		act.index = d["index"];
+		if(d.has("range")) {
+
+			Array range = d["range"].operator Array();
+			act.from = range[0];
+			act.to = range[1];
+		} else {
+
+			act.from = 0;
+			act.to = -1;
+		}
+		if(d.has("block")) {
+
+			Array block = d["block"].operator Array();
+			Block blk;
+			blk.pos.x = block[0];
+			blk.pos.y = block[1];
+			blk.radius = block[2];
+			act.blocks.push_back(blk);
+		}
+
+		act.name = d["name"];
+		act.desc = d["desc"];
+		if(d.has("pattern"))
+			act.pattern = d["pattern"];
+		else
+			act.pattern = "";
 		action_names.set(act.name, &act);
 	}
 
-	Array block = d["block"].operator Array();
-	this->blocks.resize(block.size());
-	for(int i = 0; i < block.size(); i++) {
+	Array data = d["data"].operator Array();
+	this->datas.resize(data.size());
+	for(int i = 0; i < data.size(); i++) {
 
-		Blocks& blk = this->blocks[i];
+		Data& dat = this->datas[i];
 
-		Dictionary b = block[i].operator Dictionary();
-		blk.index = b["index"];
-		Array fields = b["fields"].operator Array();
-		blk.boxes.resize(fields.size());
-		for(int j = 0; j < fields.size(); j++) {
+		Dictionary d = data[i].operator Dictionary();
+		dat.width = d["width"];
+		dat.height = d["height"];
+		dat.name = d["name"];
+		//d["dummy"];
 
-			//Vector<OSprite::OSpriteResource::Blocks::Box> box;
-			OSprite::OSpriteResource::Blocks::Box& box = blk.boxes[j];
-			Dictionary field = fields[j].operator Dictionary();
-			box.pos.x = field["x"];
-			box.pos.y = field["y"];
-			box.radius = field["width"];
-			// field["height"];
-			// field["reversed"];
-			box.pos *= scale;
-			box.radius *= (scale / 2);
-			box.pos += Vector2(box.radius, box.radius);
-		}
+		if(d.has("blocks"))
+			_parse_blocks(dat, d["blocks"]);
+		if(d.has("pools"))
+			_parse_pools(dat, d["pools"]);
+		if(d.has("steps"))
+			_parse_steps(dat, d["pools"]);
 	}
-
-	Array pool = d["pool"].operator Array();
-	this->pools.resize(pool.size());
-	for(int i = 0; i < pool.size(); i++) {
-
-		Pool& p = this->pools[i];
-
-		Dictionary d = pool[i].operator Dictionary();
-		p.index = d["index"];	
-		p.rect.pos.x = -d["anchor_x"].operator int64_t();
-		p.rect.pos.y = -d["anchor_y"].operator int64_t();
-		p.frame = d["frame"];
-	}
-
-	String tex_path = p_path.substr(0, p_path.rfind(".")) + "/";
-
-	FileAccess *f = FileAccess::create(FileAccess::ACCESS_RESOURCES);
 
 	Array frames = d["frames"].operator Array();
 	this->frames.resize(frames.size());
+
+	if(!_load_texture_pack(p_path, pixel_alpha)) {
+		if(!_load_texture_frames(p_path, pixel_alpha)) {
+		}
+	}
+
+	// calc pool frames rect/src_rect
+	_post_process();
+
+	// use previouse frame data, if current frame.tex is null
+	//	for texture frame skip use
+	int last_valid_frame = -1;
 	for(int i = 0; i < frames.size(); i++) {
 
 		Frame& frame = this->frames[i];
-
-		Dictionary d = frames[i].operator Dictionary();
-		Array region = d["region"].operator Array();
-		String path = tex_path + d["path"].operator String();
-		if(f->file_exists(path)) {
-
-			frame.tex = ResourceLoader::load(path, "Texture");
-			if(region.size() == 4)
-				frame.region = Rect2(region[0], region[1], region[2], region[3]);
-			else if(frame.tex.is_valid()) {
-
-				frame.region = frame.tex->get_region();
-				// etc1(pixel+alpha) texture
-				if(pixel_alpha)
-					frame.region.size.y /= 2;
-
-				// default shown maximum size texture(if not playing)
-				if(this->frames[shown_frame].tex->get_size() < frame.tex->get_size())
-					shown_frame = i;
-			} else {
-
-				frame.region = Rect2(0, 0, 0, 0);
-			}			
-		} else {
-
-			frame.tex = RES();
+		if(frame.tex.is_null()) {
+			if(last_valid_frame != -1)
+				frame = (Frame&) this->frames[last_valid_frame];
+			continue;
 		}
-	}
-	memdelete(f);
+		last_valid_frame = i;
 
-	_fixup_rects();
+		// default shown maximum size texture(if not playing)
+		if(this->frames[shown_frame].region.get_size() < frame.region.get_size())
+			shown_frame = i;
+	}
 
 	return OK;
 }

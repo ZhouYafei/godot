@@ -508,8 +508,13 @@ void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, co
 
 	for (int i=0;i<p_text.length();i++) {
 
-		const Character * c = get_character_p(p_text[i]);
-		int width = get_char_size(p_text[i]).width;
+		CharType ch = p_text[i];
+		const Character * c = get_character_p(ch);
+		if(c == NULL) {
+			ch = '?';
+			c = get_character_p(ch);
+		}
+		int width = get_char_size(ch).width;
 
 		if (p_clip_w>=0 && (ofs.x+width)>p_clip_w)
 			break; //clip
@@ -522,7 +527,7 @@ void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, co
 		cpos.y+=c->v_align;
 		if( c->texture_idx<-1 || c->texture_idx>=textures.size())
         {
-            if (p_text[i]==' ')
+            if (ch==' ')
                 continue;
             else
 		        ERR_CONTINUE( c->texture_idx<-1 || c->texture_idx>=textures.size());
@@ -539,7 +544,7 @@ void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, co
 		}
 		//textures[c->texture_idx]->draw_rect_region( p_canvas_item, Rect2( cpos, c->rect.size ), c->rect, p_modulate );
 		
-		ofs+=get_char_size(p_text[i],p_text[i+1]);
+		ofs+=get_char_size(ch,p_text[i+1]);
 		//ofs.x+=draw_char(p_canvas_item,p_pos+ofs,p_text[i],p_text[i+1],p_modulate);
 	}
 }

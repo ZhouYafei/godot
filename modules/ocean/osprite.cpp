@@ -42,61 +42,189 @@ void OSprite::_dispose() {
 	update();
 }
 
+void OSprite::_draw_texture_rect_region(const Vector2& p_pos, const Ref<Texture>& p_texture,const Rect2& p_rect, const Rect2& p_src_rect,const Color& p_modulate, bool p_rotated) {
+
+	Rect2 rect = p_rect;
+	rect.pos += p_pos;
+
+	if(!p_rotated)
+		return this->draw_texture_rect_region(p_texture, rect, p_src_rect, p_modulate);
+
+	Vector<Vector2> points, uvs;
+	Vector<Color> colors;
+
+	float u = rect.pos.x;
+	float v = rect.pos.y;
+	float u2 = u + rect.size.x;
+	float v2 = v + rect.size.y;
+
+	points.push_back(Vector2(u,v2));
+	points.push_back(Vector2(u,v));
+	points.push_back(Vector2(u2,v));
+	points.push_back(Vector2(u2,v2));
+	{
+		Size2 size = p_texture->get_size();
+		u = p_src_rect.pos.x / size.width;
+		v = p_src_rect.pos.y / size.height;
+		u2 = (p_src_rect.pos.x + p_src_rect.size.height) / size.width;
+		v2 = (p_src_rect.pos.y + p_src_rect.size.width) / size.height;
+
+		uvs.push_back(Vector2(u,v));
+		uvs.push_back(Vector2(u2,v));
+		uvs.push_back(Vector2(u2,v2));
+		uvs.push_back(Vector2(u,v2));
+	}
+	colors.push_back(p_modulate);
+	colors.push_back(p_modulate);
+	colors.push_back(p_modulate);
+	colors.push_back(p_modulate);
+
+	draw_primitive(points, colors, uvs, p_texture);
+}
+
+static int _string_find(const String& str, CharType ch) {
+
+	for(int i = 0; i < str.size(); i++)
+		if(str[i] == ch)
+			return i;
+	return -1;
+}
+
 void OSprite::_animation_draw() {
 
 	if (!res.is_valid())
 		return;
 
-	OSpriteResource::Action action;
-	int index = _get_frame(&action);
-	if(index == -1)
+	if(!has(current_animation)) {
+
+		stop();
 		return;
+	}
+
+	const OSpriteResource::Action *action;
+	// current frame index
+	int index = _get_frame(action);
+	if(index == -1 || action == NULL)
+		return;
+	const OSpriteResource::Data& data = res->datas[action->index];
+
+	if(action->pattern != "") {
+
+		if(text.empty())
+			return;
+		const String& pattern = action->pattern;
+		int total_frames = action->to - action->from + 1;
+		Vector2 offset = Vector2(0, 0);
+
+		int first_char_width = 0;
+		int text_width = 0;
+		for(int i = 0; i < text.size(); i++) {
+
+			CharType ch = text[i];
+			int pos = _string_find(pattern, ch);
+			if(pos == -1 || pos >= total_frames)
+				continue;
+			const OSpriteResource::Pool& pool = data.pools[action->from + pos];
+			if(pool.frame == -1)
+				continue;
+			const OSpriteResource::Frame& frame = res->frames[pool.frame];
+			if(frame.tex.is_null())
+				continue;
+
+			text_width += frame.region.size.x;
+			if(i != 0)
+				text_width += text_space;
+			else
+				first_char_width = text_width;
+		}
+
+		switch(text_align) {
+
+		case ALIGN_LEFT:
+			offset.x = -text_width;
+			break;
+
+		case ALIGN_CENTER:
+			offset.x = -text_width / 2;
+			break;
+
+		case ALIGN_RIGHT:
+			break;
+		}
+		offset.x += first_char_width / 2;
+
+		for(int i = 0; i < text.size(); i++) {
+
+			CharType ch = text[i];
+			int pos = _string_find(pattern, ch);
+			if(pos == -1 || pos >= total_frames)
+				continue;
+			const OSpriteResource::Pool& pool = data.pools[action->from + pos];
+			if(pool.frame == -1)
+				continue;
+			const OSpriteResource::Frame& frame = res->frames[pool.frame];
+			if(frame.tex.is_null())
+				continue;
+
+			const Rect2& rect = pool.rect;
+			const Rect2& src_rect = frame.region;
+			//if(pool.shadow_rect.size.x > 0 && pool.shadow_rect.size.y > 0)
+			//	_draw_texture_rect_region(Vector2(0,0), frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
+			_draw_texture_rect_region(offset, frame.tex, rect, src_rect, modulate, frame.rotated);
+			offset.x += src_rect.size.x + text_space;
+		}
+		return;
+	}
+
+	int from = action->from;
+	int to = action->to;
 
 	if(playing) {
 
 		if(!forward) {
-			int tmp = action.from;
-			action.from = action.to;
-			action.to = tmp;
+			int tmp = from;
+			from = to;
+			to = tmp;
 		}
 		//printf("%d %d %d\n", action.from, action.to, index);
 
-		if(index == action.from) {
+		if(index == from) {
 
-			emit_signal("animation_start", action.name);
+			emit_signal("animation_start", action->name);
 
-		} else if(index == action.to) {
+		} else if(index == to) {
 
-			emit_signal("animation_end", action.name, !loop);
+			emit_signal("animation_end", action->name, !loop);
 			if(!loop)
-				set_process(false);
+				_set_process(false);
 		}
 	}
 
-	const OSpriteResource::Pool& pool = res->pools[index];
-	const OSpriteResource::Frame& frame = res->frames[pool.frame];
+	const OSpriteResource::Pool& pool = data.pools[index];
 	if(pool.frame == -1)
 		return;
+	const OSpriteResource::Frame& frame = res->frames[pool.frame];
 
 	if(frame.tex.is_valid()) {
 
 		const Rect2& rect = pool.rect;
 		const Rect2& src_rect = frame.region;
 
-		const Vector2& shadow_pos = res->shadow_pos;
-		if(shadow_pos.x != 0 && shadow_pos.y != 0)
-			draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color);
-		draw_texture_rect_region(frame.tex, rect, src_rect, modulate);
+		if(pool.shadow_rect.size.x > 0 && pool.shadow_rect.size.y > 0)
+			_draw_texture_rect_region(Vector2(0,0), frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
+
+		_draw_texture_rect_region(Vector2(0,0), frame.tex, rect, src_rect, modulate, frame.rotated);
 	}
 
-	if(debug_collisions && pool.frame < res->blocks.size()) {
+	if(debug_collisions) {
 
-		const OSpriteResource::Blocks& blocks = res->blocks[pool.frame];
-		for(int i = 0; i < blocks.boxes.size(); i++) {
+		const OSpriteResource::Blocks& blocks = get_collisions();
+		float scale = get_scale().x;
+		for(int i = 0; i < blocks.size(); i++) {
 
-			const OSprite::Box& rect = blocks.boxes[i];
+			const OSprite::Block& rect = blocks[i];
 			static Color color = Color(0, 1, 1, 0.5);
-			draw_circle(rect.pos, rect.radius, color);
+			draw_circle(rect.pos, rect.radius * scale, color);
 		}
 	}
 }
@@ -105,7 +233,7 @@ void OSprite::_animation_process(float p_delta) {
 
 	if (speed_scale == 0)
 		return;
-	current_pos += p_delta *speed_scale;
+	current_pos += p_delta * speed_scale;
 
 	update();
 }
@@ -119,27 +247,32 @@ void OSprite::_set_process(bool p_process, bool p_force) {
 	}
 }
 
-int OSprite::_get_frame(OSprite::OSpriteResource::Action *p_action) const {
+int OSprite::_get_frame(const OSpriteResource::Action *&p_action) const {
 
+	static OSprite::OSpriteResource::Data dummy;
 	if(!res.is_valid())
 		return -1;
+	ERR_FAIL_COND_V(!has(current_animation), -1);
 
-	if(!has(current_animation))
-		return res->shown_frame;
+	p_action = res->action_names[current_animation];
+	ERR_FAIL_COND_V(p_action == NULL, -1);
 
-	OSpriteResource::Action *action = res->action_names[current_animation];
-	ERR_FAIL_COND_V(action == NULL, -1);
-	if(p_action != NULL)
-		*p_action = *action;
+	int total_frames = p_action->to - p_action->from + 1;
+	int index = int(current_pos / res->fps_delta) % total_frames;
 
-	int total_frames = (action->to - action->from) + 1;
-	frame = int(current_pos / res->fps_delta) % int(total_frames);
+	// index always include([0] <-> [total_frames - 1])
+	if(index < prev_frame && prev_frame != total_frames - 1)
+		index = total_frames - 1;
+	else if(prev_frame == total_frames - 1 && index != 0)
+		index = 0;
+	prev_frame = index;
+
 	if(forward)
-		frame += action->from;
+		index += p_action->from;
 	else
-		frame = action->to - frame;
+		index = p_action->to - index - 1;
 
-	return frame;
+	return index;
 }
 
 bool OSprite::_set(const StringName& p_name, const Variant& p_value) {
@@ -257,7 +390,7 @@ void OSprite::_notification(int p_what) {
 
 	case NOTIFICATION_EXIT_TREE: {
 
-		stop();
+		_set_process(false);
 		OSpriteCollision::get_singleton()->remove(this);
 	} break;
 	}
@@ -298,14 +431,25 @@ bool OSprite::has(const String& p_name) const {
 bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
 
 	ERR_FAIL_COND_V(!res.is_valid(), false);
+	ERR_EXPLAIN("Unknown action: " + p_name);
 	ERR_FAIL_COND_V(!res->action_names.has(p_name), false);
-	current_animation = p_name;
-	playing = true;
-	loop = p_loop;
-	delay = p_delay;
-	current_pos = 0;
-	frame = 0;
 
+	// loop & same animation, ignored setup variables
+	if(p_loop && current_animation == p_name && p_loop == loop)
+		return true;
+
+	delay = p_delay;
+	current_animation = p_name;
+	loop = p_loop;
+	current_pos = 0;
+	prev_frame = 0;
+
+	OSpriteResource::Action *action = res->action_names[p_name];
+	// ignore text actions
+	if(action->pattern != "")
+		return true;
+
+	playing = true;
 	_set_process(true);
 
 	return true;
@@ -315,7 +459,7 @@ void OSprite::stop() {
 
 	_set_process(false);
 	playing = false;
-	//current_animation = "[stop]";
+	current_animation = "[stop]";
 	reset();
 }
 
@@ -344,11 +488,12 @@ void OSprite::reset() {
 
 	ERR_FAIL_COND(!res.is_valid());
 	current_pos = 0;
+	prev_frame = 0;
 }
 
 void OSprite::seek(float p_pos) {
 
-	_animation_process(p_pos - current_pos);
+	_animation_process(p_pos);
 }
 
 float OSprite::tell() const {
@@ -506,9 +651,17 @@ void OSprite::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_animation_names"), &OSprite::get_animation_names);
 
 	ObjectTypeDB::bind_method(_MD("get_collisions", "global_pos"), &OSprite::_get_collisions, false);
+	ObjectTypeDB::bind_method(_MD("get_resource_scale"), &OSprite::get_resource_scale, false);
 
 	ObjectTypeDB::bind_method(_MD("set_debug_collisions", "enable"), &OSprite::set_debug_collisions);
 	ObjectTypeDB::bind_method(_MD("is_debug_collisions"), &OSprite::is_debug_collisions);
+
+	ObjectTypeDB::bind_method(_MD("get_text"), &OSprite::get_text, false);
+	ObjectTypeDB::bind_method(_MD("set_text", "text"), &OSprite::set_text, false);
+	ObjectTypeDB::bind_method(_MD("get_text_space"), &OSprite::get_text_space, false);
+	ObjectTypeDB::bind_method(_MD("set_text_space", "space"), &OSprite::set_text_space, false);
+	ObjectTypeDB::bind_method(_MD("get_text_align"), &OSprite::get_text_align, false);
+	ObjectTypeDB::bind_method(_MD("set_text_align", "align"), &OSprite::set_text_align, false);
 
 	ADD_PROPERTY( PropertyInfo( Variant::INT, "playback/process_mode", PROPERTY_HINT_ENUM, "Fixed,Idle"), _SCS("set_animation_process_mode"), _SCS("get_animation_process_mode"));
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "playback/speed", PROPERTY_HINT_RANGE, "-64,64,0.01"), _SCS("set_speed"), _SCS("get_speed"));
@@ -523,10 +676,14 @@ void OSprite::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_y"), _SCS("set_flip_y"), _SCS("is_flip_y"));
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "OSpriteResource"), _SCS("set_resource"), _SCS("get_resource"));
 
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text/text"), _SCS("set_text"), _SCS("get_text"));
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "text/space"), _SCS("set_text_space"), _SCS("get_text_space"));
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "text/align", PROPERTY_HINT_ENUM, "Left,Center,Right"), _SCS("set_text_align"), _SCS("get_text_align"));
+
 	ADD_SIGNAL(MethodInfo("animation_start", PropertyInfo(Variant::STRING, "action")));
 	ADD_SIGNAL(MethodInfo("animation_end", PropertyInfo(Variant::STRING, "action"), PropertyInfo(Variant::BOOL, "finish")));
-	ADD_SIGNAL(MethodInfo("collision_enter", PropertyInfo(Variant::OBJECT, "owner:OSprite"), PropertyInfo(Variant::OBJECT, "body:OSprite")));
-	ADD_SIGNAL(MethodInfo("collision_leave", PropertyInfo(Variant::OBJECT, "owner:OSprite"), PropertyInfo(Variant::OBJECT, "body:OSprite")));
+	ADD_SIGNAL(MethodInfo("collision_enter", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
+	ADD_SIGNAL(MethodInfo("collision_leave", PropertyInfo(Variant::OBJECT, "owner"), PropertyInfo(Variant::OBJECT, "body")));
 
 	BIND_CONSTANT(ANIMATION_PROCESS_FIXED);
 	BIND_CONSTANT(ANIMATION_PROCESS_IDLE);
@@ -534,45 +691,113 @@ void OSprite::_bind_methods() {
 	BIND_CONSTANT(COLLISION_IGNORED);
 	BIND_CONSTANT(COLLISION_FISH);
 	BIND_CONSTANT(COLLISION_BULLET);
+
+	BIND_CONSTANT(ALIGN_LEFT);
+	BIND_CONSTANT(ALIGN_CENTER);
+	BIND_CONSTANT(ALIGN_RIGHT);
 }
 
 Rect2 OSprite::get_item_rect() const {
 
-	int frame = _get_frame();
-	if (!res.is_valid() || frame == -1)
+	if(!res.is_valid() || !has(current_animation))
 		return Node2D::get_item_rect();
 
-	const OSpriteResource::Pool& pool = res->pools[frame];
-	return pool.rect;
+	const OSpriteResource::Action *action;
+	// current frame index
+	int index = _get_frame(action);
+	if(index == -1 || action == NULL)
+		return Node2D::get_item_rect();
+	const OSpriteResource::Data& data = res->datas[action->index];
+	return data.pools[index].rect;
 }
 
-const Vector<OSprite::Box>& OSprite::get_collisions() const {
+const OSprite::Blocks& OSprite::get_collisions() const {
 
-	static Vector<OSprite::Box> empty;
+	static OSprite::Blocks empty;
 	ERR_FAIL_COND_V(!res.is_valid(), empty);
 
-	const OSpriteResource::Pool& pool = res->pools[frame];
-	if(pool.frame >= res->blocks.size())
+	const OSpriteResource::Action *action;
+	// current frame index
+	int index = _get_frame(action);
+	if(index == -1 || action == NULL)
 		return empty;
-	const OSpriteResource::Blocks& blocks = res->blocks[pool.frame];
-	return blocks.boxes;
+
+	if(action->blocks.size() > 0)
+		return action->blocks;
+
+	const OSpriteResource::Data& data = res->datas[action->index];
+	if(index >= data.blocks.size())
+		return empty;
+	return data.blocks[index];
+}
+
+float OSprite::get_resource_scale() const {
+
+	ERR_FAIL_COND_V(!res.is_valid(), 1);
+	return res->scale;
+}
+
+const String& OSprite::get_text() const {
+
+	return text;
+}
+
+void OSprite::set_text(const String& p_text) {
+
+	if(text == p_text)
+		return;
+	_set_process(false);
+
+	text = p_text;
+	update();
+}
+
+int OSprite::get_text_space() const {
+
+	return text_space;
+}
+
+void OSprite::set_text_space(int p_space) {
+
+	if(text_space == p_space)
+		return;
+	_set_process(false);
+
+	text_space = p_space;
+	update();
+}
+
+OSprite::TextAlign OSprite::get_text_align() const {
+
+	return text_align;
+}
+
+void OSprite::set_text_align(OSprite::TextAlign p_align) {
+
+	if(text_align == p_align)
+		return;
+	_set_process(false);
+
+	text_align = p_align;
+	update();
 }
 
 Array OSprite::_get_collisions(bool p_global_pos) const {
 
-	const Vector<Box>& boxes = get_collisions();
+	const Blocks& boxes = get_collisions();
 	Array result;
 	result.resize(boxes.size());
 	float rot = get_rot();
+	float scale = get_scale().x;
 
 	Vector2 pos = p_global_pos ? get_global_pos() : Vector2(0, 0);
 	for(int i = 0; i < boxes.size(); i++) {
 
-		const Box& box = boxes[i];
+		const Block& box = boxes[i];
 		Vector2 box_pos = pos + box.pos.rotated(rot);
 		Dictionary d;
 		d["pos"] = box_pos;
-		d["radius"] = box.radius;
+		d["radius"] = box.radius * scale;
 		result[i] = d;
 	}
 	return result;
@@ -597,7 +822,11 @@ OSprite::OSprite() {
 	flip_x = false;
 	flip_y = false;
 	current_pos = 0;
-	frame = 0;
+	prev_frame = 0;
+
+	text = "";
+	text_space = 0;
+	text_align = ALIGN_CENTER;
 }
 
 OSprite::~OSprite() {

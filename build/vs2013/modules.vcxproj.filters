@@ -46,6 +46,9 @@
     <Filter Include="modules\ocean">
       <UniqueIdentifier>{208dd02e-abe6-4b6c-bfa5-7e855b64c437}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\ik">
+      <UniqueIdentifier>{8e79086f-cb9b-44ad-91e9-16c54ebc9055}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\modules\register_module_types.cpp">
@@ -285,6 +288,12 @@
     <ClCompile Include="..\..\modules\ocean\osprite_resource.cpp">
       <Filter>modules\ocean</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\ik\ik.cpp">
+      <Filter>modules\ik</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\ik\register_types.cpp">
+      <Filter>modules\ik</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -517,6 +526,12 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\ocean\osprite_collision.h">
       <Filter>modules\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\ik\ik.h">
+      <Filter>modules\ik</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\ik\register_types.h">
+      <Filter>modules\ik</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,11 @@ public:
 		COLLISION_BULLET,
 		COLLISION_MAX,
 	};
+	enum TextAlign {
+		ALIGN_LEFT,
+		ALIGN_CENTER,
+		ALIGN_RIGHT,
+	};
 
 	class OSpriteResource : public Resource {
 		OBJ_TYPE(OSpriteResource, Resource);
@@ -56,32 +61,47 @@ public:
 
 		Error load(const String& p_path);
 
-		struct Action {
-			String name;
-			int from;
-			int to;
+		struct Block {
+			Vector2 pos;
+			float radius;
 		};
+		typedef Vector<Block> Blocks;
 
-		struct Blocks {
+		struct Action {
 			int index;
-
-			struct Box {
-				Vector2 pos;
-				float radius;
-			};
-			Vector<Box> boxes;
+			int from, to;
+			String name;
+			String desc;
+			String pattern;
+			Blocks blocks;
 		};
 
 		struct Pool {
-			int index;
 			int frame;
 			Rect2 rect;
 			Rect2 shadow_rect;
 		};
 
+		struct Step {
+		};
+		typedef Vector<Step> Steps;
+
+		struct Data {
+			int width;
+			int height;
+			String name;
+
+			Vector<Blocks> blocks;
+			Vector<Pool> pools;
+			Vector<Steps> steps;
+		};
+
 		struct Frame {
 			Ref<Texture> tex;
 			Rect2 region;
+			Vector2 offset;
+			float scale;
+			bool rotated;
 		};
 
 		float fps_delta;
@@ -91,14 +111,20 @@ public:
 		Vector<Frame> frames;
 		Vector<Action> actions;
 		HashMap<String,Action*> action_names;
-		Vector<Blocks> blocks;
-		Vector<Pool> pools;
+		Vector<Data> datas;
 		int shown_frame;
 
 	private:
-		void _fixup_rects();
+		void _post_process();
+		void _parse_blocks(Data& p_data, const Array& p_blocks);
+		void _parse_pools(Data& p_data, const Array& p_pools);
+		void _parse_steps(Data& p_data, const Array& p_steps);
+
+		bool _load_texture_frames(const String& p_path, bool p_pixel_alpha);
+		bool _load_texture_pack(const String& p_path, bool p_pixel_alpha);
 	};
-	typedef OSpriteResource::Blocks::Box Box;
+	typedef OSpriteResource::Block Block;
+	typedef OSpriteResource::Blocks Blocks;
 
 private:
 
@@ -120,15 +146,28 @@ private:
 
 	float delay;
 	float current_pos;
-	mutable int frame;
+	mutable int prev_frame;
+
+	// text render only, with action/pattern fields
+	String text;
+	int text_space;
+	TextAlign text_align;
 
 	void _dispose();
 	void _animation_process(float p_delta);
 	void _animation_draw();
 	void _set_process(bool p_process, bool p_force = false);
-	int _get_frame(OSpriteResource::Action *p_action = NULL) const;
+	int _get_frame(const OSpriteResource::Action *&p_action) const;
 
 	Array _get_collisions(bool p_global_pos = false) const;
+	void _draw_texture_rect_region(
+		const Vector2& p_pos,
+		const Ref<Texture>& p_texture,
+		const Rect2& p_rect,
+		const Rect2& p_src_rect,
+		const Color& p_modulate,
+		bool p_rotated
+	);
 
 protected:
 	bool _set(const StringName& p_name, const Variant& p_value);
@@ -185,7 +224,17 @@ public:
 
 	virtual Rect2 get_item_rect() const;
 
-	const Vector<OSprite::Box>& get_collisions() const;
+	const Blocks& get_collisions() const;
+	float get_resource_scale() const;
+
+	const String& get_text() const;
+	void set_text(const String& p_text);
+
+	int get_text_space() const;
+	void set_text_space(int p_space);
+
+	TextAlign get_text_align() const;
+	void set_text_align(TextAlign p_align);
 	
 	OSprite();
 	virtual ~OSprite();
@@ -193,6 +242,7 @@ public:
 
 VARIANT_ENUM_CAST(OSprite::AnimationProcessMode);
 VARIANT_ENUM_CAST(OSprite::CollisionMode);
+VARIANT_ENUM_CAST(OSprite::TextAlign);
 
 #endif // OCEAN_H
 #endif // MODULE_OCEAN_ENABLED
