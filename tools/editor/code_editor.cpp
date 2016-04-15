@@ -149,6 +149,7 @@ void FindReplaceDialog::_replace_skip_callback() {
 
 void FindReplaceDialog::_replace() {
 
+	text_edit->begin_complex_operation();
 	if (is_replace_all_mode()) {
 
 		//line as x so it gets priority in comparison, column as y
@@ -229,7 +230,7 @@ void FindReplaceDialog::_replace() {
 
 		_search();
 	}
-
+	text_edit->end_complex_operation();
 }
 
 
