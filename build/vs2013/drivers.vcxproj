@@ -264,6 +264,7 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\bn\bn_sqrt.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\bn\bn_word.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\bn\bn_x931p.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\bn\rsaz_exp.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\bn\vms-helper.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\buffer\buffer.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)buffer_ssl.obj</ObjectFileName>
@@ -297,6 +298,7 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\cms\cms_err.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\cms\cms_ess.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\cms\cms_io.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\cms\cms_kari.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\cms\cms_lib.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\cms\cms_pwri.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\cms\cms_sd.c" />
@@ -348,10 +350,12 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_depr.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_err.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_gen.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_kdf.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_key.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_lib.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_pmeth.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_prn.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dh\dh_rfc5114.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dsa\dsa_ameth.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dsa\dsa_asn1.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dsa\dsa_depr.c" />
@@ -375,6 +379,7 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\dso\dso_win32.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ebcdic.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ecdh\ech_err.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ecdh\ech_kdf.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ecdh\ech_key.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ecdh\ech_lib.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ecdh\ech_ossl.c" />
@@ -394,6 +399,12 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ecp_nistp256.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ecp_nistp521.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ecp_nistputil.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ecp_nistz256.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ecp_nistz256_table.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ecp_oct.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ecp_smpl.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\ec\ec_ameth.c" />
@@ -421,7 +432,6 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\engine\eng_openssl.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\engine\eng_pkey.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\engine\eng_rdrand.c" />
-    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\engine\eng_rsax.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\engine\eng_table.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\engine\tb_asnmth.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\engine\tb_cipher.c" />
@@ -450,13 +460,13 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_cnf.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_enc.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_err.c" />
-    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_fips.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_key.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_lib.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_pbe.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\evp_pkey.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\e_aes.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\e_aes_cbc_hmac_sha1.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\e_aes_cbc_hmac_sha256.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\e_bf.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\e_camellia.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\evp\e_cast.c" />
@@ -532,6 +542,7 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\modes\cts128.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\modes\gcm128.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\modes\ofb128.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\modes\wrap128.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\modes\xts128.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\objects\obj_dat.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\objects\obj_err.c" />
@@ -580,11 +591,6 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\pkcs12\p12_utl.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\pkcs12\pk12err.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\pkcs7\bio_pk7.c" />
-    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\pkcs7\example.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)example_pk7.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)example_pk7.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)example_pk7.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\pkcs7\pk7_asn1.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\pkcs7\pk7_attr.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\pkcs7\pk7_dgst.c" />
@@ -703,6 +709,7 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\x509v3\v3_pmaps.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\x509v3\v3_prn.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\x509v3\v3_purp.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\x509v3\v3_scts.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\x509v3\v3_skey.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\x509v3\v3_sxnet.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\crypto\x509v3\v3_utl.c" />
@@ -733,7 +740,6 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\bio_ssl.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\d1_both.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\d1_clnt.c" />
-    <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\d1_enc.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\d1_lib.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\d1_meth.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\d1_pkt.c" />
@@ -763,6 +769,7 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_asn1.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_cert.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_ciph.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_conf.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_err.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_err2.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_lib.c" />
@@ -770,12 +777,15 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_sess.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_stat.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_txt.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_utst.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_clnt.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_enc.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_ext.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_lib.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_meth.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_reneg.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_srvr.c" />
+    <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\t1_trce.c" />
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\tls_srp.c" />
     <ClCompile Include="..\..\drivers\builtin_zlib\zlib\adler32.c" />
     <ClCompile Include="..\..\drivers\builtin_zlib\zlib\compress.c" />
@@ -1508,6 +1518,7 @@
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\bn\bn.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\bn\bn_lcl.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\bn\bn_prime.h" />
+    <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\bn\rsaz_exp.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\buffer\buffer.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\camellia\camellia.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\camellia\cmll_locl.h" />
@@ -1574,8 +1585,8 @@
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\pem\pem.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\pem\pem2.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\pkcs12\pkcs12.h" />
-    <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\pkcs7\example.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\pkcs7\pkcs7.h" />
+    <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\ppc_arch.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\pqueue\pqueue.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\rand\rand.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\rand\rand_lcl.h" />
@@ -1594,6 +1605,7 @@
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\seed\seed_locl.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\sha\sha.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\sha\sha_locl.h" />
+    <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\sparc_arch.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\srp\srp.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\srp\srp_grps.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\srp\srp_lcl.h" />
@@ -1613,6 +1625,7 @@
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\x509v3\ext_dat.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\x509v3\pcy_int.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\x509v3\x509v3.h" />
+    <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\x509\vpm_int.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\x509\x509.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\crypto\x509\x509_vfy.h" />
     <ClInclude Include="..\..\drivers\builtin_openssl2\openssl\aes.h" />
