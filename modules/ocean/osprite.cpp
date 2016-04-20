@@ -140,7 +140,7 @@ void OSprite::_animation_draw() {
 
 		switch(text_align) {
 
-		case ALIGN_LEFT:
+		case ALIGN_RIGHT:
 			offset.x = -text_width;
 			break;
 
@@ -148,7 +148,7 @@ void OSprite::_animation_draw() {
 			offset.x = -text_width / 2;
 			break;
 
-		case ALIGN_RIGHT:
+		case ALIGN_LEFT:
 			break;
 		}
 		offset.x += first_char_width / 2;
@@ -224,7 +224,7 @@ void OSprite::_animation_draw() {
 
 			const OSprite::Block& rect = blocks[i];
 			static Color color = Color(0, 1, 1, 0.5);
-			draw_circle(rect.pos, rect.radius * scale, color);
+			draw_circle(rect.pos, rect.radius, color);
 		}
 	}
 }
