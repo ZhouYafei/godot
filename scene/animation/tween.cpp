@@ -29,6 +29,21 @@
 #include "tween.h"
 #include "method_bind_ext.inc"
 
+void Tween::_add_interpolate(InterpolateData& p_data) {
+
+	// remove duplicate entry
+	uint64_t key = (uint64_t(p_data.id) << 32) + p_data.key.hash();
+	if(map_interpolates.has(key)) {
+
+		InterpolateDatas::Element *E = map_interpolates[key];
+		E->get() = p_data;
+		return;
+	}
+	// add to list
+	interpolates.push_back(p_data);
+	map_interpolates[key] = interpolates.back();
+}
+
 void Tween::_add_pending_command(StringName p_key
 	,const Variant& p_arg1 ,const Variant& p_arg2 ,const Variant& p_arg3 ,const Variant& p_arg4 ,const Variant& p_arg5
 	,const Variant& p_arg6 ,const Variant& p_arg7 ,const Variant& p_arg8 ,const Variant& p_arg9 ,const Variant& p_arg10
@@ -219,6 +234,10 @@ void Tween::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("follow_method","object","method","initial_val","target","target_method","times_in_sec","trans_type","ease_type","delay"),&Tween::follow_method, DEFVAL(0) );
 	ObjectTypeDB::bind_method(_MD("targeting_property","object","property","initial","initial_val","final_val","times_in_sec","trans_type","ease_type","delay"),&Tween::targeting_property, DEFVAL(0) );
 	ObjectTypeDB::bind_method(_MD("targeting_method","object","method","initial","initial_method","final_val","times_in_sec","trans_type","ease_type","delay"),&Tween::targeting_method, DEFVAL(0) );
+
+	ObjectTypeDB::bind_method(_MD("run_equation","trans_type","ease_type","time","begin","count","delta"),
+		(real_t (Tween::*)(TransitionType, EaseType, real_t, real_t, real_t, real_t))&Tween::_run_equation
+	);
 
 	ADD_SIGNAL( MethodInfo("tween_start", PropertyInfo( Variant::OBJECT,"object"), PropertyInfo( Variant::STRING,"key")) );
 	ADD_SIGNAL( MethodInfo("tween_step", PropertyInfo( Variant::OBJECT,"object"), PropertyInfo( Variant::STRING,"key"), PropertyInfo( Variant::REAL,"elapsed"), PropertyInfo( Variant::OBJECT,"value")) );
@@ -826,6 +845,9 @@ bool Tween::remove(Object *p_object, String p_key) {
 		if(object == NULL)
 			continue;
 		if(object == p_object && data.key == p_key) {
+
+			uint64_t key = (uint64_t(data.id) << 32) + p_key.hash();
+			map_interpolates.erase(key);
 			interpolates.erase(E);
 			return true;
 		}
@@ -842,6 +864,7 @@ bool Tween::remove_all() {
 	set_active(false);
 	_set_process(false);
 	interpolates.clear();
+	map_interpolates.clear();
 	return true;
 }
 
@@ -1074,7 +1097,7 @@ bool Tween::interpolate_property(Object *p_object
 	if(!_calc_delta_val(data.initial_val, data.final_val, data.delta_val))
 		return false;
 
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	return true;
 }
 
@@ -1133,7 +1156,7 @@ bool Tween::interpolate_method(Object *p_object
 	if(!_calc_delta_val(data.initial_val, data.final_val, data.delta_val))
 		return false;
 
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	return true;
 }
 
@@ -1198,7 +1221,7 @@ bool Tween::interpolate_callback(Object *p_object
 	data.arg[4] = p_arg5;
 
 	pending_update ++;
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	pending_update --;
 	return true;
 }
@@ -1263,7 +1286,7 @@ bool Tween::interpolate_deferred_callback(Object *p_object
 	data.arg[4] = p_arg5;
 
 	pending_update ++;
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	pending_update --;
 	return true;
 }
@@ -1332,7 +1355,7 @@ bool Tween::follow_property(Object *p_object
 	data.ease_type = p_ease_type;
 	data.delay = p_delay;
 
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	return true;
 }
 
@@ -1401,7 +1424,7 @@ bool Tween::follow_method(Object *p_object
 	data.ease_type = p_ease_type;
 	data.delay = p_delay;
 
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	return true;
 }
 
@@ -1473,7 +1496,7 @@ bool Tween::targeting_property(Object *p_object
 	if(!_calc_delta_val(data.initial_val, data.final_val, data.delta_val))
 		return false;
 
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	return true;
 }
 
@@ -1547,7 +1570,7 @@ bool Tween::targeting_method(Object *p_object
 	if(!_calc_delta_val(data.initial_val, data.final_val, data.delta_val))
 		return false;
 
-	interpolates.push_back(data);
+	_add_interpolate(data);
 	return true;
 }
 

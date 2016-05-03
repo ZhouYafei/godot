@@ -108,7 +108,10 @@ private:
 	float speed_scale;
 	mutable int pending_update;
 
-	List<InterpolateData> interpolates;
+	typedef List<InterpolateData> InterpolateDatas;
+	InterpolateDatas interpolates;
+	typedef HashMap<uint64_t, InterpolateDatas::Element*> InterpolateMaps;
+	InterpolateMaps map_interpolates;
 
 	struct PendingCommand {
 		StringName key;
@@ -150,6 +153,7 @@ protected:
 	bool _get(const StringName& p_name,Variant &r_ret) const;
 	void _get_property_list(List<PropertyInfo> *p_list) const;
 	void _notification(int p_what);
+	void _add_interpolate(InterpolateData& p_data);
 
 	static void _bind_methods();
 
