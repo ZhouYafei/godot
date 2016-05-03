@@ -145,23 +145,21 @@ bool OSpriteCollision::_is_collision(size_t left, size_t right) {
 	if(body_boxes.size() == 0)
 		return false;
 
-	Vector2 owner_pos = owner->get_global_pos();
-	float owner_rot = owner->get_rot();
-	float owner_scale = owner->get_scale().x;
+	Matrix32 owner_mat = owner->get_global_transform();
+	float owner_scale = owner_mat.get_scale().x;
 
-	Vector2 body_pos = body->get_global_pos();
-	float body_rot = body->get_rot();
-	float body_scale = body->get_scale().x;
+	Matrix32 body_mat = body->get_global_transform();
+	float body_scale = body_mat.get_scale().x;
 
 	for(int i = 0; i < owner_boxes.size(); i++) {
 
 		const OSprite::Block& owner_box = owner_boxes[i];
-		Vector2 from = owner_pos + owner_box.pos.rotated(owner_rot);
+		Vector2 from = owner_mat.xform(owner_box.pos);
 
 		for(int j = 0; j < body_boxes.size(); j++) {
 
 			const OSprite::Block& body_box = body_boxes[j];
-			Vector2 to = body_pos + body_box.pos.rotated(body_rot);
+			Vector2 to = body_mat.xform(body_box.pos);
 
 			int radius = owner_box.radius * owner_scale + body_box.radius * body_scale;
 			float dist = from.distance_to(to);
