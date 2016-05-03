@@ -1799,7 +1799,10 @@ void Tree::text_editor_enter(String p_text) {
 		} break;
 		case TreeItem::CELL_MODE_RANGE_EXPRESSION: {
 
-			c.val=p_text.to_double();
+			if(evaluator)
+				c.val=evaluator->eval(p_text);
+			else
+				c.val=p_text.to_double();
 		} break;
 	default: { ERR_FAIL(); }
 	}
@@ -2948,17 +2951,12 @@ Rect2 Tree::get_custom_popup_rect() const {
 	return custom_popup_rect;
 }
 
-int Tree::get_item_offset(TreeItem *p_item, bool p_as_expanded, bool p_expand_ancestor_only) const {
+int Tree::get_item_offset(TreeItem *p_item) const {
 
-	if (!root)
-		return 0;
-
-	Set<TreeItem *> ancestors;
-	for(TreeItem *it=p_item->parent;it;it=it->parent)
-		ancestors.insert(it);
-
-	int ofs=_get_title_button_height();
 	TreeItem *it=root;
+	int ofs=_get_title_button_height();
+	if (!it)
+		return 0;
 
 	while(true) {
 
@@ -2970,6 +2968,7 @@ int Tree::get_item_offset(TreeItem *p_item, bool p_as_expanded, bool p_expand_an
 		if (it->childs && !it->collapsed) {
 
 			it=it->childs;
+
 		} else if (it->next) {
 
 			it=it->next;
@@ -2997,24 +2996,9 @@ void Tree::ensure_cursor_is_visible() {
 	TreeItem *selected = get_selected();
 	if (!selected)
 		return;
-
-	int ofs = get_item_offset(selected, true, true);
+	int ofs = get_item_offset(selected);
 	if (ofs==-1)
 		return;
-
-	bool height_changed=false;
-	for (TreeItem *it=selected->parent;it;it=it->parent) {
-		if (it->collapsed) {
-			it->collapsed=false;
-			height_changed=true;
-		}
-	}
-
-	if (height_changed) {
-		call_deferred("ensure_cursor_is_visible");
-		return;
-	}
-
 	int h = compute_item_height(selected)+cache.vseparation;
 	int screenh=get_size().height-h_scroll->get_combined_minimum_size().height;
 
@@ -3253,6 +3237,10 @@ bool Tree::is_folding_hidden() const {
 	return hide_folding;
 }
 
+void Tree::set_value_evaluator(ValueEvaluator *p_evaluator) {
+	evaluator = p_evaluator;
+}
+
 void Tree::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("_range_click_timeout"),&Tree::_range_click_timeout);
@@ -3391,6 +3379,8 @@ Tree::Tree() {
 	range_drag_enabled=false;
 
 	hide_folding=false;
+
+	evaluator=NULL;
 }
 
 

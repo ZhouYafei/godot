@@ -39,6 +39,10 @@ void EditorExportResources::initialize() {
 
 	String json_path = EditorSettings::get_singleton()->get_settings_path()+"/tmp/tmpexport.json";
 
+	DirAccessRef d(DirAccess::create(DirAccess::ACCESS_FILESYSTEM));
+	if(!d->file_exists(json_path))
+		return;
+
 	Vector<uint8_t> data = FileAccess::get_file_as_array(json_path);
 	if (data.empty())
 		return;

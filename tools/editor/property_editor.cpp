@@ -44,7 +44,6 @@
 #include "editor_help.h"
 #include "scene/resources/packed_scene.h"
 
-#include "core/translation.h"
 
 void CustomPropertyEditor::_notification(int p_what) {
 
@@ -983,7 +982,7 @@ void CustomPropertyEditor::_action_pressed(int p_which) {
 				hide();
 
 			} else if (hint==PROPERTY_HINT_FILE || hint==PROPERTY_HINT_GLOBAL_FILE) {
-				if (p_which==0) { // File..
+				if (p_which==0) {
 
 					if (hint==PROPERTY_HINT_FILE)
 						file->set_access(EditorFileDialog::ACCESS_RESOURCES);
@@ -1043,7 +1042,8 @@ void CustomPropertyEditor::_action_pressed(int p_which) {
 		} break;
 		case Variant::NODE_PATH: {
 
-			if (p_which==0) { // assign
+			if (p_which==0) {
+
 
 				scene_tree->popup_centered_ratio();
 
@@ -1313,7 +1313,10 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::REAL: {
 
 			if (hint!=PROPERTY_HINT_EXP_EASING) {
-				v=value_editor[0]->get_text().to_double();
+				if (evaluator)
+					evaluator->eval(value_editor[0]->get_text());
+				else
+					v=value_editor[0]->get_text().to_double();
 				emit_signal("variant_changed");
 
 			}
@@ -1327,8 +1330,13 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::VECTOR2: {
 
 			Vector2 vec;
-			vec.x=value_editor[0]->get_text().to_double();
-			vec.y=value_editor[1]->get_text().to_double();
+			if (evaluator) {
+				vec.x=evaluator->eval(value_editor[0]->get_text());
+				vec.y=evaluator->eval(value_editor[1]->get_text());
+			} else {
+				vec.x=value_editor[0]->get_text().to_double();
+				vec.y=value_editor[1]->get_text().to_double();
+			}
 			v=vec;
 			emit_signal("variant_changed");
 
@@ -1336,10 +1344,17 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::RECT2: {
 
 			Rect2 r2;
-			r2.pos.x=value_editor[0]->get_text().to_double();
-			r2.pos.y=value_editor[1]->get_text().to_double();
-			r2.size.x=value_editor[2]->get_text().to_double();
-			r2.size.y=value_editor[3]->get_text().to_double();
+			if (evaluator) {
+				r2.pos.x=evaluator->eval(value_editor[0]->get_text());
+				r2.pos.y=evaluator->eval(value_editor[1]->get_text());
+				r2.size.x=evaluator->eval(value_editor[2]->get_text());
+				r2.size.y=evaluator->eval(value_editor[3]->get_text());
+			} else {
+				r2.pos.x=value_editor[0]->get_text().to_double();
+				r2.pos.y=value_editor[1]->get_text().to_double();
+				r2.size.x=value_editor[2]->get_text().to_double();
+				r2.size.y=value_editor[3]->get_text().to_double();
+			}
 			v=r2;
 			emit_signal("variant_changed");
 
@@ -1348,9 +1363,15 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::VECTOR3: {
 
 			Vector3 vec;
-			vec.x=value_editor[0]->get_text().to_double();
-			vec.y=value_editor[1]->get_text().to_double();
-			vec.z=value_editor[2]->get_text().to_double();
+			if (evaluator) {
+				vec.x=evaluator->eval(value_editor[0]->get_text());
+				vec.y=evaluator->eval(value_editor[1]->get_text());
+				vec.z=evaluator->eval(value_editor[2]->get_text());
+			} else {
+				vec.x=value_editor[0]->get_text().to_double();
+				vec.y=value_editor[1]->get_text().to_double();
+				vec.z=value_editor[2]->get_text().to_double();
+			}
 			v=vec;
 			emit_signal("variant_changed");
 
@@ -1358,10 +1379,17 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::PLANE: {
 
 			Plane pl;
-			pl.normal.x=value_editor[0]->get_text().to_double();
-			pl.normal.y=value_editor[1]->get_text().to_double();
-			pl.normal.z=value_editor[2]->get_text().to_double();
-			pl.d=value_editor[3]->get_text().to_double();
+			if (evaluator) {
+				pl.normal.x=evaluator->eval(value_editor[0]->get_text());
+				pl.normal.y=evaluator->eval(value_editor[1]->get_text());
+				pl.normal.z=evaluator->eval(value_editor[2]->get_text());
+				pl.d=evaluator->eval(value_editor[3]->get_text());
+			} else {
+				pl.normal.x=value_editor[0]->get_text().to_double();
+				pl.normal.y=value_editor[1]->get_text().to_double();
+				pl.normal.z=value_editor[2]->get_text().to_double();
+				pl.d=value_editor[3]->get_text().to_double();
+			}
 			v=pl;
 			emit_signal("variant_changed");
 
@@ -1369,10 +1397,17 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::QUAT: {
 
 			Quat q;
-			q.x=value_editor[0]->get_text().to_double();
-			q.y=value_editor[1]->get_text().to_double();
-			q.z=value_editor[2]->get_text().to_double();
-			q.w=value_editor[3]->get_text().to_double();
+			if (evaluator) {
+				q.x=evaluator->eval(value_editor[0]->get_text());
+				q.y=evaluator->eval(value_editor[1]->get_text());
+				q.z=evaluator->eval(value_editor[2]->get_text());
+				q.w=evaluator->eval(value_editor[3]->get_text());
+			} else {
+				q.x=value_editor[0]->get_text().to_double();
+				q.y=value_editor[1]->get_text().to_double();
+				q.z=value_editor[2]->get_text().to_double();
+				q.w=value_editor[3]->get_text().to_double();
+			}
 			v=q;
 			emit_signal("variant_changed");
 
@@ -1382,12 +1417,21 @@ void CustomPropertyEditor::_modified(String p_string) {
 			Vector3 pos;
 			Vector3 size;
 
-			pos.x=value_editor[0]->get_text().to_double();
-			pos.y=value_editor[1]->get_text().to_double();
-			pos.z=value_editor[2]->get_text().to_double();
-			size.x=value_editor[3]->get_text().to_double();
-			size.y=value_editor[4]->get_text().to_double();
-			size.z=value_editor[5]->get_text().to_double();
+			if (evaluator) {
+				pos.x=evaluator->eval(value_editor[0]->get_text());
+				pos.y=evaluator->eval(value_editor[1]->get_text());
+				pos.z=evaluator->eval(value_editor[2]->get_text());
+				size.x=evaluator->eval(value_editor[3]->get_text());
+				size.y=evaluator->eval(value_editor[4]->get_text());
+				size.z=evaluator->eval(value_editor[5]->get_text());
+			} else {
+				pos.x=value_editor[0]->get_text().to_double();
+				pos.y=value_editor[1]->get_text().to_double();
+				pos.z=value_editor[2]->get_text().to_double();
+				size.x=value_editor[3]->get_text().to_double();
+				size.y=value_editor[4]->get_text().to_double();
+				size.z=value_editor[5]->get_text().to_double();
+			}
 			v=AABB(pos,size);
 			emit_signal("variant_changed");
 
@@ -1396,7 +1440,11 @@ void CustomPropertyEditor::_modified(String p_string) {
 
 			Matrix32 m;
 			for(int i=0;i<6;i++) {
-				m.elements[i/2][i%2]=value_editor[i]->get_text().to_double();
+				if (evaluator) {
+					m.elements[i/2][i%2]=evaluator->eval(value_editor[i]->get_text());
+				} else {
+					m.elements[i/2][i%2]=value_editor[i]->get_text().to_double();
+				}
 			}
 
 			v=m;
@@ -1408,7 +1456,11 @@ void CustomPropertyEditor::_modified(String p_string) {
 			Matrix3 m;
 			for(int i=0;i<9;i++) {
 
-				m.elements[i/3][i%3]=value_editor[i]->get_text().to_double();
+				if (evaluator) {
+					m.elements[i/3][i%3]=evaluator->eval(value_editor[i]->get_text());
+				} else {
+					m.elements[i/3][i%3]=value_editor[i]->get_text().to_double();
+				}
 			}
 
 			v=m;
@@ -1420,14 +1472,24 @@ void CustomPropertyEditor::_modified(String p_string) {
 			Matrix3 basis;
 			for(int i=0;i<9;i++) {
 
-				basis.elements[i/3][i%3]=value_editor[(i/3)*4+i%3]->get_text().to_double();
+				if (evaluator) {
+					basis.elements[i/3][i%3]=evaluator->eval(value_editor[(i/3)*4+i%3]->get_text());
+				} else {
+					basis.elements[i/3][i%3]=value_editor[(i/3)*4+i%3]->get_text().to_double();
+				}
 			}
 
 			Vector3 origin;
 
-			origin.x=value_editor[3]->get_text().to_double();
-			origin.y=value_editor[7]->get_text().to_double();
-			origin.z=value_editor[11]->get_text().to_double();
+			if (evaluator) {
+				origin.x=evaluator->eval(value_editor[3]->get_text());
+				origin.y=evaluator->eval(value_editor[7]->get_text());
+				origin.z=evaluator->eval(value_editor[11]->get_text());
+			} else {
+				origin.x=value_editor[3]->get_text().to_double();
+				origin.y=value_editor[7]->get_text().to_double();
+				origin.z=value_editor[11]->get_text().to_double();
+			}
 
 			v=Transform(basis,origin);
 			emit_signal("variant_changed");
@@ -1735,6 +1797,8 @@ CustomPropertyEditor::CustomPropertyEditor() {
 	menu = memnew(PopupMenu);
 	add_child(menu);
 	menu->connect("item_pressed",this,"_menu_option");
+
+	evaluator = NULL;
 
 	spinbox = memnew ( SpinBox );
 	add_child(spinbox);
@@ -3394,6 +3458,8 @@ void PropertyEditor::edit(Object* p_object) {
 
 	obj=p_object;
 
+	evaluator->edit(p_object);
+
 	update_tree();
 
 	if (obj) {
@@ -3719,12 +3785,13 @@ PropertyEditor::PropertyEditor() {
 
 	tree->connect("custom_popup_edited", this,"_custom_editor_request");
 	tree->connect("button_pressed", this,"_edit_button");
-
 	custom_editor->connect("variant_changed", this,"_custom_editor_edited");
 	custom_editor->connect("resource_edit_request", this,"_resource_edit_request",make_binds(),CONNECT_DEFERRED);
-	//custom_editor->connect("select_node_request", this, "_select_node_request");
-	
 	tree->set_hide_folding(true);
+
+	evaluator = memnew (PropertyValueEvaluator);
+	tree->set_value_evaluator(evaluator);
+	custom_editor->set_value_evaluator(evaluator);
 
 	capitalize_paths=true;
 	autoclear=false;
@@ -3744,7 +3811,9 @@ PropertyEditor::PropertyEditor() {
 
 PropertyEditor::~PropertyEditor()
 {
+	memdelete(evaluator);
 }
+
 
 /////////////////////////////
 
@@ -3980,4 +4049,52 @@ SectionedPropertyEditor::SectionedPropertyEditor() {
 SectionedPropertyEditor::~SectionedPropertyEditor() {
 
 	memdelete(filter);
+}
+
+double PropertyValueEvaluator::eval(const String& p_text) {
+
+	if (!obj)
+		return _default_eval(p_text);
+
+	Ref<Script> script= Ref<Script>(script_language ->create_script());
+	script->set_source_code(_build_script(p_text));
+	Error err = script->reload();
+	if (err) {
+		print_line("[PropertyValueEvaluator] Error loading script for expression: " + p_text);
+		return _default_eval(p_text);
+	}
+
+	ScriptInstance *script_instance = script->instance_create(this);
+
+	Variant::CallError call_err;
+	script_instance->call("set_this",obj);
+	double result = script_instance->call("e", NULL, 0, call_err );
+	if (call_err.error == Variant::CallError::CALL_OK) {
+		return result;
+	}
+	print_line("[PropertyValueEvaluator]: Error eval! Error code: " + itos(call_err.error));
+
+	memdelete(script_instance);
+
+	return _default_eval(p_text);
+}
+
+
+void PropertyValueEvaluator::edit(Object *p_obj) {
+	obj = p_obj;
+}
+
+String PropertyValueEvaluator::_build_script(const String& p_text) {
+	String script_text = "tool\nvar this\nfunc set_this(p_this):\n\tthis=p_this\nfunc e():\n\treturn ";
+	script_text += p_text.strip_edges();
+	script_text += "\n";
+	return script_text;
+}
+
+PropertyValueEvaluator::PropertyValueEvaluator() {
+	script_language = ScriptServer::get_language(0); // todo: get script language from editor setting
+}
+
+PropertyValueEvaluator::~PropertyValueEvaluator() {
+
 }
