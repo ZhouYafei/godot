@@ -541,7 +541,7 @@ void ProjectManager::_load_recent_projects() {
 		String project_name=_TR("Unnamed Project");
 
 		if (cf->has_section_key("application","name")) {
-			project_name = cf->get_value("application","name");
+			project_name = static_cast<String>(cf->get_value("application","name")).xml_unescape();
 		}
 
 		if (filter_option==ProjectListFilter::FILTER_NAME && search_term!="" && project_name.findn(search_term)==-1)

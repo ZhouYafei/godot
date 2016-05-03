@@ -426,6 +426,8 @@ friend class TreeItem;
 
 	bool hide_folding;
 
+	ValueEvaluator *evaluator;
+
 protected:
 	static void _bind_methods();
 
@@ -488,7 +490,7 @@ public:
 	void set_hide_folding(bool p_hide);
 	bool is_folding_hidden() const;
 
-
+	void set_value_evaluator(ValueEvaluator *p_evaluator);
 
 	Tree();
 	~Tree();

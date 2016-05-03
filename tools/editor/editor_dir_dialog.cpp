@@ -190,6 +190,7 @@ void EditorDirDialog::_make_dir_confirm() {
 	} else {
 		reload();
 	}
+	makedirname->set_text(""); // reset label
 }
 
 

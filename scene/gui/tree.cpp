@@ -3260,6 +3260,9 @@ bool Tree::is_folding_hidden() const {
 	return hide_folding;
 }
 
+void Tree::set_value_evaluator(ValueEvaluator *p_evaluator) {
+	evaluator = p_evaluator;
+}
 
 void Tree::_bind_methods() {
 
@@ -3402,6 +3405,7 @@ Tree::Tree() {
 
 	hide_folding=false;
 
+	evaluator=NULL;
 }
 
 

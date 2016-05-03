@@ -36,9 +36,40 @@
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
+
+
 class Font : public Resource {
 
 	OBJ_TYPE( Font, Resource );
+
+protected:
+
+	static void _bind_methods();
+
+public:
+
+	virtual float get_height() const=0;
+
+	virtual float get_ascent() const=0;
+	virtual float get_descent() const=0;
+
+	virtual Size2 get_char_size(CharType p_char,CharType p_next=0) const=0;
+	Size2 get_string_size(const String& p_string) const;
+
+	virtual bool is_distance_field_hint() const=0;
+
+	void draw(RID p_canvas_item, const Point2& p_pos, const String& p_text,const Color& p_modulate=Color(1,1,1),int p_clip_w=-1) const;
+	void draw_halign(RID p_canvas_item, const Point2& p_pos, HAlign p_align,float p_width,const String& p_text,const Color& p_modulate=Color(1,1,1)) const;
+	virtual float draw_char(RID p_canvas_item, const Point2& p_pos, const CharType& p_char,const CharType& p_next=0,const Color& p_modulate=Color(1,1,1)) const=0;
+
+	Font();
+
+};
+
+
+class BitmapFont : public Font {
+
+	OBJ_TYPE( BitmapFont, Font );
 	RES_BASE_EXTENSION("fnt");
 
 	mutable Vector< Ref<Texture> > textures;
@@ -96,7 +127,7 @@ private:
 	Vector<Variant> _get_textures() const;
 	void _reload_hook(const RID& p_hook);
 
-	Ref<Font> fallback;
+	Ref<BitmapFont> fallback;
 protected:
 
 	static void _bind_methods();
@@ -128,8 +159,7 @@ public:
 	int get_kerning_pair(CharType p_A,CharType p_B) const;
 	Vector<KerningPairKey> get_kerning_pair_keys() const;
 
-	inline Size2 get_char_size(CharType p_char,CharType p_next=0) const;
-	Size2 get_string_size(const String& p_string) const;
+	Size2 get_char_size(CharType p_char,CharType p_next=0) const;
 
     bool set_ttf_path(const String& p_path, int p_size);
     void set_ttf_font(const Ref<TtfFont>& p_font);
@@ -137,6 +167,8 @@ public:
     void set_ttf_options(const Dictionary& p_options);
     const Dictionary& get_ttf_options() const;
 	
+	void set_fallback(const Ref<BitmapFont> &p_fallback);
+	Ref<BitmapFont> get_fallback() const;
 
 
 	void set_fallback(const Ref<Font> &p_fallback);
@@ -147,43 +179,15 @@ public:
 	void set_distance_field_hint(bool p_distance_field);
 	bool is_distance_field_hint() const;
 
-	void draw(RID p_canvas_item, const Point2& p_pos, const String& p_text,const Color& p_modulate=Color(1,1,1),int p_clip_w=-1) const;
-	void draw_halign(RID p_canvas_item, const Point2& p_pos, HAlign p_align,float p_width,const String& p_text,const Color& p_modulate=Color(1,1,1)) const;
 	float draw_char(RID p_canvas_item, const Point2& p_pos, const CharType& p_char,const CharType& p_next=0,const Color& p_modulate=Color(1,1,1)) const;
 
-	Font();
-	~Font();
+	BitmapFont();
+	~BitmapFont();
 };
 
 
-Size2 Font::get_char_size(CharType p_char,CharType p_next) const {
 
 	const Character * c = get_character_p(p_char);
-
-	if (!c) {
-		if (fallback.is_valid())
-			return fallback->get_char_size(p_char,p_next);
-		return Size2();
-	}
-
-	Size2 ret(c->advance,c->rect.size.y);
-
-	if (p_next) {
-
-		KerningPairKey kpk;
-		kpk.A=p_char;
-		kpk.B=p_next;
-
-		const Map<KerningPairKey,int>::Element *E=kerning_map.find(kpk);
-		if (E) {
-
-			ret.width-=E->get();
-		}
-	}
-
-	return ret;
-}
-
 
 
 #endif

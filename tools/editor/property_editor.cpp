@@ -1416,6 +1416,7 @@ void CustomPropertyEditor::_modified(String p_string) {
 
 			Vector3 pos;
 			Vector3 size;
+
 			if (evaluator) {
 				pos.x=evaluator->eval(value_editor[0]->get_text());
 				pos.y=evaluator->eval(value_editor[1]->get_text());
@@ -1454,6 +1455,7 @@ void CustomPropertyEditor::_modified(String p_string) {
 
 			Matrix3 m;
 			for(int i=0;i<9;i++) {
+
 				if (evaluator) {
 					m.elements[i/3][i%3]=evaluator->eval(value_editor[i]->get_text());
 				} else {
@@ -1469,6 +1471,7 @@ void CustomPropertyEditor::_modified(String p_string) {
 
 			Matrix3 basis;
 			for(int i=0;i<9;i++) {
+
 				if (evaluator) {
 					basis.elements[i/3][i%3]=evaluator->eval(value_editor[(i/3)*4+i%3]->get_text());
 				} else {
@@ -1477,6 +1480,7 @@ void CustomPropertyEditor::_modified(String p_string) {
 			}
 
 			Vector3 origin;
+
 			if (evaluator) {
 				origin.x=evaluator->eval(value_editor[3]->get_text());
 				origin.y=evaluator->eval(value_editor[7]->get_text());
@@ -1810,7 +1814,7 @@ CustomPropertyEditor::CustomPropertyEditor() {
 bool PropertyEditor::_might_be_in_instance() {
 
 	if (!obj)
-		return NULL;
+		return false;
 
 	Node *node = obj->cast_to<Node>();
 
@@ -2760,7 +2764,6 @@ void PropertyEditor::update_tree() {
 				else
 					item->set_cell_mode( 1, TreeItem::CELL_MODE_RANGE_EXPRESSION );
 
-				item->set_cell_mode( 1, TreeItem::CELL_MODE_RANGE );
 				if (p.hint==PROPERTY_HINT_SPRITE_FRAME) {
 					item->set_range_config(1,0,99999,1);
 
@@ -3454,6 +3457,7 @@ void PropertyEditor::edit(Object* p_object) {
 	}
 
 	obj=p_object;
+
 	evaluator->edit(p_object);
 
 	update_tree();
@@ -3791,6 +3795,10 @@ PropertyEditor::PropertyEditor() {
 	
 	tree->set_hide_folding(true);
 
+	evaluator = memnew (PropertyValueEvaluator);
+	tree->set_value_evaluator(evaluator);
+	custom_editor->set_value_evaluator(evaluator);
+
 	capitalize_paths=true;
 	autoclear=false;
 	tree->set_column_titles_visible(false);
@@ -4093,4 +4101,52 @@ SectionedPropertyEditor::SectionedPropertyEditor() {
 SectionedPropertyEditor::~SectionedPropertyEditor() {
 
 	memdelete(filter);
+}
+
+double PropertyValueEvaluator::eval(const String& p_text) {
+
+	if (!obj)
+		return _default_eval(p_text);
+
+	Ref<Script> script= Ref<Script>(script_language ->create_script());
+	script->set_source_code(_build_script(p_text));
+	Error err = script->reload();
+	if (err) {
+		print_line("[PropertyValueEvaluator] Error loading script for expression: " + p_text);
+		return _default_eval(p_text);
+	}
+
+	ScriptInstance *script_instance = script->instance_create(this);
+
+	Variant::CallError call_err;
+	script_instance->call("set_this",obj);
+	double result = script_instance->call("e", NULL, 0, call_err );
+	if (call_err.error == Variant::CallError::CALL_OK) {
+		return result;
+	}
+	print_line("[PropertyValueEvaluator]: Error eval! Error code: " + itos(call_err.error));
+
+	memdelete(script_instance);
+
+	return _default_eval(p_text);
+}
+
+
+void PropertyValueEvaluator::edit(Object *p_obj) {
+	obj = p_obj;
+}
+
+String PropertyValueEvaluator::_build_script(const String& p_text) {
+	String script_text = "tool\nvar this\nfunc set_this(p_this):\n\tthis=p_this\nfunc e():\n\treturn ";
+	script_text += p_text.strip_edges();
+	script_text += "\n";
+	return script_text;
+}
+
+PropertyValueEvaluator::PropertyValueEvaluator() {
+	script_language = ScriptServer::get_language(0); // todo: get script language from editor setting
+}
+
+PropertyValueEvaluator::~PropertyValueEvaluator() {
+
 }

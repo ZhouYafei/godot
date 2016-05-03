@@ -3555,6 +3555,7 @@ Error EditorNode::load_scene(const String& p_scene, bool p_ignore_broken_deps,bo
 	load_errors->clear();
 	String lpath = Globals::get_singleton()->localize_path(p_scene);
 
+	print_line("LOCAL PATH: "+lpath+" from "+p_scene);
 	if (!lpath.begins_with("res://")) {
 
 		current_option=-1;
@@ -6013,11 +6014,6 @@ EditorNode::EditorNode() {
 
 
 
-	file_export_check = memnew( CheckButton );
-	file_export_check->set_text("Enable Debugging");
-	file_export_check->set_pressed(true);
-	file_export_check->connect("pressed",this,"_export_debug_toggled");
-	file_export->get_vbox()->add_margin_child("Debug:",file_export_check);
 	file_export_password = memnew( LineEdit );
 	file_export_password->set_secret(true);
 	file_export_password->set_editable(false);

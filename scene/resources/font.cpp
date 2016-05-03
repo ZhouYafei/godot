@@ -33,7 +33,67 @@
 #include "core/os/file_access.h"
 #include "core/io/resource_loader.h"
 
-void Font::_set_chars(const DVector<int>& p_chars) {
+
+
+void Font::draw_halign(RID p_canvas_item, const Point2& p_pos, HAlign p_align,float p_width,const String& p_text,const Color& p_modulate) const {
+
+	float length=get_string_size(p_text).width;
+	if (length>=p_width) {
+		draw(p_canvas_item,p_pos,p_text,p_modulate,p_width);
+		return;
+	}
+
+	float ofs;
+	switch(p_align) {
+		case HALIGN_LEFT: {
+			ofs=0;
+		} break;
+		case HALIGN_CENTER: {
+			 ofs = Math::floor( (p_width-length) / 2.0 );
+		} break;
+		case HALIGN_RIGHT: {
+			ofs=p_width-length;
+		} break;
+	}
+	draw(p_canvas_item,p_pos+Point2(ofs,0),p_text,p_modulate,p_width);
+}
+
+void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, const Color& p_modulate,int p_clip_w) const {
+
+	Vector2 ofs;
+
+	for (int i=0;i<p_text.length();i++) {
+
+		int width = get_char_size(p_text[i]).width;
+
+		if (p_clip_w>=0 && (ofs.x+width)>p_clip_w)
+			break; //clip
+
+		ofs.x+=draw_char(p_canvas_item,p_pos+ofs,p_text[i],p_text[i+1],p_modulate);
+	}
+}
+
+void Font::_bind_methods() {
+
+	ObjectTypeDB::bind_method(_MD("draw","canvas_item","pos","string","modulate","clip_w"),&Font::draw,DEFVAL(Color(1,1,1)),DEFVAL(-1));
+	ObjectTypeDB::bind_method(_MD("get_ascent"),&Font::get_ascent);
+	ObjectTypeDB::bind_method(_MD("get_descent"),&Font::get_descent);
+	ObjectTypeDB::bind_method(_MD("get_height"),&Font::get_height);
+	ObjectTypeDB::bind_method(_MD("is_distance_field_hint"),&Font::is_distance_field_hint);
+	ObjectTypeDB::bind_method(_MD("get_string_size","string"),&Font::get_string_size);
+	ObjectTypeDB::bind_method(_MD("draw_char","canvas_item","pos","char","next","modulate"),&Font::draw_char,DEFVAL(-1),DEFVAL(Color(1,1,1)));
+
+}
+
+
+Font::Font() {
+
+
+}
+
+/////////////////////////////////////////////////////////////////
+
+void BitmapFont::_set_chars(const DVector<int>& p_chars) {
 
 	int len = p_chars.size();
 	//char 1 charsize 1 texture, 4 rect, 2 align, advance 1
@@ -52,7 +112,7 @@ void Font::_set_chars(const DVector<int>& p_chars) {
 
 }
 
-DVector<int> Font::_get_chars() const {
+DVector<int> BitmapFont::_get_chars() const {
 
 	DVector<int> chars;
 
@@ -76,7 +136,7 @@ DVector<int> Font::_get_chars() const {
 	return chars;
 }
 
-void Font::_set_kernings(const DVector<int>& p_kernings) {
+void BitmapFont::_set_kernings(const DVector<int>& p_kernings) {
 
 	int len=p_kernings.size();
 	ERR_FAIL_COND(len%3);
@@ -91,7 +151,7 @@ void Font::_set_kernings(const DVector<int>& p_kernings) {
 	}
 }
 
-DVector<int> Font::_get_kernings() const {
+DVector<int> BitmapFont::_get_kernings() const {
 
 	DVector<int> kernings;
 
@@ -106,7 +166,7 @@ DVector<int> Font::_get_kernings() const {
 }
 
 
-void Font::_set_textures(const Vector<Variant> & p_textures) {
+void BitmapFont::_set_textures(const Vector<Variant> & p_textures) {
 
 	for(int i=0;i<p_textures.size();i++) {
 		Ref<Texture> tex = p_textures[i];
@@ -116,7 +176,7 @@ void Font::_set_textures(const Vector<Variant> & p_textures) {
 
 }
 
-Vector<Variant> Font::_get_textures() const {
+Vector<Variant> BitmapFont::_get_textures() const {
 
 	Vector<Variant> rtextures;
 	if (!ttf_font.is_valid()) {
@@ -126,7 +186,7 @@ Vector<Variant> Font::_get_textures() const {
 	return rtextures;
 }
 
-Error Font::create_from_fnt(const String& p_string) {
+Error BitmapFont::create_from_fnt(const String& p_string) {
 	//fnt format used by angelcode bmfont
 	//http://www.angelcode.com/products/bmfont/
 
@@ -275,51 +335,51 @@ Error Font::create_from_fnt(const String& p_string) {
 
 
 
-void Font::set_height(float p_height) {
+void BitmapFont::set_height(float p_height) {
 
 	height=p_height;
 }
-float Font::get_height() const{
+float BitmapFont::get_height() const{
 
 	return height;
 }
 
-void Font::set_ascent(float p_ascent){
+void BitmapFont::set_ascent(float p_ascent){
 
 	ascent=p_ascent;
 }
-float Font::get_ascent() const {
+float BitmapFont::get_ascent() const {
 
 	return ascent;
 }
-float Font::get_descent() const {
+float BitmapFont::get_descent() const {
 
 	return height-ascent;
 }
 
-void Font::add_texture(const Ref<Texture>& p_texture) {
+void BitmapFont::add_texture(const Ref<Texture>& p_texture) {
 
 	ERR_FAIL_COND( p_texture.is_null());
 	textures.push_back( p_texture );
 }
 
-int Font::get_texture_count() const {
+int BitmapFont::get_texture_count() const {
 
 	return textures.size();
 };
 
-Ref<Texture> Font::get_texture(int p_idx) const {
+Ref<Texture> BitmapFont::get_texture(int p_idx) const {
 
 	ERR_FAIL_INDEX_V(p_idx, textures.size(), Ref<Texture>());
 	return textures[p_idx];
 };
 
-int Font::get_character_count() const {
+int BitmapFont::get_character_count() const {
 
 	return char_map.size();
 };
 
-Vector<CharType> Font::get_char_keys() const {
+Vector<CharType> BitmapFont::get_char_keys() const {
 
 	Vector<CharType> chars;
 	chars.resize(char_map.size());
@@ -333,7 +393,7 @@ Vector<CharType> Font::get_char_keys() const {
 	return chars;
 };
 
-Font::Character Font::get_character(CharType p_char) const {
+BitmapFont::Character BitmapFont::get_character(CharType p_char) const {
 
 	if (!char_map.has(p_char)) {
 		ERR_FAIL_COND_V(!(const_cast<Font *>(this))->create_character(p_char),Character());
@@ -366,6 +426,7 @@ bool Font::create_character(CharType p_char) {
 }
 
 void Font::add_char(CharType p_char, int p_texture_idx, const Rect2& p_rect, const Size2& p_align, float p_advance) {
+void BitmapFont::add_char(CharType p_char, int p_texture_idx, const Rect2& p_rect, const Size2& p_align, float p_advance) {
 
 	if (p_advance<0)
 		p_advance=p_rect.size.width;
@@ -380,7 +441,7 @@ void Font::add_char(CharType p_char, int p_texture_idx, const Rect2& p_rect, con
 	char_map[p_char]=c;
 }
 
-void Font::add_kerning_pair(CharType p_A,CharType p_B,int p_kerning) {
+void BitmapFont::add_kerning_pair(CharType p_A,CharType p_B,int p_kerning) {
 
 
 	KerningPairKey kpk;
@@ -396,10 +457,10 @@ void Font::add_kerning_pair(CharType p_A,CharType p_B,int p_kerning) {
 	}
 }
 
-Vector<Font::KerningPairKey> Font::get_kerning_pair_keys() const {
+Vector<BitmapFont::KerningPairKey> BitmapFont::get_kerning_pair_keys() const {
 
 
-	Vector<Font::KerningPairKey> ret;
+	Vector<BitmapFont::KerningPairKey> ret;
 	ret.resize(kerning_map.size());
 	int i=0;
 
@@ -412,7 +473,7 @@ Vector<Font::KerningPairKey> Font::get_kerning_pair_keys() const {
 
 }
 
-int Font::get_kerning_pair(CharType p_A,CharType p_B) const {
+int BitmapFont::get_kerning_pair(CharType p_A,CharType p_B) const {
 
 	KerningPairKey kpk;
 	kpk.A=p_A;
@@ -425,19 +486,19 @@ int Font::get_kerning_pair(CharType p_A,CharType p_B) const {
 	return 0;
 }
 
-void Font::set_distance_field_hint(bool p_distance_field) {
+void BitmapFont::set_distance_field_hint(bool p_distance_field) {
 
 	distance_field_hint=p_distance_field;
 	emit_changed();
 }
 
-bool Font::is_distance_field_hint() const{
+bool BitmapFont::is_distance_field_hint() const{
 
 	return distance_field_hint;
 }
 
 
-void Font::clear() {
+void BitmapFont::clear() {
 
 	height=1;
 	ascent=0;
@@ -463,7 +524,7 @@ Size2 Font::get_string_size(const String& p_string) const {
 
 	int l = p_string.length();
 	if (l==0)
-		return Size2(0,height);
+		return Size2(0,get_height());
 	const CharType *sptr = &p_string[0];
 
 	for (int i=0;i<l;i++) {
@@ -471,33 +532,14 @@ Size2 Font::get_string_size(const String& p_string) const {
 		w+=get_char_size(sptr[i],sptr[i+1]).width;
 	}
 
-	return Size2(w,height);
+	return Size2(w,get_height());
+}
+void BitmapFont::set_fallback(const Ref<BitmapFont> &p_fallback) {
+
+	fallback=p_fallback;
 }
 
-void Font::draw_halign(RID p_canvas_item, const Point2& p_pos, HAlign p_align,float p_width,const String& p_text,const Color& p_modulate) const {
-
-	float length=get_string_size(p_text).width;
-	if (length>=p_width) {
-		draw(p_canvas_item,p_pos,p_text,p_modulate,p_width);
-		return;
-	}
-
-	float ofs;
-	switch(p_align) {
-		case HALIGN_LEFT: {
-			ofs=0;
-		} break;
-		case HALIGN_CENTER: {
-			 ofs = Math::floor( (p_width-length) / 2.0 );
-		} break;
-		case HALIGN_RIGHT: {
-			ofs=p_width-length;
-		} break;
-	}
-	draw(p_canvas_item,p_pos+Point2(ofs,0),p_text,p_modulate,p_width);
-}
-
-void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, const Color& p_modulate,int p_clip_w) const {
+Ref<BitmapFont> BitmapFont::get_fallback() const{
 
 
     update_atlas();
@@ -547,9 +589,10 @@ void Font::draw(RID p_canvas_item, const Point2& p_pos, const String& p_text, co
 		ofs+=get_char_size(ch,p_text[i+1]);
 		//ofs.x+=draw_char(p_canvas_item,p_pos+ofs,p_text[i],p_text[i+1],p_modulate);
 	}
+	return fallback;
 }
 
-float Font::draw_char(RID p_canvas_item, const Point2& p_pos, const CharType& p_char,const CharType& p_next,const Color& p_modulate) const {
+float BitmapFont::draw_char(RID p_canvas_item, const Point2& p_pos, const CharType& p_char,const CharType& p_next,const Color& p_modulate) const {
 
 	const Character * c = get_character_p(p_char);
 
@@ -715,57 +758,70 @@ const Dictionary& Font::get_ttf_options() const {
 
 void Font::set_fallback(const Ref<Font> &p_fallback) {
 
-	fallback=p_fallback;
+Size2 BitmapFont::get_char_size(CharType p_char,CharType p_next) const {
+
+	const Character * c = char_map.getptr(p_char);
+
+	if (!c) {
+		if (fallback.is_valid())
+			return fallback->get_char_size(p_char,p_next);
+		return Size2();
+	}
+
+	Size2 ret(c->advance,c->rect.size.y);
+
+	if (p_next) {
+
+		KerningPairKey kpk;
+		kpk.A=p_char;
+		kpk.B=p_next;
+
+		const Map<KerningPairKey,int>::Element *E=kerning_map.find(kpk);
+		if (E) {
+
+			ret.width-=E->get();
+		}
+	}
+
+	return ret;
 }
 
-Ref<Font> Font::get_fallback() const{
+void BitmapFont::_bind_methods() {
 
-	return fallback;
-}
+	ObjectTypeDB::bind_method(_MD("create_from_fnt","path"),&BitmapFont::create_from_fnt);
+	ObjectTypeDB::bind_method(_MD("set_height","px"),&BitmapFont::set_height);
 
-void Font::_bind_methods() {
+	ObjectTypeDB::bind_method(_MD("set_ascent","px"),&BitmapFont::set_ascent);
 
-	ObjectTypeDB::bind_method(_MD("create_from_fnt","path"),&Font::create_from_fnt);
-	ObjectTypeDB::bind_method(_MD("set_height","px"),&Font::set_height);
-	ObjectTypeDB::bind_method(_MD("get_height"),&Font::get_height);
+	ObjectTypeDB::bind_method(_MD("add_kerning_pair","char_a","char_b","kerning"),&BitmapFont::add_kerning_pair);
+	ObjectTypeDB::bind_method(_MD("get_kerning_pair","char_a","char_b"),&BitmapFont::get_kerning_pair);
 
-	ObjectTypeDB::bind_method(_MD("set_ascent","px"),&Font::set_ascent);
-	ObjectTypeDB::bind_method(_MD("get_ascent"),&Font::get_ascent);
-	ObjectTypeDB::bind_method(_MD("get_descent"),&Font::get_descent);
-
-	ObjectTypeDB::bind_method(_MD("add_kerning_pair","char_a","char_b","kerning"),&Font::add_kerning_pair);
-	ObjectTypeDB::bind_method(_MD("get_kerning_pair","char_a","char_b"),&Font::get_kerning_pair);
-
-	ObjectTypeDB::bind_method(_MD("add_texture","texture:Texture"),&Font::add_texture);
-	ObjectTypeDB::bind_method(_MD("add_char","character","texture","rect","align","advance"),&Font::add_char,DEFVAL(Point2()),DEFVAL(-1));
+	ObjectTypeDB::bind_method(_MD("add_texture","texture:Texture"),&BitmapFont::add_texture);
+	ObjectTypeDB::bind_method(_MD("add_char","character","texture","rect","align","advance"),&BitmapFont::add_char,DEFVAL(Point2()),DEFVAL(-1));
 
 
-	ObjectTypeDB::bind_method(_MD("get_texture_count"),&Font::get_texture_count);
-	ObjectTypeDB::bind_method(_MD("get_texture:Texture","idx"),&Font::get_texture);
+	ObjectTypeDB::bind_method(_MD("get_texture_count"),&BitmapFont::get_texture_count);
+	ObjectTypeDB::bind_method(_MD("get_texture:Texture","idx"),&BitmapFont::get_texture);
 
-	ObjectTypeDB::bind_method(_MD("get_char_size","char","next"),&Font::get_char_size,DEFVAL(0));
-	ObjectTypeDB::bind_method(_MD("get_string_size","string"),&Font::get_string_size);
+	ObjectTypeDB::bind_method(_MD("get_char_size","char","next"),&BitmapFont::get_char_size,DEFVAL(0));
 
-	ObjectTypeDB::bind_method(_MD("set_distance_field_hint","enable"),&Font::set_distance_field_hint);
-	ObjectTypeDB::bind_method(_MD("is_distance_field_hint"),&Font::is_distance_field_hint);
+	ObjectTypeDB::bind_method(_MD("set_distance_field_hint","enable"),&BitmapFont::set_distance_field_hint);
 
-	ObjectTypeDB::bind_method(_MD("clear"),&Font::clear);
+	ObjectTypeDB::bind_method(_MD("clear"),&BitmapFont::clear);
 
-	ObjectTypeDB::bind_method(_MD("draw","canvas_item","pos","string","modulate","clip_w"),&Font::draw,DEFVAL(Color(1,1,1)),DEFVAL(-1));
-	ObjectTypeDB::bind_method(_MD("draw_char","canvas_item","pos","char","next","modulate"),&Font::draw_char,DEFVAL(-1),DEFVAL(Color(1,1,1)));
 
-	ObjectTypeDB::bind_method(_MD("_set_chars"),&Font::_set_chars);
-	ObjectTypeDB::bind_method(_MD("_get_chars"),&Font::_get_chars);
+	ObjectTypeDB::bind_method(_MD("_set_chars"),&BitmapFont::_set_chars);
+	ObjectTypeDB::bind_method(_MD("_get_chars"),&BitmapFont::_get_chars);
 
-	ObjectTypeDB::bind_method(_MD("_set_kernings"),&Font::_set_kernings);
-	ObjectTypeDB::bind_method(_MD("_get_kernings"),&Font::_get_kernings);
+	ObjectTypeDB::bind_method(_MD("_set_kernings"),&BitmapFont::_set_kernings);
+	ObjectTypeDB::bind_method(_MD("_get_kernings"),&BitmapFont::_get_kernings);
 
-	ObjectTypeDB::bind_method(_MD("_set_textures"),&Font::_set_textures);
-	ObjectTypeDB::bind_method(_MD("_get_textures"),&Font::_get_textures);
+	ObjectTypeDB::bind_method(_MD("_set_textures"),&BitmapFont::_set_textures);
+	ObjectTypeDB::bind_method(_MD("_get_textures"),&BitmapFont::_get_textures);
 	ObjectTypeDB::bind_method(_MD("_reload_hook","rid"),&Font::_reload_hook);
 
-	ObjectTypeDB::bind_method(_MD("set_fallback","fallback"),&Font::set_fallback);
-	ObjectTypeDB::bind_method(_MD("get_fallback"),&Font::get_fallback);
+	ObjectTypeDB::bind_method(_MD("set_fallback","fallback"),&BitmapFont::set_fallback);
+	ObjectTypeDB::bind_method(_MD("get_fallback"),&BitmapFont::get_fallback);
 
 	ADD_PROPERTY( PropertyInfo( Variant::ARRAY, "textures", PROPERTY_HINT_NONE,"", PROPERTY_USAGE_NOEDITOR ), _SCS("_set_textures"), _SCS("_get_textures") );
 	ADD_PROPERTY( PropertyInfo( Variant::INT_ARRAY, "chars", PROPERTY_HINT_NONE,"", PROPERTY_USAGE_NOEDITOR ), _SCS("_set_chars"), _SCS("_get_chars") );
@@ -774,7 +830,7 @@ void Font::_bind_methods() {
 	ADD_PROPERTY( PropertyInfo( Variant::REAL, "height", PROPERTY_HINT_RANGE,"-1024,1024,1" ), _SCS("set_height"), _SCS("get_height") );
 	ADD_PROPERTY( PropertyInfo( Variant::REAL, "ascent", PROPERTY_HINT_RANGE,"-1024,1024,1" ), _SCS("set_ascent"), _SCS("get_ascent") );
 	ADD_PROPERTY( PropertyInfo( Variant::BOOL, "distance_field" ), _SCS("set_distance_field_hint"), _SCS("is_distance_field_hint") );
-	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "fallback", PROPERTY_HINT_RESOURCE_TYPE,"Font" ), _SCS("set_fallback"), _SCS("get_fallback") );
+	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "fallback", PROPERTY_HINT_RESOURCE_TYPE,"BitmapFont" ), _SCS("set_fallback"), _SCS("get_fallback") );
 
     ObjectTypeDB::bind_method(_MD("set_ttf_options"),&Font::set_ttf_options);
 	ObjectTypeDB::bind_method(_MD("get_ttf_options"),&Font::get_ttf_options);
@@ -785,7 +841,7 @@ void Font::_bind_methods() {
 	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "font", PROPERTY_HINT_RESOURCE_TYPE,"TtfFont",PROPERTY_USAGE_NOEDITOR), _SCS("set_ttf_font"),_SCS("get_ttf_font"));
 }
 
-Font::Font() {
+BitmapFont::BitmapFont() {
 
 	clear();
 
@@ -794,7 +850,7 @@ Font::Font() {
 }
 
 
-Font::~Font() {
+BitmapFont::~BitmapFont() {
 
 	clear();
 }

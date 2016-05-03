@@ -482,7 +482,8 @@ void ProjectExportDialog::_export_action(const String& p_file) {
 		return;
 
 	String platform = selected->get_metadata(0);
-	Error err = export_platform(platform,p_file,file_export_check->is_pressed(),file_export_password->get_text(),false);
+	bool debugging_enabled = EditorImportExport::get_singleton()->get_export_platform(platform)->is_debugging_enabled();
+	Error err = export_platform(platform,p_file,debugging_enabled,file_export_password->get_text(),false);
 	if (err!=OK) {
 		error->set_text(_TR("Error exporting project!"));
 		error->popup_centered_minsize();
@@ -593,7 +594,7 @@ void ProjectExportDialog::custom_action(const String&) {
 
 	String extension = exporter->get_binary_extension();
 
-	file_export_password->set_editable( exporter->requieres_password(file_export_check->is_pressed()));
+	file_export_password->set_editable( exporter->requires_password(exporter->is_debugging_enabled()) );
 
 	file_export->clear_filters();
 	if (extension!="") {
@@ -1499,12 +1500,6 @@ ProjectExportDialog::ProjectExportDialog(EditorNode *p_editor) {
 
 	file_export->set_title(_TR("Export Project"));
 	file_export->connect("file_selected", this,"_export_action");
-
-	file_export_check = memnew( CheckButton );
-	file_export_check->set_text(_TR("Enable Debugging"));
-	file_export_check->set_pressed(true);
-	file_export_check->connect("pressed",this,"_export_debug_toggled");
-	file_export->get_vbox()->add_margin_child(_TR("Debug:"),file_export_check);
 
 	file_export_password = memnew( LineEdit );
 	file_export_password->set_secret(true);

@@ -312,4 +312,24 @@ public:
 	~SectionedPropertyEditor();
 };
 
+class PropertyValueEvaluator : public ValueEvaluator {
+	OBJ_TYPE( PropertyValueEvaluator, ValueEvaluator );
+
+	Object *obj;
+	ScriptLanguage *script_language;
+	String _build_script(const String& p_text);
+
+	_FORCE_INLINE_ double _default_eval(const String& p_text) {
+		return p_text.to_double();
+	}
+
+public:
+
+	void edit(Object *p_obj);
+	double eval(const String& p_text);
+
+	PropertyValueEvaluator();
+	~PropertyValueEvaluator();
+};
+
 #endif
