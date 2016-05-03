@@ -422,11 +422,7 @@ friend class TreeItem;
 	bool drag_touching_deaccel;
 	bool click_handled;
 
-	ValueEvaluator *evaluator;
-
 	bool hide_folding;
-
-	ValueEvaluator *evaluator;
 
 protected:
 	static void _bind_methods();
@@ -483,14 +479,10 @@ public:
 	void set_cursor_can_exit_tree(bool p_enable);
 	bool can_cursor_exit_tree() const;
 
-	void set_value_evaluator(ValueEvaluator *p_evaluator);
-
 	VScrollBar *get_vscroll_bar() { return v_scroll; }
 
 	void set_hide_folding(bool p_hide);
 	bool is_folding_hidden() const;
-
-	void set_value_evaluator(ValueEvaluator *p_evaluator);
 
 	Tree();
 	~Tree();

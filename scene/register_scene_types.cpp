@@ -234,8 +234,6 @@ static ResourceFormatLoaderWAV *resource_loader_wav=NULL;
 static ResourceFormatLoaderTheme *resource_loader_theme=NULL;
 static ResourceFormatLoaderShader *resource_loader_shader=NULL;
 
-static ResourceFormatLoaderTtfFont *resource_loader_ttf=NULL;
-
 static ResourceFormatSaverText *resource_saver_text=NULL;
 static ResourceFormatLoaderText *resource_loader_text=NULL;
 
@@ -271,9 +269,6 @@ void register_scene_types() {
 
 	resource_loader_shader = memnew( ResourceFormatLoaderShader );
 	ResourceLoader::add_resource_format_loader( resource_loader_shader );
-
-	resource_loader_ttf=memnew( ResourceFormatLoaderTtfFont );
-    ResourceLoader::add_resource_format_loader(resource_loader_ttf);
 
 	OS::get_singleton()->yield(); //may take time to init
 
@@ -659,7 +654,6 @@ void unregister_scene_types() {
 
 	memdelete( resource_loader_theme );
 	memdelete( resource_loader_shader );
-	memdelete( resource_loader_ttf );
 
 	if (resource_saver_text) {
 		memdelete(resource_saver_text);

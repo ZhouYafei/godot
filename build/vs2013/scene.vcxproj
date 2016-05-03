@@ -288,6 +288,7 @@
     <ClCompile Include="..\..\scene\resources\convex_polygon_shape_2d.cpp" />
     <ClCompile Include="..\..\scene\resources\curve.cpp" />
     <ClCompile Include="..\..\scene\resources\default_theme\default_theme.cpp" />
+    <ClCompile Include="..\..\scene\resources\dynamic_font.cpp" />
     <ClCompile Include="..\..\scene\resources\environment.cpp" />
     <ClCompile Include="..\..\scene\resources\event_stream.cpp" />
     <ClCompile Include="..\..\scene\resources\font.cpp" />
@@ -323,9 +324,6 @@
     <ClCompile Include="..\..\scene\resources\texture.cpp" />
     <ClCompile Include="..\..\scene\resources\theme.cpp" />
     <ClCompile Include="..\..\scene\resources\tile_set.cpp" />
-    <ClCompile Include="..\..\scene\resources\ttf_font.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">Disabled</Optimization>
-    </ClCompile>
     <ClCompile Include="..\..\scene\resources\video_stream.cpp" />
     <ClCompile Include="..\..\scene\resources\volume.cpp" />
     <ClCompile Include="..\..\scene\resources\world.cpp" />
@@ -495,6 +493,7 @@
     <ClInclude Include="..\..\scene\resources\curve.h" />
     <ClInclude Include="..\..\scene\resources\default_theme\default_theme.h" />
     <ClInclude Include="..\..\scene\resources\default_theme\theme_data.h" />
+    <ClInclude Include="..\..\scene\resources\dynamic_font.h" />
     <ClInclude Include="..\..\scene\resources\environment.h" />
     <ClInclude Include="..\..\scene\resources\event_stream.h" />
     <ClInclude Include="..\..\scene\resources\font.h" />
@@ -525,12 +524,12 @@
     <ClInclude Include="..\..\scene\resources\shape_line_2d.h" />
     <ClInclude Include="..\..\scene\resources\space_2d.h" />
     <ClInclude Include="..\..\scene\resources\sphere_shape.h" />
+    <ClInclude Include="..\..\scene\resources\stb_truetype.h" />
     <ClInclude Include="..\..\scene\resources\style_box.h" />
     <ClInclude Include="..\..\scene\resources\surface_tool.h" />
     <ClInclude Include="..\..\scene\resources\texture.h" />
     <ClInclude Include="..\..\scene\resources\theme.h" />
     <ClInclude Include="..\..\scene\resources\tile_set.h" />
-    <ClInclude Include="..\..\scene\resources\ttf_font.h" />
     <ClInclude Include="..\..\scene\resources\video_stream.h" />
     <ClInclude Include="..\..\scene\resources\volume.h" />
     <ClInclude Include="..\..\scene\resources\world.h" />

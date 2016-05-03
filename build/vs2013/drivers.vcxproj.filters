@@ -109,9 +109,6 @@
     <Filter Include="drivers\lua\src">
       <UniqueIdentifier>{c40502e4-b64d-4291-84d8-4d8f633eeb97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\stb">
-      <UniqueIdentifier>{cb482feb-ec99-4872-b423-5bf4ab120364}</UniqueIdentifier>
-    </Filter>
     <Filter Include="drivers\builtin_openssl">
       <UniqueIdentifier>{83a533ea-29bc-430a-b772-79610924fe1a}</UniqueIdentifier>
     </Filter>
@@ -4591,9 +4588,6 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\lua\src\lzio.h">
       <Filter>drivers\lua\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\stb\stb_truetype.h">
-      <Filter>drivers\stb</Filter>
     </ClInclude>
     <ClInclude Include="..\..\drivers\builtin_openssl2\ssl\dtls1.h">
       <Filter>drivers\builtin_openssl\ssl</Filter>

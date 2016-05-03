@@ -15,14 +15,15 @@
 
 #include "theme_data.h"
 #include "os/os.h"
-#include "os/file_access.h"
+
 
 #include "normal_font.inc"
 #include "bold_font.inc"
 #include "mono_font.inc"
 
-#include "editor_fonts.inc"
-#include "core/io/compression.h"
+#include "font_normal.inc"
+#include "font_source.inc"
+#include "font_large.inc"
 
 typedef Map<const void*,Ref<ImageTexture> > TexCacheMap;
 
@@ -164,57 +165,6 @@ static Ref<BitmapFont> make_font2(int p_height,int p_ascent, int p_charcount, co
 	return font;
 }
 
-// font texture pages support
-static Ref<Font> make_font3(int p_height,int p_ascent, int p_charcount, const int *p_char_rects,int p_kerning_count,const int *p_kernings,int p_w, int p_h, const unsigned char **p_img, const int pages) {
-
-
-	Ref<Font> font( memnew( Font ) );
-
-	for (int p=0; p<pages; ++p) {
-
-		DVector<uint8_t> img;
-		img.resize(p_w*p_h*2);
-		{
-			DVector<uint8_t>::Write w = img.write();
-			for(int i=0;i<(p_w*p_h*2);i++) {
-				w[i]=p_img[p][i];
-			}
-		}
-		Image image(p_w,p_h,0,Image::FORMAT_GRAYSCALE_ALPHA,img);
-		Ref<ImageTexture> tex = memnew( ImageTexture );
-		tex->create_from_image(image);
-
-		font->add_texture( tex );
-	}
-	
-	for (int i=0;i<p_charcount;i++) {
-
-		const int *c = &p_char_rects[i*9];
-
-		int chr=c[0];
-		Rect2 frect;
-		frect.pos.x=c[1];
-		frect.pos.y=c[2];
-		frect.size.x=c[3];
-		frect.size.y=c[4];
-		Point2 align( c[6], c[5]);
-		int advance=c[7];
-		int pageid=c[8];
-
-		font->add_char( chr, pageid, frect, align,advance );
-
-	}
-
-	for(int i=0;i<p_kerning_count;i++) {
-
-		font->add_kerning_pair(p_kernings[i*3+0],p_kernings[i*3+1],p_kernings[i*3+2]);
-	}
-
-	font->set_height( p_height );
-	font->set_ascent( p_ascent );
-
-	return font;
-}
 
 static Ref<StyleBox> make_empty_stylebox(float p_margin_left=-1, float p_margin_top=-1, float p_margin_right=-1, float p_margin_botton=-1) {
 
@@ -238,55 +188,9 @@ void make_default_theme() {
 	Ref<Theme> t( memnew( Theme ) );
 
 	//Ref<BitmapFont> default_font = make_font(_bi_font_normal_height,_bi_font_normal_ascent,_bi_font_normal_valign,_bi_font_normal_charcount,_bi_font_normal_characters,make_icon(font_normal_png));
-	Ref<BitmapFont> default_font=NULL;//make_font2(_builtin_normal_font_height,_builtin_normal_font_ascent,_builtin_normal_font_charcount,&_builtin_normal_font_charrects[0][0],_builtin_normal_font_kerning_pair_count,&_builtin_normal_font_kerning_pairs[0][0],_builtin_normal_font_img_width,_builtin_normal_font_img_height,_builtin_normal_font_img_data);
-	Ref<BitmapFont> source_font=NULL;//make_font2(_builtin_source_font_height,_builtin_source_font_ascent,_builtin_source_font_charcount,&_builtin_source_font_charrects[0][0],_builtin_source_font_kerning_pair_count,&_builtin_source_font_kerning_pairs[0][0],_builtin_source_font_img_width,_builtin_source_font_img_height,_builtin_source_font_img_data);
-	Ref<BitmapFont> large_font=NULL;//make_font2(_builtin_large_font_height,_builtin_large_font_ascent,_builtin_large_font_charcount,&_builtin_large_font_charrects[0][0],_builtin_large_font_kerning_pair_count,&_builtin_large_font_kerning_pairs[0][0],_builtin_large_font_img_width,_builtin_large_font_img_height,_builtin_large_font_img_data);
-
-#if defined(WIN32) && defined(TOOLS_ENABLED)
-    String config_path;
-	if (OS::get_singleton()->has_environment("APPDATA")) {
-		// Most likely under windows, save here
-		config_path=OS::get_singleton()->get_environment("APPDATA");
-	} else if (OS::get_singleton()->has_environment("HOME")) {
-
-		config_path=OS::get_singleton()->get_environment("HOME");
-	}
-
-	size_t font_size = 20;
-    String font_path = config_path + "\\Godot\\editor.ttf";
-	Ref<TtfFont> ttf_font;
-	if(FileAccess::exists(font_path))
-		ttf_font = ResourceLoader::load(font_path);
-
-	if(ttf_font.is_null())
-	{
-		font_path = "C:\\Windows\\Fonts\\msyh.ttf";
-		ttf_font = ResourceLoader::load(font_path);
-		if(ttf_font.is_null())
-		{
-			font_path = "C:\\Windows\\Fonts\\msyh.ttc";
-			ttf_font = ResourceLoader::load(font_path);
-		}
-		if(ttf_font.is_valid())
-			font_size = 18;
-	}
-
-    if(ttf_font.is_valid())
-    {
-        Ref<Font> font=Ref<Font>(memnew (Font));
-        font->set_ttf_path(font_path, font_size);
-	    default_font=font;
-	    source_font=font;
-	    large_font=font;
-    }
-    else
-#endif
-    {
-	    default_font=make_font2(_builtin_normal_font_height,_builtin_normal_font_ascent,_builtin_normal_font_charcount,&_builtin_normal_font_charrects[0][0],_builtin_normal_font_kerning_pair_count,&_builtin_normal_font_kerning_pairs[0][0],_builtin_normal_font_img_width,_builtin_normal_font_img_height,_builtin_normal_font_img_data);
-	    source_font=make_font2(_builtin_source_font_height,_builtin_source_font_ascent,_builtin_source_font_charcount,&_builtin_source_font_charrects[0][0],_builtin_source_font_kerning_pair_count,&_builtin_source_font_kerning_pairs[0][0],_builtin_source_font_img_width,_builtin_source_font_img_height,_builtin_source_font_img_data);
-	    large_font=make_font2(_builtin_large_font_height,_builtin_large_font_ascent,_builtin_large_font_charcount,&_builtin_large_font_charrects[0][0],_builtin_large_font_kerning_pair_count,&_builtin_large_font_kerning_pairs[0][0],_builtin_large_font_img_width,_builtin_large_font_img_height,_builtin_large_font_img_data);
-    }
-
+	Ref<BitmapFont> default_font=make_font2(_builtin_normal_font_height,_builtin_normal_font_ascent,_builtin_normal_font_charcount,&_builtin_normal_font_charrects[0][0],_builtin_normal_font_kerning_pair_count,&_builtin_normal_font_kerning_pairs[0][0],_builtin_normal_font_img_width,_builtin_normal_font_img_height,_builtin_normal_font_img_data);
+	Ref<BitmapFont> source_font=make_font2(_builtin_source_font_height,_builtin_source_font_ascent,_builtin_source_font_charcount,&_builtin_source_font_charrects[0][0],_builtin_source_font_kerning_pair_count,&_builtin_source_font_kerning_pairs[0][0],_builtin_source_font_img_width,_builtin_source_font_img_height,_builtin_source_font_img_data);
+	Ref<BitmapFont> large_font=make_font2(_builtin_large_font_height,_builtin_large_font_ascent,_builtin_large_font_charcount,&_builtin_large_font_charrects[0][0],_builtin_large_font_kerning_pair_count,&_builtin_large_font_kerning_pairs[0][0],_builtin_large_font_img_width,_builtin_large_font_img_height,_builtin_large_font_img_data);
 
 	// Font Colors
 
@@ -334,13 +238,6 @@ void make_default_theme() {
 	t->set_color("font_color_pressed","Button", control_font_color_pressed );
 	t->set_color("font_color_hover","Button", control_font_color_hover );
 	t->set_color("font_color_disabled","Button", control_font_color_disabled );
-	t->set_color("font_color_shadow","Button", Color(0,0,0,0) );
-	t->set_constant("font_press_offset_x","Button", 0 );
-	t->set_constant("font_press_offset_y","Button", 0 );
-	t->set_constant("shadow_offset_x","Button", 1 );
-	t->set_constant("shadow_offset_y","Button", 1 );
-	t->set_constant("shadow_as_outline","Button", 0 );
-	t->set_constant("hseparation","Button", 2 );
 
 	t->set_constant("hseparation","Button", 2);
 
@@ -369,12 +266,6 @@ void make_default_theme() {
 	t->set_color("font_color_hover","ColorPickerButton", Color(1,1,1,1) );
 	t->set_color("font_color_disabled","ColorPickerButton", Color(0.9,0.9,0.9,0.3) );
 
-	t->set_color("font_color_shadow","ColorPickerButton", Color(0,0,0,0) );
-	t->set_constant("font_press_offset_x","ColorPickerButton", 0 );
-	t->set_constant("font_press_offset_y","ColorPickerButton", 0 );
-	t->set_constant("shadow_offset_x","ColorPickerButton", 1 );
-	t->set_constant("shadow_offset_y","ColorPickerButton", 1 );
-	t->set_constant("shadow_as_outline","ColorPickerButton", 0 );
 	t->set_constant("hseparation","ColorPickerButton", 2 );
 
 
@@ -396,14 +287,6 @@ void make_default_theme() {
 	t->set_color("font_color","ToolButton", control_font_color );
 	t->set_color("font_color_pressed","ToolButton", control_font_color_pressed );
 	t->set_color("font_color_hover","ToolButton", control_font_color_hover );
-	t->set_color("font_color_disabled","ToolButton", Color(0.9,0.95,1,0.6) );
-	t->set_color("font_color_shadow","ToolButton", Color(0,0,0,0) );
-	t->set_constant("font_press_offset_x","ToolButton", 0 );
-	t->set_constant("font_press_offset_y","ToolButton", 0 );
-	t->set_constant("shadow_offset_x","ToolButton", 1 );
-	t->set_constant("shadow_offset_y","ToolButton", 1 );
-	t->set_constant("shadow_as_outline","ToolButton", 0 );
-	t->set_constant("hseparation","ToolButton", 2 );
 	t->set_color("font_color_disabled","ToolButton", Color(0.9,0.95,1,0.3) );
 
 	t->set_constant("hseparation","ToolButton", 3 );
@@ -432,12 +315,6 @@ void make_default_theme() {
 	t->set_color("font_color_pressed","OptionButton", control_font_color_pressed );
 	t->set_color("font_color_hover","OptionButton", control_font_color_hover );
 	t->set_color("font_color_disabled","OptionButton", control_font_color_disabled );
-	t->set_color("font_color_shadow","OptionButton", Color(0,0,0,0) );
-	t->set_constant("font_press_offset_x","OptionButton", 0 );
-	t->set_constant("font_press_offset_y","OptionButton", 0 );
-	t->set_constant("shadow_offset_x","OptionButton", 1 );
-	t->set_constant("shadow_offset_y","OptionButton", 1 );
-	t->set_constant("shadow_as_outline","OptionButton", 0 );
 
 	t->set_constant("hseparation","OptionButton", 2 );
 	t->set_constant("arrow_margin","OptionButton", 2 );
@@ -458,13 +335,6 @@ void make_default_theme() {
 	t->set_color("font_color_pressed","MenuButton", control_font_color_pressed );
 	t->set_color("font_color_hover","MenuButton", control_font_color_hover );
 	t->set_color("font_color_disabled","MenuButton", Color(1,1,1,0.3) );
-	t->set_color("font_color_shadow","MenuButton", Color(0,0,0,0) );
-	t->set_constant("font_press_offset_x","MenuButton", 0 );
-	t->set_constant("font_press_offset_y","MenuButton", 0 );
-	t->set_constant("shadow_offset_x","MenuButton", 1 );
-	t->set_constant("shadow_offset_y","MenuButton", 1 );
-	t->set_constant("shadow_as_outline","MenuButton", 0 );
-	t->set_stylebox("focus","OptionButton", Ref<StyleBox>( memnew( StyleBoxEmpty )) );
 
 	t->set_constant("hseparation","MenuButton", 3 );
 
@@ -531,15 +401,6 @@ void make_default_theme() {
 	t->set_color("font_color_pressed","CheckButton", control_font_color_pressed );
 	t->set_color("font_color_hover","CheckButton", control_font_color_hover );
 	t->set_color("font_color_disabled","CheckButton", control_font_color_disabled );
-	t->set_color("font_color_shadow","CheckButton", Color(0,0,0,0) );
-	t->set_constant("font_press_offset_x","CheckButton", 0 );
-	t->set_constant("font_press_offset_y","CheckButton", 0 );
-	t->set_constant("shadow_offset_x","CheckButton", 1 );
-	t->set_constant("shadow_offset_y","CheckButton", 1 );
-	t->set_constant("shadow_as_outline","CheckButton", 0 );
-	t->set_icon("on","CheckButton", make_icon(toggle_on_png) );
-	t->set_icon("off","CheckButton", make_icon(toggle_off_png));
-	t->set_stylebox("focus","CheckButton", focus );
 
 	t->set_constant("hseparation","CheckButton",4);
 	t->set_constant("check_vadjust","CheckButton",0);
@@ -889,19 +750,11 @@ void make_default_theme() {
 
 	t->set_stylebox("separator","HSeparator", make_stylebox( vseparator_png,3,3,3,3) );
 	t->set_stylebox("separator","VSeparator", make_stylebox( hseparator_png,3,3,3,3) );
-	t->set_stylebox("separator","CollapsibleVSeparator", make_stylebox( hseparator_png,3,3,3,3) );
-	t->set_constant("separation","CollapsibleVSeparator", 7);
 
 	t->set_icon("close","Icons", make_icon(icon_close_png));
+	t->set_font("source","Fonts", source_font);
 	t->set_font("normal","Fonts", default_font );
-	if (_use_cjk_font) {
-		t->set_font("source","Fonts", default_font);
-		t->set_font("large","Fonts", default_font );
-	} else {
-		t->set_font("source","Fonts", source_font);
-		t->set_font("large","Fonts", large_font );
-	}
-	
+	t->set_font("large","Fonts", large_font );
 
 	t->set_constant("separation","HSeparator", 4);
 	t->set_constant("separation","VSeparator", 4);
@@ -982,17 +835,10 @@ void make_default_theme() {
 	t->set_icon("grabber","HSplitContainer",make_icon(hsplitter_png));
 
 	t->set_constant("separation","HBoxContainer",4);
-	t->set_constant("center_separation","HBoxContainer", false);
 	t->set_constant("separation","VBoxContainer",4);
-	t->set_constant("center_separation","VBoxContainer", false);
-	t->set_constant("margin","MarginContainer",15);
-
 	t->set_constant("margin","MarginContainer",8);
 	t->set_constant("hseparation","GridContainer",4);
 	t->set_constant("vseparation","GridContainer",4);
-
-	t->set_constant("separation","HSplitContainer",8);
-	t->set_constant("separation","VSplitContainer",8);
 	t->set_constant("separation","HSplitContainer",12);
 	t->set_constant("separation","VSplitContainer",12);
 	t->set_constant("autohide","HSplitContainer",1);

@@ -1987,7 +1987,6 @@
     <ClInclude Include="..\..\drivers\squish\simd_ve.h" />
     <ClInclude Include="..\..\drivers\squish\singlecolourfit.h" />
     <ClInclude Include="..\..\drivers\squish\squish.h" />
-    <ClInclude Include="..\..\drivers\stb\stb_truetype.h" />
     <ClInclude Include="..\..\drivers\theora\apiwrapper.h" />
     <ClInclude Include="..\..\drivers\theora\bitpack.h" />
     <ClInclude Include="..\..\drivers\theora\codec.h" />

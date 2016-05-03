@@ -34,7 +34,6 @@
 #include "editor_atlas.h"
 #include "io/image_loader.h"
 #include "io/resource_saver.h"
-#include "scene/2d/animated_sprite.h"
 #ifdef FREETYPE_ENABLED
 
 #include <ft2build.h>
@@ -42,7 +41,6 @@
 
 #endif
 
-#include "core/translation.h"
 
 class _EditorFontImportOptions : public Object {
 
@@ -77,30 +75,13 @@ public:
 		CHARSET_CUSTOM_LATIN
 	};
 
-	enum DynamicSource {
-
-		DYNAMIC_DISABLED,
-		DYNAMIC_TTF,
-		DYNAMIC_GLOBAL_TTF,
-		DYNAMIC_FRAMES,
-	};
-
 
 	FontMode font_mode;
 
 	CharacterSet character_set;
 	String custom_file;
 
-    DynamicSource dynamic_source;
-    String dynamic_ttf_file;
-	String dynamic_sprite_frames;
-	String dynamic_sprite_pattern;
-	int dynamic_sprite_width;
-	int dynamic_sprite_height;
-	int dynamic_sprite_space;
-
 	bool shadow;
-    bool filter;
 	Vector2 shadow_offset;
 	int shadow_radius;
 	Color shadow_color;
@@ -119,6 +100,7 @@ public:
 	bool color_use_monochrome;
 	String gradient_image;
 
+	bool disable_filter;
 	bool round_advance;
 
 
@@ -146,30 +128,6 @@ public:
 
 		else if (n=="shadow/enabled") {
 			shadow=p_value;
-			_change_notify();
-        }else if (n=="filter/enabled") {
-			filter=p_value;
-			_change_notify();
-        }else if (n=="dynamic/source") {
-            dynamic_source=DynamicSource((int)p_value);
-            _change_notify();
-        }else if (n=="dynamic/ttf_file") {
-            dynamic_ttf_file=p_value;
-            _change_notify();
-		} else if (n == "dynamic/sprite_frames") {
-			dynamic_sprite_frames=p_value;
-			_change_notify();
-		} else if (n == "dynamic/sprite_pattern") {
-			dynamic_sprite_pattern=p_value;
-			_change_notify();
-		} else if (n == "dynamic/sprite_width") {
-			dynamic_sprite_width=p_value;
-			_change_notify();
-		} else if (n == "dynamic/sprite_height") {
-			dynamic_sprite_height=p_value;
-			_change_notify();
-		} else if (n == "dynamic/sprite_space") {
-			dynamic_sprite_space=p_value;
 			_change_notify();
 		}else if (n=="shadow/radius")
 			shadow_radius=p_value;
@@ -207,6 +165,8 @@ public:
 			color_use_monochrome=p_value;
 		else if (n=="advanced/round_advance")
 			round_advance=p_value;
+		else if (n=="advanced/disable_filter")
+			disable_filter=p_value;
 		else
 			return false;
 
@@ -238,22 +198,6 @@ public:
 
 		else if (n=="shadow/enabled")
 			r_ret=shadow;
-        else if (n=="filter/enabled")
-            r_ret=filter;
-        else if (n=="dynamic/source")
-            r_ret=dynamic_source;
-        else if (n=="dynamic/ttf_file")
-            r_ret=dynamic_ttf_file;
-        else if (n=="dynamic/sprite_frames")
-            r_ret=dynamic_sprite_frames;
-        else if (n=="dynamic/sprite_pattern")
-            r_ret=dynamic_sprite_pattern;
-        else if (n=="dynamic/sprite_width")
-            r_ret=dynamic_sprite_width;
-        else if (n=="dynamic/sprite_height")
-            r_ret=dynamic_sprite_height;
-        else if (n=="dynamic/sprite_space")
-            r_ret=dynamic_sprite_space;
 		else if (n=="shadow/radius")
 			r_ret=shadow_radius;
 		else if (n=="shadow/offset")
@@ -289,6 +233,8 @@ public:
 			r_ret=color_use_monochrome;
 		else if (n=="advanced/round_advance")
 			r_ret=round_advance;
+		else if (n=="advanced/disable_filter")
+			r_ret=disable_filter;
 		else
 			return false;
 
@@ -298,22 +244,6 @@ public:
 
 	void _get_property_list( List<PropertyInfo> *p_list) const{
 
-		p_list->push_back(PropertyInfo(Variant::INT,"dynamic/source",PROPERTY_HINT_ENUM,"Disabled,TtfFont,TtfFont(global),SpriteFrames"));
-		switch (dynamic_source) {
-		case DYNAMIC_TTF:
-			p_list->push_back(PropertyInfo(Variant::STRING,"dynamic/ttf_file",PROPERTY_HINT_FILE,"ttf,otf"));
-			break;
-		case DYNAMIC_GLOBAL_TTF:
-			p_list->push_back(PropertyInfo(Variant::STRING,"dynamic/ttf_file",PROPERTY_HINT_GLOBAL_FILE,"ttf,otf"));
-			break;
-		case DYNAMIC_FRAMES:
-			p_list->push_back(PropertyInfo(Variant::STRING,"dynamic/sprite_frames",PROPERTY_HINT_FILE,"res,xml"));
-			p_list->push_back(PropertyInfo(Variant::STRING,"dynamic/sprite_pattern"));
-			p_list->push_back(PropertyInfo(Variant::INT,"dynamic/sprite_width"));
-			p_list->push_back(PropertyInfo(Variant::INT,"dynamic/sprite_height"));
-			p_list->push_back(PropertyInfo(Variant::INT,"dynamic/sprite_space"));
-			break;
-		}
 
 		p_list->push_back(PropertyInfo(Variant::INT,"mode/mode",PROPERTY_HINT_ENUM,"Bitmap,Distance Field"));
 
@@ -321,15 +251,12 @@ public:
 		p_list->push_back(PropertyInfo(Variant::INT,"extra_space/space",PROPERTY_HINT_RANGE,"-64,64,1"));
 		p_list->push_back(PropertyInfo(Variant::INT,"extra_space/top",PROPERTY_HINT_RANGE,"-64,64,1"));
 		p_list->push_back(PropertyInfo(Variant::INT,"extra_space/bottom",PROPERTY_HINT_RANGE,"-64,64,1"));
-
-        if(dynamic_source==DYNAMIC_DISABLED)
-		    p_list->push_back(PropertyInfo(Variant::INT,"character_set/mode",PROPERTY_HINT_ENUM,"Ascii,Latin,Unicode,Custom,Custom&Latin"));
+		p_list->push_back(PropertyInfo(Variant::INT,"character_set/mode",PROPERTY_HINT_ENUM,"Ascii,Latin,Unicode,Custom,Custom&Latin"));
 
 		if (character_set>=CHARSET_CUSTOM)
 			p_list->push_back(PropertyInfo(Variant::STRING,"character_set/custom",PROPERTY_HINT_GLOBAL_FILE));
 
 		int usage = PROPERTY_USAGE_DEFAULT;
-        p_list->push_back(PropertyInfo(Variant::BOOL,"filter/enabled"));
 
 		if (font_mode==FONT_DISTANCE_FIELD) {
 			usage = PROPERTY_USAGE_NOEDITOR;
@@ -369,6 +296,7 @@ public:
 		}
 
 		p_list->push_back(PropertyInfo(Variant::BOOL,"advanced/round_advance"));
+		p_list->push_back(PropertyInfo(Variant::BOOL,"advanced/disable_filter"));
 
 	}
 
@@ -407,6 +335,7 @@ public:
 
 		font_mode=FONT_BITMAP;
 		round_advance=true;
+		disable_filter=false;
 
 	}
 
@@ -421,14 +350,7 @@ public:
 
 		character_set=CHARSET_LATIN;
 
-        dynamic_source=DYNAMIC_DISABLED;
-		dynamic_sprite_pattern = "0123456789";
-		dynamic_sprite_width = 0;
-		dynamic_sprite_height = 0;
-		dynamic_sprite_space = 0;
-
 		shadow=false;
-        filter=true;
 		shadow_radius=2;
 		shadow_color=Color(0,0,0,0.3);
 		shadow_transition=1.0;
@@ -445,6 +367,7 @@ public:
 		color_use_monochrome=false;
 
 		round_advance=true;
+		disable_filter=false;
 	}
 
 
@@ -585,18 +508,14 @@ class EditorFontImportDialog : public ConfirmationDialog {
 
 	void _import() {
 
-		Ref<ResourceImportMetadata> rimd = get_rimd();
-		int dynamic_source = (int)get_rimd()->get_option("dynamic/source");
-        bool dynamic_disabled= (int)get_rimd()->get_option("dynamic/source") == _EditorFontImportOptions::DYNAMIC_DISABLED;
-
-		if (dynamic_disabled&&source->get_line_edit()->get_text()=="") {
-			error_dialog->set_text(_TR("No source font file!"));
+		if (source->get_line_edit()->get_text()=="") {
+			error_dialog->set_text("No source font file!");
 			error_dialog->popup_centered(Size2(200,100));
 			return;
 		}
 
 		if (dest->get_line_edit()->get_text()=="") {
-			error_dialog->set_text(_TR("No target font resource!"));
+			error_dialog->set_text("No target font resource!");
 			error_dialog->popup_centered(Size2(200,100));
 			return;
 		}
@@ -605,8 +524,10 @@ class EditorFontImportDialog : public ConfirmationDialog {
 			dest->get_line_edit()->set_text(dest->get_line_edit()->get_text().get_base_dir() + "/" + source->get_line_edit()->get_text().get_file().basename() + ".fnt" );
 		}
 
+		Ref<ResourceImportMetadata> rimd = get_rimd();
+
 		if (rimd.is_null()) {
-			error_dialog->set_text(_TR("Can't load/process source font"));
+			error_dialog->set_text("Can't load/process source font");
 			error_dialog->popup_centered(Size2(200,100));
 			return;
 		}
@@ -703,9 +624,9 @@ public:
 		source->get_file_dialog()->add_filter("*.fnt;BMFont");
 		source->get_line_edit()->connect("text_entered",this,"_src_changed");
 
-		vbl->add_margin_child(_TR("Source Font:"),source);
+		vbl->add_margin_child("Source Font:",source);
 		font_size = memnew( SpinBox );
-		vbl->add_margin_child(_TR("Source Font Size:"),font_size);
+		vbl->add_margin_child("Source Font Size:",font_size);
 		font_size->set_min(3);
 		font_size->set_max(256);
 		font_size->set_val(16);
@@ -714,16 +635,16 @@ public:
 		//
 		List<String> fl;
 		Ref<BitmapFont> font= memnew(BitmapFont);
-		//dest->get_file_dialog()->add_filter("*.fnt ; Font" );
-		ResourceSaver::get_recognized_extensions(font,&fl);
-		for(List<String>::Element *E=fl.front();E;E=E->next()) {
-			dest->get_file_dialog()->add_filter("*."+E->get());
-		}
+		dest->get_file_dialog()->add_filter("*.fnt ; Font" );
+		//ResourceSaver::get_recognized_extensions(font,&fl);
+		//for(List<String>::Element *E=fl.front();E;E=E->next()) {
+		//	dest->get_file_dialog()->add_filter("*."+E->get());
+		//}
 
-		vbl->add_margin_child(_TR("Dest Resource:"),dest);
+		vbl->add_margin_child("Dest Resource:",dest);
 		HBoxContainer *testhb = memnew( HBoxContainer );
 		test_string = memnew( LineEdit );
-		test_string->set_text(_TR("The quick brown fox jumps over the lazy dog."));
+		test_string->set_text("The quick brown fox jumps over the lazy dog.");
 		test_string->set_h_size_flags(SIZE_EXPAND_FILL);
 		test_string->set_stretch_ratio(5);
 
@@ -736,19 +657,19 @@ public:
 		testhb->add_child(test_color);
 
 		vbl->add_spacer();
-		vbl->add_margin_child(_TR("Test: "),testhb);
+		vbl->add_margin_child("Test: ",testhb);
 		/*
 		HBoxContainer *upd_hb = memnew( HBoxContainer );
 //		vbl->add_child(upd_hb);
 		upd_hb->add_spacer();
 		Button *update = memnew( Button);
 		upd_hb->add_child(update);
-		update->set_text(_TR("Update"));
+		update->set_text("Update");
 		update->connect("pressed",this,"_update");
 */
 		options = memnew( _EditorFontImportOptions );
 		prop_edit = memnew( PropertyEditor() );
-		vbr->add_margin_child(_TR("Options:"),prop_edit,true);
+		vbr->add_margin_child("Options:",prop_edit,true);
 		options->connect("changed",this,"_prop_changed");
 
 		prop_edit->hide_top_label();
@@ -761,7 +682,7 @@ public:
 		test_label->set_area_as_parent_rect();
 		panel->set_v_size_flags(SIZE_EXPAND_FILL);
 		test_string->connect("text_changed",this,"_update_text2");
-		set_title(_TR("Font Import"));
+		set_title("Font Import");
 		timer = memnew( Timer );
 		add_child(timer);
 		timer->connect("timeout",this,"_update");
@@ -769,11 +690,11 @@ public:
 		timer->set_one_shot(true);
 
 		get_ok()->connect("pressed", this,"_import");
-		get_ok()->set_text(_TR("Import"));
+		get_ok()->set_text("Import");
 
 		error_dialog = memnew ( ConfirmationDialog );
 		add_child(error_dialog);
-		error_dialog->get_ok()->set_text(_TR("Accept"));
+		error_dialog->get_ok()->set_text("Accept");
 		set_hide_on_ok(false);
 
 
@@ -961,17 +882,6 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 	Ref<ResourceImportMetadata> from = p_from;
 	ERR_FAIL_COND_V(from->get_source_count()!=1,Ref<BitmapFont>());
 
-	/* CREATE FONT */
-	Ref<Font> font;
-    if (p_existing!=String() && ResourceCache::has(p_existing)) {
-
-        font = Ref<Font>( ResourceCache::get(p_existing)->cast_to<Font>());
-    }
-
-    if (font.is_null()) {
-         font = Ref<Font>( memnew( Font ) );
-    }
-
 	String src_path = EditorImportPlugin::expand_source_path(from->get_source_path(0));
 
 	if (src_path.extension().to_lower()=="fnt") {
@@ -994,92 +904,7 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 
 	int size = from->get_option("font/size");
 
-	int char_space = from->get_option("extra_space/char");
-	int space_space = from->get_option("extra_space/space");
-	int top_space = from->get_option("extra_space/top");
-	int bottom_space = from->get_option("extra_space/bottom");
-
 #ifdef FREETYPE_ENABLED
-	int dynamic_source = from->get_option("dynamic/source");
-	switch (dynamic_source) {
-		case _EditorFontImportOptions::DYNAMIC_TTF:
-		case _EditorFontImportOptions::DYNAMIC_GLOBAL_TTF: {
-
-    		String dynamic_ttf_file = from->get_option("dynamic/ttf_file");
-			RES res=ResourceLoader::load(dynamic_ttf_file);
-			Ref<TtfFont> ttf_font=res;
-			ERR_EXPLAIN("Unabled to load ttf file:" + dynamic_ttf_file);
-			ERR_FAIL_COND_V(ttf_font.is_null(), RES());
-			int height=0;
-			int ascent=0;
-			int max_up,max_down;
-        	ERR_EXPLAIN("Error calc font height/ascent.");
-			ERR_FAIL_COND_V( !ttf_font->calc_size(size, height, ascent, max_up, max_down), Ref<Font>() );
-
-			printf("Generate dynamic font\n");
-			List<String> opts;
-			from->get_options(&opts);
-
-			Dictionary options;
-			for(List<String>::Element *E=opts.front();E;E=E->next()) {
-				options[E->get()]=from->get_option(E->get());
-			}
-			options["meta/height"]=height;
-			options["meta/ascent"]=ascent;
-			options["meta/max_up"]=max_up;
-			options["meta/max_down"]=max_down;
-
-			font->clear();
-			font->set_ttf_font(ttf_font);
-			font->set_ttf_options(options);
-			font->set_height(height+bottom_space+top_space);
-			font->set_ascent(ascent+top_space);
-
-			return font;
-		}
-		break;
-		case _EditorFontImportOptions::DYNAMIC_FRAMES: {
-
-    		String sprite_frames = from->get_option("dynamic/sprite_frames");
-			RES res=ResourceLoader::load(sprite_frames);
-			Ref<SpriteFrames> frames=res;
-			ERR_EXPLAIN("Unabled to load sprite frame:" + sprite_frames);
-			ERR_FAIL_COND_V(frames.is_null(), RES());
-    		String sprite_pattern = from->get_option("dynamic/sprite_pattern");
-
-			int dynamic_sprite_width = from->get_option("dynamic/sprite_width");
-    		int dynamic_sprite_height = from->get_option("dynamic/sprite_height");
-    		int dynamic_sprite_space = from->get_option("dynamic/sprite_space");
-
-			font->clear();
-			int height = dynamic_sprite_height;
-			int width = dynamic_sprite_width;
-			for (int i = 0; i < sprite_pattern.size(); i++) {
-
-				if (i >= frames->get_frame_count())
-					break;
-
-				CharType ch = sprite_pattern[i];
-				Ref<Texture> tex = frames->get_frame(i);
-				font->add_texture(tex);
-				Size2 size = tex->get_size();
-				if (dynamic_sprite_height == 0 && height < size.height)
-					height = size.height;
-				if (dynamic_sprite_width == 0 && width < size.width)
-					width = size.width;
-				// add char
-				Size2 align = (Size2(width, height) - tex->get_size()) / 2;
-				font->add_char(ch, i, tex->get_region(), align, dynamic_sprite_space > 0 ? dynamic_sprite_space : width);
-			}
-			// add space char (width = max_char_width / 2)
-			font->add_char(0x20, 0, Rect2(0, 0, 0, 0), Size2(0, 0), width / 2);
-			font->set_height(height);
-			return font;
-		}
-		break;
-	}
-	font->set_ttf_font(RES());
-
 	FT_Library   library;   /* handle to library     */
 	FT_Face      face;      /* handle to face object */
 
@@ -1087,18 +912,18 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 
 	int error = FT_Init_FreeType( &library );
 
-	ERR_EXPLAIN(_TR("Error initializing FreeType."));
+	ERR_EXPLAIN("Error initializing FreeType.");
 	ERR_FAIL_COND_V( error !=0, Ref<BitmapFont>() );
 
 	print_line("loadfrom: "+src_path);
 	error = FT_New_Face( library, src_path.utf8().get_data(),0,&face );
 
 	if ( error == FT_Err_Unknown_File_Format ) {
-		ERR_EXPLAIN(_TR("Unknown font format."));
+		ERR_EXPLAIN("Unknown font format.");
 		FT_Done_FreeType( library );
 	} else if ( error ) {
 
-		ERR_EXPLAIN(_TR("Error loading font."));
+		ERR_EXPLAIN("Error loading font.");
 		FT_Done_FreeType( library );
 
 	}
@@ -1114,7 +939,7 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 
 	if ( error ) {
 		FT_Done_FreeType( library );
-		ERR_EXPLAIN(_TR("Invalid font size. "));
+		ERR_EXPLAIN("Invalid font size. ");
 		ERR_FAIL_COND_V( error,Ref<BitmapFont>() );
 
 	}
@@ -1151,14 +976,7 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 	int import_mode = from->get_option("character_set/mode");
 	bool round_advance = from->get_option("advanced/round_advance");
 
-	CharType max_char=0;
-	if (import_mode==_EditorFontImportOptions::CHARSET_ASCII)
-		max_char=127;
-	else if(import_mode==_EditorFontImportOptions::CHARSET_LATIN)
-		max_char=255;
-	else if(import_mode==_EditorFontImportOptions::CHARSET_UNICODE)
-		max_char=0xFFFF;
-	else if (import_mode>=_EditorFontImportOptions::CHARSET_CUSTOM) {
+	if (import_mode>=_EditorFontImportOptions::CHARSET_CUSTOM) {
 
 		//load from custom text
 		String path = from->get_option("character_set/custom");
@@ -1168,7 +986,7 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 		if ( !fa ) {
 
 			FT_Done_FreeType( library );
-			ERR_EXPLAIN(_TR("Invalid font custom source. "));
+			ERR_EXPLAIN("Invalid font custom source. ");
 			ERR_FAIL_COND_V( !fa,Ref<BitmapFont>() );
 
 		}
@@ -1179,8 +997,6 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 			String line = fa->get_line();
 			for(int i=0;i<line.length();i++) {
 				import_chars.insert(line[i]);
-				if (max_char<line[i])
-					max_char=line[i];
 			}
 		}
 
@@ -1188,8 +1004,6 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 
 			for(int i=32;i<128;i++)
 				import_chars.insert(i);
-			if (max_char<127)
-				max_char=127;
 		}
 
 		memdelete(fa);
@@ -1222,11 +1036,7 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 			skip=true;
 
 		if (skip) {
-			if (charcode<=max_char)
-				charcode=FT_Get_Next_Char(face,charcode,&gindex);
-			else
-				// break loop if charcode out of range(max_char)
-				gindex=0;
+			charcode=FT_Get_Next_Char(face,charcode,&gindex);
 			continue;
 		}
 
@@ -1573,7 +1383,7 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 				Point2i so=Point2(from->get_option(S_VAR("offset")));
 
 				float tr = from->get_option(S_VAR("transition"));
-				//print_line("shadow enabled: "+itos(si));
+				print_line("shadow enabled: "+itos(si));
 
 				Vector<uint8_t> s2buf;
 				s2buf.resize(s.x*s.y);
@@ -1698,75 +1508,29 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 	res_size.y=nearest_power_of_2(res_size.y);
 	print_line("Atlas size: "+res_size);
 
-    Vector<Image *> atlas;
-    if(res_size.x > 1024 || res_size.y > 1024)
-    {
-        print_line("Split atlas into 1024*1024");
-        atlas.push_back(memnew( Image(1024,1024,0,Image::FORMAT_RGBA)));
-        Image* atlas_image = atlas[0];
-        Point2 atlas_pos(0,0);
-        int atlas_idx = 0;
-        int line_height = 0;
+	Image atlas(res_size.x,res_size.y,0,Image::FORMAT_RGBA);
 
-        for(int i=0;i<font_data_list.size();i++) {
+	for(int i=0;i<font_data_list.size();i++) {
 
-            _EditorFontData& efd=*font_data_list[i];
-            if (efd.bitmap.size()==0)
-			    continue;
+		if (font_data_list[i]->bitmap.size()==0)
+			continue;
+		atlas.blit_rect(font_data_list[i]->blit,Rect2(0,0,font_data_list[i]->blit.get_width(),font_data_list[i]->blit.get_height()),res[i]+Size2(spacing,spacing));
+		font_data_list[i]->ofs_x=res[i].x+spacing;
+		font_data_list[i]->ofs_y=res[i].y+spacing;
 
-            Point2 blit_size(efd.blit.get_width(),efd.blit.get_height());
-            if(atlas_pos.x+blit_size.width+spacing>1024)
-            {
-                atlas_pos.x=0;
-                atlas_pos.y+=line_height;
-                line_height=0;
-            }
 
-            if(atlas_pos.y+blit_size.height+spacing>1024)
-            {
-                atlas_pos.x=atlas_pos.y=0;
-                line_height=0;
-                atlas.push_back(memnew( Image(1024,1024,0,Image::FORMAT_RGBA)));
-                atlas_idx = atlas.size()-1;
-                atlas_image = atlas[atlas_idx];
-            }
-
-            atlas_image->blit_rect(efd.blit,Rect2(Point2(0,0),blit_size),atlas_pos+Size2(spacing,spacing));
-            if(line_height < (blit_size.y + spacing * 2))
-                line_height = blit_size.y + spacing * 2;
-            efd.texture=atlas_idx;
-		    efd.ofs_x=atlas_pos.x+spacing;
-            efd.ofs_y=atlas_pos.y+spacing;
-            atlas_pos.x+=(blit_size.width+spacing*2);
-        }
-        print_line("Total atlas count: " + String::num(atlas.size()));
-    }
-    else
-    {
-        atlas.push_back(memnew( Image(res_size.x,res_size.y,0,Image::FORMAT_RGBA)));
-        Image& atlas_image = *(atlas[0]);
-	    for(int i=0;i<font_data_list.size();i++) {
-
-		    if (font_data_list[i]->bitmap.size()==0)
-			    continue;
-		    atlas_image.blit_rect(font_data_list[i]->blit,Rect2(0,0,font_data_list[i]->blit.get_width(),font_data_list[i]->blit.get_height()),res[i]+Size2(spacing,spacing));
-            font_data_list[i]->texture=0;
-		    font_data_list[i]->ofs_x=res[i].x+spacing;
-		    font_data_list[i]->ofs_y=res[i].y+spacing;
-	    }
-    }
+	}
 
 
 	if (from->has_option("color/monochrome") && bool(from->get_option("color/monochrome"))) {
 
-        for(int idx = 0; idx < atlas.size(); idx++)
-		    atlas[idx]->convert(Image::FORMAT_GRAYSCALE_ALPHA);
+		atlas.convert(Image::FORMAT_GRAYSCALE_ALPHA);
 	}
 
 	if (0) {
 		//debug the texture
 		Ref<ImageTexture> atlast = memnew( ImageTexture );
-		atlast->create_from_image(*atlas[0]);
+		atlast->create_from_image(atlas);
 //		atlast->create_from_image(font_data_list[5]->blit);
 		TextureFrame *tf = memnew( TextureFrame );
 		tf->set_texture(atlast);
@@ -1798,23 +1562,17 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 	font->set_ascent(ascent+top_space);
 	font->set_distance_field_hint(font_mode==_EditorFontImportOptions::FONT_DISTANCE_FIELD);
 
-    bool filter_enabled = from->get_option("filter/enabled");
 	//register texures
 	{
-        for(int idx = 0; idx < atlas.size(); idx++)
-        {
-    		Ref<ImageTexture> t = memnew(ImageTexture);
-			int flags;
-			if (!filter_enabled)
-				flags=0;
-			else
-				flags=Texture::FLAG_FILTER;
-    		t->create_from_image(*atlas[idx],flags);
-    		t->set_storage( ImageTexture::STORAGE_COMPRESS_LOSSLESS );
-	    	font->add_texture(t);
-            // free image
-            memdelete(atlas[idx]);
-        }
+		Ref<ImageTexture> t = memnew(ImageTexture);
+		int flags;
+		if (disable_filter)
+			flags=0;
+		else
+			flags=Texture::FLAG_FILTER;
+		t->create_from_image(atlas,flags);
+		t->set_storage( ImageTexture::STORAGE_COMPRESS_LOSSLESS );
+		font->add_texture(t);
 
 	}
 	//register characters
@@ -1822,8 +1580,9 @@ Ref<BitmapFont> EditorFontImportPlugin::generate_font(const Ref<ResourceImportMe
 
 	for(int i=0;i<font_data_list.size();i++) {
 		_EditorFontData *fd=font_data_list[i];
+		int tex_idx=0;
 
-        font->add_char(fd->character, fd->texture, Rect2( fd->ofs_x, fd->ofs_y, fd->blit.get_width(), fd->blit.get_height()),Point2(fd->halign-fd->blit_ofs.x,fd->valign-fd->blit_ofs.y+top_space), fd->advance+char_space+(fd->character==' '?space_space:0));
+		font->add_char(fd->character,tex_idx,Rect2( fd->ofs_x, fd->ofs_y, fd->blit.get_width(), fd->blit.get_height()),Point2(fd->halign-fd->blit_ofs.x,fd->valign-fd->blit_ofs.y+top_space), fd->advance+char_space+(fd->character==' '?space_space:0));
 		memdelete(fd);
 	}
 
@@ -1848,7 +1607,7 @@ String EditorFontImportPlugin::get_name() const {
 }
 String EditorFontImportPlugin::get_visible_name() const{
 
-	return _TR("Font");
+	return "Font";
 }
 void EditorFontImportPlugin::import_dialog(const String& p_from){
 

@@ -32,7 +32,6 @@
 #include "resource.h"
 #include "scene/resources/texture.h"
 #include "map.h"
-#include "ttf_font.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
@@ -72,17 +71,7 @@ class BitmapFont : public Font {
 	OBJ_TYPE( BitmapFont, Font );
 	RES_BASE_EXTENSION("fnt");
 
-	mutable Vector< Ref<Texture> > textures;
-
-    friend class TtfFont;
-    Vector<Image *> atlas_images;
-    Ref<TtfFont> ttf_font;
-    Dictionary ttf_options;
-    int atlas_x, atlas_y, atlas_height;
-    int atlas_dirty_index;
-    mutable bool atlas_dirty;
-
-    void update_atlas() const;
+	Vector< Ref<Texture> > textures;
 
 public:
 	struct Character {
@@ -125,7 +114,6 @@ private:
 	DVector<int> _get_kernings() const;
 	void _set_textures(const Vector<Variant> & p_textures);
 	Vector<Variant> _get_textures() const;
-	void _reload_hook(const RID& p_hook);
 
 	Ref<BitmapFont> fallback;
 protected:
@@ -149,8 +137,6 @@ public:
 	int get_character_count() const;
 	Vector<CharType> get_char_keys() const;
 	Character get_character(CharType p_char) const;
-	const Character *get_character_p(CharType p_char) const;
-    bool create_character(CharType p_char);
 
 	int get_texture_count() const;
 	Ref<Texture> get_texture(int p_idx) const;
@@ -161,18 +147,8 @@ public:
 
 	Size2 get_char_size(CharType p_char,CharType p_next=0) const;
 
-    bool set_ttf_path(const String& p_path, int p_size);
-    void set_ttf_font(const Ref<TtfFont>& p_font);
-    Ref<TtfFont> get_ttf_font() const;
-    void set_ttf_options(const Dictionary& p_options);
-    const Dictionary& get_ttf_options() const;
-	
 	void set_fallback(const Ref<BitmapFont> &p_fallback);
 	Ref<BitmapFont> get_fallback() const;
-
-
-	void set_fallback(const Ref<Font> &p_fallback);
-	Ref<Font> get_fallback() const;
 
 	void clear();
 
@@ -187,7 +163,6 @@ public:
 
 
 
-	const Character * c = get_character_p(p_char);
 
 
 #endif

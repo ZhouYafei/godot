@@ -1799,10 +1799,7 @@ void Tree::text_editor_enter(String p_text) {
 		} break;
 		case TreeItem::CELL_MODE_RANGE_EXPRESSION: {
 
-			if(evaluator)
-				c.val=evaluator->eval(p_text);
-			else
-				c.val=p_text.to_double();
+			c.val=p_text.to_double();
 		} break;
 	default: { ERR_FAIL(); }
 	}
@@ -3251,17 +3248,9 @@ void Tree::set_hide_folding(bool p_hide) {
 	update();
 }
 
-void Tree::set_value_evaluator(ValueEvaluator *p_evaluator) {
-	evaluator = p_evaluator;
-}
-
 bool Tree::is_folding_hidden() const {
 
 	return hide_folding;
-}
-
-void Tree::set_value_evaluator(ValueEvaluator *p_evaluator) {
-	evaluator = p_evaluator;
 }
 
 void Tree::_bind_methods() {
@@ -3401,11 +3390,7 @@ Tree::Tree() {
 	pressing_for_editor=false;
 	range_drag_enabled=false;
 
-	evaluator=NULL;
-
 	hide_folding=false;
-
-	evaluator=NULL;
 }
 
 

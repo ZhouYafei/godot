@@ -28,8 +28,6 @@
 /*************************************************************************/
 #include "font.h"
 
-#define min(a,b) ((a)<(b) ? (a):(b))
-
 #include "core/os/file_access.h"
 #include "core/io/resource_loader.h"
 
@@ -179,10 +177,8 @@ void BitmapFont::_set_textures(const Vector<Variant> & p_textures) {
 Vector<Variant> BitmapFont::_get_textures() const {
 
 	Vector<Variant> rtextures;
-	if (!ttf_font.is_valid()) {
-		for(int i=0;i<textures.size();i++)
-			rtextures.push_back(textures[i].get_ref_ptr());
-	}
+	for(int i=0;i<textures.size();i++)
+		rtextures.push_back(textures[i].get_ref_ptr());
 	return rtextures;
 }
 
@@ -396,36 +392,12 @@ Vector<CharType> BitmapFont::get_char_keys() const {
 BitmapFont::Character BitmapFont::get_character(CharType p_char) const {
 
 	if (!char_map.has(p_char)) {
-		ERR_FAIL_COND_V(!(const_cast<Font *>(this))->create_character(p_char),Character());
+		ERR_FAIL_V(Character());
 	};
 
 	return char_map[p_char];
 };
 
-const Font::Character *Font::get_character_p(CharType p_char) const {
-
-	if (!char_map.has(p_char)) {
-		ERR_EXPLAIN("Unknown character: " + String::num(p_char));
-		ERR_FAIL_COND_V(!(const_cast<Font *>(this))->create_character(p_char),NULL);
-	};
-
-	return &char_map[p_char];
-}
-
-bool Font::create_character(CharType p_char) {
-
-    if(!ttf_font.is_valid())
-        return false;
-
-    if(ttf_font->render_char(p_char, *this)) {
-        atlas_dirty=true;
-        return true;
-    }
-	char_map[p_char]=Character();
-    return true;
-}
-
-void Font::add_char(CharType p_char, int p_texture_idx, const Rect2& p_rect, const Size2& p_align, float p_advance) {
 void BitmapFont::add_char(CharType p_char, int p_texture_idx, const Rect2& p_rect, const Size2& p_align, float p_advance) {
 
 	if (p_advance<0)
@@ -505,16 +477,6 @@ void BitmapFont::clear() {
 	char_map.clear();
 	textures.clear();
 	kerning_map.clear();
-
-    atlas_x=0;
-    atlas_y=0;
-    atlas_height=0;
-    atlas_dirty_index=0;
-    atlas_dirty=false;
-    for(int i=0;i<atlas_images.size();i++) {
-        memdelete(atlas_images[i]);
-    }
-    atlas_images.clear();
 	distance_field_hint=false;
 }
 
@@ -541,60 +503,12 @@ void BitmapFont::set_fallback(const Ref<BitmapFont> &p_fallback) {
 
 Ref<BitmapFont> BitmapFont::get_fallback() const{
 
-
-    update_atlas();
-
-	Point2 pos=p_pos;
-	VisualServer *vs = VisualServer::get_singleton();
-	Vector2 ofs;
-
-	for (int i=0;i<p_text.length();i++) {
-
-		CharType ch = p_text[i];
-		const Character * c = get_character_p(ch);
-		if(c == NULL) {
-			ch = '?';
-			c = get_character_p(ch);
-		}
-		int width = get_char_size(ch).width;
-
-		if (p_clip_w>=0 && (ofs.x+width)>p_clip_w)
-			break; //clip
-
-		if (p_clip_w>=0 && (ofs.x+c->rect.size.width)>p_clip_w)
-			break; //clip
-		Point2 cpos=pos;
-		cpos.x+=ofs.x+c->h_align;
-		cpos.y-=ascent;
-		cpos.y+=c->v_align;
-		if( c->texture_idx<-1 || c->texture_idx>=textures.size())
-        {
-            if (ch==' ')
-                continue;
-            else
-		        ERR_CONTINUE( c->texture_idx<-1 || c->texture_idx>=textures.size());
-        }
-		if (c->texture_idx!=-1) {
-			Ref<Texture> tex = textures[c->texture_idx];
-			Rect2 region = tex->get_region();
-			Size2 size = Size2(
-				min(region.size.x, c->rect.size.x),
-				min(region.size.y, c->rect.size.y)
-			);
-			Rect2 src_rect = Rect2(c->rect.pos + region.pos, size);
-			VisualServer::get_singleton()->canvas_item_add_texture_rect_region( p_canvas_item, Rect2( cpos, size ), tex->get_rid(),src_rect, p_modulate );
-		}
-		//textures[c->texture_idx]->draw_rect_region( p_canvas_item, Rect2( cpos, c->rect.size ), c->rect, p_modulate );
-		
-		ofs+=get_char_size(ch,p_text[i+1]);
-		//ofs.x+=draw_char(p_canvas_item,p_pos+ofs,p_text[i],p_text[i+1],p_modulate);
-	}
 	return fallback;
 }
 
 float BitmapFont::draw_char(RID p_canvas_item, const Point2& p_pos, const CharType& p_char,const CharType& p_next,const Color& p_modulate) const {
 
-	const Character * c = get_character_p(p_char);
+	const Character * c = char_map.getptr(p_char);
 
 	if (!c) {
 		if (fallback.is_valid())
@@ -602,161 +516,17 @@ float BitmapFont::draw_char(RID p_canvas_item, const Point2& p_pos, const CharTy
 		return 0;
 	}
 
-	update_atlas();
-
 	Point2 cpos=p_pos;
 	cpos.x+=c->h_align;
 	cpos.y-=ascent;
 	cpos.y+=c->v_align;
-	if (c->texture_idx<-1 || c->texture_idx>=textures.size())
-	{
-		if (p_char==' ')
-			return 0;
-		else
-    		ERR_FAIL_COND_V( c->texture_idx<-1 || c->texture_idx>=textures.size(),0)
-	}
-	if (c->texture_idx != -1) {
-
-		Ref<Texture> tex = textures[c->texture_idx];
-		Rect2 region = tex->get_region();
-		Size2 size = Size2(
-			min(region.size.x, c->rect.size.x),
-			min(region.size.y, c->rect.size.y)
-		);
-		Rect2 src_rect = Rect2(c->rect.pos + region.pos, size);
-		VisualServer::get_singleton()->canvas_item_add_texture_rect_region( p_canvas_item, Rect2( cpos, size ), tex->get_rid(),src_rect, p_modulate );
-	}
+	ERR_FAIL_COND_V( c->texture_idx<-1 || c->texture_idx>=textures.size(),0);
+	if (c->texture_idx!=-1)
+		VisualServer::get_singleton()->canvas_item_add_texture_rect_region( p_canvas_item, Rect2( cpos, c->rect.size ), textures[c->texture_idx]->get_rid(),c->rect, p_modulate );
 
 	return get_char_size(p_char,p_next).width;
 }
 
-void Font::update_atlas() const {
-
-    if ((!atlas_dirty)||ttf_font.is_null())
-        return;
-    atlas_dirty=false;
-
-    for (int i=atlas_dirty_index;i<atlas_images.size();i++) {
-        Image& img = *atlas_images[i];
-        Ref<ImageTexture> tex;
-        if (textures.size()==i) {
-            tex=Ref<Texture>(memnew( ImageTexture ));
-
-            bool filter_enabled = ttf_options["filter/enabled"];
-            tex->create_from_image( img );
-            if (!filter_enabled)
-                tex->set_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_REPEAT);
-            tex->set_storage( ImageTexture::STORAGE_COMPRESS_LOSSLESS );
-
-            textures.push_back(tex);
-        } else {
-            tex=textures[i];
-            if (tex.is_valid()) {
-                tex->set_data( img );
-            }
-        }
-    }
-	// setup reload hook
-	for (int i=0;i<textures.size();i++) {
-		Ref<ImageTexture> tex=textures[i];
-		if(tex.is_null())
-			continue;
-		VisualServer::get_singleton()->texture_set_reload_hook(tex->get_rid(),get_instance_ID(),"_reload_hook");
-	}
-}
-
-void Font::_reload_hook(const RID& p_hook) {
-
-    if ((!atlas_dirty)||ttf_font.is_null())
-        return;
-
-	// device lost, cleanup all cached font atlas(will re-generated when draw text characters)
-	char_map.clear();
-	textures.clear();
-
-    atlas_x=0;
-    atlas_y=0;
-    atlas_height=0;
-    atlas_dirty_index=0;
-    atlas_dirty=false;
-    for(int i=0;i<atlas_images.size();i++) {
-        memdelete(atlas_images[i]);
-    }
-    atlas_images.clear();
-}
-
-bool Font::set_ttf_path(const String& p_path, int p_size) {
-    RES res=ResourceLoader::load(p_path);
-    Ref<TtfFont> ttf_font=res;
-    if(!ttf_font.is_valid())
-        return false;
-
-    int height=0;
-    int ascent=0;
-    int max_up,max_down;
-    ERR_EXPLAIN("Error calc font height/ascent.");
-    ERR_FAIL_COND_V( !ttf_font->calc_size(p_size, height, ascent, max_up, max_down), false );
-
-    Dictionary options;
-    options["font/size"]=p_size;
-    options["meta/height"]=height;
-    options["meta/ascent"]=ascent;
-    options["meta/max_up"]=max_up;
-    options["meta/max_down"]=max_down;
-
-    clear();
-    set_ttf_font(ttf_font);
-    set_ttf_options(options);
-    set_height(height);
-    set_ascent(ascent);
-
-    return true;
-}
-
-void Font::set_ttf_font(const Ref<TtfFont>& p_font) {
-
-	if (p_font==ttf_font)
-		return;
-    //clear();
-	char_map.clear();
-	textures.clear();
-
-    atlas_x=0;
-    atlas_y=0;
-    atlas_height=0;
-    atlas_dirty_index=0;
-    atlas_dirty=false;
-    for(int i=0;i<atlas_images.size();i++) {
-        memdelete(atlas_images[i]);
-    }
-    atlas_images.clear();
-
-	ttf_font=p_font;
-    if (!ttf_options.empty()) {
-        kerning_map.clear();
-        ttf_font->gen_kerning(this);
-    }
-}
-
-Ref<TtfFont> Font::get_ttf_font() const {
-
-	return ttf_font;
-}
-
-void Font::set_ttf_options(const Dictionary& p_options) {
-
-    ttf_options=p_options;
-    if (kerning_map.empty()&&ttf_font.is_valid()) {
-        ttf_font->gen_kerning(this);
-    }
-}
-
-const Dictionary& Font::get_ttf_options() const {
-
-    return ttf_options;
-}
-
-void Font::set_fallback(const Ref<Font> &p_fallback) {
 
 Size2 BitmapFont::get_char_size(CharType p_char,CharType p_next) const {
 
@@ -818,7 +588,6 @@ void BitmapFont::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("_set_textures"),&BitmapFont::_set_textures);
 	ObjectTypeDB::bind_method(_MD("_get_textures"),&BitmapFont::_get_textures);
-	ObjectTypeDB::bind_method(_MD("_reload_hook","rid"),&Font::_reload_hook);
 
 	ObjectTypeDB::bind_method(_MD("set_fallback","fallback"),&BitmapFont::set_fallback);
 	ObjectTypeDB::bind_method(_MD("get_fallback"),&BitmapFont::get_fallback);
@@ -832,13 +601,6 @@ void BitmapFont::_bind_methods() {
 	ADD_PROPERTY( PropertyInfo( Variant::BOOL, "distance_field" ), _SCS("set_distance_field_hint"), _SCS("is_distance_field_hint") );
 	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "fallback", PROPERTY_HINT_RESOURCE_TYPE,"BitmapFont" ), _SCS("set_fallback"), _SCS("get_fallback") );
 
-    ObjectTypeDB::bind_method(_MD("set_ttf_options"),&Font::set_ttf_options);
-	ObjectTypeDB::bind_method(_MD("get_ttf_options"),&Font::get_ttf_options);
-    ADD_PROPERTY( PropertyInfo( Variant::DICTIONARY, "data", PROPERTY_HINT_NONE,"",PROPERTY_USAGE_STORAGE), _SCS("set_ttf_options"),_SCS("get_ttf_options"));
-
-	ObjectTypeDB::bind_method(_MD("set_ttf_font","font:TtfFont"),&Font::set_ttf_font);
-	ObjectTypeDB::bind_method(_MD("get_ttf_font:TtfFont"),&Font::get_ttf_font);
-	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "font", PROPERTY_HINT_RESOURCE_TYPE,"TtfFont",PROPERTY_USAGE_NOEDITOR), _SCS("set_ttf_font"),_SCS("get_ttf_font"));
 }
 
 BitmapFont::BitmapFont() {
