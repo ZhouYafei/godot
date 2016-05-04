@@ -80,20 +80,20 @@ RunSettingsDialog::RunSettingsDialog() {
 	set_child_rect(vbc);
 
 	run_mode = memnew( OptionButton );
-	vbc->add_margin_child(_TR("Run Mode:"),run_mode);
-	run_mode->add_item(_TR("Current Scene"));
-	run_mode->add_item(_TR("Main Scene"));
+	vbc->add_margin_child(TTR("Run Mode:"),run_mode);
+	run_mode->add_item(TTR("Current Scene"));
+	run_mode->add_item(TTR("Main Scene"));
 	run_mode->connect("item_selected",this,"_run_mode_changed");
 	arguments = memnew( LineEdit );
-	vbc->add_margin_child("Main Scene Arguments:",arguments);
+	vbc->add_margin_child(TTR("Main Scene Arguments:"),arguments);
 	arguments->set_editable(false);
 
-	get_ok()->set_text(_TR("Close"));
-	//get_cancel()->set_text("Close");
+	get_ok()->set_text(TTR("Close"));
+	//get_cancel()->set_text(TTR("Close"));
 
 	arguments->set_text("-l $scene");
 
-	set_title(_TR("Scene Run Settings"));
+	set_title(TTR("Scene Run Settings"));
 
 
 }

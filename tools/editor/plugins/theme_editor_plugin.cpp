@@ -200,7 +200,7 @@ void ThemeEditor::_save_template_cbk(String fname) {
 	if (!file) {
 
 
-		ERR_EXPLAIN("Can't save theme to file: "+filename);
+		ERR_EXPLAIN(TTR("Can't save theme to file: ")+filename);
 		return;
 	}
 	file->store_line("; ******************* ");
@@ -474,16 +474,16 @@ void ThemeEditor::_theme_menu_cbk(int p_option) {
 
 	if (p_option==POPUP_ADD) {//add
 
-		add_del_dialog->set_title(_TR("Add Item"));
-		add_del_dialog->get_ok()->set_text(_TR("Add"));
+		add_del_dialog->set_title(TTR("Add Item"));
+		add_del_dialog->get_ok()->set_text(TTR("Add"));
 		add_del_dialog->popup_centered(Size2(490,85));
 
 		base_theme=Theme::get_default();
 
 	} else if (p_option==POPUP_CLASS_ADD) {//add
 
-		add_del_dialog->set_title(_TR("Add All Items"));
-		add_del_dialog->get_ok()->set_text(_TR("Add All"));
+		add_del_dialog->set_title(TTR("Add All Items"));
+		add_del_dialog->get_ok()->set_text(TTR("Add All"));
 		add_del_dialog->popup_centered(Size2(240,85));
 
 		base_theme=Theme::get_default();
@@ -496,8 +496,8 @@ void ThemeEditor::_theme_menu_cbk(int p_option) {
 
 	} else if (p_option==POPUP_REMOVE) {
 
-		add_del_dialog->set_title(_TR("Remove Item"));
-		add_del_dialog->get_ok()->set_text(_TR("Remove"));
+		add_del_dialog->set_title(TTR("Remove Item"));
+		add_del_dialog->get_ok()->set_text(TTR("Remove"));
 		add_del_dialog->popup_centered(Size2(490,85));
 
 		base_theme=theme;
@@ -596,13 +596,13 @@ ThemeEditor::ThemeEditor() {
 
 
 	theme_menu = memnew( MenuButton );
-	theme_menu->set_text(_TR("Theme"));
-	theme_menu->get_popup()->add_item(_TR("Add Item"),POPUP_ADD);
-	theme_menu->get_popup()->add_item(_TR("Add Class Items"),POPUP_CLASS_ADD);
-	theme_menu->get_popup()->add_item(_TR("Remove Item"),POPUP_REMOVE);
+	theme_menu->set_text("Theme");
+	theme_menu->get_popup()->add_item(TTR("Add Item"),POPUP_ADD);
+	theme_menu->get_popup()->add_item(TTR("Add Class Items"),POPUP_CLASS_ADD);
+	theme_menu->get_popup()->add_item(TTR("Remove Item"),POPUP_REMOVE);
 	theme_menu->get_popup()->add_item("Remove Class Items",POPUP_CLASS_REMOVE);
 	theme_menu->get_popup()->add_separator();
-	theme_menu->get_popup()->add_item(_TR("Create Template"),POPUP_CREATE_TEMPLATE);
+	theme_menu->get_popup()->add_item(TTR("Create Template"),POPUP_CREATE_TEMPLATE);
 	hb_menu->add_child(theme_menu);
 	theme_menu->get_popup()->connect("item_pressed", this,"_theme_menu_cbk");
 
@@ -641,30 +641,30 @@ ThemeEditor::ThemeEditor() {
 	VBoxContainer *gbvb = memnew( VBoxContainer );
 	gbvb->set_v_size_flags(SIZE_EXPAND_FILL);
 	CheckBox *rbx1 = memnew( CheckBox );
-	rbx1->set_text("CheckBox Radio1");
+	rbx1->set_text(TTR("CheckBox Radio1"));
 	rbx1->set_pressed(true);
 	gbvb->add_child(rbx1);
 	CheckBox *rbx2 = memnew( CheckBox );
-	rbx2->set_text("CheckBox Radio2");
+	rbx2->set_text(TTR("CheckBox Radio2"));
 	gbvb->add_child(rbx2);
 	bg->add_child(gbvb);
 	first_vb->add_child(bg);
 
 	MenuButton* test_menu_button = memnew( MenuButton );
 	test_menu_button->set_text("MenuButton");
-	test_menu_button->get_popup()->add_item("Item");
+	test_menu_button->get_popup()->add_item(TTR("Item"));
 	test_menu_button->get_popup()->add_separator();
-	test_menu_button->get_popup()->add_check_item("Check Item");
-	test_menu_button->get_popup()->add_check_item("Checked Item");
+	test_menu_button->get_popup()->add_check_item(TTR("Check Item"));
+	test_menu_button->get_popup()->add_check_item(TTR("Checked Item"));
 	test_menu_button->get_popup()->set_item_checked(2,true);
 	first_vb->add_child(test_menu_button);
 
 	OptionButton *test_option_button = memnew( OptionButton );
 	test_option_button->add_item("OptionButton");
 	test_option_button->add_separator();
-	test_option_button->add_item("Has");
-	test_option_button->add_item("Many");
-	test_option_button->add_item("Options");
+	test_option_button->add_item(TTR("Has"));
+	test_option_button->add_item(TTR("Many"));
+	test_option_button->add_item(TTR("Options"));
 	first_vb->add_child(test_option_button);
 
 	ColorPickerButton *cpb = memnew( ColorPickerButton );
@@ -715,7 +715,7 @@ ThemeEditor::ThemeEditor() {
 	item = test_tree->create_item( test_tree->get_root() );
 	item->set_cell_mode(0, TreeItem::CELL_MODE_RANGE);
 	item->set_editable(0,true);
-	item->set_text(0,"Have,Many,Several,Options!");
+	item->set_text(0,TTR("Have,Many,Several,Options!"));
 	item->set_range(0,2);
 
 	VBoxContainer *third_vb = memnew( VBoxContainer );
@@ -735,13 +735,13 @@ ThemeEditor::ThemeEditor() {
 	third_vb->add_child(tc);
 	tc->set_custom_minimum_size(Size2(0,160));
 	Control *tcc = memnew( Control );
-	tcc->set_name("Tab 1");
+	tcc->set_name(TTR("Tab 1"));
 	tc->add_child(tcc);
 	tcc = memnew( Control );
-	tcc->set_name("Tab 2");
+	tcc->set_name(TTR("Tab 2"));
 	tc->add_child(tcc);
 	tcc = memnew( Control );
-	tcc->set_name("Tab 3");
+	tcc->set_name(TTR("Tab 3"));
 	tc->add_child(tcc);
 
 	main_hb->add_constant_override("separation",20);
@@ -758,7 +758,7 @@ ThemeEditor::ThemeEditor() {
 	line_edit = memnew( LineEdit );
 	line_edit->set_pos( Point2( 25, 275 ) );
 	line_edit->set_size( Point2( 150, 5 ) );
-	line_edit->set_text("Line Edit");
+	line_edit->set_text(TTR("Line Edit"));
 	panel->add_child(line_edit);
 
 	test_v_scroll = memnew( VScrollBar );
@@ -787,12 +787,12 @@ ThemeEditor::ThemeEditor() {
 	item = test_tree->create_item( test_tree->get_root() );
 	item->set_cell_mode(0, TreeItem::CELL_MODE_RANGE);
 	item->set_editable(0,true);
-	item->set_text(0,"Have,Many,Several,Options!");
+	item->set_text(0,TTR("Have,Many,Several,Options!"));
 	item->set_range(0,2);
 
 	Button *fd_button= memnew( Button );
 	fd_button->set_pos(Point2(300,275));
-	fd_button->set_text("Open File Dialog");
+	fd_button->set_text(TTR("Open File Dialog"));
 	panel->add_child(fd_button);
 
 	test_file_dialog = memnew( EditorFileDialog );
@@ -808,7 +808,7 @@ ThemeEditor::ThemeEditor() {
 
 	Label *l = memnew( Label );
 	l->set_pos( Point2(5,5) );
-	l->set_text("Type:");
+	l->set_text(TTR("Type:"));
 	add_del_dialog->add_child(l);
 	dtype_select_label=l;
 
@@ -827,7 +827,7 @@ ThemeEditor::ThemeEditor() {
 
 	l = memnew( Label );
 	l->set_pos( Point2(200,5) );
-	l->set_text("Name:");
+	l->set_text(TTR("Name:"));
 	add_del_dialog->add_child(l);
 	name_select_label=l;
 
@@ -847,15 +847,15 @@ ThemeEditor::ThemeEditor() {
 
 	type_select_label= memnew( Label );
 	type_select_label->set_pos( Point2(400,5) );
-	type_select_label->set_text("Data Type:");
+	type_select_label->set_text(TTR("Data Type:"));
 	add_del_dialog->add_child(type_select_label);
 
 	type_select = memnew( OptionButton );
-	type_select->add_item("Icon");
-	type_select->add_item("Style");
+	type_select->add_item(TTR("Icon"));
+	type_select->add_item(TTR("Style"));
 	type_select->add_item("Font");
 	type_select->add_item("Color");
-	type_select->add_item("Constant");
+	type_select->add_item(TTR("Constant"));
 	type_select->set_pos( Point2( 400,25 ) );
 	type_select->set_size( Point2( 80,5 ) );
 

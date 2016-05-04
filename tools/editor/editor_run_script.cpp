@@ -10,12 +10,12 @@
 void EditorScript::add_root_node(Node *p_node) {
 
 	if (!editor) {
-		EditorNode::add_io_error(_TR("EditorScript::add_root_node : Write your logic in the _run() method."));
+		EditorNode::add_io_error(TTR("EditorScript::add_root_node : Write your logic in the _run() method."));
 		return;
 	}
 
 	if (editor->get_edited_scene()) {
-		EditorNode::add_io_error(_TR("EditorScript::add_root_node : There is an edited scene already."));
+		EditorNode::add_io_error(TTR("EditorScript::add_root_node : There is an edited scene already."));
 		return;
 	}
 
@@ -25,7 +25,7 @@ void EditorScript::add_root_node(Node *p_node) {
 Node *EditorScript::get_scene() {
 
 	if (!editor) {
-		EditorNode::add_io_error(_TR("EditorScript::get_scene : Write your logic in the _run() method."));
+		EditorNode::add_io_error(TTR("EditorScript::get_scene : Write your logic in the _run() method."));
 		return NULL;
 	}
 

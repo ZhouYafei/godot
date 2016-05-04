@@ -54,7 +54,7 @@ void SampleLibraryEditor::_notification(int p_what) {
 
 	if (p_what==NOTIFICATION_ENTER_TREE) {
 		load->set_icon( get_icon("Folder","EditorIcons") );
-		load->set_tooltip("Open Sample File(s)");
+		load->set_tooltip(TTR("Open Sample File(s)"));
 	}
 
 	if (p_what==NOTIFICATION_READY) {
@@ -75,10 +75,10 @@ void SampleLibraryEditor::_file_load_request(const DVector<String>& p_path) {
 		String path = p_path[i];
 		Ref<Sample> sample = ResourceLoader::load(path,"Sample");
 		if (sample.is_null()) {
-			dialog->set_text(_TR("ERROR: Couldn't load sample!"));
-			dialog->set_title(_TR("Error!"));
-			//dialog->get_cancel()->set_text("Close");
-			dialog->get_ok()->set_text(_TR("Close"));
+			dialog->set_text(TTR("ERROR: Couldn't load sample!"));
+			dialog->set_title(TTR("Error!"));
+			//dialog->get_cancel()->set_text(TTR("Close"));
+			dialog->get_ok()->set_text(TTR("Close"));
 			dialog->popup_centered_minsize();
 			return; ///beh should show an error i guess
 		}
@@ -90,7 +90,7 @@ void SampleLibraryEditor::_file_load_request(const DVector<String>& p_path) {
 			name=basename+"_"+itos(counter);
 		}
 
-		undo_redo->create_action(_TR("Add Sample"));
+		undo_redo->create_action(TTR("Add Sample"));
 		undo_redo->add_do_method(sample_library.operator->(),"add_sample",name,sample);
 		undo_redo->add_undo_method(sample_library.operator->(),"remove_sample",name);
 		undo_redo->add_do_method(this,"_update_library");
@@ -115,7 +115,7 @@ void SampleLibraryEditor::_button_pressed(Object *p_item,int p_column, int p_id)
 		String btn_type;
 		if(!is_playing) {
 			is_playing = true;
-			btn_type = "Stop";
+			btn_type = TTR("Stop");
 			player->play(name,true);
 			last_sample_playing = p_item;
 			set_process(true);
@@ -124,11 +124,11 @@ void SampleLibraryEditor::_button_pressed(Object *p_item,int p_column, int p_id)
 			if(last_sample_playing != p_item){
 				TreeItem *tl=last_sample_playing->cast_to<TreeItem>();
 				tl->set_button(p_column,0,get_icon("Play","EditorIcons"));
-				btn_type = "Stop";
+				btn_type = TTR("Stop");
 				player->play(name,true);
 				last_sample_playing = p_item;
 			} else {
-				btn_type = "Play";
+				btn_type = TTR("Play");
 				is_playing = false;
 			}
 		}
@@ -170,7 +170,7 @@ void SampleLibraryEditor::_item_edited() {
 		}
 
 		Ref<Sample> samp = sample_library->get_sample(old_name);
-		undo_redo->create_action("Rename Sample");
+		undo_redo->create_action(TTR("Rename Sample"));
 		undo_redo->add_do_method(sample_library.operator->(),"remove_sample",old_name);
 		undo_redo->add_do_method(sample_library.operator->(),"add_sample",new_name,samp);
 		undo_redo->add_undo_method(sample_library.operator->(),"remove_sample",new_name);
@@ -200,7 +200,7 @@ void SampleLibraryEditor::_delete_pressed() {
 		return;
 
 	String to_remove = tree->get_selected()->get_text(0);
-	undo_redo->create_action("Delete Sample");
+	undo_redo->create_action(TTR("Delete Sample"));
 	undo_redo->add_do_method(sample_library.operator->(),"remove_sample",to_remove);
 	undo_redo->add_undo_method(sample_library.operator->(),"add_sample",to_remove,sample_library->get_sample(to_remove));
 	undo_redo->add_do_method(this,"_update_library");
@@ -249,7 +249,7 @@ void SampleLibraryEditor::_update_library() {
 		ti->set_cell_mode(2,TreeItem::CELL_MODE_STRING);
 		ti->set_editable(2,false);
 		ti->set_selectable(2,false);
-		ti->set_text(2,String()+/*itos(smp->get_length())+" frames ("+String::num(smp->get_length()/(float)smp->get_mix_rate(),2)+" smp), "+*/(smp->get_format()==Sample::FORMAT_PCM16?"16 Bits, ":(smp->get_format()==Sample::FORMAT_PCM8?"8 bits, ":"IMA-ADPCM,"))+(smp->is_stereo()?"Stereo":"Mono"));
+		ti->set_text(2,String()+/*itos(smp->get_length())+" frames ("+String::num(smp->get_length()/(float)smp->get_mix_rate(),2)+" smp), "+*/(smp->get_format()==Sample::FORMAT_PCM16?"16 Bits, ":(smp->get_format()==Sample::FORMAT_PCM8?"8 bits, ":TTR("IMA-ADPCM,")))+(smp->is_stereo()?"Stereo":"Mono"));
 
 		// Volume dB
 		ti->set_cell_mode(3,TreeItem::CELL_MODE_RANGE);
@@ -332,9 +332,9 @@ SampleLibraryEditor::SampleLibraryEditor() {
 	tree->set_anchor_and_margin(MARGIN_TOP,ANCHOR_BEGIN,30);
 	tree->set_anchor_and_margin(MARGIN_BOTTOM,ANCHOR_END,5);
 	tree->set_column_titles_visible(true);
-	tree->set_column_title(0,_TR("Name"));
-	tree->set_column_title(1,"Preview");
-	tree->set_column_title(2,"Format");
+	tree->set_column_title(0,TTR("Name"));
+	tree->set_column_title(1,TTR("Preview"));
+	tree->set_column_title(2,TTR("Format"));
 	tree->set_column_title(3,"dB");
 	tree->set_column_title(4,"Pitch");
 	tree->set_column_title(5,"");

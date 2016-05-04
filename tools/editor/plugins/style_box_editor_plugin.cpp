@@ -62,7 +62,7 @@ StyleBoxEditor::StyleBoxEditor() {
 	panel->set_area_as_parent_rect();
 
 	Label *l = memnew( Label );
-	l->set_text(_TR("StyleBox Preview:"));
+	l->set_text(TTR("StyleBox Preview:"));
 	l->set_pos(Point2(5,5));
 	panel->add_child(l);
 

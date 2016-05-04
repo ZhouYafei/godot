@@ -258,5 +258,7 @@ struct NoCaseComparator {
 
  /* end of namespace */
 
+//tool translate
+String TTR(const String&);
 
 #endif

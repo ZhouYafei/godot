@@ -59,9 +59,9 @@ void GotoLineDialog::ok_pressed() {
 
 GotoLineDialog::GotoLineDialog() {
 
-	set_title(_TR("Go to Line"));
+	set_title(TTR("Go to Line"));
 	Label *l = memnew(Label);
-	l->set_text(_TR("Line Number:"));
+	l->set_text(TTR("Line Number:"));
 	l->set_pos(Point2(5,5));
 	add_child(l);
 
@@ -79,13 +79,13 @@ GotoLineDialog::GotoLineDialog() {
 
 void FindReplaceDialog::popup_search() {
 
-	set_title(_TR("Search"));
+	set_title(TTR("Search"));
 	replace_mc->hide();
 	replace_label->hide();
 	replace_vb->hide();
 	skip->hide();
 	popup_centered(Point2(300,190));
-	get_ok()->set_text(_TR("Find"));
+	get_ok()->set_text(TTR("Find"));
 	search_text->grab_focus();
 	if (text_edit->is_selection_active() && ( text_edit->get_selection_from_line() == text_edit->get_selection_to_line())) {
 
@@ -99,7 +99,7 @@ void FindReplaceDialog::popup_search() {
 
 void FindReplaceDialog::popup_replace() {
 
-	set_title(_TR("Replace"));
+	set_title(TTR("Replace"));
 	bool do_selection=(text_edit->is_selection_active() && text_edit->get_selection_from_line() < text_edit->get_selection_to_line());
 	set_replace_selection_only(do_selection);
 
@@ -122,12 +122,12 @@ void FindReplaceDialog::popup_replace() {
 
 	if (prompt->is_pressed()) {
 		skip->show();
-		get_ok()->set_text(_TR("Next"));
+		get_ok()->set_text(TTR("Next"));
 		selection_only->set_disabled(true);
 
 	} else {
 		skip->hide();
-		get_ok()->set_text(_TR("Replace"));
+		get_ok()->set_text(TTR("Replace"));
 		selection_only->set_disabled(false);
 	}
 
@@ -217,7 +217,7 @@ void FindReplaceDialog::_replace() {
 
 		text_edit->set_v_scroll(vsval);
 //		text_edit->set_h_scroll(hsval);
-		error_label->set_text(_TR("Replaced ")+itos(rc)+_TR(" ocurrence(s)."));
+		error_label->set_text(TTR("Replaced ")+itos(rc)+TTR(" ocurrence(s)."));
 
 
 		//hide();
@@ -275,7 +275,7 @@ bool FindReplaceDialog::_search() {
 		return true;
 	} else {
 
-		set_error(_TR("Not Found!"));
+		set_error(TTR("Not Found!"));
 		return false;
 	}
 
@@ -285,12 +285,12 @@ void FindReplaceDialog::_prompt_changed() {
 
 	if (prompt->is_pressed()) {
 		skip->show();
-		get_ok()->set_text(_TR("Next"));
+		get_ok()->set_text(TTR("Next"));
 		selection_only->set_disabled(true);
 
 	} else {
 		skip->hide();
-		get_ok()->set_text(_TR("Replace"));
+		get_ok()->set_text(TTR("Replace"));
 		selection_only->set_disabled(false);
 	}
 }
@@ -405,14 +405,14 @@ FindReplaceDialog::FindReplaceDialog() {
 
 
 	search_text = memnew( LineEdit );
-	vb->add_margin_child(_TR("Search"),search_text);
+	vb->add_margin_child(TTR("Search"),search_text);
 	search_text->connect("text_entered", this,"_search_text_entered");
 	//search_text->set_self_opacity(0.7);
 
 
 
 	replace_label = memnew( Label);
-	replace_label->set_text(_TR("Replace By"));
+	replace_label->set_text(TTR("Replace By"));
 	vb->add_child(replace_label);
 	replace_mc= memnew( MarginContainer);
 	vb->add_child(replace_mc);
@@ -437,15 +437,15 @@ FindReplaceDialog::FindReplaceDialog() {
 	svb ->add_child(memnew(Label));
 
 	whole_words = memnew( CheckButton );
-	whole_words->set_text(_TR("Whole Words"));
+	whole_words->set_text(TTR("Whole Words"));
 	svb->add_child(whole_words);
 
 	case_sensitive = memnew( CheckButton );
-	case_sensitive->set_text(_TR("Case Sensitive"));
+	case_sensitive->set_text(TTR("Case Sensitive"));
 	svb->add_child(case_sensitive);
 
 	backwards = memnew( CheckButton );
-	backwards->set_text(_TR("Backwards"));
+	backwards->set_text(TTR("Backwards"));
 	svb->add_child(backwards);
 
 	opt_mg = memnew( MarginContainer );
@@ -457,12 +457,12 @@ FindReplaceDialog::FindReplaceDialog() {
 	rvb ->add_child(memnew(Label));
 
 	prompt = memnew( CheckButton );
-	prompt->set_text(_TR("Prompt On Replace"));
+	prompt->set_text(TTR("Prompt On Replace"));
 	rvb->add_child(prompt);
 	prompt->connect("pressed", this,"_prompt_changed");
 
 	selection_only = memnew( CheckButton );
-	selection_only->set_text(_TR("Selection Only"));
+	selection_only->set_text(TTR("Selection Only"));
 	rvb->add_child(selection_only);
 
 
@@ -476,7 +476,7 @@ FindReplaceDialog::FindReplaceDialog() {
 	skip->set_anchor( MARGIN_BOTTOM, ANCHOR_END );
 	skip->set_begin( Point2( 70, button_margin ) );
 	skip->set_end( Point2(  10, margin ) );
-	skip->set_text(_TR("Skip"));
+	skip->set_text(TTR("Skip"));
 	add_child(skip);
 	skip->connect("pressed", this,"_skip_pressed");
 
@@ -499,7 +499,7 @@ FindReplaceDialog::FindReplaceDialog() {
 
 void CodeTextEditor::_line_col_changed() {
 
-	String text = String()+_TR("Line: ")+itos(text_editor->cursor_get_line()+1)+_TR(", Col: ")+itos(text_editor->cursor_get_column());
+	String text = String()+TTR("Line: ")+itos(text_editor->cursor_get_line()+1)+TTR(", Col: ")+itos(text_editor->cursor_get_column());
 	line_col->set_text(text);
 }
 

@@ -143,7 +143,7 @@ void ResourcesDock::save_resource(const String& p_path,const Ref<Resource>& p_re
 	Error err = ResourceSaver::save(path,p_resource,flg|ResourceSaver::FLAG_REPLACE_SUBRESOURCE_PATHS);
 
 	if (err!=OK) {
-		accept->set_text(_TR("Error saving resource!"));
+		accept->set_text(TTR("Error saving resource!"));
 		accept->popup_centered_minsize();
         return;
 	}
@@ -361,21 +361,21 @@ ResourcesDock::ResourcesDock(EditorNode *p_editor) {
 
 	Button *b;
 	b = memnew( ToolButton );
-	b->set_tooltip(_TR("Create New Resource"));
+	b->set_tooltip(TTR("Create New Resource"));
 	b->connect("pressed",this,"_tool_selected",make_binds(TOOL_NEW));
 	hbc->add_child( b );
 	button_new=b;
 
 	b = memnew( ToolButton );
-	b->set_tooltip(_TR("Open Resource"));
+	b->set_tooltip(TTR("Open Resource"));
 	b->connect("pressed",this,"_tool_selected",make_binds(TOOL_OPEN));
 	hbc->add_child( b );
 	button_open=b;
 
 	MenuButton *mb = memnew( MenuButton );
-	mb->set_tooltip(_TR("Save Resource"));
-	mb->get_popup()->add_item(_TR("Save Resource"),TOOL_SAVE);
-	mb->get_popup()->add_item(_TR("Save Resource As.."),TOOL_SAVE_AS);
+	mb->set_tooltip(TTR("Save Resource"));
+	mb->get_popup()->add_item(TTR("Save Resource"),TOOL_SAVE);
+	mb->get_popup()->add_item(TTR("Save Resource As.."),TOOL_SAVE_AS);
 	mb->get_popup()->connect("item_pressed",this,"_tool_selected" );
 	hbc->add_child( mb );
 	button_save=mb;
@@ -383,10 +383,10 @@ ResourcesDock::ResourcesDock(EditorNode *p_editor) {
 	hbc->add_spacer();
 
 	mb = memnew( MenuButton );
-	mb->set_tooltip(_TR("Resource Tools"));
-	mb->get_popup()->add_item(_TR("Make Local"),TOOL_MAKE_LOCAL);
-	mb->get_popup()->add_item(_TR("Copy"),TOOL_COPY);
-	mb->get_popup()->add_item(_TR("Paste"),TOOL_PASTE);
+	mb->set_tooltip(TTR("Resource Tools"));
+	mb->get_popup()->add_item(TTR("Make Local"),TOOL_MAKE_LOCAL);
+	mb->get_popup()->add_item(TTR("Copy"),TOOL_COPY);
+	mb->get_popup()->add_item(TTR("Paste"),TOOL_PASTE);
 	mb->get_popup()->connect("item_pressed",this,"_tool_selected" );
 	hbc->add_child( mb );
 	button_tools=mb;
