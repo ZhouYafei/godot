@@ -172,7 +172,6 @@ public:
 
 	Error request_raw( Method p_method, const String& p_url, const Vector<String>& p_headers,const DVector<uint8_t>& p_body);
 	Error request( Method p_method, const String& p_url, const Vector<String>& p_headers,const String& p_body=String());
-	Error request_raw( Method p_method, const String& p_url, const Vector<String>& p_headers,const ByteArray& p_body=ByteArray());
 	Error send_body_text(const String& p_body);
 	Error send_body_data(const ByteArray& p_body);
 
