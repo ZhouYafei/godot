@@ -370,6 +370,9 @@ Vector<StringName> EditorExportPlatform::get_dependencies(bool p_bundles) const 
 		String filter;
 		if (EditorImportExport::get_singleton()->get_export_filter()==EditorImportExport::EXPORT_ALL) {
 			_add_filter_to_list(exported,"*");
+			// remove selected filter files
+			String cf = EditorImportExport::get_singleton()->get_export_custom_filter_exclude();
+			_remove_filter_from_list(exported,cf);
 		} else {
 			_add_to_list(EditorFileSystem::get_singleton()->get_filesystem(),exported);
 			String cf = EditorImportExport::get_singleton()->get_export_custom_filter();
