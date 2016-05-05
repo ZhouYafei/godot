@@ -126,8 +126,8 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 		text = text.strip_edges();
 
 		Variant var;
-		Dictionary dict;
-		Array arr;
+		Dictionary dict(true);
+		Array arr(true);
 
 		if(text[0] == '[') {
 			if(arr.parse_json(text) == OK)
