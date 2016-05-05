@@ -186,7 +186,7 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 	if(err != OK)
 		return false;
 
-	if(da->list_dir_begin())
+	if(!da->list_dir_begin())
 		return false;
 
 	bool loaded = false;
@@ -269,7 +269,7 @@ bool OSprite::OSpriteResource::_load_texture_frames(const String& p_path, bool p
 	if(err != OK)
 		return false;
 
-	if(da->list_dir_begin())
+	if(!da->list_dir_begin())
 		return false;
 
 	bool loaded = false;
