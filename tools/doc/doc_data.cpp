@@ -64,7 +64,8 @@ void DocData::merge_from(const DocData& p_data) {
 				// since polymorphic functions are allowed we need to check the type of
 				// the arguments so we make sure they are different.
 				int arg_count = cf.methods[j].arguments.size();
-				bool* arg_used = new bool[arg_count];
+				Vector<bool> arg_used;
+				arg_used.resize(arg_count);
 				for (int l = 0; l < arg_count; ++l) arg_used[l] = false;
 				// also there is no guarantee that argument ordering will match, so we
 				// have to check one by one so we make sure we have an exact match
@@ -287,6 +288,7 @@ void DocData::generate(bool p_basic_types) {
 							case Variant::INT_ARRAY:
 							case Variant::REAL_ARRAY:
 							case Variant::STRING_ARRAY:	//25
+							case Variant::VECTOR2_ARRAY:
 							case Variant::VECTOR3_ARRAY:
 							case Variant::COLOR_ARRAY:
 								default_arg_text=Variant::get_type_name(default_arg.get_type())+"("+default_arg_text+")";
