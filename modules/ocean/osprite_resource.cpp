@@ -86,7 +86,22 @@ void OSprite::OSpriteResource::_post_process() {
 				pool.shadow_rect.pos *= shadow_scale;
 				pool.shadow_rect.size *= shadow_scale;
 			}
+
+			if(frame.rotated) {
+
+				SWAP(pool.rect.size.x, pool.rect.size.y);
+				pool.rect.size.y = -pool.rect.size.y;
+				SWAP(pool.shadow_rect.size.x, pool.shadow_rect.size.y);
+				pool.shadow_rect.size.y = -pool.shadow_rect.size.y;
+			}
 		}	
+	}
+
+	for(int i = 0; i < frames.size(); i++) {
+
+		Frame& frame = frames[i];
+		if(frame.rotated)
+			SWAP(frame.region.size.x, frame.region.size.y);
 	}
 
 	for(int i = 0; i < actions.size(); i++) {
@@ -250,8 +265,6 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 				_parse_rect2(info["spriteSourceSize"], sprite_source_size);
 				frame.offset = sprite_source_size.pos;
 			}
-			//if(rotated)
-			//	SWAP(frame.region.size.width, frame.region.size.height);
 			//_parse_size(info["sourceSize"], source_size);
 		}
 	}

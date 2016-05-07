@@ -146,6 +146,7 @@ private:
 
 	float delay;
 	float current_pos;
+	int frames;
 	mutable int prev_frame;
 
 	// text render only, with action/pattern fields
@@ -160,14 +161,6 @@ private:
 	int _get_frame(const OSpriteResource::Action *&p_action) const;
 
 	Array _get_collisions(bool p_global_pos = false) const;
-	void _draw_texture_rect_region(
-		const Vector2& p_pos,
-		const Ref<Texture>& p_texture,
-		const Rect2& p_rect,
-		const Rect2& p_src_rect,
-		const Color& p_modulate,
-		bool p_rotated
-	);
 
 protected:
 	bool _set(const StringName& p_name, const Variant& p_value);
@@ -190,6 +183,9 @@ public:
 	void set_forward(bool p_forward = true);
 	bool is_forward() const;
 	String get_current_animation() const;
+	float get_current_animation_pos() const;
+	float get_current_animation_length() const;
+
 	void reset();
 	void seek(float p_pos);
 	float tell() const;

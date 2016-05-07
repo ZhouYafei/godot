@@ -42,46 +42,6 @@ void OSprite::_dispose() {
 	update();
 }
 
-void OSprite::_draw_texture_rect_region(const Vector2& p_pos, const Ref<Texture>& p_texture,const Rect2& p_rect, const Rect2& p_src_rect,const Color& p_modulate, bool p_rotated) {
-
-	Rect2 rect = p_rect;
-	rect.pos += p_pos;
-
-	if(!p_rotated)
-		return this->draw_texture_rect_region(p_texture, rect, p_src_rect, p_modulate);
-
-	Vector<Vector2> points, uvs;
-	Vector<Color> colors;
-
-	float u = rect.pos.x;
-	float v = rect.pos.y;
-	float u2 = u + rect.size.x;
-	float v2 = v + rect.size.y;
-
-	points.push_back(Vector2(u,v2));
-	points.push_back(Vector2(u,v));
-	points.push_back(Vector2(u2,v));
-	points.push_back(Vector2(u2,v2));
-	{
-		Size2 size = p_texture->get_size();
-		u = p_src_rect.pos.x / size.width;
-		v = p_src_rect.pos.y / size.height;
-		u2 = (p_src_rect.pos.x + p_src_rect.size.height) / size.width;
-		v2 = (p_src_rect.pos.y + p_src_rect.size.width) / size.height;
-
-		uvs.push_back(Vector2(u,v));
-		uvs.push_back(Vector2(u2,v));
-		uvs.push_back(Vector2(u2,v2));
-		uvs.push_back(Vector2(u,v2));
-	}
-	colors.push_back(p_modulate);
-	colors.push_back(p_modulate);
-	colors.push_back(p_modulate);
-	colors.push_back(p_modulate);
-
-	draw_primitive(points, colors, uvs, p_texture);
-}
-
 static int _string_find(const String& str, CharType ch) {
 
 	for(int i = 0; i < str.size(); i++)
@@ -168,9 +128,7 @@ void OSprite::_animation_draw() {
 
 			const Rect2& rect = pool.rect;
 			const Rect2& src_rect = frame.region;
-			//if(pool.shadow_rect.size.x > 0 && pool.shadow_rect.size.y > 0)
-			//	_draw_texture_rect_region(Vector2(0,0), frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
-			_draw_texture_rect_region(offset, frame.tex, rect, src_rect, modulate, frame.rotated);
+			this->draw_texture_rect_region(frame.tex, Rect2(rect.pos + offset, rect.size), src_rect, modulate, frame.rotated);
 			offset.x += src_rect.size.x + text_space;
 		}
 		return;
@@ -210,10 +168,10 @@ void OSprite::_animation_draw() {
 		const Rect2& rect = pool.rect;
 		const Rect2& src_rect = frame.region;
 
-		if(pool.shadow_rect.size.x > 0 && pool.shadow_rect.size.y > 0)
-			_draw_texture_rect_region(Vector2(0,0), frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
+		if(pool.shadow_rect.size.x != 0 && pool.shadow_rect.size.y != 0)
+			draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
 
-		_draw_texture_rect_region(Vector2(0,0), frame.tex, rect, src_rect, modulate, frame.rotated);
+		draw_texture_rect_region(frame.tex, rect, src_rect, modulate, frame.rotated);
 	}
 
 	if(debug_collisions) {
@@ -449,6 +407,8 @@ bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
 	if(action->pattern != "")
 		return true;
 
+	frames = (action->to - action->from) + 1;
+
 	playing = true;
 	_set_process(true);
 
@@ -482,6 +442,22 @@ String OSprite::get_current_animation() const {
 
 	ERR_FAIL_COND_V(!res.is_valid(), "");
 	return current_animation;
+}
+
+float OSprite::get_current_animation_pos() const {
+
+	if(!res.is_valid() || !has(current_animation))
+		return 0;
+
+	return Math::fmod(current_pos, get_current_animation_length());
+}
+
+float OSprite::get_current_animation_length() const {
+
+	if(!res.is_valid() || !has(current_animation))
+		return 0;
+
+	return frames * res->fps_delta / speed_scale;
 }
 
 void OSprite::reset() {
@@ -629,6 +605,8 @@ void OSprite::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("stop"), &OSprite::stop);
 	ObjectTypeDB::bind_method(_MD("is_playing", "track"), &OSprite::is_playing, String(""));
 	ObjectTypeDB::bind_method(_MD("get_current_animation"), &OSprite::get_current_animation);
+	ObjectTypeDB::bind_method(_MD("get_current_animation_pos"), &OSprite::get_current_animation_pos);
+	ObjectTypeDB::bind_method(_MD("get_current_animation_length"), &OSprite::get_current_animation_length);
 	ObjectTypeDB::bind_method(_MD("reset"), &OSprite::reset);
 	ObjectTypeDB::bind_method(_MD("seek", "pos"), &OSprite::seek);
 	ObjectTypeDB::bind_method(_MD("tell"), &OSprite::tell);
@@ -708,6 +686,13 @@ Rect2 OSprite::get_item_rect() const {
 	if(index == -1 || action == NULL)
 		return Node2D::get_item_rect();
 	const OSpriteResource::Data& data = res->datas[action->index];
+
+	if(res->frames[data.pools[index].frame].rotated) {
+		Rect2 rect = data.pools[index].rect;
+		rect.size.y = -rect.size.y;
+		SWAP(rect.size.x, rect.size.y);
+		return rect;
+	}
 	return data.pools[index].rect;
 }
 
@@ -823,6 +808,7 @@ OSprite::OSprite() {
 	flip_y = false;
 	current_pos = 0;
 	prev_frame = 0;
+	frames = 0;
 
 	text = "";
 	text_space = 0;
