@@ -312,12 +312,13 @@ void OSprite::_notification(int p_what) {
 
 	case NOTIFICATION_ENTER_TREE: {
 
-		if (!active) {
-			//make sure that a previous process state was not saved
-			//only process if "processing" is set
-			set_fixed_process(false);
-			set_process(false);
-		}
+		//make sure that a previous process state was not saved
+		//only process if "processing" is set
+		set_fixed_process(false);
+		set_process(false);
+		if (active)
+			_set_process(true);
+
 		OSpriteCollision::get_singleton()->add(this);
 
 	} break;
