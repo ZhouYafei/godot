@@ -597,6 +597,7 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_PTR0R(Image, get_data);
 	VCALL_PTR3(Image, blit_rect);
 	VCALL_PTR1R(Image, converted);
+	VCALL_PTR0(Image, fix_alpha_edges);
 
 	VCALL_PTR0R( AABB, get_area );
 	VCALL_PTR0R( AABB, has_no_area );
@@ -1413,6 +1414,7 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC0(IMAGE, RAW_ARRAY, Image, get_data, varray());
 	ADDFUNC3(IMAGE, NIL, Image, blit_rect, IMAGE, "src", RECT2, "src_rect", VECTOR2, "dest", varray(0));
 	ADDFUNC1(IMAGE, IMAGE, Image, converted, INT, "format", varray(0));
+	ADDFUNC0(IMAGE, NIL, Image, fix_alpha_edges, varray());
 
 	ADDFUNC0(_RID,INT,RID,get_id,varray());
 
