@@ -169,6 +169,7 @@
     <ClCompile Include="..\..\modules\gdscript\gd_parser.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_pretty_print.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_script.cpp" />
+    <ClCompile Include="..\..\modules\gdscript\gd_script_prof.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_tokenizer.cpp" />
     <ClCompile Include="..\..\modules\gdscript\register_types.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_gdscript.obj</ObjectFileName>

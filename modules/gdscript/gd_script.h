@@ -29,6 +29,10 @@
 #ifndef GD_SCRIPT_H
 #define GD_SCRIPT_H
 
+#ifdef _WIN32
+#define ENABLE_PROFILER
+#endif
+
 #include "script_language.h"
 #include "io/resource_loader.h"
 #include "io/resource_saver.h"
@@ -422,6 +426,45 @@ class GDScriptLanguage : public ScriptLanguage {
 
     };
 
+#ifdef ENABLE_PROFILER
+	typedef struct FuncInfo {
+		String path;
+		int line;
+		String name;
+		uint64_t cost;
+
+		FuncInfo()
+		{}
+
+		FuncInfo(String& p_path, int p_line, String& p_name)
+			: path(p_path)
+			, line(p_line)
+			, name(p_name)
+			, cost(0)
+		{}
+
+	} FuncInfo;
+
+	typedef HashMap<size_t, FuncInfo> MapFuncInfos;
+	MapFuncInfos func_infos;
+
+	#define MAX_STACK_LEVEL 1024
+	typedef struct Stack {
+		FuncInfo *info;
+		uint64_t enter;
+	} Stack;
+	Stack stacks[MAX_STACK_LEVEL];
+	int stack_level = 0;
+	//bool enable_profiler = false;
+	struct CostCompare {
+
+		_FORCE_INLINE_ bool operator()(const FuncInfo* l,const FuncInfo* r) const {
+
+			return l->cost > r->cost;
+		}
+	};
+
+#endif
 
     int _debug_parse_err_line;
     String _debug_parse_err_file;
@@ -431,7 +474,9 @@ class GDScriptLanguage : public ScriptLanguage {
     CallLevel *_call_stack;
 
 	void _add_global(const StringName& p_name,const Variant& p_value);
-
+	void _profiler_start(GDFunction *p_function, int p_line);
+	void _profiler_end();
+	void _profiler_dump();
 
 public:
 
@@ -447,6 +492,8 @@ public:
 
         if (ScriptDebugger::get_singleton()->get_lines_left()>0 && ScriptDebugger::get_singleton()->get_depth()>=0)
             ScriptDebugger::get_singleton()->set_depth( ScriptDebugger::get_singleton()->get_depth() +1 );
+
+		_profiler_start(p_function, *p_line);
 
         if (_debug_call_stack_pos >= _debug_max_call_stack) {
             //stack overflow
@@ -470,6 +517,8 @@ public:
 
         if (ScriptDebugger::get_singleton()->get_lines_left()>0 && ScriptDebugger::get_singleton()->get_depth()>=0)
 	    ScriptDebugger::get_singleton()->set_depth( ScriptDebugger::get_singleton()->get_depth() -1 );
+
+		_profiler_end();
 
         if (_debug_call_stack_pos==0) {
 

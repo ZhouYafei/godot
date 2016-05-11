@@ -2839,6 +2839,8 @@ GDScriptLanguage::GDScriptLanguage() {
 
 GDScriptLanguage::~GDScriptLanguage() {
 
+	_profiler_dump();
+
     if (_call_stack)  {
         memdelete_arr(_call_stack);
     }
