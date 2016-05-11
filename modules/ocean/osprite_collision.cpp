@@ -73,6 +73,8 @@ OSpriteCollision::~OSpriteCollision() {
 
 void OSpriteCollision::add(OSprite *sprite) {
 
+	if(sprite->get_collision_mode() == OSprite::COLLISION_IGNORED)
+		return;
 
 	if(objects.empty())
 		_set_process(true);
@@ -98,6 +100,20 @@ void OSpriteCollision::remove(OSprite *sprite) {
 
 	if(objects.empty())
 		_set_process(false);
+}
+
+void OSpriteCollision::changed(OSprite *sprite) {
+
+	size_t id = (size_t) sprite;
+	if(sprite->get_collision_mode() == OSprite::COLLISION_IGNORED) {
+
+		if(objects.has(id)) 
+			remove(sprite);
+	} else {
+
+		if(!objects.has(id))
+			add(sprite);
+	}
 }
 
 void OSpriteCollision::_set_process(bool p_mode) {

@@ -149,6 +149,9 @@ private:
 	int frames;
 	mutable int prev_frame;
 
+	int frame_cache;
+	const OSpriteResource::Action *action_cache;
+
 	// text render only, with action/pattern fields
 	String text;
 	int text_space;

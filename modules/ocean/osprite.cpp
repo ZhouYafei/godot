@@ -61,9 +61,11 @@ void OSprite::_animation_draw() {
 		return;
 	}
 
-	const OSpriteResource::Action *action;
+	const OSpriteResource::Action *action = action_cache;
+	if(action == NULL)
+		return;
 	// current frame index
-	int index = _get_frame(action);
+	int index = frame_cache;
 	if(index == -1 || action == NULL)
 		return;
 	const OSpriteResource::Data& data = res->datas[action->index];
@@ -192,6 +194,8 @@ void OSprite::_animation_process(float p_delta) {
 	if (speed_scale == 0)
 		return;
 	current_pos += p_delta * speed_scale;
+
+	frame_cache = _get_frame(action_cache);
 
 	update();
 }
@@ -402,6 +406,7 @@ bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
 	loop = p_loop;
 	current_pos = 0;
 	prev_frame = 0;
+	frame_cache = _get_frame(action_cache);
 
 	OSpriteResource::Action *action = res->action_names[p_name];
 	// ignore text actions
@@ -578,6 +583,7 @@ OSprite::AnimationProcessMode OSprite::get_animation_process_mode() const {
 void OSprite::set_collision_mode(CollisionMode p_mode) {
 
 	collision_mode = p_mode;
+	OSpriteCollision::get_singleton()->changed(this);
 }
 
 OSprite::CollisionMode OSprite::get_collision_mode() const {
@@ -681,9 +687,11 @@ Rect2 OSprite::get_item_rect() const {
 	if(!res.is_valid() || !has(current_animation))
 		return Node2D::get_item_rect();
 
-	const OSpriteResource::Action *action;
+	const OSpriteResource::Action *action = action_cache;
+	if(action == NULL)
+		return Node2D::get_item_rect();
 	// current frame index
-	int index = _get_frame(action);
+	int index = frame_cache;
 	if(index == -1 || action == NULL)
 		return Node2D::get_item_rect();
 	const OSpriteResource::Data& data = res->datas[action->index];
@@ -702,9 +710,11 @@ const OSprite::Blocks& OSprite::get_collisions() const {
 	static OSprite::Blocks empty;
 	ERR_FAIL_COND_V(!res.is_valid(), empty);
 
-	const OSpriteResource::Action *action;
+	const OSpriteResource::Action *action = action_cache;
+	if(action == NULL)
+		return empty;
 	// current frame index
-	int index = _get_frame(action);
+	int index = frame_cache;
 	if(index == -1 || action == NULL)
 		return empty;
 
@@ -810,6 +820,8 @@ OSprite::OSprite() {
 	current_pos = 0;
 	prev_frame = 0;
 	frames = 0;
+	action_cache = NULL;
+	frame_cache = 0;
 
 	text = "";
 	text_space = 0;

@@ -54,6 +54,7 @@ public:
 
 	void add(OSprite *sprite);
 	void remove(OSprite *sprite);
+	void changed(OSprite *sprite);
 
 	static OSpriteCollision *get_singleton();
 };
