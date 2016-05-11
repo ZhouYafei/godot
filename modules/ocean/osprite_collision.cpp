@@ -85,9 +85,9 @@ void OSpriteCollision::add(OSprite *sprite) {
 
 void OSpriteCollision::remove(OSprite *sprite) {
 
-	if(sprite->get_collision_mode() == OSprite::COLLISION_IGNORED)
-		return;
 	size_t id = (size_t) sprite;
+	if(!objects.has(id))
+		return;
 
 	CollisionIds& ids = objects[id];
 	for(CollisionIds::Element *E = ids.front(); E;) {
