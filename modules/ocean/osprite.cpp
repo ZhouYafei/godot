@@ -195,6 +195,9 @@ void OSprite::_animation_process(float p_delta) {
 		return;
 	current_pos += p_delta * speed_scale;
 
+	if(!is_visible())
+		return;
+
 	frame_cache = _get_frame(action_cache);
 
 	update();
