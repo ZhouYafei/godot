@@ -294,6 +294,9 @@
     <ClCompile Include="..\..\modules\ik\register_types.cpp">
       <Filter>modules\ik</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\gdscript\gd_script_prof.cpp">
+      <Filter>modules\gdscript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">

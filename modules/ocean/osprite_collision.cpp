@@ -86,6 +86,8 @@ void OSpriteCollision::add(OSprite *sprite) {
 void OSpriteCollision::remove(OSprite *sprite) {
 
 	size_t id = (size_t) sprite;
+	if(!objects.has(id))
+		return;
 
 	CollisionIds& ids = objects[id];
 	for(CollisionIds::Element *E = ids.front(); E;) {
@@ -131,7 +133,7 @@ void OSpriteCollision::_set_process(bool p_mode) {
 		set_fixed_process(true);
 	} else {
 
-		root->remove_child(this);
+		//root->call_deferred("remove_child", this);
 		set_fixed_process(false);
 	}
 }

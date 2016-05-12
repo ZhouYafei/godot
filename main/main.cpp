@@ -722,8 +722,8 @@ Error Main::setup(const char *execpath,int argc, char *argv[],bool p_second_phas
 	OS::get_singleton()->_keep_screen_on=GLOBAL_DEF("display/keep_screen_on",true);
 	if (rtm==-1) {
 		rtm=GLOBAL_DEF("render/thread_model",OS::RENDER_THREAD_SAFE);
-		if (rtm>=1) //hack for now
-			rtm=1;
+		//if (rtm>=1) //hack for now
+		//	rtm=1;
 
 	}
 
@@ -1666,6 +1666,8 @@ void Main::cleanup() {
 
 	ERR_FAIL_COND(!_start_success);
 
+	memdelete( message_queue );
+
 	if (script_debugger)
 		memdelete(script_debugger);
 
@@ -1700,11 +1702,6 @@ void Main::cleanup() {
 		memdelete(path_remap);
 	if (globals)
 		memdelete(globals);
-
-
-
-
-	memdelete( message_queue );
 
 	unregister_core_driver_types();
 	unregister_core_types();

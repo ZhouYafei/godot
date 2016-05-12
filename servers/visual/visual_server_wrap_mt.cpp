@@ -102,13 +102,12 @@ void VisualServerWrapMT::sync() {
 
 		/* TODO: sync with the thread */
 
-		/*
 		ERR_FAIL_COND(!draw_mutex);
 		draw_mutex->lock();
 		draw_pending++; //cambiar por un saferefcount
 		draw_mutex->unlock();
-		*/
-		//command_queue.push( this, &VisualServerWrapMT::thread_flush);
+
+		command_queue.push( this, &VisualServerWrapMT::thread_flush);
 	} else {
 
 		command_queue.flush_all(); //flush all pending from other threads
@@ -121,14 +120,13 @@ void VisualServerWrapMT::draw() {
 
 	if (create_thread) {
 
-		/* TODO: Make it draw
+		//* TODO: Make it draw
 		ERR_FAIL_COND(!draw_mutex);
 		draw_mutex->lock();
 		draw_pending++; //cambiar por un saferefcount
 		draw_mutex->unlock();
 
 		command_queue.push( this, &VisualServerWrapMT::thread_draw);
-		*/
 	} else {
 
 		visual_server->draw();
