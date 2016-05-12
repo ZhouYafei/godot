@@ -40,6 +40,43 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
+typedef struct FuncInfo {
+	String path;
+	int line;
+	String name;
+	uint64_t cost;
+	uint64_t times;
+
+	FuncInfo()
+	{}
+
+	FuncInfo(String& p_path, int p_line, String& p_name)
+		: path(p_path)
+		, line(p_line)
+		, name(p_name)
+		, cost(0)
+		, times(0)
+	{}
+
+} FuncInfo;
+
+#define MAX_STACK_LEVEL 1024
+typedef struct Stack {
+	FuncInfo *info;
+	uint64_t enter;
+} Stack;
+static Stack stacks[MAX_STACK_LEVEL];
+static int stack_level = 0;
+//bool enable_profiler = false;
+
+struct CostCompare {
+
+	_FORCE_INLINE_ bool operator()(const FuncInfo* l,const FuncInfo* r) const {
+
+		return l->cost > r->cost;
+	}
+};
+
 void GDScriptLanguage::_profiler_start(GDFunction *p_function, int p_line) {
 
 	//if(!enable_profiler)
@@ -49,16 +86,17 @@ void GDScriptLanguage::_profiler_start(GDFunction *p_function, int p_line) {
 	size_t id = (size_t) p_function;
 	if(!func_infos.has(id)) {
 
-		func_infos[id] = FuncInfo(
+		func_infos[id] = memnew(FuncInfo(
 			p_function->get_script()->get_path(),
 			p_line,
 			p_function->get_name().operator String()
-		);
+		));
 	}
 
 	Stack& stack = stacks[stack_level];
 	QueryPerformanceCounter((LARGE_INTEGER *) &stack.enter);
-	stack.info = &(func_infos[id]);
+	stack.info = func_infos[id];
+	stack.info->times += 1;
 	stack_level += 1;
 }
 
@@ -97,7 +135,7 @@ void GDScriptLanguage::_profiler_dump() {
 
 	const size_t *K = NULL;
 	while(K = func_infos.next(K))
-		sort_funcs.push_back(&(func_infos[*K]));
+		sort_funcs.push_back(func_infos[*K]);
 
 	sort_funcs.sort_custom<CostCompare>();
 
@@ -112,10 +150,24 @@ void GDScriptLanguage::_profiler_dump() {
 		uint64_t us = info.cost * 1000000L / ticks_per_second;
 
 		//wprintf(L"file:%s func:%s line:%d\n\tcost\t%fs\n", info.path.ptr(), info.name.ptr(), info.line, us / 1000000.0);
-		fwprintf(fp, L"file:%s func:%s line:%d\n\tcost\t%fs\n", info.path.ptr(), info.name.ptr(), info.line, us / 1000000.0);
+		fwprintf(fp, L"file:%s func:%s line:%d\n\tcost\t%fs\ttimes:%lld\n",
+			info.path.ptr(),
+			info.name.ptr(),
+			info.line,
+			us / 1000000.0,
+			info.times
+		);
 	}
 	printf("Profiler file save at profiler.txt\n");
 	fclose(fp);
+
+	// cleanup profiler function infos
+	{
+		const size_t *K = NULL;
+		while(K = func_infos.next(K))
+			memdelete(func_infos[*K]);
+		func_infos.clear();
+	}
 }
 #else
 void GDScriptLanguage::_profiler_start(GDFunction *p_function, int p_line) {

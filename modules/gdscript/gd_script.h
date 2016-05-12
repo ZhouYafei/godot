@@ -31,6 +31,7 @@
 
 #ifdef _WIN32
 #define ENABLE_PROFILER
+struct FuncInfo;
 #endif
 
 #include "script_language.h"
@@ -427,42 +428,9 @@ class GDScriptLanguage : public ScriptLanguage {
     };
 
 #ifdef ENABLE_PROFILER
-	typedef struct FuncInfo {
-		String path;
-		int line;
-		String name;
-		uint64_t cost;
 
-		FuncInfo()
-		{}
-
-		FuncInfo(String& p_path, int p_line, String& p_name)
-			: path(p_path)
-			, line(p_line)
-			, name(p_name)
-			, cost(0)
-		{}
-
-	} FuncInfo;
-
-	typedef HashMap<size_t, FuncInfo> MapFuncInfos;
+	typedef HashMap<size_t, FuncInfo*> MapFuncInfos;
 	MapFuncInfos func_infos;
-
-	#define MAX_STACK_LEVEL 1024
-	typedef struct Stack {
-		FuncInfo *info;
-		uint64_t enter;
-	} Stack;
-	Stack stacks[MAX_STACK_LEVEL];
-	int stack_level = 0;
-	//bool enable_profiler = false;
-	struct CostCompare {
-
-		_FORCE_INLINE_ bool operator()(const FuncInfo* l,const FuncInfo* r) const {
-
-			return l->cost > r->cost;
-		}
-	};
 
 #endif
 
