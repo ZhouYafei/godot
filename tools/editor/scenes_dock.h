@@ -146,6 +146,9 @@ class ScenesDock : public VBoxContainer {
 	void _open_pressed();
 	void _replace_pressed();
 
+	Variant get_drag_data_fw(const Point2& p_point,Control* p_from);
+	bool can_drop_data_fw(const Point2& p_point,const Variant& p_data,Control* p_from) const;
+	void drop_data_fw(const Point2& p_point,const Variant& p_data,Control* p_from);
 
 	TreeItem* _find(TreeItem *p_item, const String& p_path);
 

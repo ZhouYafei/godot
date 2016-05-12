@@ -443,6 +443,10 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("text_editor/create_signal_callbacks",true);
 	set("text_editor/autosave_interval_secs",0);
 
+	set("text_editor/caret_blink", false);
+	set("text_editor/caret_blink_speed", 0.65);
+	hints["text_editor/caret_blink_speed"]=PropertyInfo(Variant::REAL,"text_editor/caret_blink_speed",PROPERTY_HINT_RANGE,"0.1, 10, 0.1");
+
 	set("text_editor/font","");
 	hints["text_editor/font"]=PropertyInfo(Variant::STRING,"text_editor/font",PROPERTY_HINT_GLOBAL_FILE,"*.fnt");
 	set("text_editor/auto_brace_complete", false);
@@ -476,6 +480,8 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("2d_editor/bone_color2",Color(0.75,0.75,0.75,0.9));
 	set("2d_editor/bone_selected_color",Color(0.9,0.45,0.45,0.9));
 	set("2d_editor/bone_ik_color",Color(0.9,0.9,0.45,0.9));
+	
+	set("2d_editor/keep_margins_when_changing_anchors", false);
 
 	set("game_window_placement/rect",0);
 	hints["game_window_placement/rect"]=PropertyInfo(Variant::INT,"game_window_placement/rect",PROPERTY_HINT_ENUM,"Default,Centered,Custom Position,Force Maximized,Force Full Screen");
