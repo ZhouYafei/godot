@@ -133,7 +133,7 @@ void OSpriteCollision::_set_process(bool p_mode) {
 		set_fixed_process(true);
 	} else {
 
-		root->remove_child(this);
+		//root->call_deferred("remove_child", this);
 		set_fixed_process(false);
 	}
 }
