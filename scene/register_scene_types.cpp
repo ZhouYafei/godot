@@ -163,6 +163,7 @@
 #include "scene/resources/sample.h"
 #include "scene/audio/sample_player.h"
 #include "scene/resources/texture.h"
+#include "scene/resources/texture_packer.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/room.h"
@@ -239,6 +240,8 @@ static ResourceFormatLoaderText *resource_loader_text=NULL;
 
 static ResourceFormatLoaderDynamicFont *resource_loader_dynamic_font=NULL;
 
+static ResourceFormatLoaderTexPackAsset *resource_loader_texpack_asset=NULL;
+
 //static SceneStringNames *string_names;
 
 void register_scene_types() {
@@ -257,6 +260,9 @@ void register_scene_types() {
 
 	resource_loader_dynamic_font = memnew( ResourceFormatLoaderDynamicFont );
 	ResourceLoader::add_resource_format_loader( resource_loader_dynamic_font );
+
+	resource_loader_texpack_asset = memnew ( ResourceFormatLoaderTexPackAsset );
+	ResourceLoader::add_resource_format_loader( resource_loader_texpack_asset );
 
 #ifdef TOOLS_ENABLED
 
@@ -573,6 +579,8 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<ImageTexture>();
 	ObjectTypeDB::register_type<AtlasTexture>();
 	ObjectTypeDB::register_type<LargeTexture>();
+	ObjectTypeDB::register_type<TexPackAsset>();
+	ObjectTypeDB::register_type<TexPackTexture>();
 	ObjectTypeDB::register_type<CubeMap>();
 	ObjectTypeDB::register_type<Animation>();
 	ObjectTypeDB::register_virtual_type<Font>();
@@ -646,6 +654,8 @@ void unregister_scene_types() {
 	memdelete( resource_loader_image );
 	memdelete( resource_loader_wav );
 	memdelete( resource_loader_dynamic_font );
+	memdelete( resource_loader_texpack_asset );
+
 #ifdef TOOLS_ENABLED
 
 
