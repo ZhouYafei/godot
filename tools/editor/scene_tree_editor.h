@@ -82,6 +82,8 @@ class SceneTreeEditor : public Control {
 	void _tree_changed();
 	void _node_removed(Node *p_node);
 
+	void _highlight_node(Node *p_node, const String &p_newtext);
+
 	TreeItem* _find(TreeItem *p_node,const NodePath& p_path);
 	void _notification(int p_what);
 	void _selected_changed();

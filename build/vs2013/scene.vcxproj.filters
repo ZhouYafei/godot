@@ -642,6 +642,9 @@
     <ClCompile Include="..\..\scene\resources\dynamic_font.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\scene\resources\texture_packer.cpp">
+      <Filter>scene\resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene\register_scene_types.h">
@@ -1254,6 +1257,9 @@
       <Filter>scene\resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\dynamic_font.h">
+      <Filter>scene\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scene\resources\texture_packer.h">
       <Filter>scene\resources</Filter>
     </ClInclude>
   </ItemGroup>

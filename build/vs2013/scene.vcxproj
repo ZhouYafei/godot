@@ -322,6 +322,7 @@
     <ClCompile Include="..\..\scene\resources\style_box.cpp" />
     <ClCompile Include="..\..\scene\resources\surface_tool.cpp" />
     <ClCompile Include="..\..\scene\resources\texture.cpp" />
+    <ClCompile Include="..\..\scene\resources\texture_packer.cpp" />
     <ClCompile Include="..\..\scene\resources\theme.cpp" />
     <ClCompile Include="..\..\scene\resources\tile_set.cpp" />
     <ClCompile Include="..\..\scene\resources\video_stream.cpp" />
@@ -528,6 +529,7 @@
     <ClInclude Include="..\..\scene\resources\style_box.h" />
     <ClInclude Include="..\..\scene\resources\surface_tool.h" />
     <ClInclude Include="..\..\scene\resources\texture.h" />
+    <ClInclude Include="..\..\scene\resources\texture_packer.h" />
     <ClInclude Include="..\..\scene\resources\theme.h" />
     <ClInclude Include="..\..\scene\resources\tile_set.h" />
     <ClInclude Include="..\..\scene\resources\video_stream.h" />
