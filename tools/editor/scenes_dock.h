@@ -78,7 +78,6 @@ class ScenesDock : public VBoxContainer {
 	Button *button_favorite;
 	Button *button_fav_up;
 	Button *button_fav_down;
-	Button *button_replace;
 	Timer *timer;
 
 	Button *button_back;

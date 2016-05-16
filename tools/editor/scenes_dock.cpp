@@ -194,7 +194,6 @@ void ScenesDock::_notification(int p_what) {
 			button_fav_down->set_icon( get_icon("MoveDown","EditorIcons"));
 			//button_instance->set_icon( get_icon("Add","EditorIcons"));
 			//button_open->set_icon( get_icon("Folder","EditorIcons"));
-			button_replace->set_icon( get_icon("Replace","EditorIcons"));
 			button_back->set_icon( get_icon("Filesystem","EditorIcons"));
 			display_mode->set_icon( get_icon("FileList","EditorIcons"));
 			display_mode->connect("pressed",this,"_change_file_display");
@@ -966,15 +965,6 @@ void ScenesDock::_move_operation(const String& p_to_path) {
 
 }
 
-void ScenesDock::_replace_pressed() {
-
-	TreeItem *sel = tree->get_selected();
-	if (!sel)
-		return;
-	String path = sel->get_metadata(0);
-	emit_signal("replace",path);
-}
-
 void ScenesDock::_file_option(int p_option) {
 
 	switch(p_option) {
@@ -1464,7 +1454,6 @@ void ScenesDock::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("_favorites_pressed"),&ScenesDock::_favorites_pressed);
 //	ObjectTypeDB::bind_method(_MD("_instance_pressed"),&ScenesDock::_instance_pressed);
 	ObjectTypeDB::bind_method(_MD("_open_pressed"),&ScenesDock::_open_pressed);
-	ObjectTypeDB::bind_method(_MD("_replace_pressed"),&ScenesDock::_replace_pressed);
 
 	ObjectTypeDB::bind_method(_MD("_thumbnail_done"),&ScenesDock::_thumbnail_done);
 	ObjectTypeDB::bind_method(_MD("_select_file"), &ScenesDock::_select_file);
