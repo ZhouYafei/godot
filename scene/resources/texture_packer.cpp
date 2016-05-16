@@ -255,8 +255,8 @@ void TexPackTexture::set_atlas_name(const String& p_atlas_name) {
 			break;
 		}
 	}
-
 	emit_changed();
+	_change_notify();
 }
 
 const String& TexPackTexture::get_atlas_name() const {
