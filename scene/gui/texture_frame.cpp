@@ -86,7 +86,12 @@ void TextureFrame::_bind_methods() {
 
 void TextureFrame::set_texture(const Ref<Texture>& p_tex) {
 
+	if(texture.is_valid())
+		texture->connect("changed",this,"update");
 	texture=p_tex;
+	if(texture.is_valid())
+		texture->connect("changed",this,"update");
+
 	update();
 	//if (texture.is_valid())
 	//	texture->set_flags(texture->get_flags()&(~Texture::FLAG_REPEAT)); //remove repeat from texture, it looks bad in sprites

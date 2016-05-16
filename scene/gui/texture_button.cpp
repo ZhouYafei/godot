@@ -184,29 +184,45 @@ void TextureButton::_bind_methods() {
 
 void TextureButton::set_normal_texture(const Ref<Texture>& p_normal) {
 
+	if (normal.is_valid())
+		normal->disconnect("changed",this,"update");
 	normal=p_normal;
+	if(normal.is_valid())
+		normal->connect("changed",this,"update");
+
 	update();
 	minimum_size_changed();
-
 }
 
 void TextureButton::set_pressed_texture(const Ref<Texture>& p_pressed) {
 
+	if(pressed.is_valid())
+		pressed->connect("changed",this,"update");
 	pressed=p_pressed;
-	update();
+	if(pressed.is_valid())
+		pressed->connect("changed",this,"update");
 
+	update();
 }
 void TextureButton::set_hover_texture(const Ref<Texture>& p_hover) {
 
+	if(hover.is_valid())
+		hover->connect("changed",this,"update");
 	hover=p_hover;
-	update();
+	if(hover.is_valid())
+		hover->connect("changed",this,"update");
 
+	update();
 }
 void TextureButton::set_disabled_texture(const Ref<Texture>& p_disabled) {
 
+	if(disabled.is_valid())
+		disabled->connect("changed",this,"update");
 	disabled=p_disabled;
-	update();
+	if(disabled.is_valid())
+		disabled->connect("changed",this,"update");
 
+	update();
 }
 void TextureButton::set_click_mask(const Ref<BitMap>& p_click_mask) {
 
@@ -242,7 +258,14 @@ Ref<Texture> TextureButton::get_focused_texture() const {
 
 void TextureButton::set_focused_texture(const Ref<Texture>& p_focused) {
 
+	if (focused.is_valid())
+		focused->disconnect("changed",this,"update");
 	focused = p_focused;
+	if(focused.is_valid())
+		focused->connect("changed",this,"update");
+
+	update();
+
 };
 
 void TextureButton::set_texture_scale(Size2 p_scale) {
