@@ -29,10 +29,8 @@
 #ifndef GD_SCRIPT_H
 #define GD_SCRIPT_H
 
-#ifdef _WIN32
 #define ENABLE_PROFILER
 struct FuncInfo;
-#endif
 
 #include "script_language.h"
 #include "io/resource_loader.h"

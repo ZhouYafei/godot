@@ -27,18 +27,24 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 #include "gd_script.h"
-
-#ifdef ENABLE_PROFILER
-
-#include "globals.h"
-#include "global_constants.h"
-#include "gd_compiler.h"
 #include "os/os.h"
 #include "os/file_access.h"
-#include "io/file_access_encrypted.h"
 
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#endif
+
+static void _get_time_counter(uint64_t& t) {
+
+#ifdef _WIN32
+	QueryPerformanceCounter((LARGE_INTEGER *) &t);
+#else
+	t = OS::get_singleton()->get_ticks_usec();
+#endif
+}
+
+#ifdef ENABLE_PROFILER
 
 typedef struct FuncInfo {
 	String path;
@@ -50,7 +56,7 @@ typedef struct FuncInfo {
 	FuncInfo()
 	{}
 
-	FuncInfo(String& p_path, int p_line, String& p_name)
+	FuncInfo(const String& p_path, int p_line, const String& p_name)
 		: path(p_path)
 		, line(p_line)
 		, name(p_name)
@@ -94,7 +100,7 @@ void GDScriptLanguage::_profiler_start(GDFunction *p_function, int p_line) {
 	}
 
 	Stack& stack = stacks[stack_level];
-	QueryPerformanceCounter((LARGE_INTEGER *) &stack.enter);
+	_get_time_counter(stack.enter);
 	stack.info = func_infos[id];
 	stack.info->times += 1;
 	stack_level += 1;
@@ -108,7 +114,7 @@ void GDScriptLanguage::_profiler_end() {
 
 	Stack& stack = stacks[stack_level - 1];
 	uint64_t now;
-	QueryPerformanceCounter((LARGE_INTEGER *) &now);
+	_get_time_counter(now);
 	uint64_t cost = now - stack.enter;
 
 	for(int level = stack_level - 2; level >= 0; level--) {
@@ -126,9 +132,11 @@ void GDScriptLanguage::_profiler_dump() {
 	if(func_infos.empty())
 		return;
 
+#ifdef _WIN32
 	uint64_t ticks_per_second;
 	if( !QueryPerformanceFrequency((LARGE_INTEGER *)&ticks_per_second) )
 		ticks_per_second = 1000;
+#endif
 
 	typedef List<FuncInfo *> FuncInfos;
 	FuncInfos sort_funcs;
@@ -139,27 +147,32 @@ void GDScriptLanguage::_profiler_dump() {
 
 	sort_funcs.sort_custom<CostCompare>();
 
-	FILE *fp = fopen("profiler.txt", "wb");
+	Error err;
+	FileAccessRef f = FileAccess::open("user://profiler.txt", FileAccess::WRITE, &err);
 
-	//fwprintf()
+	String format(L"file:%s func:%s line:%d\n\tcost\t%fs\ttimes:%d\n");
 
 	for(FuncInfos::Element *E = sort_funcs.front(); E; E = E->next()) {
 
 		FuncInfo& info = *(E->get());
+#ifdef _WIN32
 		// Divide by frequency to get the time in seconds
 		uint64_t us = info.cost * 1000000L / ticks_per_second;
+#else
+		uint64_t& us = info.cost;
+#endif
 
-		//wprintf(L"file:%s func:%s line:%d\n\tcost\t%fs\n", info.path.ptr(), info.name.ptr(), info.line, us / 1000000.0);
-		fwprintf(fp, L"file:%s func:%s line:%d\n\tcost\t%fs\ttimes:%lld\n",
-			info.path.ptr(),
-			info.name.ptr(),
-			info.line,
-			us / 1000000.0,
-			info.times
-		);
+		bool error;
+		Array args;
+		args.push_back(info.path);
+		args.push_back(info.name);
+		args.push_back(info.line);
+		args.push_back(us / 1000000.0);
+		args.push_back(info.times);
+		f->store_string(format.sprintf(args, &error));
 	}
-	printf("Profiler file save at profiler.txt\n");
-	fclose(fp);
+
+	printf("Profiler file save as user://profiler.txt\n");
 
 	// cleanup profiler function infos
 	{
