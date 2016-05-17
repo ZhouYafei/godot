@@ -7,10 +7,11 @@
 #include "scene/resources/sample.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/bit_mask.h"
+#include "scene/resources/texture_packer.h"
 
 bool EditorTexturePreviewPlugin::handles(const String& p_type) const {
 
-	return (ObjectTypeDB::is_type(p_type,"ImageTexture") || ObjectTypeDB::is_type(p_type, "AtlasTexture"));
+	return (ObjectTypeDB::is_type(p_type,"ImageTexture") || ObjectTypeDB::is_type(p_type, "AtlasTexture") || ObjectTypeDB::is_type(p_type,"TexPackTexture"));
 }
 
 Ref<Texture> EditorTexturePreviewPlugin::generate(const RES& p_from) {
@@ -23,11 +24,45 @@ Ref<Texture> EditorTexturePreviewPlugin::generate(const RES& p_from) {
 			return Ref<Texture>();
 		}
 		Image atlas = tex->get_data();
+		if(atlas.is_compressed())
+			atlas.decompress();
 		img = atlas.get_rect(atex->get_region());
 	}
 	else {
 		Ref<ImageTexture> tex = p_from;
-		img = tex->get_data();
+		if(!tex.is_valid()) {
+			Ref<TexPackTexture> tptex = p_from;
+			if(tptex.is_valid()) {
+
+				Ref<TexPackAsset> asset = tptex->get_asset();
+				if(asset.is_valid()) {
+
+					Ref<ImageTexture> tex = asset->get_texture();
+					if(tex.is_valid()) {
+
+						Image atlas = tex->get_data();
+						if(atlas.is_compressed())
+							atlas.decompress();
+						Rect2 region = tptex->get_region();
+						if(tptex->is_rotated())
+							SWAP(region.size.width, region.size.height);
+						img = atlas.get_rect(region);
+						if(tptex->is_rotated()) {
+
+							Image tmp;
+							tmp.create(img.get_height(), img.get_width(), img.get_mipmaps(), img.get_format(), img.get_data());
+							// translate pixels
+							for(int x = 0; x < tmp.get_width(); x++)
+								for(int y = 0; y < tmp.get_height(); y++)
+									tmp.put_pixel(x, y, img.get_pixel(y, x));
+							img = tmp;
+						}
+					}
+				}
+			}
+		} else {
+			img = tex->get_data();
+		}
 	}
 
 	if (img.empty())
