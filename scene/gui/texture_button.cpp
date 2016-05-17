@@ -184,10 +184,10 @@ void TextureButton::_bind_methods() {
 
 void TextureButton::set_normal_texture(const Ref<Texture>& p_normal) {
 
-	if (normal.is_valid())
+	if (normal.is_valid() && normal->is_connected("changed", this, "update"))
 		normal->disconnect("changed",this,"update");
 	normal=p_normal;
-	if(normal.is_valid())
+	if(normal.is_valid() && !normal->is_connected("changed", this, "update"))
 		normal->connect("changed",this,"update");
 
 	update();
@@ -196,30 +196,30 @@ void TextureButton::set_normal_texture(const Ref<Texture>& p_normal) {
 
 void TextureButton::set_pressed_texture(const Ref<Texture>& p_pressed) {
 
-	if(pressed.is_valid())
-		pressed->connect("changed",this,"update");
+	if(pressed.is_valid() && pressed->is_connected("changed", this, "update"))
+		pressed->disconnect("changed",this,"update");
 	pressed=p_pressed;
-	if(pressed.is_valid())
+	if(pressed.is_valid() && !pressed->is_connected("changed", this, "update"))
 		pressed->connect("changed",this,"update");
 
 	update();
 }
 void TextureButton::set_hover_texture(const Ref<Texture>& p_hover) {
 
-	if(hover.is_valid())
-		hover->connect("changed",this,"update");
+	if(hover.is_valid() && hover->is_connected("changed", this, "update"))
+		hover->disconnect("changed",this,"update");
 	hover=p_hover;
-	if(hover.is_valid())
+	if(hover.is_valid() && !hover->is_connected("changed", this, "update"))
 		hover->connect("changed",this,"update");
 
 	update();
 }
 void TextureButton::set_disabled_texture(const Ref<Texture>& p_disabled) {
 
-	if(disabled.is_valid())
-		disabled->connect("changed",this,"update");
+	if(disabled.is_valid() && disabled->is_connected("changed", this, "update"))
+		disabled->disconnect("changed",this,"update");
 	disabled=p_disabled;
-	if(disabled.is_valid())
+	if(disabled.is_valid() && !disabled->is_connected("changed", this, "update"))
 		disabled->connect("changed",this,"update");
 
 	update();
@@ -258,10 +258,10 @@ Ref<Texture> TextureButton::get_focused_texture() const {
 
 void TextureButton::set_focused_texture(const Ref<Texture>& p_focused) {
 
-	if (focused.is_valid())
+	if (focused.is_valid() && focused->is_connected("changed", this, "update"))
 		focused->disconnect("changed",this,"update");
 	focused = p_focused;
-	if(focused.is_valid())
+	if(focused.is_valid() && !focused->is_connected("changed", this, "update"))
 		focused->connect("changed",this,"update");
 
 	update();

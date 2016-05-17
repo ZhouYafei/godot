@@ -87,7 +87,7 @@ void TextureFrame::_bind_methods() {
 void TextureFrame::set_texture(const Ref<Texture>& p_tex) {
 
 	if(texture.is_valid())
-		texture->connect("changed",this,"update");
+		texture->disconnect("changed",this,"update");
 	texture=p_tex;
 	if(texture.is_valid())
 		texture->connect("changed",this,"update");
