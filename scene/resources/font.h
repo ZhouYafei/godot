@@ -103,6 +103,7 @@ private:
 
 	HashMap< CharType, Character > char_map;
 	Map<KerningPairKey,int> kerning_map;
+	String pattern;
 
 	float height;
 	float ascent;
@@ -114,6 +115,7 @@ private:
 	DVector<int> _get_kernings() const;
 	void _set_textures(const Vector<Variant> & p_textures);
 	Vector<Variant> _get_textures() const;
+	void _parse_patterns();
 
 	Ref<BitmapFont> fallback;
 protected:
@@ -140,6 +142,9 @@ public:
 
 	int get_texture_count() const;
 	Ref<Texture> get_texture(int p_idx) const;
+
+	void set_pattern(const String& p_pattern);
+	const String& get_pattern() const;
 
 	void add_kerning_pair(CharType p_A,CharType p_B,int p_kerning);
 	int get_kerning_pair(CharType p_A,CharType p_B) const;

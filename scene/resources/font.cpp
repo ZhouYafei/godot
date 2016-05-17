@@ -171,7 +171,7 @@ void BitmapFont::_set_textures(const Vector<Variant> & p_textures) {
 		ERR_CONTINUE(!tex.is_valid());
 		add_texture(tex);
 	}
-
+	_parse_patterns();
 }
 
 Vector<Variant> BitmapFont::_get_textures() const {
@@ -180,6 +180,28 @@ Vector<Variant> BitmapFont::_get_textures() const {
 	for(int i=0;i<textures.size();i++)
 		rtextures.push_back(textures[i].get_ref_ptr());
 	return rtextures;
+}
+
+void BitmapFont::_parse_patterns() {
+
+	if(pattern.empty() || pattern.length() != textures.size())
+		return;
+
+	float height = get_height();
+
+	for(int i = 0; i < textures.size(); i++) {
+
+		CharType ch = pattern[i];
+
+		Ref<Texture> tex = textures[i];
+		Size2 size = tex->get_size();
+		add_char(ch, i
+			, Rect2(Vector2(0, 0), size)
+			, Size2(0, Math::floor((height - size.height) / 2))
+			, size.width
+		);
+	}
+	add_char(L' ', 0, Rect2(Vector2(0, 0), Vector2(height * 0.7, height)), Size2(), height / 2 + 0.5);
 }
 
 Error BitmapFont::create_from_fnt(const String& p_string) {
@@ -334,6 +356,9 @@ Error BitmapFont::create_from_fnt(const String& p_string) {
 void BitmapFont::set_height(float p_height) {
 
 	height=p_height;
+
+	if(!pattern.empty())
+		_parse_patterns();
 }
 float BitmapFont::get_height() const{
 
@@ -369,6 +394,19 @@ Ref<Texture> BitmapFont::get_texture(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, textures.size(), Ref<Texture>());
 	return textures[p_idx];
 };
+
+void BitmapFont::set_pattern(const String& p_pattern) {
+
+	pattern = p_pattern;
+
+	if(!pattern.empty())
+		_parse_patterns();
+}
+
+const String& BitmapFont::get_pattern() const {
+
+	return pattern;
+}
 
 int BitmapFont::get_character_count() const {
 
@@ -478,6 +516,7 @@ void BitmapFont::clear() {
 	textures.clear();
 	kerning_map.clear();
 	distance_field_hint=false;
+	pattern="";
 }
 
 Size2 Font::get_string_size(const String& p_string) const {
@@ -521,8 +560,10 @@ float BitmapFont::draw_char(RID p_canvas_item, const Point2& p_pos, const CharTy
 	cpos.y-=ascent;
 	cpos.y+=c->v_align;
 	ERR_FAIL_COND_V( c->texture_idx<-1 || c->texture_idx>=textures.size(),0);
-	if (c->texture_idx!=-1)
-		VisualServer::get_singleton()->canvas_item_add_texture_rect_region( p_canvas_item, Rect2( cpos, c->rect.size ), textures[c->texture_idx]->get_rid(),c->rect, p_modulate );
+	if (c->texture_idx!=-1) {
+		//VisualServer::get_singleton()->canvas_item_add_texture_rect_region( p_canvas_item, Rect2( cpos, c->rect.size ), textures[c->texture_idx]->get_rid(),c->rect, p_modulate );
+		textures[c->texture_idx]->draw_rect_region(p_canvas_item, Rect2( cpos, c->rect.size ), c->rect, p_modulate);
+	}
 
 	return get_char_size(p_char,p_next).width;
 }
@@ -592,6 +633,9 @@ void BitmapFont::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("set_fallback","fallback"),&BitmapFont::set_fallback);
 	ObjectTypeDB::bind_method(_MD("get_fallback"),&BitmapFont::get_fallback);
 
+	ObjectTypeDB::bind_method(_MD("set_pattern", "pattern"),&BitmapFont::set_pattern);
+	ObjectTypeDB::bind_method(_MD("get_pattern"),&BitmapFont::get_pattern);
+
 	ADD_PROPERTY( PropertyInfo( Variant::ARRAY, "textures", PROPERTY_HINT_NONE,"", PROPERTY_USAGE_NOEDITOR ), _SCS("_set_textures"), _SCS("_get_textures") );
 	ADD_PROPERTY( PropertyInfo( Variant::INT_ARRAY, "chars", PROPERTY_HINT_NONE,"", PROPERTY_USAGE_NOEDITOR ), _SCS("_set_chars"), _SCS("_get_chars") );
 	ADD_PROPERTY( PropertyInfo( Variant::INT_ARRAY, "kernings", PROPERTY_HINT_NONE,"", PROPERTY_USAGE_NOEDITOR ), _SCS("_set_kernings"), _SCS("_get_kernings") );
@@ -600,6 +644,7 @@ void BitmapFont::_bind_methods() {
 	ADD_PROPERTY( PropertyInfo( Variant::REAL, "ascent", PROPERTY_HINT_RANGE,"-1024,1024,1" ), _SCS("set_ascent"), _SCS("get_ascent") );
 	ADD_PROPERTY( PropertyInfo( Variant::BOOL, "distance_field" ), _SCS("set_distance_field_hint"), _SCS("is_distance_field_hint") );
 	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "fallback", PROPERTY_HINT_RESOURCE_TYPE,"BitmapFont" ), _SCS("set_fallback"), _SCS("get_fallback") );
+	ADD_PROPERTY( PropertyInfo( Variant::STRING, "pattern" ), _SCS("set_pattern"), _SCS("get_pattern") );
 
 }
 
