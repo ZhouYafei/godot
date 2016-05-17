@@ -195,6 +195,26 @@ int TexPackTexture::get_height() const {
 	return frame.sourceSize.height * asset->get_scale();
 }
 
+Rect2 TexPackTexture::get_region() const {
+
+	if(atlas_index == -1)
+		return Rect2();
+
+	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
+	const TexPackAsset::Frame& frame = frames[atlas_index];
+	return frame.frame;
+}
+
+bool TexPackTexture::is_rotated() const {
+
+	if(atlas_index == -1)
+		return false;
+
+	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
+	const TexPackAsset::Frame& frame = frames[atlas_index];
+	return frame.rotated;
+}
+
 RID TexPackTexture::get_rid() const {
 
 	if(asset.is_valid() && asset->get_texture().is_valid())
@@ -228,11 +248,8 @@ uint32_t TexPackTexture::get_flags() const{
 void TexPackTexture::set_asset(const Ref<TexPackAsset>& p_asset) {
 
 	asset = p_asset;
-	if(asset.is_null()) {
-
-		atlas_index = -1;
-		atlas_name = "[NONE]";
-	}
+	atlas_index = -1;
+	atlas_name = "[NONE]";
 
 	emit_changed();
 	_change_notify();
@@ -277,6 +294,9 @@ void TexPackTexture::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_atlas_name","atlas_name"),&TexPackTexture::set_atlas_name);
 	ObjectTypeDB::bind_method(_MD("get_atlas_name"),&TexPackTexture::get_atlas_name);
+
+	ObjectTypeDB::bind_method(_MD("get_region"),&TexPackTexture::get_region);
+	ObjectTypeDB::bind_method(_MD("is_rotated"),&TexPackTexture::is_rotated);
 
 	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "asset", PROPERTY_HINT_RESOURCE_TYPE,"TexPackAsset"), _SCS("set_asset"),_SCS("get_asset") );
 }
@@ -334,9 +354,11 @@ void TexPackTexture::draw(RID p_canvas_item, const Point2& p_pos, const Color& p
 	const TexPackAsset::Frame& frame = frames[atlas_index];
 	float scale = asset->get_scale();
 
+	const Rect2& srect = frame.spriteSourceSize;
 	Rect2 rect = Rect2(p_pos, get_size());
-	rect.pos += (frame.spriteSourceSize.pos * scale);
-	rect.size -= (frame.spriteSourceSize.pos * scale);
+	rect.pos += rect.size * (srect.pos / frame.sourceSize);
+	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+
 	Rect2 src_rect = frame.frame;
 	if(frame.rotated) {
 
@@ -362,9 +384,11 @@ void TexPackTexture::draw_rect(RID p_canvas_item,const Rect2& p_rect, bool p_til
 	const TexPackAsset::Frame& frame = frames[atlas_index];
 	float scale = asset->get_scale();
 
+	const Rect2& srect = frame.spriteSourceSize;
 	Rect2 rect = p_rect;
-	rect.pos += (frame.spriteSourceSize.pos * scale);
-	rect.size -= (frame.spriteSourceSize.pos * scale);
+	rect.pos += rect.size * (srect.pos / frame.sourceSize);
+	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+
 	Rect2 src_rect = frame.frame;
 	if(frame.rotated) {
 
@@ -388,12 +412,18 @@ void TexPackTexture::draw_rect_region(RID p_canvas_item,const Rect2& p_rect, con
 
 	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
 	const TexPackAsset::Frame& frame = frames[atlas_index];
-	float scale = asset->get_scale();
 
+	const Rect2& srect = frame.spriteSourceSize;
 	Rect2 rect = p_rect;
-	rect.pos += (frame.spriteSourceSize.pos * scale);
-	rect.size -= (frame.spriteSourceSize.pos * scale);
-	Rect2 src_rect = frame.frame;
+	rect.pos += rect.size * (srect.pos / frame.sourceSize);
+	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+
+	float scale = asset->get_scale();
+	Rect2 src_rect = p_src_rect;
+	src_rect.pos /= scale;
+	src_rect.pos += frame.frame.pos;
+	src_rect.size /= scale;
+
 	if(frame.rotated) {
 
 		SWAP(rect.size.x, rect.size.y);
@@ -415,12 +445,17 @@ bool TexPackTexture::get_rect_region(const Rect2& p_rect, const Rect2& p_src_rec
 
 	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
 	const TexPackAsset::Frame& frame = frames[atlas_index];
-	float scale = asset->get_scale();
 
+	const Rect2& srect = frame.spriteSourceSize;
 	Rect2 rect = p_rect;
-	rect.pos += (frame.spriteSourceSize.pos * scale);
-	rect.size -= (frame.spriteSourceSize.pos * scale);
-	Rect2 src_rect = frame.frame;
+	rect.pos += rect.size * (srect.pos / frame.sourceSize);
+	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+
+	float scale = asset->get_scale();
+	Rect2 src_rect = p_src_rect;
+	src_rect.pos /= scale;
+	src_rect.pos += frame.frame.pos;
+	src_rect.size /= scale;
 
 	r_rect = rect;
 	r_src_rect = src_rect;
