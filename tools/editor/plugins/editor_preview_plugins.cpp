@@ -54,7 +54,7 @@ Ref<Texture> EditorTexturePreviewPlugin::generate(const RES& p_from) {
 							// translate pixels
 							for(int x = 0; x < tmp.get_width(); x++)
 								for(int y = 0; y < tmp.get_height(); y++)
-									tmp.put_pixel(x, y, img.get_pixel(y, x));
+									tmp.put_pixel(x, tmp.get_height() - y - 1, img.get_pixel(y, x));
 							img = tmp;
 						}
 					}
