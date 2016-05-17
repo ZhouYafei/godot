@@ -228,6 +228,12 @@ uint32_t TexPackTexture::get_flags() const{
 void TexPackTexture::set_asset(const Ref<TexPackAsset>& p_asset) {
 
 	asset = p_asset;
+	if(asset.is_null()) {
+
+		atlas_index = -1;
+		atlas_name = "[NONE]";
+	}
+
 	emit_changed();
 	_change_notify();
 }
