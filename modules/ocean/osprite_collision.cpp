@@ -127,13 +127,13 @@ void OSpriteCollision::_set_process(bool p_mode) {
 
 	if(p_mode) {
 
-		if(is_inside_tree())
-			return;
-		root->call_deferred("add_child", this);
+		if(!is_inside_tree())
+			root->call_deferred("add_child", this);
 		set_fixed_process(true);
 	} else {
 
-		//root->call_deferred("remove_child", this);
+		if(is_inside_tree())
+			root->call_deferred("remove_child", this);
 		set_fixed_process(false);
 	}
 }
