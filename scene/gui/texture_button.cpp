@@ -138,22 +138,12 @@ void TextureButton::_notification(int p_what) {
 
 			if (texdraw.is_valid()) {
 				Rect2 drect(Point2(),texdraw->get_size());
-				//if(draw_mode == DRAW_PRESSED) {
-				//	Size2 delta = ((pressed_scale - Size2(1, 1)) / 2) * drect.size;
-				//	drect.pos -= delta;
-				//	drect.size += (delta * 2);
-				//}
 				draw_texture_rect(texdraw,drect,false,modulate);
 
 			}
 			if (has_focus() && focused.is_valid()) {
 
 				Rect2 drect(Point2(),focused->get_size());
-				//if(draw_mode == DRAW_PRESSED) {
-				//	Size2 delta = ((pressed_scale - Size2(1, 1)) / 2) * drect.size;
-				//	drect.pos -= delta;
-				//	drect.size += (delta * 2);
-				//}
 				draw_texture_rect(focused,drect,false,modulate);
 
 			};
