@@ -105,6 +105,7 @@
 #include "tools/editor/io_plugins/editor_translation_import_plugin.h"
 #include "tools/editor/io_plugins/editor_mesh_import_plugin.h"
 #include "tools/editor/io_plugins/editor_export_scene.h"
+#include "tools/editor/io_plugins/editor_export_res.h"
 
 #include "plugins/editor_preview_plugins.h"
 #include "editor_initialize_ssl.h"
@@ -6198,6 +6199,7 @@ EditorNode::EditorNode() {
 	editor_import_export->add_export_plugin( Ref<EditorTextureExportPlugin>( memnew(EditorTextureExportPlugin)));
 	editor_import_export->add_export_plugin( Ref<EditorSampleExportPlugin>( memnew(EditorSampleExportPlugin)));
 	editor_import_export->add_export_plugin( Ref<EditorSceneExportPlugin>( memnew(EditorSceneExportPlugin)));
+	editor_import_export->add_export_plugin( Ref<EditorExportResources>( memnew(EditorExportResources)));
 
 
 	add_editor_plugin( memnew( AnimationPlayerEditorPlugin(this) ) );
