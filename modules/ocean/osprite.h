@@ -70,6 +70,7 @@ public:
 		struct Action {
 			int index;
 			int from, to;
+			float scale;
 			String name;
 			String desc;
 			String pattern;

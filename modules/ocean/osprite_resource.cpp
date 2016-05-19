@@ -54,7 +54,6 @@ OSprite::OSpriteResource::~OSpriteResource() {
 
 void OSprite::OSpriteResource::_post_process() {
 
-
 	for(int i = 0; i < datas.size(); i++) {
 
 		Data& data = datas[i];
@@ -374,6 +373,10 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 			blk.radius = block[2];
 			act.blocks.push_back(blk);
 		}
+		if(d.has("scale"))
+			act.scale = d["scale"];
+		else
+			act.scale = 1;
 
 		act.name = d["name"];
 		act.desc = d["desc"];

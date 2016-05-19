@@ -70,6 +70,8 @@ void OSprite::_animation_draw() {
 		return;
 	const OSpriteResource::Data& data = res->datas[action->index];
 
+	Vector2 scale = Vector2(get_resource_scale(), get_resource_scale());
+
 	if(action->pattern != "") {
 
 		if(text.empty())
@@ -128,8 +130,16 @@ void OSprite::_animation_draw() {
 			if(frame.tex.is_null())
 				continue;
 
-			const Rect2& rect = pool.rect;
 			const Rect2& src_rect = frame.region;
+
+			Rect2 rect = pool.rect;
+			Size2 delta = ((scale - Size2(1, 1)) / 2) * rect.size;
+			if(frame.rotated)
+				rect.pos -= Vector2(-delta.y, delta.x);
+			else
+				rect.pos -= delta;
+			rect.size += (delta * 2);
+
 			this->draw_texture_rect_region(frame.tex, Rect2(rect.pos + offset, rect.size), src_rect, modulate, frame.rotated);
 			offset.x += src_rect.size.x + text_space;
 		}
@@ -167,24 +177,41 @@ void OSprite::_animation_draw() {
 
 	if(frame.tex.is_valid()) {
 
-		const Rect2& rect = pool.rect;
 		const Rect2& src_rect = frame.region;
 
-		if(pool.shadow_rect.size.x != 0 && pool.shadow_rect.size.y != 0)
-			draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
+		if(pool.shadow_rect.size.x != 0 && pool.shadow_rect.size.y != 0) {
 
+			Rect2 rect = pool.shadow_rect;
+			{
+				Size2 delta = ((scale - Size2(1, 1)) / 2) * rect.size;
+				if(frame.rotated)
+					rect.pos -= Vector2(-delta.y, delta.x);
+				else
+					rect.pos -= delta;
+				rect.size += (delta * 2);
+			}
+			draw_texture_rect_region(frame.tex, pool.shadow_rect, src_rect, shadow_color, frame.rotated);
+		}
+		Rect2 rect = pool.rect;
+		{
+			Size2 delta = ((scale - Size2(1, 1)) / 2) * rect.size;
+			if(frame.rotated)
+				rect.pos -= Vector2(-delta.y, delta.x);
+			else
+				rect.pos -= delta;
+			rect.size += (delta * 2);
+		}
 		draw_texture_rect_region(frame.tex, rect, src_rect, modulate, frame.rotated);
 	}
 
 	if(debug_collisions) {
 
 		const OSpriteResource::Blocks& blocks = get_collisions();
-		float scale = get_scale().x;
 		for(int i = 0; i < blocks.size(); i++) {
 
 			const OSprite::Block& rect = blocks[i];
 			static Color color = Color(0, 1, 1, 0.5);
-			draw_circle(rect.pos, rect.radius, color);
+			draw_circle(rect.pos * scale, rect.radius * scale.x, color);
 		}
 	}
 }
@@ -699,13 +726,23 @@ Rect2 OSprite::get_item_rect() const {
 		return Node2D::get_item_rect();
 	const OSpriteResource::Data& data = res->datas[action->index];
 
+	Rect2 rect = data.pools[index].rect;
 	if(res->frames[data.pools[index].frame].rotated) {
-		Rect2 rect = data.pools[index].rect;
+
 		rect.size.y = -rect.size.y;
 		SWAP(rect.size.x, rect.size.y);
-		return rect;
 	}
-	return data.pools[index].rect;
+
+	float scale = get_resource_scale();
+	if(scale != 1) {
+
+		Vector2 s = Vector2(scale, scale);
+		Size2 delta = ((s - Size2(1, 1)) / 2) * rect.size;
+		rect.pos -= delta;
+		rect.size += (delta * 2);
+	}
+
+	return rect;
 }
 
 const OSprite::Blocks& OSprite::get_collisions() const {
@@ -733,7 +770,10 @@ const OSprite::Blocks& OSprite::get_collisions() const {
 float OSprite::get_resource_scale() const {
 
 	ERR_FAIL_COND_V(!res.is_valid(), 1);
-	return res->scale;
+	float scale = get_scale().x * res->scale;
+	if(action_cache != NULL)
+		scale *= action_cache->scale;
+	return scale;
 }
 
 const String& OSprite::get_text() const {
