@@ -770,7 +770,7 @@ const OSprite::Blocks& OSprite::get_collisions() const {
 float OSprite::get_resource_scale() const {
 
 	ERR_FAIL_COND_V(!res.is_valid(), 1);
-	float scale = get_scale().x * res->scale;
+	float scale = 1;
 	if(action_cache != NULL)
 		scale *= action_cache->scale;
 	return scale;
