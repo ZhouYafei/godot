@@ -70,7 +70,7 @@ void OSprite::_animation_draw() {
 		return;
 	const OSpriteResource::Data& data = res->datas[action->index];
 
-	Vector2 scale = Vector2(get_resource_scale(), get_resource_scale());
+	Vector2 scale = Vector2(get_action_scale(), get_action_scale());
 
 	if(action->pattern != "") {
 
@@ -666,7 +666,7 @@ void OSprite::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_animation_names"), &OSprite::get_animation_names);
 
 	ObjectTypeDB::bind_method(_MD("get_collisions", "global_pos"), &OSprite::_get_collisions, false);
-	ObjectTypeDB::bind_method(_MD("get_resource_scale"), &OSprite::get_resource_scale, false);
+	ObjectTypeDB::bind_method(_MD("get_action_scale"), &OSprite::get_action_scale, false);
 
 	ObjectTypeDB::bind_method(_MD("set_debug_collisions", "enable"), &OSprite::set_debug_collisions);
 	ObjectTypeDB::bind_method(_MD("is_debug_collisions"), &OSprite::is_debug_collisions);
@@ -733,7 +733,7 @@ Rect2 OSprite::get_item_rect() const {
 		SWAP(rect.size.x, rect.size.y);
 	}
 
-	float scale = get_resource_scale();
+	float scale = get_action_scale();
 	if(scale != 1) {
 
 		Vector2 s = Vector2(scale, scale);
@@ -767,7 +767,7 @@ const OSprite::Blocks& OSprite::get_collisions() const {
 	return data.blocks[index];
 }
 
-float OSprite::get_resource_scale() const {
+float OSprite::get_action_scale() const {
 
 	ERR_FAIL_COND_V(!res.is_valid(), 1);
 	float scale = 1;

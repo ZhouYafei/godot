@@ -225,7 +225,7 @@ public:
 	virtual Rect2 get_item_rect() const;
 
 	const Blocks& get_collisions() const;
-	float get_resource_scale() const;
+	float get_action_scale() const;
 
 	const String& get_text() const;
 	void set_text(const String& p_text);

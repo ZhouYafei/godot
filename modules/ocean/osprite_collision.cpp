@@ -164,10 +164,10 @@ bool OSpriteCollision::_is_collision(size_t left, size_t right) {
 		return false;
 
 	Matrix32 owner_mat = owner->get_global_transform();
-	float owner_scale = owner_mat.get_scale().x * owner->get_resource_scale();
+	float owner_scale = owner_mat.get_scale().x * owner->get_action_scale();
 
 	Matrix32 body_mat = body->get_global_transform();
-	float body_scale = body_mat.get_scale().x * body->get_resource_scale();
+	float body_scale = body_mat.get_scale().x * body->get_action_scale();
 
 	for(int i = 0; i < owner_boxes.size(); i++) {
 
