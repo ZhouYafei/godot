@@ -187,7 +187,7 @@ def configure(env):
 	env.Append(LIBS=['c','m','stdc++','log','GLESv1_CM','GLESv2', 'z'])
 
 	env["LINKFLAGS"]= string.split(" -g --sysroot="+ld_sysroot+" -Wl,--no-undefined -Wl,-z,noexecstack ")
-	env.Append(LINKFLAGS=["-Wl,--gc-sections,-soname,libgodot_android.so"])
+	env.Append(LINKFLAGS=["-Wl,--gc-sections,-Map,bin/libgodot_android.map,-soname,libgodot_android.so"])
 
 	if (env["target"]=="release"):
 

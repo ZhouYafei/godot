@@ -64,7 +64,7 @@ if (env["lua"]=='yes'):
 num = 0
 cur_base = ""
 total = len(env.drivers_sources)
-max_src = 64
+max_src = 128
 list = []
 lib_list = []
 
