@@ -1841,7 +1841,7 @@ int Image::get_format_pallete_size(Format p_format) {
 }
 
 Error Image::_decompress_bc() {
-
+#if SQUISH_ENABLED
 	print_line("decompressing bc");
 
 	int mm;
@@ -1884,6 +1884,9 @@ Error Image::_decompress_bc() {
 	format=FORMAT_RGBA;
 
 	return OK;
+#else
+	return ERR_INVALID_DATA;
+#endif
 }
 
 bool Image::is_compressed() const {
