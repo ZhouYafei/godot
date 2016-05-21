@@ -90,7 +90,7 @@ env_base.android_jni_dirs=[]
 env_base.android_manifest_chunk=""
 env_base.android_permission_chunk=""
 env_base.android_appattributes_chunk=""
-env_base.disabled_modules=["behavior_tree"]
+env_base.disabled_modules=["behavior_tree","spine"]
 
 env_base.split_drivers=False
 
