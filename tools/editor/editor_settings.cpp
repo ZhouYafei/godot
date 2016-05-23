@@ -277,7 +277,7 @@ void EditorSettings::create() {
 
 		memdelete(dir);
 
-		singleton = ResourceLoader::load(config_file_path,TTR("EditorSettings"));
+		singleton = ResourceLoader::load(config_file_path,"EditorSettings");
 		if (singleton.is_null()) {
 			WARN_PRINT("Could not open config file.");
 			goto fail;
@@ -455,6 +455,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 
 	set("scenetree_editor/duplicate_node_name_num_separator",0);
 	hints["scenetree_editor/duplicate_node_name_num_separator"]=PropertyInfo(Variant::INT,"scenetree_editor/duplicate_node_name_num_separator",PROPERTY_HINT_ENUM, "None,Space,Underscore,Dash");
+	//set("scenetree_editor/display_old_action_buttons",false);
 
 	set("gridmap_editor/pick_distance", 5000.0);
 
@@ -480,7 +481,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("2d_editor/bone_color2",Color(0.75,0.75,0.75,0.9));
 	set("2d_editor/bone_selected_color",Color(0.9,0.45,0.45,0.9));
 	set("2d_editor/bone_ik_color",Color(0.9,0.9,0.45,0.9));
-	
+
 	set("2d_editor/keep_margins_when_changing_anchors", false);
 
 	set("game_window_placement/rect",0);
@@ -521,7 +522,8 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 #else
 	hints["import/pvrtc_texture_tool"]=PropertyInfo(Variant::STRING,"import/pvrtc_texture_tool",PROPERTY_HINT_GLOBAL_FILE,"");
 #endif
-	set(TTR("PVRTC/fast_conversion"),false);
+	// TODO: Rename to "import/pvrtc_fast_conversion" to match other names?
+	set("PVRTC/fast_conversion",false);
 
 
 	set("run/auto_save_before_running",true);
@@ -553,6 +555,9 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 			};
 		};
 	};
+
+
+
 
 }
 

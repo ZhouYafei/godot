@@ -1365,9 +1365,9 @@ static void _find_identifiers_in_class(GDCompletionContext& context,bool p_stati
 				}
 			}
 
-			for (const Map<StringName,GDFunction>::Element *E=script->get_member_functions().front();E;E=E->next()) {
-				if (!p_static || E->get().is_static()) {
-					if (E->get().get_argument_count())
+			for (const Map<StringName,GDFunction*>::Element *E=script->get_member_functions().front();E;E=E->next()) {
+				if (!p_static || E->get()->is_static()) {
+					if (E->get()->get_argument_count())
 						result.insert(E->key().operator String()+"(");
 					else
 						result.insert(E->key().operator String()+"()");
@@ -1591,10 +1591,10 @@ static void _find_type_arguments(const GDParser::Node*p_node,int p_line,const St
 					if (scr) {
 						while (scr) {
 
-							for (const Map<StringName,GDFunction>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
-								if (E->get().is_static() && p_method==E->get().get_name()) {
+							for (const Map<StringName,GDFunction*>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
+								if (E->get()->is_static() && p_method==E->get()->get_name()) {
 									arghint="static func "+String(p_method)+"(";
-									for(int i=0;i<E->get().get_argument_count();i++) {
+									for(int i=0;i<E->get()->get_argument_count();i++) {
 										if (i>0)
 											arghint+=", ";
 										else
@@ -1602,12 +1602,12 @@ static void _find_type_arguments(const GDParser::Node*p_node,int p_line,const St
 										if (i==p_argidx) {
 											arghint+=String::chr(0xFFFF);
 										}
-										arghint+="var "+E->get().get_argument_name(i);
-										int deffrom = E->get().get_argument_count()-E->get().get_default_argument_count();
+										arghint+="var "+E->get()->get_argument_name(i);
+										int deffrom = E->get()->get_argument_count()-E->get()->get_default_argument_count();
 										if (i>=deffrom) {
 											int defidx = deffrom-i;
-											if (defidx>=0 && defidx<E->get().get_default_argument_count()) {
-												arghint+="="+E->get().get_default_argument(defidx).get_construct_string();
+											if (defidx>=0 && defidx<E->get()->get_default_argument_count()) {
+												arghint+="="+E->get()->get_default_argument(defidx).get_construct_string();
 											}
 										}
 										if (i==p_argidx) {
@@ -1725,10 +1725,10 @@ static void _find_type_arguments(const GDParser::Node*p_node,int p_line,const St
 
 						if (code=="") {
 
-							for (const Map<StringName,GDFunction>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
-								if (p_method==E->get().get_name()) {
+							for (const Map<StringName,GDFunction*>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
+								if (p_method==E->get()->get_name()) {
 									arghint="func "+String(p_method)+"(";
-									for(int i=0;i<E->get().get_argument_count();i++) {
+									for(int i=0;i<E->get()->get_argument_count();i++) {
 										if (i>0)
 											arghint+=", ";
 										else
@@ -1736,12 +1736,12 @@ static void _find_type_arguments(const GDParser::Node*p_node,int p_line,const St
 										if (i==p_argidx) {
 											arghint+=String::chr(0xFFFF);
 										}
-										arghint+="var "+E->get().get_argument_name(i);
-										int deffrom = E->get().get_argument_count()-E->get().get_default_argument_count();
+										arghint+="var "+E->get()->get_argument_name(i);
+										int deffrom = E->get()->get_argument_count()-E->get()->get_default_argument_count();
 										if (i>=deffrom) {
 											int defidx = deffrom-i;
-											if (defidx>=0 && defidx<E->get().get_default_argument_count()) {
-												arghint+="="+E->get().get_default_argument(defidx).get_construct_string();
+											if (defidx>=0 && defidx<E->get()->get_default_argument_count()) {
+												arghint+="="+E->get()->get_default_argument(defidx).get_construct_string();
 											}
 										}
 										if (i==p_argidx) {
@@ -1981,16 +1981,16 @@ static void _find_call_arguments(GDCompletionContext& context,const GDParser::No
 				if (script.is_valid()) {
 
 
-					for (const Map<StringName,GDFunction>::Element *E=script->get_member_functions().front();E;E=E->next()) {
+					for (const Map<StringName,GDFunction*>::Element *E=script->get_member_functions().front();E;E=E->next()) {
 
 						if (E->key()==id->name) {
 
-							if (context.function && context.function->_static && !E->get().is_static())
+							if (context.function && context.function->_static && !E->get()->is_static())
 								continue;
 
 
 							arghint = "func "+id->name.operator String()+String("(");
-							for(int i=0;i<E->get().get_argument_count();i++) {
+							for(int i=0;i<E->get()->get_argument_count();i++) {
 								if (i>0)
 									arghint+=", ";
 								else
@@ -1998,12 +1998,12 @@ static void _find_call_arguments(GDCompletionContext& context,const GDParser::No
 								if (i==p_argidx) {
 									arghint+=String::chr(0xFFFF);
 								}
-								arghint+=E->get().get_argument_name(i);
-								int deffrom = E->get().get_argument_count()-E->get().get_default_argument_count();
+								arghint+=E->get()->get_argument_name(i);
+								int deffrom = E->get()->get_argument_count()-E->get()->get_default_argument_count();
 								if (i>=deffrom) {
 									int defidx = deffrom-i;
-									if (defidx>=0 && defidx<E->get().get_default_argument_count()) {
-										arghint+="="+E->get().get_default_argument(defidx).get_construct_string();
+									if (defidx>=0 && defidx<E->get()->get_default_argument_count()) {
+										arghint+="="+E->get()->get_default_argument(defidx).get_construct_string();
 									}
 								}
 								if (i==p_argidx) {
@@ -2011,7 +2011,7 @@ static void _find_call_arguments(GDCompletionContext& context,const GDParser::No
 								}
 
 							}
-							if (E->get().get_argument_count()>0)
+							if (E->get()->get_argument_count()>0)
 								arghint+=" ";
 							arghint+=")";
 							return;
@@ -2233,8 +2233,8 @@ Error GDScriptLanguage::complete_code(const String& p_code, const String& p_base
 											options.insert(E->key());
 										}
 									}
-									for (const Map<StringName,GDFunction>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
-										if (E->get().is_static())
+									for (const Map<StringName,GDFunction*>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
+										if (E->get()->is_static())
 											options.insert(E->key());
 									}
 
@@ -2321,8 +2321,8 @@ Error GDScriptLanguage::complete_code(const String& p_code, const String& p_base
 											options.insert(E->key());
 										}
 									}
-									for (const Map<StringName,GDFunction>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
-										if (E->get().get_argument_count())
+									for (const Map<StringName,GDFunction*>::Element *E=scr->get_member_functions().front();E;E=E->next()) {
+										if (E->get()->get_argument_count())
 											options.insert(String(E->key())+"()");
 										else
 											options.insert(String(E->key())+"(");

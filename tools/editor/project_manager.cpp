@@ -68,7 +68,7 @@ class NewProjectDialog : public ConfirmationDialog {
 		get_ok()->set_disabled(true);
 		DirAccess *d = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
 		if (project_path->get_text() != "" && d->change_dir(project_path->get_text())!=OK) {
-			error->set_text(TTR("Invalid Path for Project, Path Must Exist!"));
+			error->set_text(TTR("Invalid project path, the path must exist!"));
 			memdelete(d);
 			return false;
 		}
@@ -77,7 +77,7 @@ class NewProjectDialog : public ConfirmationDialog {
 
 			if (d->file_exists("engine.cfg")) {
 
-				error->set_text(TTR("Invalid Project Path (engine.cfg must not exist)."));
+				error->set_text(TTR("Invalid project path, engine.cfg must not exist."));
 				memdelete(d);
 				return false;
 			}
@@ -86,7 +86,7 @@ class NewProjectDialog : public ConfirmationDialog {
 
 			if (project_path->get_text() != "" && !d->file_exists("engine.cfg")) {
 
-				error->set_text(TTR("Invalid Project Path (engine.cfg must exist)."));
+				error->set_text(TTR("Invalid project path, engine.cfg must exist."));
 				memdelete(d);
 				return false;
 			}
@@ -172,7 +172,7 @@ class NewProjectDialog : public ConfirmationDialog {
 			DirAccess *d = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
 
 			if (d->change_dir(project_path->get_text())!=OK) {
-				error->set_text(TTR("Invalid Path for Project (changed anything?)"));
+				error->set_text(TTR("Invalid project path (changed anything?)."));
 				memdelete(d);
 				return;
 			}
@@ -182,7 +182,7 @@ class NewProjectDialog : public ConfirmationDialog {
 
 			FileAccess *f = FileAccess::open(dir.plus_file("/engine.cfg"),FileAccess::WRITE);
 			if (!f) {
-				error->set_text(TTR("Couldn't create engine.cfg in project path"));
+				error->set_text(TTR("Couldn't create engine.cfg in project path."));
 			} else {
 
 				f->store_line("; Engine configuration file.");
@@ -249,7 +249,7 @@ public:
 		if (import_mode) {
 			set_title(TTR("Import Existing Project"));
 			get_ok()->set_text(TTR("Import"));
-			pp->set_text(TTR("Project Path: (Must exist)"));
+			pp->set_text(TTR("Project Path (Must Exist):"));
 			pn->set_text(TTR("Project Name:"));
 			pn->hide();
 			project_name->hide();
@@ -790,7 +790,7 @@ void ProjectManager::_erase_project()  {
 		return;
 
 
-	erase_ask->set_text(TTR("Remove project from list?? (Folder contents will not be modified)"));
+	erase_ask->set_text(TTR("Remove project from the list? (Folder contents will not be modified)"));
 	erase_ask->popup_centered_minsize();
 
 }
@@ -824,8 +824,8 @@ void ProjectManager::_bind_methods() {
 
 ProjectManager::ProjectManager() {
 
-	int margin = get_constant("margin",TTR("Dialogs"));
-	int button_margin = get_constant("button_margin",TTR("Dialogs"));
+	int margin = get_constant("margin","Dialogs");
+	int button_margin = get_constant("button_margin","Dialogs");
 
 	// load settings
 	if (!EditorSettings::get_singleton())
@@ -1007,8 +1007,8 @@ ProjectManager::ProjectManager() {
 		_scan_begin( EditorSettings::get_singleton()->get("global/autoscan_project_path") );
 	}
 
-	//get_ok()->set_text(TTR("Open"));
-	//get_ok()->set_text(TTR("Exit"));
+	//get_ok()->set_text("Open");
+	//get_ok()->set_text("Exit");
 
 	last_clicked = "";
 }

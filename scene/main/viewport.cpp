@@ -1159,6 +1159,8 @@ void Viewport::set_as_render_target(bool p_enable){
 
 	render_target_texture->set_flags(render_target_texture->flags);
 	render_target_texture->emit_changed();
+
+	update_configuration_warning();
 }
 
 bool Viewport::is_set_as_render_target() const{
@@ -1856,14 +1858,14 @@ void Viewport::_gui_input_event(InputEvent p_event) {
 				if (gui.mouse_over)
 					gui.mouse_over->notification(Control::NOTIFICATION_MOUSE_EXIT);
 
+				_gui_cancel_tooltip();
+
 				if (over)
 					over->notification(Control::NOTIFICATION_MOUSE_ENTER);
 
 			}
 
 			gui.mouse_over=over;
-
-			_gui_cancel_tooltip();
 
 			if (gui.drag_preview) {
 				gui.drag_preview->set_pos(mpos);
@@ -2415,6 +2417,18 @@ bool Viewport::is_input_disabled() const {
 Variant Viewport::gui_get_drag_data() const {
 	return gui.drag_data;
 }
+
+
+String Viewport::get_configuration_warning() const {
+
+	if (get_parent() && !get_parent()->cast_to<Control>() && !render_target) {
+
+		return TTR("This viewport is not set as render target. If you intend for it to display its contents directly to the screen, make it a child of a Control so it can obtain a size. Otherwise, make it a RenderTarget and assign its internal texture to some node for display.");
+	}
+
+	return String();
+}
+
 void Viewport::_bind_methods() {
 
 

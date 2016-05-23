@@ -100,7 +100,7 @@ ReparentDialog::ReparentDialog() {
 
 	//Label *label = memnew( Label );
 	//label->set_pos( Point2( 15,8) );
-	//label->set_text(TTR("Reparent Location (Select new Parent):"));
+	//label->set_text("Reparent Location (Select new Parent):");
 
 	keep_transform = memnew( CheckBox );
 	keep_transform->set_text(TTR("Keep Global Transform"));
@@ -108,7 +108,7 @@ ReparentDialog::ReparentDialog() {
 	vbc->add_child(keep_transform);
 
 
-	//vbc->add_margin_child(TTR("Options:"),node_only);;
+	//vbc->add_margin_child("Options:",node_only);;
 
 	//cancel->connect("pressed", this,"_cancel");
 

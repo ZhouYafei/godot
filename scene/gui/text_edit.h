@@ -31,6 +31,7 @@
 
 #include "scene/gui/control.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/main/timer.h"
 
 
@@ -290,6 +291,8 @@ class TextEdit : public Control  {
 
 	DVector<int> _search_bind(const String &p_key,uint32_t p_search_flags, int p_from_line,int p_from_column) const;
 
+	PopupMenu *menu;
+
 	void _clear();
 	void _cancel_completion();
 	void _cancel_code_hint();
@@ -316,6 +319,17 @@ protected:
 
 
 public:
+
+	enum MenuItems {
+		MENU_CUT,
+		MENU_COPY,
+		MENU_PASTE,
+		MENU_CLEAR,
+		MENU_SELECT_ALL,
+		MENU_UNDO,
+		MENU_MAX
+
+	};
 
 	enum SearchFlags {
 
@@ -437,6 +451,8 @@ public:
 	uint32_t get_saved_version() const;
 	void tag_saved_version();
 
+	void menu_option(int p_option);
+
 	void set_show_line_numbers(bool p_show);
     bool is_show_line_numbers() const;
 
@@ -446,6 +462,8 @@ public:
 	void code_complete(const Vector<String> &p_strings);
 	void set_code_hint(const String& p_hint);
 	void query_code_comple();
+
+	PopupMenu *get_menu() const;
 
 	String get_text_for_completion();
 
