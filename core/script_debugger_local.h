@@ -39,6 +39,7 @@ class ScriptDebuggerLocal : public ScriptDebugger {
 
 	Vector<ScriptLanguage::ProfilingInfo> pinfo;
 
+	void print_source(ScriptLanguage *p_script,int p_frame,bool p_print_source,bool p_list_source = false);
 
 public:
 

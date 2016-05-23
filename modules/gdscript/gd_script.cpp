@@ -2325,10 +2325,6 @@ GDScript::~GDScript() {
 	for (Map<StringName,GDFunction*>::Element *E=member_functions.front();E;E=E->next()) {
 		memdelete( E->get() );
 	}
-}
-
-GDScript::~GDScript() {
-
 	memdelete(thread_lock);
 }
 
