@@ -1144,6 +1144,7 @@ bool Spine::remove_attachment_node(const String& p_bone_name, const Variant& p_n
 	return false;
 }
 
+#ifdef PHYSICAL_ENABLED
 Ref<Shape2D> Spine::get_bounding_box(const String& p_slot_name, const String& p_attachment_name) {
 
 	ERR_FAIL_COND_V(skeleton == NULL, Ref<Shape2D>());
@@ -1162,9 +1163,11 @@ Ref<Shape2D> Spine::get_bounding_box(const String& p_slot_name, const String& p_
 
 	return shape;
 }
+#endif
 
 bool Spine::add_bounding_box(const String& p_bone_name, const String& p_slot_name, const String& p_attachment_name, const Variant& p_node, const Vector2& p_ofs, const Vector2& p_scale, const real_t p_rot) {
 
+#ifdef PHYSICAL_ENABLED
 	ERR_FAIL_COND_V(skeleton == NULL, false);
 	Object *obj = p_node;
 	ERR_FAIL_COND_V(obj == NULL, false);
@@ -1176,6 +1179,9 @@ bool Spine::add_bounding_box(const String& p_bone_name, const String& p_slot_nam
 	node->add_shape(shape);
 
 	return add_attachment_node(p_bone_name, p_node);
+#else
+	return false;
+#endif
 }
 
 bool Spine::remove_bounding_box(const String& p_bone_name, const Variant& p_node) {
@@ -1287,7 +1293,9 @@ void Spine::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("has_attachment_node", "bone_name", "node"), &Spine::has_attachment_node);
 	ObjectTypeDB::bind_method(_MD("add_attachment_node", "bone_name", "node", "ofs", "scale", "rot"), &Spine::add_attachment_node, Vector2(0, 0), Vector2(1, 1), 0);
 	ObjectTypeDB::bind_method(_MD("remove_attachment_node", "p_bone_name", "node"), &Spine::remove_attachment_node);
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("get_bounding_box", "slot_name", "attachment_name"), &Spine::get_bounding_box);
+#endif
 	ObjectTypeDB::bind_method(_MD("add_bounding_box", "bone_name", "slot_name", "attachment_name", "collision_object_2d", "ofs", "scale", "rot"), &Spine::add_bounding_box, Vector2(0, 0), Vector2(1, 1), 0);
 	ObjectTypeDB::bind_method(_MD("remove_bounding_box", "bone_name", "collision_object_2d"), &Spine::remove_bounding_box);
 
