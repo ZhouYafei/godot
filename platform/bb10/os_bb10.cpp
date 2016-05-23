@@ -152,11 +152,13 @@ void OSBB10::initialize(const VideoMode& p_desired,int p_video_driver,int p_audi
 	spatial_sound_2d_server = memnew( SpatialSound2DServerSW );
 	spatial_sound_2d_server->init();
 
+#ifdef PHYSICAL_ENABLED
 	//
 	physics_server = memnew( PhysicsServerSW );
 	physics_server->init();
 	physics_2d_server = memnew( Physics2DServerSW );
 	physics_2d_server->init();
+#endif
 
 	input = memnew( InputDefault );
 
@@ -203,12 +205,14 @@ void OSBB10::finalize() {
 	memdelete(visual_server);
 	memdelete(rasterizer);
 
+#ifdef PHYSICAL_ENABLED
 	physics_server->finish();
 	memdelete(physics_server);
 
 	physics_2d_server->finish();
 	memdelete(physics_2d_server);
-
+#endif
+	
 	#ifdef PAYMENT_SERVICE_ENABLED
 	memdelete(payment_service);
 	#endif

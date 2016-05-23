@@ -1,3 +1,5 @@
+#ifdef PHYSICAL_ENABLED
+
 #ifndef VEHICLE_BODY_H
 #define VEHICLE_BODY_H
 
@@ -184,3 +186,5 @@ public:
 };
 
 #endif // VEHICLE_BODY_H
+
+#endif

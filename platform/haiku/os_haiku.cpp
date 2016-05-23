@@ -3,8 +3,10 @@
 #include "servers/visual/visual_server_raster.h"
 #include "servers/visual/visual_server_wrap_mt.h"
 #include "drivers/gles2/rasterizer_gles2.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics/physics_server_sw.h"
 //#include "servers/physics_2d/physics_2d_server_wrap_mt.h"
+#endif
 #include "main/main.h"
 
 #include "os_haiku.h"

@@ -88,6 +88,7 @@ MainLoop* test_main(String p_test,const List<String>& p_args) {
 		return TestMath::test();
 	}
 
+#ifdef PHYSICAL_ENABLED
 	if (p_test=="physics") {
 
 		return TestPhysics::test();
@@ -97,6 +98,7 @@ MainLoop* test_main(String p_test,const List<String>& p_args) {
 
 		return TestPhysics2D::test();
 	}
+#endif
 
   	if (p_test=="misc") {
 

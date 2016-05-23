@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef CONCAVE_POLYGON_SHAPE_2D_H
 #define CONCAVE_POLYGON_SHAPE_2D_H
 
@@ -46,5 +48,7 @@ public:
 
 	ConcavePolygonShape2D();
 };
+
+#endif
 
 #endif

@@ -1,3 +1,4 @@
+#ifdef PHYSICAL_ENABLED
 /*************************************************************************/
 /*  collision_polygon_editor_plugin.cpp                                  */
 /*************************************************************************/
@@ -643,4 +644,4 @@ CollisionPolygonEditorPlugin::CollisionPolygonEditorPlugin(EditorNode *p_node) {
 CollisionPolygonEditorPlugin::~CollisionPolygonEditorPlugin()
 {
 }
-
+#endif

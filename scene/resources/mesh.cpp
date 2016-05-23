@@ -583,6 +583,7 @@ DVector<Face3> Mesh::get_faces() const {
 
 }
 
+#ifdef PHYSICAL_ENABLED
 Ref<Shape> Mesh::create_convex_shape() const {
 
 	DVector<Vector3> vertices;
@@ -619,6 +620,7 @@ Ref<Shape> Mesh::create_trimesh_shape() const {
 	shape->set_faces(face_points);
 	return shape;
 }
+#endif
 
 void Mesh::center_geometry() {
 

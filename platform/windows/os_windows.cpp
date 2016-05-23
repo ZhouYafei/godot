@@ -985,11 +985,13 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 	}
 
 	//
+#ifdef PHYSICAL_ENABLED
 	physics_server = memnew( PhysicsServerSW );
 	physics_server->init();
 
 	physics_2d_server = Physics2DServerWrapMT::init_server<Physics2DServerSW>();
 	physics_2d_server->init();
+#endif
 
 	if (!is_no_window_mode_enabled()) {
 		ShowWindow(hWnd,SW_SHOW);						// Show The Window
@@ -1175,11 +1177,13 @@ void OS_Windows::finalize() {
 	audio_server->finish();
 	memdelete(audio_server);
 
+#ifdef PHYSICAL_ENABLED
 	physics_server->finish();
 	memdelete(physics_server);
 
 	physics_2d_server->finish();
 	memdelete(physics_2d_server);
+#endif
 
 	monitor_info.clear();
 

@@ -170,13 +170,15 @@ void OS_Android::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 	spatial_sound_2d_server = memnew( SpatialSound2DServerSW );
 	spatial_sound_2d_server->init();
 
+#ifdef PHYSICAL_ENABLED
 	//
 	physics_server = memnew( PhysicsServerSW );
 	physics_server->init();
 	//physics_2d_server = memnew( Physics2DServerSW );
 	physics_2d_server = Physics2DServerWrapMT::init_server<Physics2DServerSW>();
 	physics_2d_server->init();
-
+#endif
+	
 	input = memnew( InputDefault );
 	input->set_fallback_mapping("Default Android Gamepad");
 }

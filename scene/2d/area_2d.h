@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef AREA_2D_H
 #define AREA_2D_H
 
@@ -184,3 +186,5 @@ public:
 VARIANT_ENUM_CAST(Area2D::SpaceOverride);
 
 #endif // AREA_2D_H
+
+#endif

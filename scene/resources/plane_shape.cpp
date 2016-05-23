@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "plane_shape.h"
 
 #include "servers/physics_server.h"
@@ -91,3 +92,4 @@ PlaneShape::PlaneShape() : Shape( PhysicsServer::get_singleton()->shape_create(P
 
 	set_plane(Plane(0,1,0,0));
 }
+#endif

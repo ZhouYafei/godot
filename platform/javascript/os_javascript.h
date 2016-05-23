@@ -32,11 +32,15 @@
 #include "os/input.h"
 #include "drivers/unix/os_unix.h"
 #include "os/main_loop.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics/physics_server_sw.h"
+#endif
 #include "servers/spatial_sound/spatial_sound_server_sw.h"
 #include "servers/spatial_sound_2d/spatial_sound_2d_server_sw.h"
 #include "servers/audio/audio_server_sw.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d/physics_2d_server_sw.h"
+#endif
 #include "servers/visual/rasterizer.h"
 #include "audio_server_javascript.h"
 #include "audio_driver_javascript.h"
@@ -75,8 +79,10 @@ private:
 	//SampleManagerMallocSW *sample_manager;
 	SpatialSoundServerSW *spatial_sound_server;
 	SpatialSound2DServerSW *spatial_sound_2d_server;
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer *physics_server;
 	Physics2DServer *physics_2d_server;
+#endif
 	AudioDriverJavaScript audio_driver_javascript;
 	const char* gl_extensions;
 

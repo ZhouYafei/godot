@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "concave_polygon_shape_2d.h"
 
 #include "servers/physics_2d_server.h"
@@ -94,3 +95,4 @@ ConcavePolygonShape2D::ConcavePolygonShape2D() : Shape2D( Physics2DServer::get_s
 }
 
 
+#endif

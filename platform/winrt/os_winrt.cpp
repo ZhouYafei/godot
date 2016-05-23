@@ -168,12 +168,14 @@ void OSWinrt::initialize(const VideoMode& p_desired,int p_video_driver,int p_aud
 		visual_server =memnew(VisualServerWrapMT(visual_server,get_render_thread_mode()==RENDER_SEPARATE_THREAD));
 	}
 
+#ifdef PHYSICAL_ENABLED
 	//
 	physics_server = memnew( PhysicsServerSW );
 	physics_server->init();
 
 	physics_2d_server = memnew( Physics2DServerSW );
 	physics_2d_server->init();
+#endif
 
 	visual_server->init();
 
@@ -333,12 +335,13 @@ void OSWinrt::finalize() {
 
 	memdelete(input);
 
+#ifdef PHYSICAL_ENABLED
 	physics_server->finish();
 	memdelete(physics_server);
 
 	physics_2d_server->finish();
 	memdelete(physics_2d_server);
-
+#endif
 }
 void OSWinrt::finalize_core() {
 

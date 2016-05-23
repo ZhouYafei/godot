@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #ifndef PHYSICS_JOINT_H
 #define PHYSICS_JOINT_H
 
@@ -417,4 +418,6 @@ public:
 };
 
 #endif // PHYSICS_JOINT_H
+#endif
+
 #endif

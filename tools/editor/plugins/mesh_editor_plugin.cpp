@@ -44,6 +44,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 			List<Node*> selection = editor_selection->get_selected_node_list();
 
 			if (selection.empty()) {
+#ifdef PHYSICAL_ENABLED
 				Ref<Shape> shape = trimesh_shape ? mesh->create_trimesh_shape() : mesh->create_convex_shape();
 				if (shape.is_null())
 					return;
@@ -52,7 +53,6 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 				cshape->set_shape(shape);
 				StaticBody *body = memnew( StaticBody );
 				body->add_child(cshape);
-
 				Node *owner = node==get_tree()->get_edited_scene_root() ? node : node->get_owner();
 
 				if (trimesh_shape)
@@ -66,6 +66,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 				ur->add_do_reference(body);
 				ur->add_undo_method(node,"remove_child",body);
 				ur->commit_action();
+#endif
 				return;
 			}
 
@@ -84,6 +85,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 				if (m.is_null())
 					continue;
 
+#ifdef PHYSICAL_ENABLED
 				Ref<Shape> shape = trimesh_shape ? m->create_trimesh_shape() : m->create_convex_shape();
 				if (shape.is_null())
 					continue;
@@ -100,6 +102,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 				ur->add_do_method(cshape,"set_owner",owner);
 				ur->add_do_reference(body);
 				ur->add_undo_method(instance,"remove_child",body);
+#endif
 			}
 
 			ur->commit_action();
@@ -117,6 +120,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 
 			bool trimesh_shape = (p_option==MENU_OPTION_CREATE_TRIMESH_COLLISION_SHAPE);
 
+#ifdef PHYSICAL_ENABLED
 			Ref<Shape> shape = trimesh_shape ? mesh->create_trimesh_shape() : mesh->create_convex_shape();
 			if (shape.is_null())
 				return;
@@ -139,7 +143,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 			ur->add_do_reference(cshape);
 			ur->add_undo_method(node->get_parent(),"remove_child",cshape);
 			ur->commit_action();
-
+#endif
 		} break;
 
 		case MENU_OPTION_CREATE_NAVMESH: {

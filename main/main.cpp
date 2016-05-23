@@ -66,7 +66,9 @@
 
 #include "servers/spatial_sound_server.h"
 #include "servers/spatial_sound_2d_server.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
+#endif
 
 
 #include "core/io/stream_peer_tcp.h"
@@ -1556,11 +1558,13 @@ bool Main::iteration() {
 
 		uint64_t fixed_begin = OS::get_singleton()->get_ticks_usec();
 
+#ifdef PHYSICAL_ENABLED
 		PhysicsServer::get_singleton()->sync();
 		PhysicsServer::get_singleton()->flush_queries();
 
 		Physics2DServer::get_singleton()->sync();
 		Physics2DServer::get_singleton()->flush_queries();
+#endif
 
 		if (OS::get_singleton()->get_main_loop()->iteration( frame_slice*time_scale )) {
 			exit=true;
@@ -1569,10 +1573,12 @@ bool Main::iteration() {
 
 		message_queue->flush();
 
+#ifdef PHYSICAL_ENABLED
 		PhysicsServer::get_singleton()->step(frame_slice*time_scale);
 
 		Physics2DServer::get_singleton()->end_sync();
 		Physics2DServer::get_singleton()->step(frame_slice*time_scale);
+#endif
 
 		time_accum-=frame_slice;
 		message_queue->flush();

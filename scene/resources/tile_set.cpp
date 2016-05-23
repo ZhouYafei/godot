@@ -52,10 +52,12 @@ bool TileSet::_set(const StringName& p_name, const Variant& p_value) {
 		tile_set_shape_offset(id,p_value);
 	else if (what=="region")
 		tile_set_region(id,p_value);
+#ifdef PHYSICAL_ENABLED
 	else if (what=="shape")
 		tile_set_shape(id,p_value);
 	else if (what=="shapes")
 		_tile_set_shapes(id,p_value);
+#endif
 	else if (what=="occluder")
 		tile_set_light_occluder(id,p_value);
 	else if (what=="occluder_offset")
@@ -95,10 +97,12 @@ bool TileSet::_get(const StringName& p_name,Variant &r_ret) const{
 		r_ret=tile_get_shape_offset(id);
 	else if (what=="region")
 		r_ret=tile_get_region(id);
+#ifdef PHYSICAL_ENABLED
 	else if (what=="shape")
 		r_ret=tile_get_shape(id);
 	else if (what=="shapes")
 		r_ret=_tile_get_shapes(id);
+#endif
 	else if (what=="occluder")
 		r_ret=tile_get_light_occluder(id);
 	else if (what=="occluder_offset")
@@ -232,6 +236,7 @@ String TileSet::tile_get_name(int p_id) const {
 
 }
 
+#ifdef PHYSICAL_ENABLED
 void TileSet::tile_set_shape(int p_id,const Ref<Shape2D> &p_shape) {
 
 	ERR_FAIL_COND(!tile_map.has(p_id));
@@ -250,6 +255,7 @@ Ref<Shape2D> TileSet::tile_get_shape(int p_id) const {
 	return Ref<Shape2D>();
 
 }
+#endif
 
 void TileSet::tile_set_light_occluder(int p_id,const Ref<OccluderPolygon2D> &p_light_occluder) {
 
@@ -303,6 +309,7 @@ Vector2 TileSet::tile_get_occluder_offset(int p_id) const{
 	return tile_map[p_id].occluder_offset;
 }
 
+#ifdef PHYSICAL_ENABLED
 void TileSet::tile_set_shapes(int p_id,const Vector<Ref<Shape2D> > &p_shapes) {
 
 	ERR_FAIL_COND(!tile_map.has(p_id));
@@ -342,6 +349,7 @@ Array TileSet::_tile_get_shapes(int p_id) const{
 
 	return arr;
 }
+#endif
 
 Array TileSet::_get_tiles_ids() const{
 
@@ -420,10 +428,12 @@ void TileSet::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("tile_get_shape_offset","id"),&TileSet::tile_get_shape_offset);
 	ObjectTypeDB::bind_method(_MD("tile_set_region","id","region"),&TileSet::tile_set_region);
 	ObjectTypeDB::bind_method(_MD("tile_get_region","id"),&TileSet::tile_get_region);
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("tile_set_shape","id","shape:Shape2D"),&TileSet::tile_set_shape);
 	ObjectTypeDB::bind_method(_MD("tile_get_shape:Shape2D","id"),&TileSet::tile_get_shape);
 	ObjectTypeDB::bind_method(_MD("tile_set_shapes","id","shapes"),&TileSet::_tile_set_shapes);
 	ObjectTypeDB::bind_method(_MD("tile_get_shapes","id"),&TileSet::_tile_get_shapes);
+#endif
 	ObjectTypeDB::bind_method(_MD("tile_set_navigation_polygon","id","navigation_polygon:NavigationPolygon"),&TileSet::tile_set_navigation_polygon);
 	ObjectTypeDB::bind_method(_MD("tile_get_navigation_polygon:NavigationPolygon","id"),&TileSet::tile_get_navigation_polygon);
 	ObjectTypeDB::bind_method(_MD("tile_set_navigation_polygon_offset","id","navigation_polygon_offset"),&TileSet::tile_set_navigation_polygon_offset);

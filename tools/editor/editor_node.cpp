@@ -35,7 +35,9 @@
 #include "editor_help.h"
 #include "core/io/resource_saver.h"
 #include "core/io/resource_loader.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
+#endif
 #include "scene/resources/packed_scene.h"
 #include "editor_settings.h"
 #include "io_plugins/editor_import_collada.h"
@@ -6232,8 +6234,10 @@ EditorNode::EditorNode() {
 	add_editor_plugin( memnew( ResourcePreloaderEditorPlugin(this) ) );
 	add_editor_plugin( memnew( ItemListEditorPlugin(this) ) );
 	//add_editor_plugin( memnew( RichTextEditorPlugin(this) ) );
+#ifdef PHYSICAL_ENABLED
 	add_editor_plugin( memnew( CollisionPolygonEditorPlugin(this) ) );
 	add_editor_plugin( memnew( CollisionPolygon2DEditorPlugin(this) ) );
+#endif
 	add_editor_plugin( memnew( TileSetEditorPlugin(this) ) );
 	add_editor_plugin( memnew( TileMapEditorPlugin(this) ) );
 	add_editor_plugin( memnew( SpriteFramesEditorPlugin(this) ) );
@@ -6247,7 +6251,9 @@ EditorNode::EditorNode() {
 	add_editor_plugin( memnew( NavigationPolygonEditorPlugin(this) ) );
 	add_editor_plugin( memnew( ColorRampEditorPlugin(this,true) ) );
 	add_editor_plugin( memnew( ColorRampEditorPlugin(this,false) ) );
+#ifdef PHYSICAL_ENABLED
 	add_editor_plugin( memnew( CollisionShape2DEditorPlugin(this) ) );
+#endif
 
 	for(int i=0;i<EditorPlugins::get_plugin_count();i++)
 		add_editor_plugin( EditorPlugins::create(i,this) );
@@ -6274,8 +6280,10 @@ EditorNode::EditorNode() {
 	_edit_current();
 	current=NULL;
 
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->set_active(false); // no physics by default if editor
 	Physics2DServer::get_singleton()->set_active(false); // no physics by default if editor
+#endif
 	ScriptServer::set_scripting_enabled(false); // no scripting by default if editor
 
 	Globals::get_singleton()->set("debug/indicators_enabled",true);

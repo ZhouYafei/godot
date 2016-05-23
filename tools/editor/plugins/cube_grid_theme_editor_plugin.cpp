@@ -107,6 +107,7 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 
 		p_library->set_item_mesh(id,mesh);
 
+#ifdef PHYSICAL_ENABLED
 		Ref<Shape> collision;
 
 
@@ -128,6 +129,7 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 
 			p_library->set_item_shape(id,collision);
 		}
+#endif
 		Ref<NavigationMesh> navmesh;
 		for(int j=0;j<mi->get_child_count();j++) {
 				Node *child2 = mi->get_child(j);

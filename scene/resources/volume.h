@@ -32,7 +32,9 @@
 #include "resource.h"
 
 #if 0
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_server.h"
+#endif
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */

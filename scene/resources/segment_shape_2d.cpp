@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "segment_shape_2d.h"
 
 #include "servers/physics_2d_server.h"
@@ -169,3 +170,4 @@ RayShape2D::RayShape2D()  : Shape2D( Physics2DServer::get_singleton()->shape_cre
 	length=20;
 	_update_shape();
 }
+#endif

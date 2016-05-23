@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "area.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_server.h"
@@ -684,3 +685,4 @@ Area::~Area() {
 
 
 }
+#endif

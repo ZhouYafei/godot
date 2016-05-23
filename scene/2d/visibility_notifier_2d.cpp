@@ -187,6 +187,7 @@ void VisibilityEnabler2D::_find_nodes(Node* p_node) {
 
 	if (enabler[ENABLER_FREEZE_BODIES]) {
 
+#ifdef PHYSICAL_ENABLED
 		RigidBody2D *rb2d = p_node->cast_to<RigidBody2D>();
 		if (rb2d && ((rb2d->get_mode()==RigidBody2D::MODE_CHARACTER || (rb2d->get_mode()==RigidBody2D::MODE_RIGID && !rb2d->is_able_to_sleep())))) {
 
@@ -194,6 +195,7 @@ void VisibilityEnabler2D::_find_nodes(Node* p_node) {
 			add=true;
 			meta=rb2d->get_mode();
 		}
+#endif
 	}
 
 	if (enabler[ENABLER_PAUSE_ANIMATIONS]) {
@@ -290,6 +292,7 @@ void VisibilityEnabler2D::_change_node_state(Node* p_node,bool p_enabled) {
 	ERR_FAIL_COND(!nodes.has(p_node));
 
 	{
+#ifdef PHYSICAL_ENABLED
 		RigidBody2D *rb = p_node->cast_to<RigidBody2D>();
 		if (rb) {
 
@@ -302,6 +305,7 @@ void VisibilityEnabler2D::_change_node_state(Node* p_node,bool p_enabled) {
 				rb->set_sleeping(true);
 			}
 		}
+#endif
 	}
 
 	{

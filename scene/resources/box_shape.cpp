@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "box_shape.h"
 #include "servers/physics_server.h"
 
@@ -81,3 +82,4 @@ BoxShape::BoxShape() : Shape( PhysicsServer::get_singleton()->shape_create(Physi
 
 	set_extents(Vector3(1,1,1));
 }
+#endif

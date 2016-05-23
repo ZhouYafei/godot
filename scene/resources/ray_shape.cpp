@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "ray_shape.h"
 
 #include "servers/physics_server.h"
@@ -71,3 +72,4 @@ RayShape::RayShape() : Shape( PhysicsServer::get_singleton()->shape_create(Physi
 
 	set_length(1.0);
 }
+#endif

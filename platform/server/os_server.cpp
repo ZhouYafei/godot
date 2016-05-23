@@ -32,7 +32,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "print_string.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics/physics_server_sw.h"
+#endif
 
 #include "main/main.h"
 
@@ -80,11 +82,13 @@ void OS_Server::initialize(const VideoMode& p_desired,int p_video_driver,int p_a
 	ERR_FAIL_COND(!visual_server);
 
 	visual_server->init();
+#ifdef PHYSICAL_ENABLED
 	//
 	physics_server = memnew( PhysicsServerSW );
 	physics_server->init();
 	physics_2d_server = memnew( Physics2DServerSW );
 	physics_2d_server->init();
+#endif
 
 	input = memnew( InputDefault );
 
@@ -116,12 +120,14 @@ void OS_Server::finalize() {
 	memdelete(visual_server);
 	memdelete(rasterizer);
 
+#ifdef PHYSICAL_ENABLED
 	physics_server->finish();
 	memdelete(physics_server);
 
 	physics_2d_server->finish();
 	memdelete(physics_2d_server);
-
+#endif
+	
 	memdelete(input);
 
 	args.clear();

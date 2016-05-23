@@ -143,10 +143,12 @@ private:
 	bool quadrant_order_dirty;
 	bool y_sort_mode;
 	float fp_adjust;
+#ifdef PHYSICAL_ENABLED
 	float friction;
 	float bounce;
 	uint32_t collision_layer;
 	uint32_t collision_mask;
+#endif
 
 	TileOrigin tile_origin;
 
@@ -215,6 +217,7 @@ public:
 
 	Rect2 get_item_rect() const;
 
+#ifdef PHYSICAL_ENABLED
 	void set_collision_layer(uint32_t p_layer);
 	uint32_t get_collision_layer() const;
 
@@ -229,7 +232,7 @@ public:
 
 	void set_collision_bounce(float p_bounce);
 	float get_collision_bounce() const;
-
+#endif
 	void set_mode(Mode p_mode);
 	Mode get_mode() const;
 

@@ -29,6 +29,7 @@
 #ifndef SPACE_2D_H
 #define SPACE_2D_H
 
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
 #include "resource.h"
 
@@ -53,4 +54,5 @@ public:
 	~Space2D();
 };
 
+#endif
 #endif // SPACE_2D_H

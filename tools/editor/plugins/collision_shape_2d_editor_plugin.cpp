@@ -1,3 +1,4 @@
+#ifdef PHYSICAL_ENABLED
 #include "collision_shape_2d_editor_plugin.h"
 
 #include "canvas_item_editor_plugin.h"
@@ -571,3 +572,4 @@ CollisionShape2DEditorPlugin::CollisionShape2DEditorPlugin(EditorNode* p_node) {
 CollisionShape2DEditorPlugin::~CollisionShape2DEditorPlugin() {
 
 }
+#endif

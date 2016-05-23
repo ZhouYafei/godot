@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #ifndef PHYSICS_2D_SERVER_H
 #define PHYSICS_2D_SERVER_H
 
@@ -619,4 +620,5 @@ VARIANT_ENUM_CAST( Physics2DServer::DampedStringParam );
 VARIANT_ENUM_CAST( Physics2DServer::AreaBodyStatus );
 VARIANT_ENUM_CAST( Physics2DServer::ProcessInfo );
 
+#endif
 #endif

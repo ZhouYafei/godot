@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef RAY_CAST_H
 #define RAY_CAST_H
 
@@ -84,3 +86,5 @@ public:
 };
 
 #endif // RAY_CAST_H
+
+#endif

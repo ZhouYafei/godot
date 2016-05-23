@@ -1,3 +1,4 @@
+#ifdef PHYSICAL_ENABLED
 #include "vehicle_body.h"
 
 #define ROLLING_INFLUENCE_FIX
@@ -1049,3 +1050,4 @@ VehicleBody::VehicleBody() : PhysicsBody(PhysicsServer::BODY_MODE_RIGID) {
 	set_mass(40);
 }
 
+#endif

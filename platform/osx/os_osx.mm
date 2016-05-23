@@ -42,7 +42,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "print_string.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics/physics_server_sw.h"
+#endif
 #include "drivers/gles2/rasterizer_instance_gles2.h"
 #include "servers/visual/visual_server_wrap_mt.h"
 #include "main/main.h"
@@ -1077,13 +1079,15 @@ void OS_OSX::initialize(const VideoMode& p_desired,int p_video_driver,int p_audi
 	spatial_sound_2d_server = memnew( SpatialSound2DServerSW );
 	spatial_sound_2d_server->init();
 
+#ifdef PHYSICAL_ENABLED
 	//
 	physics_server = memnew( PhysicsServerSW );
 	physics_server->init();
 	//physics_2d_server = memnew( Physics2DServerSW );
 	physics_2d_server = Physics2DServerWrapMT::init_server<Physics2DServerSW>();
 	physics_2d_server->init();
-
+#endif
+	
 	input = memnew( InputDefault );
 
 	_ensure_data_dir();
@@ -1120,12 +1124,14 @@ void OS_OSX::finalize() {
 	memdelete(visual_server);
 	memdelete(rasterizer);
 
+#ifdef PHYSICAL_ENABLED
 	physics_server->finish();
 	memdelete(physics_server);
 
 	physics_2d_server->finish();
 	memdelete(physics_2d_server);
-
+#endif
+	
 	screens.clear();
 
 

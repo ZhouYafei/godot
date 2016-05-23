@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "shape_line_2d.h"
 #include "servers/physics_2d_server.h"
 #include "servers/visual_server.h"
@@ -107,3 +108,4 @@ LineShape2D::LineShape2D() : Shape2D( Physics2DServer::get_singleton()->shape_cr
 	d=0;
 	_update_shape();
 }
+#endif

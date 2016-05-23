@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #ifndef PHYSICS_SERVER_H
 #define PHYSICS_SERVER_H
 
@@ -708,4 +709,5 @@ VARIANT_ENUM_CAST( PhysicsServer::G6DOFJointAxisFlag);
 VARIANT_ENUM_CAST( PhysicsServer::AreaBodyStatus );
 VARIANT_ENUM_CAST( PhysicsServer::ProcessInfo );
 
+#endif
 #endif

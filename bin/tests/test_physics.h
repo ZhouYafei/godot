@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef TEST_PHYSICS_H
 #define TEST_PHYSICS_H
 
@@ -40,5 +42,7 @@ namespace TestPhysics {
 MainLoop* test();
 
 }
+
+#endif
 
 #endif

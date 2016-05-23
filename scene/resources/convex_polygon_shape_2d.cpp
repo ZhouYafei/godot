@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "convex_polygon_shape_2d.h"
 
 #include "servers/physics_2d_server.h"
@@ -103,3 +104,4 @@ ConvexPolygonShape2D::ConvexPolygonShape2D() : Shape2D( Physics2DServer::get_sin
 
 	_update_shape();
 }
+#endif

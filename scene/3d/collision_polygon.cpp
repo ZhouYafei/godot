@@ -1,3 +1,4 @@
+#ifdef PHYSICAL_ENABLED
 #include "collision_polygon.h"
 
 #include "collision_object.h"
@@ -281,3 +282,4 @@ CollisionPolygon::CollisionPolygon() {
 	depth=1.0;
 
 }
+#endif

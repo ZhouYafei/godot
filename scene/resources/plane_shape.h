@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef PLANE_SHAPE_H
 #define PLANE_SHAPE_H
 
@@ -50,3 +52,4 @@ public:
 	PlaneShape();
 };
 #endif // PLANE_SHAPE_H
+#endif

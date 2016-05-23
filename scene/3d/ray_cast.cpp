@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "ray_cast.h"
 
 #include "servers/physics_server.h"
@@ -248,3 +249,4 @@ RayCast::RayCast() {
 	type_mask=PhysicsDirectSpaceState::TYPE_MASK_COLLISION;
 	cast_to=Vector3(0,-1,0);
 }
+#endif

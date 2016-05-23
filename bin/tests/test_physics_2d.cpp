@@ -26,9 +26,12 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "test_physics_2d.h"
 #include "servers/visual_server.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
+#endif
 #include "os/main_loop.h"
 #include "print_string.h"
 #include "map.h"
@@ -465,3 +468,4 @@ MainLoop* test() {
 
 
 }
+#endif

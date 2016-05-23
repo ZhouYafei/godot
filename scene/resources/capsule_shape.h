@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef CAPSULE_SHAPE_H
 #define CAPSULE_SHAPE_H
 
@@ -56,3 +58,5 @@ public:
 };
 
 #endif // CAPSULE_SHAPE_H
+
+#endif

@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef COLLISION_POLYGON_2D_H
 #define COLLISION_POLYGON_2D_H
 
@@ -93,3 +95,5 @@ public:
 VARIANT_ENUM_CAST( CollisionPolygon2D::BuildMode );
 
 #endif // COLLISION_POLYGON_2D_H
+
+#endif

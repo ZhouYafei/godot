@@ -36,8 +36,10 @@
 #include <stdio.h>
 #include "os/keyboard.h"
 #include "servers/spatial_sound_2d_server.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
+#endif
 #include "scene/scene_string_names.h"
 #include "io/resource_loader.h"
 #include "viewport.h"
@@ -809,10 +811,12 @@ void SceneTree::set_pause(bool p_enabled) {
 	if (p_enabled==pause)
 		return;
 	pause=p_enabled;
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->set_active(!p_enabled);
 	Physics2DServer::get_singleton()->set_active(!p_enabled);
 	if (get_root())
 		get_root()->propagate_notification(p_enabled ? Node::NOTIFICATION_PAUSED : Node::NOTIFICATION_UNPAUSED);
+#endif
 }
 
 bool SceneTree::is_paused() const {

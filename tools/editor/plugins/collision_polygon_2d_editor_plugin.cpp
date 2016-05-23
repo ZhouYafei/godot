@@ -1,3 +1,4 @@
+#ifdef PHYSICAL_ENABLED
 #include "collision_polygon_2d_editor_plugin.h"
 
 #include "canvas_item_editor_plugin.h"
@@ -454,3 +455,4 @@ CollisionPolygon2DEditorPlugin::~CollisionPolygon2DEditorPlugin()
 {
 }
 
+#endif

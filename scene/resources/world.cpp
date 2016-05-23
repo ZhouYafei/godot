@@ -318,10 +318,12 @@ Ref<Environment> World::get_environment() const {
 }
 
 
+#ifdef PHYSICAL_ENABLED
 PhysicsDirectSpaceState *World::get_direct_space_state() {
 
 	return PhysicsServer::get_singleton()->space_get_direct_state(space);
 }
+#endif
 
 void World::_bind_methods() {
 
@@ -330,7 +332,9 @@ void World::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_sound_space"),&World::get_sound_space);
 	ObjectTypeDB::bind_method(_MD("set_environment","env:Environment"),&World::set_environment);
 	ObjectTypeDB::bind_method(_MD("get_environment:Environment"),&World::get_environment);
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("get_direct_space_state:PhysicsDirectSpaceState"),&World::get_direct_space_state);
+#endif
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT,"environment",PROPERTY_HINT_RESOURCE_TYPE,"Environment"),_SCS("set_environment"),_SCS("get_environment"));
 
 }
@@ -338,11 +342,15 @@ void World::_bind_methods() {
 
 World::World() {
 
+#ifdef PHYSICAL_ENABLED
 	space = PhysicsServer::get_singleton()->space_create();
+#endif
 	scenario = VisualServer::get_singleton()->scenario_create();
 	sound_space = SpatialSoundServer::get_singleton()->space_create();
 
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->space_set_active(space,true);
+#endif
 
 #ifdef _3D_DISABLED
 	indexer = NULL;
@@ -353,7 +361,9 @@ World::World() {
 
 World::~World() {
 
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->free(space);
+#endif
 	VisualServer::get_singleton()->free(scenario);
 	SpatialSoundServer::get_singleton()->free(sound_space);
 

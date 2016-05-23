@@ -28,7 +28,9 @@
 /*************************************************************************/
 #include "world_2d.h"
 #include "servers/visual_server.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
+#endif
 #include "servers/spatial_sound_2d_server.h"
 #include "globals.h"
 #include "scene/2d/visibility_notifier_2d.h"
@@ -353,23 +355,29 @@ void World2D::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_space"),&World2D::get_space);
 	ObjectTypeDB::bind_method(_MD("get_sound_space"),&World2D::get_sound_space);
 
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("get_direct_space_state:Physics2DDirectSpaceState"),&World2D::get_direct_space_state);
+#endif
 
 }
 
+#ifdef PHYSICAL_ENABLED
 Physics2DDirectSpaceState *World2D::get_direct_space_state() {
 
 	return Physics2DServer::get_singleton()->space_get_direct_state(space);
 }
-
+#endif
 
 World2D::World2D() {
 
 	canvas = VisualServer::get_singleton()->canvas_create();
+#ifdef PHYSICAL_ENABLED
 	space = Physics2DServer::get_singleton()->space_create();
+#endif
 	sound_space = SpatialSound2DServer::get_singleton()->space_create();
 
 	//set space2D to be more friendly with pixels than meters, by adjusting some constants
+#ifdef PHYSICAL_ENABLED
 	Physics2DServer::get_singleton()->space_set_active(space,true);
 	Physics2DServer::get_singleton()->area_set_param(space,Physics2DServer::AREA_PARAM_GRAVITY,GLOBAL_DEF("physics_2d/default_gravity",98));
 	Physics2DServer::get_singleton()->area_set_param(space,Physics2DServer::AREA_PARAM_GRAVITY_VECTOR,GLOBAL_DEF("physics_2d/default_gravity_vector",Vector2(0,1)));
@@ -382,7 +390,7 @@ World2D::World2D() {
 	Physics2DServer::get_singleton()->space_set_param(space,Physics2DServer::SPACE_PARAM_BODY_ANGULAR_VELOCITY_SLEEP_TRESHOLD,GLOBAL_DEF("physics_2d/sleep_threshold_angular",(8.0 / 180.0 * Math_PI)));
 	Physics2DServer::get_singleton()->space_set_param(space,Physics2DServer::SPACE_PARAM_BODY_TIME_TO_SLEEP,GLOBAL_DEF("physics_2d/time_to_sleep",0.5));
 	Physics2DServer::get_singleton()->space_set_param(space,Physics2DServer::SPACE_PARAM_CONSTRAINT_DEFAULT_BIAS,0.2);
-
+#endif
 	indexer = memnew( SpatialIndexer2D );
 
 }
@@ -391,7 +399,9 @@ World2D::World2D() {
 World2D::~World2D() {
 
 	VisualServer::get_singleton()->free(canvas);
+#ifdef PHYSICAL_ENABLED
 	Physics2DServer::get_singleton()->free(space);
+#endif
 	SpatialSound2DServer::get_singleton()->free(sound_space);
 	memdelete(indexer);
 }

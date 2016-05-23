@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef PHYSICS_BODY_2D_H
 #define PHYSICS_BODY_2D_H
 
@@ -336,3 +338,5 @@ public:
 
 
 #endif // PHYSICS_BODY_2D_H
+
+#endif

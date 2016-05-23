@@ -69,11 +69,13 @@ public:
 	void set_skeleton_path(const NodePath& p_skeleton);
 	NodePath get_skeleton_path();
 
+#ifdef PHYSICAL_ENABLED
 	Node* create_trimesh_collision_node();
 	void create_trimesh_collision();
 
 	Node* create_convex_collision_node();
 	void create_convex_collision();
+#endif
 
 	virtual AABB get_aabb() const;
 	virtual DVector<Face3> get_faces(uint32_t p_usage_flags) const;

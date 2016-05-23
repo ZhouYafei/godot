@@ -46,7 +46,9 @@ class TileSet : public Resource {
 		Vector2 offset;
 		Vector2 shape_offset;
 		Rect2i region;
+#ifdef PHYSICAL_ENABLED
 		Vector<Ref<Shape2D> > shapes;
+#endif
 		Vector2 occluder_offset;
 		Ref<OccluderPolygon2D> occluder;
 		Vector2 navigation_polygon_offset;
@@ -62,8 +64,10 @@ protected:
 	bool _set(const StringName& p_name, const Variant& p_value);
 	bool _get(const StringName& p_name,Variant &r_ret) const;
 	void _get_property_list( List<PropertyInfo> *p_list) const;
+#ifdef PHYSICAL_ENABLED
 	void _tile_set_shapes(int p_id,const Array& p_shapes);
 	Array _tile_get_shapes(int p_id) const;
+#endif
 	Array _get_tiles_ids() const;
 
 	static void _bind_methods();
@@ -88,8 +92,10 @@ public:
 	void tile_set_region(int p_id,const Rect2 &p_region);
 	Rect2 tile_get_region(int p_id) const;
 
+#ifdef PHYSICAL_ENABLED
 	void tile_set_shape(int p_id,const Ref<Shape2D> &p_shape);
 	Ref<Shape2D> tile_get_shape(int p_id) const;
+#endif
 
 	void tile_set_material(int p_id,const Ref<CanvasItemMaterial> &p_material);
 	Ref<CanvasItemMaterial> tile_get_material(int p_id) const;
@@ -106,8 +112,10 @@ public:
 	void tile_set_navigation_polygon(int p_id,const Ref<NavigationPolygon> &p_navigation_polygon);
 	Ref<NavigationPolygon> tile_get_navigation_polygon(int p_id) const;
 
+#ifdef PHYSICAL_ENABLED
 	void tile_set_shapes(int p_id,const Vector<Ref<Shape2D> > &p_shapes);
 	Vector<Ref<Shape2D> > tile_get_shapes(int p_id) const;
+#endif
 
 	void remove_tile(int p_id);
 

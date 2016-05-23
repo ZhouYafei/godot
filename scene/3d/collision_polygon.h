@@ -1,3 +1,5 @@
+#ifdef PHYSICAL_ENABLED
+
 #ifndef COLLISION_POLYGON_H
 #define COLLISION_POLYGON_H
 
@@ -62,3 +64,5 @@ public:
 
 VARIANT_ENUM_CAST( CollisionPolygon::BuildMode );
 #endif // COLLISION_POLYGON_H
+
+#endif

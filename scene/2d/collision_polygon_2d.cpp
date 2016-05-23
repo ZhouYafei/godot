@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "collision_polygon_2d.h"
 #include "collision_object_2d.h"
 #include "scene/resources/concave_polygon_shape_2d.h"
@@ -348,3 +349,4 @@ CollisionPolygon2D::CollisionPolygon2D() {
 	set_notify_local_transform(true);
 
 }
+#endif

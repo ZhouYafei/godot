@@ -36,7 +36,9 @@
 #include "context_gl_win.h"
 #include "servers/visual_server.h"
 #include "servers/visual/rasterizer.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics/physics_server_sw.h"
+#endif
 
 #include "servers/audio/audio_server_sw.h"
 #include "servers/audio/sample_manager_sw.h"
@@ -44,8 +46,10 @@
 #include "servers/spatial_sound/spatial_sound_server_sw.h"
 #include "servers/spatial_sound_2d/spatial_sound_2d_server_sw.h"
 #include "drivers/unix/ip_unix.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d/physics_2d_server_sw.h"
 #include "servers/physics_2d/physics_2d_server_wrap_mt.h"
+#endif
 
 #include "main/input_default.h"
 
@@ -97,8 +101,10 @@ class OS_Windows : public OS {
 #endif
 	VisualServer *visual_server;
 	Rasterizer *rasterizer;
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer *physics_server;
 	Physics2DServer *physics_2d_server;
+#endif
 	int pressrc;
 	HDC		hDC;	// Private GDI Device Context
 	HINSTANCE	hInstance;		// Holds The Instance Of The Application

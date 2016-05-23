@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #include "physics_body.h"
 #include "scene/scene_string_names.h"
 
@@ -1346,5 +1348,4 @@ KinematicBody::~KinematicBody()  {
 
 
 }
-
-
+#endif

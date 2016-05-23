@@ -412,6 +412,7 @@ void register_scene_types() {
 
 	OS::get_singleton()->yield(); //may take time to init
 
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_virtual_type<CollisionObject>();
 	ObjectTypeDB::register_type<StaticBody>();
 	ObjectTypeDB::register_type<RigidBody>();
@@ -421,10 +422,13 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<VehicleBody>();
 	ObjectTypeDB::register_type<VehicleWheel>();
 	ObjectTypeDB::register_type<Area>();
+#endif
 	ObjectTypeDB::register_type<ProximityGroup>();
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_type<CollisionShape>();
 	ObjectTypeDB::register_type<CollisionPolygon>();
 	ObjectTypeDB::register_type<RayCast>();
+#endif
 	ObjectTypeDB::register_type<MultiMeshInstance>();
 	ObjectTypeDB::register_type<Room>();
 	ObjectTypeDB::register_type<Curve3D>();
@@ -436,13 +440,14 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<BakedLightSampler>();
 	ObjectTypeDB::register_type<WorldEnvironment>();
 
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_virtual_type<Joint>();
 	ObjectTypeDB::register_type<PinJoint>();
 	ObjectTypeDB::register_type<HingeJoint>();
 	ObjectTypeDB::register_type<SliderJoint>();
 	ObjectTypeDB::register_type<ConeTwistJoint>();
 	ObjectTypeDB::register_type<Generic6DOFJoint>();
-
+#endif
 	//scenariofx
 
 	OS::get_singleton()->yield(); //may take time to init
@@ -492,6 +497,7 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<SpriteFrames>();
 	ObjectTypeDB::register_type<AnimatedSprite>();
 	ObjectTypeDB::register_type<Position2D>();
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_virtual_type<CollisionObject2D>();
 	ObjectTypeDB::register_virtual_type<PhysicsBody2D>();
 	ObjectTypeDB::register_type<StaticBody2D>();
@@ -501,6 +507,7 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<CollisionShape2D>();
 	ObjectTypeDB::register_type<CollisionPolygon2D>();
 	ObjectTypeDB::register_type<RayCast2D>();
+#endif
 	ObjectTypeDB::register_type<VisibilityNotifier2D>();
 	ObjectTypeDB::register_type<VisibilityEnabler2D>();
 	ObjectTypeDB::register_type<Polygon2D>();
@@ -519,10 +526,12 @@ void register_scene_types() {
 	OS::get_singleton()->yield(); //may take time to init
 
 	ObjectTypeDB::register_type<Camera2D>();
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_virtual_type<Joint2D>();
 	ObjectTypeDB::register_type<PinJoint2D>();
 	ObjectTypeDB::register_type<GrooveJoint2D>();
 	ObjectTypeDB::register_type<DampedSpringJoint2D>();
+#endif
 	ObjectTypeDB::register_type<TileSet>();
 	ObjectTypeDB::register_type<TileMap>();
 	ObjectTypeDB::register_type<ParallaxBackground>();
@@ -557,6 +566,7 @@ void register_scene_types() {
 
 	OS::get_singleton()->yield(); //may take time to init
 
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_type<RayShape>();
 	ObjectTypeDB::register_type<SphereShape>();
 	ObjectTypeDB::register_type<BoxShape>();
@@ -564,6 +574,7 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<PlaneShape>();
 	ObjectTypeDB::register_type<ConvexPolygonShape>();
 	ObjectTypeDB::register_type<ConcavePolygonShape>();
+#endif
 
 	ObjectTypeDB::register_type<SurfaceTool>();
 	ObjectTypeDB::register_type<MeshDataTool>();
@@ -612,6 +623,7 @@ void register_scene_types() {
 
 	OS::get_singleton()->yield(); //may take time to init
 
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_virtual_type<Shape2D>();
 	ObjectTypeDB::register_type<LineShape2D>();
 	ObjectTypeDB::register_type<SegmentShape2D>();
@@ -621,6 +633,7 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<CapsuleShape2D>();
 	ObjectTypeDB::register_type<ConvexPolygonShape2D>();
 	ObjectTypeDB::register_type<ConcavePolygonShape2D>();
+#endif
 	ObjectTypeDB::register_type<Curve2D>();
 	ObjectTypeDB::register_type<Path2D>();
 	ObjectTypeDB::register_type<PathFollow2D>();

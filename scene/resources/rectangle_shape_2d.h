@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef RECTANGLE_SHAPE_2D_H
 #define RECTANGLE_SHAPE_2D_H
 
@@ -51,3 +53,5 @@ public:
 };
 
 #endif // RECTANGLE_SHAPE_2D_H
+
+#endif

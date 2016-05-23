@@ -293,7 +293,7 @@ public:
 };
 
 
-
+#ifdef PHYSICAL_ENABLED
 class CollisionShapeSpatialGizmo  : public EditorSpatialGizmo {
 
 	OBJ_TYPE(CollisionShapeSpatialGizmo,EditorSpatialGizmo);
@@ -352,7 +352,7 @@ public:
 	VehicleWheelSpatialGizmo(VehicleWheel* p_car_wheel=NULL);
 
 };
-
+#endif
 
 class NavigationMeshSpatialGizmo  : public EditorSpatialGizmo {
 
@@ -378,6 +378,7 @@ public:
 
 };
 
+#ifdef PHYSICAL_ENABLED
 
 class PinJointSpatialGizmo  : public EditorSpatialGizmo {
 
@@ -445,7 +446,7 @@ public:
 	Generic6DOFJointSpatialGizmo(Generic6DOFJoint* p_p3d=NULL);
 
 };
-
+#endif
 
 class SpatialEditorGizmos  {
 public:

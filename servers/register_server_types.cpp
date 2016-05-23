@@ -61,16 +61,19 @@ void register_server_types() {
 	Globals::get_singleton()->add_singleton( Globals::Singleton("VS",VisualServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("AudioServer",AudioServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("AS",AudioServer::get_singleton()) );
+#ifdef PHYSICAL_ENABLED
 	Globals::get_singleton()->add_singleton( Globals::Singleton("PhysicsServer",PhysicsServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("PS",PhysicsServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("Physics2DServer",Physics2DServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("PS2D",Physics2DServer::get_singleton()) );
+#endif
 	Globals::get_singleton()->add_singleton( Globals::Singleton("SpatialSoundServer",SpatialSoundServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("SS",SpatialSoundServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("SpatialSound2DServer",SpatialSound2DServer::get_singleton()) );
 	Globals::get_singleton()->add_singleton( Globals::Singleton("SS2D",SpatialSound2DServer::get_singleton()) );
 
 
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::register_virtual_type<Physics2DDirectBodyState>();
 	ObjectTypeDB::register_virtual_type<Physics2DDirectSpaceState>();
 	ObjectTypeDB::register_virtual_type<Physics2DShapeQueryResult>();
@@ -81,6 +84,7 @@ void register_server_types() {
 	ObjectTypeDB::register_virtual_type<PhysicsDirectBodyState>();
 	ObjectTypeDB::register_virtual_type<PhysicsDirectSpaceState>();
 	ObjectTypeDB::register_virtual_type<PhysicsShapeQueryResult>();
+#endif
 
 	ScriptDebuggerRemote::resource_usage_func=_debugger_get_resource_usage;
 }

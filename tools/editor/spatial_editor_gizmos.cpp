@@ -1577,6 +1577,7 @@ PortalSpatialGizmo::PortalSpatialGizmo(Portal* p_portal){
 /////
 
 
+#ifdef PHYSICAL_ENABLED
 void RayCastSpatialGizmo::redraw() {
 
 	clear();
@@ -1662,8 +1663,7 @@ VehicleWheelSpatialGizmo::VehicleWheelSpatialGizmo(VehicleWheel* p_car_wheel){
 	set_spatial_node(p_car_wheel);
 	car_wheel=p_car_wheel;
 }
-
-
+#endif
 
 ///
 
@@ -1687,6 +1687,7 @@ TestCubeSpatialGizmo::TestCubeSpatialGizmo(TestCube* p_tc) {
 
 
 
+#ifdef PHYSICAL_ENABLED
 String CollisionShapeSpatialGizmo::get_handle_name(int p_idx) const {
 
 	Ref<Shape> s = cs->get_shape();
@@ -2189,7 +2190,7 @@ CollisionPolygonSpatialGizmo::CollisionPolygonSpatialGizmo(CollisionPolygon* p_p
 	polygon=p_polygon;
 }
 ///
-
+#endif
 
 String VisibilityNotifierGizmo::get_handle_name(int p_idx) const {
 
@@ -2391,6 +2392,7 @@ NavigationMeshSpatialGizmo::NavigationMeshSpatialGizmo(NavigationMeshInstance *p
 
 
 
+#ifdef PHYSICAL_ENABLED
 void PinJointSpatialGizmo::redraw() {
 
 	clear();
@@ -2891,6 +2893,7 @@ Generic6DOFJointSpatialGizmo::Generic6DOFJointSpatialGizmo(Generic6DOFJoint* p_p
 	p3d=p_p3d;
 	set_spatial_node(p3d);
 }
+#endif
 
 ///////
 ///
@@ -2944,11 +2947,13 @@ Ref<SpatialEditorGizmo> SpatialEditorGizmos::get_gizmo(Spatial *p_spatial) {
 		return misg;
 	}
 
+#ifdef PHYSICAL_ENABLED
 	if (p_spatial->cast_to<RayCast>()) {
 
 		Ref<RayCastSpatialGizmo> misg = memnew( RayCastSpatialGizmo(p_spatial->cast_to<RayCast>()) );
 		return misg;
 	}
+#endif
 
 	if (p_spatial->cast_to<Portal>()) {
 
@@ -2969,11 +2974,13 @@ Ref<SpatialEditorGizmo> SpatialEditorGizmos::get_gizmo(Spatial *p_spatial) {
 		return misg;
 	}
 
+#ifdef PHYSICAL_ENABLED
 	if (p_spatial->cast_to<CollisionShape>()) {
 
 		Ref<CollisionShapeSpatialGizmo> misg = memnew( CollisionShapeSpatialGizmo(p_spatial->cast_to<CollisionShape>()) );
 		return misg;
 	}
+#endif
 
 	if (p_spatial->cast_to<VisibilityNotifier>()) {
 
@@ -2981,6 +2988,7 @@ Ref<SpatialEditorGizmo> SpatialEditorGizmos::get_gizmo(Spatial *p_spatial) {
 		return misg;
 	}
 
+#ifdef PHYSICAL_ENABLED
 	if (p_spatial->cast_to<VehicleWheel>()) {
 
 		Ref<VehicleWheelSpatialGizmo> misg = memnew( VehicleWheelSpatialGizmo(p_spatial->cast_to<VehicleWheel>()) );
@@ -3021,7 +3029,7 @@ Ref<SpatialEditorGizmo> SpatialEditorGizmos::get_gizmo(Spatial *p_spatial) {
 		Ref<CollisionPolygonSpatialGizmo> misg = memnew( CollisionPolygonSpatialGizmo(p_spatial->cast_to<CollisionPolygon>()) );
 		return misg;
 	}
-
+#endif
 
 	return Ref<SpatialEditorGizmo>();
 }

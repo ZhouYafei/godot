@@ -165,6 +165,7 @@ opts.Add('colored', 'Enable colored output for the compilation (yes/no)', 'no')
 opts.Add('disable_tooltip', "Disable control default tooltip behavior (yes/no)", 'no')
 opts.Add('extra_suffix', 'Custom extra suffix added to the base filename of all generated binary files.', '')
 opts.Add('vsproj', 'Generate Visual Studio Project. (yes/no)', 'no')
+opts.Add('phys', 'Enable physical collision system', 'yes')
 
 # add platform specific options
 
@@ -399,6 +400,9 @@ if selected_platform in platform_list:
 	else:
 		env.Append(CPPFLAGS=['-DFIXED_RFS'])
 
+	if (env['phys']=='yes'):
+		env.Append(CPPFLAGS=['-DPHYSICAL_ENABLED'])
+		
 	Export('env')
 
 	#build subdirs, the build order is dependent on link order.

@@ -175,7 +175,9 @@ class EditorSceneImportDialog : public ConfirmationDialog  {
 
 	Vector<TreeItem*> scene_flags;
 
+#ifdef PHYSICAL_ENABLED
 	Map<Ref<Mesh>,Ref<Shape> > collision_map;
+#endif
 	ConfirmationDialog *error_dialog;
 
 	OptionButton *this_import;
@@ -1367,13 +1369,22 @@ void EditorSceneImportPlugin::_find_resources(const Variant& p_var, Map<Ref<Imag
 }
 
 
+#ifdef PHYSICAL_ENABLED
 Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>,Ref<Shape> > &collision_map,uint32_t p_flags,Map<Ref<ImageTexture>,TextureRole >& image_map) {
+#else
+Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,uint32_t p_flags,Map<Ref<ImageTexture>,TextureRole >& image_map) {
+#endif
+
 
 	// children first..
 	for(int i=0;i<p_node->get_child_count();i++) {
 
 
+#ifdef PHYSICAL_ENABLED
 		Node *r = _fix_node(p_node->get_child(i),p_root,collision_map,p_flags,image_map);
+#else
+		Node *r = _fix_node(p_node->get_child(i),p_root,p_flags,image_map);
+#endif
 		if (!r) {
 			print_line("was erased..");
 			i--; //was erased
@@ -1610,6 +1621,7 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 
 	if (p_flags&SCENE_FLAG_CREATE_COLLISIONS && _teststr(name,"colonly") && p_node->cast_to<MeshInstance>()) {
 
+#ifdef PHYSICAL_ENABLED
 		if (isroot)
 			return p_node;
 
@@ -1629,11 +1641,12 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 		colshape->set_name("shape");
 		sb->add_child(colshape);
 		colshape->set_owner(p_node->get_owner());
-
+#endif
 
 	} else if (p_flags&SCENE_FLAG_CREATE_COLLISIONS &&_teststr(name,"col") && p_node->cast_to<MeshInstance>()) {
 
 
+#ifdef PHYSICAL_ENABLED
 		MeshInstance *mi = p_node->cast_to<MeshInstance>();
 
 		mi->set_name(_fixstr(name,"col"));
@@ -1650,6 +1663,7 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 		col->add_child(colshape);
 		colshape->set_owner(p_node->get_owner());
 		sb->set_owner(p_node->get_owner());
+#endif
 
 	} else if (p_flags&SCENE_FLAG_CREATE_NAVMESH &&_teststr(name,"navmesh") && p_node->cast_to<MeshInstance>()) {
 
@@ -1673,6 +1687,7 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 		p_node=nmi;
 	} else if (p_flags&SCENE_FLAG_CREATE_CARS &&_teststr(name,"vehicle")) {
 
+#ifdef PHYSICAL_ENABLED
 		if (isroot)
 			return p_node;
 
@@ -1690,10 +1705,11 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 		s->set_transform(Transform());
 
 		p_node=bv;
-
+#endif
 
 	} else if (p_flags&SCENE_FLAG_CREATE_CARS &&_teststr(name,"wheel")) {
 
+#ifdef PHYSICAL_ENABLED
 		if (isroot)
 			return p_node;
 
@@ -1711,6 +1727,7 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 		s->set_transform(Transform());
 
 		p_node=bv;
+#endif
 
 	} else if (p_flags&SCENE_FLAG_CREATE_ROOMS && _teststr(name,"room") && p_node->cast_to<MeshInstance>()) {
 
@@ -1846,6 +1863,7 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 		Ref<Mesh> mesh = mi->get_mesh();
 		if (!mesh.is_null()) {
 
+#ifdef PHYSICAL_ENABLED
 			if (p_flags&SCENE_FLAG_CREATE_COLLISIONS && _teststr(mesh->get_name(),"col")) {
 
 				mesh->set_name( _fixstr(mesh->get_name(),"col") );
@@ -1878,6 +1896,7 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 				}
 
 			}
+#endif
 
 			for(int i=0;i<mesh->get_surface_count();i++) {
 
@@ -1904,7 +1923,6 @@ Node* EditorSceneImportPlugin::_fix_node(Node *p_node,Node *p_root,Map<Ref<Mesh>
 
 	return p_node;
 }
-
 
 void EditorSceneImportPlugin::_merge_existing_node(Node *p_node,Node *p_imported_scene,Set<Ref<Resource> >& checked_resources,Set<Node*> &checked_nodes) {
 
@@ -2070,10 +2088,12 @@ void EditorSceneImportPlugin::_merge_existing_node(Node *p_node,Node *p_imported
 			} else if (p_node->get_type()=="CollisionShape") {
 				//for paths, overwrite path
 
+#ifdef PHYSICAL_ENABLED
 				CollisionShape *collision_imported =imported_node->cast_to<CollisionShape>();
 				CollisionShape *collision_node =p_node->cast_to<CollisionShape>();
 
 				collision_node->set_shape( collision_imported->get_shape() );
+#endif
 			}
 		}
 
@@ -2708,13 +2728,17 @@ Error EditorSceneImportPlugin::import2(Node *scene, const String& p_dest_path, c
 	from->set_option("reimport",false);
 	String target_res_path=p_dest_path.get_base_dir();
 
+#ifdef PHYSICAL_ENABLED
 	Map<Ref<Mesh>,Ref<Shape> > collision_map;
+#endif
 
 	Ref<ResourceImportMetadata> imd = memnew(ResourceImportMetadata);
 
 	Map< Ref<ImageTexture>,TextureRole > imagemap;
 
+#ifdef PHYSICAL_ENABLED
 	scene=_fix_node(scene,scene,collision_map,scene_flags,imagemap);
+#endif
 	if (animation_flags&EditorSceneAnimationImportPlugin::ANIMATION_OPTIMIZE)
 		_optimize_animations(scene,anim_optimizer_linerr,anim_optimizer_angerr,anim_optimizer_maxang);
 	if (animation_clips.size())

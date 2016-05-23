@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "convex_polygon_shape.h"
 #include "servers/physics_server.h"
 #include "quick_hull.h"
@@ -90,3 +91,4 @@ ConvexPolygonShape::ConvexPolygonShape() : Shape( PhysicsServer::get_singleton()
 
 	//set_points(Vector3(1,1,1));
 }
+#endif

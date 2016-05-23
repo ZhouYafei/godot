@@ -30,7 +30,9 @@
 #define WORLD_H
 
 #include "resource.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_server.h"
+#endif
 #include "servers/visual_server.h"
 #include "servers/spatial_sound_server.h"
 #include "scene/resources/environment.h"
@@ -75,7 +77,9 @@ public:
 	void set_environment(const Ref<Environment>& p_environment);
 	Ref<Environment> get_environment() const;
 
+#ifdef PHYSICAL_ENABLED
 	PhysicsDirectSpaceState *get_direct_space_state();
+#endif
 
 	World();
 	~World();

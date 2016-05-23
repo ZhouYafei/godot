@@ -200,6 +200,7 @@ void OS_JavaScript::initialize(const VideoMode& p_desired,int p_video_driver,int
 	spatial_sound_2d_server = memnew( SpatialSound2DServerSW );
 	spatial_sound_2d_server->init();
 
+#ifdef PHYSICAL_ENABLED
 	//
 	print_line("Init Physicsserver");
 
@@ -207,7 +208,8 @@ void OS_JavaScript::initialize(const VideoMode& p_desired,int p_video_driver,int
 	physics_server->init();
 	physics_2d_server = memnew( Physics2DServerSW );
 	physics_2d_server->init();
-
+#endif
+	
 	input = memnew( InputDefault );
 
 	EMSCRIPTEN_RESULT result = emscripten_set_keydown_callback(NULL, this , true, &_keydown_callback);

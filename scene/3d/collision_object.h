@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef COLLISION_OBJECT_H
 #define COLLISION_OBJECT_H
 
@@ -102,3 +104,5 @@ public:
 };
 
 #endif // COLLISION_OBJECT__H
+
+#endif

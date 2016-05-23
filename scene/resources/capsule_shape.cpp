@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "capsule_shape.h"
 #include "servers/physics_server.h"
 
@@ -123,3 +124,4 @@ CapsuleShape::CapsuleShape() : Shape( PhysicsServer::get_singleton()->shape_crea
 	height=1.0;
 	_update_shape();
 }
+#endif

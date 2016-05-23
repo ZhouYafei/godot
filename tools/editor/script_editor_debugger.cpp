@@ -952,7 +952,7 @@ void ScriptEditorDebugger::_notification(int p_what) {
 					if (connection.is_null())
 						break;
 
-					EditorNode::get_log()->add_message(_TR("** Debug Process Started **"));
+					EditorNode::get_log()->add_message(TTR("** Debug Process Started **"));
 					log_forced_visible=false;
 
 					ppeer->set_stream_peer(connection);
@@ -1118,7 +1118,7 @@ void ScriptEditorDebugger::stop(){
 	ppeer->set_stream_peer(Ref<StreamPeer>());
 
 	if (connection.is_valid()) {
-		EditorNode::get_log()->add_message(_TR("** Debug Process Stopped **"));
+		EditorNode::get_log()->add_message(TTR("** Debug Process Stopped **"));
 		connection.unref();
 	}
 

@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #ifndef JOINTS_2D_H
 #define JOINTS_2D_H
 
@@ -148,3 +150,5 @@ public:
 
 
 #endif // JOINTS_2D_H
+
+#endif

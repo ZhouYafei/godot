@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #include "ray_cast_2d.h"
 #include "servers/physics_2d_server.h"
 #include "collision_object_2d.h"
@@ -270,3 +272,4 @@ RayCast2D::RayCast2D() {
 	type_mask=Physics2DDirectSpaceState::TYPE_MASK_COLLISION;
 	cast_to=Vector2(0,50);
 }
+#endif

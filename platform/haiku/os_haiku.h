@@ -4,8 +4,10 @@
 #include "drivers/unix/os_unix.h"
 #include "servers/visual_server.h"
 #include "servers/visual/rasterizer.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_server.h"
 #include "servers/physics_2d/physics_2d_server_sw.h"
+#endif
 #include "servers/audio/audio_server_sw.h"
 #include "servers/audio/sample_manager_sw.h"
 #include "servers/spatial_sound/spatial_sound_server_sw.h"

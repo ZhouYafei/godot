@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "concave_polygon_shape.h"
 
 #include "servers/physics_server.h"
@@ -118,3 +119,4 @@ ConcavePolygonShape::ConcavePolygonShape() : Shape( PhysicsServer::get_singleton
 
 	//set_planes(Vector3(1,1,1));
 }
+#endif

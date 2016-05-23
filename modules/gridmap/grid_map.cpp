@@ -393,12 +393,13 @@ void GridMap::set_cell_item(int p_x,int p_y,int p_z, int p_item,int p_rot){
 		}
 		if (g.items.empty()) {
 
+#ifdef PHYSICAL_ENABLED
 			PhysicsServer::get_singleton()->free(g.static_body);
 			if (g.collision_debug.is_valid()) {
 				PhysicsServer::get_singleton()->free(g.collision_debug);
 				PhysicsServer::get_singleton()->free(g.collision_debug_instance);
 			}
-
+#endif
 			memdelete(&g);
 			octant_map.erase(octantkey);
 		} else {
@@ -422,11 +423,12 @@ void GridMap::set_cell_item(int p_x,int p_y,int p_z, int p_item,int p_rot){
 
 		Octant *g = memnew( Octant );
 		g->dirty=true;
+#ifdef PHYSICAL_ENABLED
 		g->static_body = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
 		PhysicsServer::get_singleton()->body_attach_object_instance_ID(g->static_body,get_instance_ID());
 		if (is_inside_world())
 			PhysicsServer::get_singleton()->body_set_space(g->static_body,get_world()->get_space());
-
+#endif
 		SceneTree *st=SceneTree::get_singleton();
 
 		if (st && st->is_debugging_collisions_hint()) {
@@ -450,7 +452,9 @@ void GridMap::set_cell_item(int p_x,int p_y,int p_z, int p_item,int p_rot){
 		Octant::ItemInstances ii;
 		if (theme.is_valid() && theme->has_item(p_item)) {
 			ii.mesh=theme->get_item_mesh(p_item);
+#ifdef PHYSICAL_ENABLED
 			ii.shape=theme->get_item_shape(p_item);
+#endif
 			ii.navmesh=theme->get_item_navmesh(p_item);
 		}
 		ii.multimesh = Ref<MultiMesh>( memnew( MultiMesh ) );
@@ -573,8 +577,10 @@ void GridMap::_octant_enter_world(const OctantKey &p_key) {
 
 	ERR_FAIL_COND(!octant_map.has(p_key));
 	Octant&g = *octant_map[p_key];
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->body_set_state(g.static_body,PhysicsServer::BODY_STATE_TRANSFORM,get_global_transform());
 	PhysicsServer::get_singleton()->body_set_space(g.static_body,get_world()->get_space());
+#endif
 	//print_line("BODYPOS: "+get_global_transform());
 
 
@@ -615,7 +621,9 @@ void GridMap::_octant_transform(const OctantKey &p_key) {
 
 	ERR_FAIL_COND(!octant_map.has(p_key));
 	Octant&g = *octant_map[p_key];
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->body_set_state(g.static_body,PhysicsServer::BODY_STATE_TRANSFORM,get_global_transform());
+#endif
 
 	if (g.collision_debug_instance.is_valid()) {
 		VS::get_singleton()->instance_set_transform(g.collision_debug_instance,get_global_transform());
@@ -658,7 +666,9 @@ void GridMap::_octant_update(const OctantKey &p_key) {
 	Ref<Mesh> mesh;
 
 	_octant_clear_navmesh(p_key);
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->body_clear_shapes(g.static_body);
+#endif
 
 	if (g.collision_debug.is_valid()) {
 
@@ -724,6 +734,7 @@ void GridMap::_octant_update(const OctantKey &p_key) {
 			}
 
 			// add the item's shape at given xform to octant's static_body
+#ifdef PHYSICAL_ENABLED
 			if (ii.shape.is_valid()) {
 				// add the item's shape
 				PhysicsServer::get_singleton()->body_add_shape(g.static_body,ii.shape->get_rid(),xform);
@@ -733,6 +744,7 @@ void GridMap::_octant_update(const OctantKey &p_key) {
 
 			//	print_line("PHIS x: "+xform);
 			}
+#endif
 
 			// add the item's navmesh at given xform to GridMap's Navigation ancestor
 			if(navigation){
@@ -776,9 +788,10 @@ void GridMap::_octant_exit_world(const OctantKey &p_key) {
 
 	ERR_FAIL_COND(!octant_map.has(p_key));
 	Octant&g = *octant_map[p_key];
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer::get_singleton()->body_set_state(g.static_body,PhysicsServer::BODY_STATE_TRANSFORM,get_global_transform());
 	PhysicsServer::get_singleton()->body_set_space(g.static_body,RID());
-
+#endif
 
 	if (g.baked.is_valid()) {
 
@@ -1132,7 +1145,9 @@ void GridMap::_clear_internal(bool p_keep_areas) {
 		if (E->get()->collision_debug_instance.is_valid())
 			VS::get_singleton()->free(E->get()->collision_debug_instance);
 
+#ifdef PHYSICAL_ENABLED
 		PhysicsServer::get_singleton()->free(E->get()->static_body);
+#endif
 		memdelete(E->get());
 
 	}

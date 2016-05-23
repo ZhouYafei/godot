@@ -44,8 +44,10 @@ bool MeshLibrary::_set(const StringName& p_name, const Variant& p_value) {
 			set_item_name(idx,p_value);
 		else if(what=="mesh")
 			set_item_mesh(idx,p_value);
+#ifdef PHYSICAL_ENABLED
 		else if(what=="shape")
 			set_item_shape(idx,p_value);
+#endif
 		else if(what=="preview")
 			set_item_preview(idx,p_value);
 		else if(what=="navmesh")
@@ -70,8 +72,10 @@ bool MeshLibrary::_get(const StringName& p_name,Variant &r_ret) const {
 		r_ret= get_item_name(idx);
 	else if(what=="mesh")
 		r_ret= get_item_mesh(idx);
+#ifdef PHYSICAL_ENABLED
 	else if(what=="shape")
 		r_ret= get_item_shape(idx);
+#endif
 	else if(what=="navmesh")
 		r_ret= get_item_navmesh(idx);
 	else if(what=="preview")
@@ -124,6 +128,7 @@ void MeshLibrary::set_item_mesh(int p_item,const Ref<Mesh>& p_mesh) {
 
 }
 
+#ifdef PHYSICAL_ENABLED
 void MeshLibrary::set_item_shape(int p_item,const Ref<Shape>& p_shape) {
 
 	ERR_FAIL_COND(!item_map.has(p_item));
@@ -134,7 +139,7 @@ void MeshLibrary::set_item_shape(int p_item,const Ref<Shape>& p_shape) {
 	_change_notify();
 
 }
-
+#endif
 
 void MeshLibrary::set_item_navmesh(int p_item,const Ref<NavigationMesh>& p_navmesh) {
 
@@ -168,11 +173,13 @@ Ref<Mesh> MeshLibrary::get_item_mesh(int p_item) const {
 
 }
 
+#ifdef PHYSICAL_ENABLED
 Ref<Shape> MeshLibrary::get_item_shape(int p_item) const {
 
 	ERR_FAIL_COND_V(!item_map.has(p_item),Ref<Shape>());
 	return item_map[p_item].shape;
 }
+#endif
 
 Ref<NavigationMesh> MeshLibrary::get_item_navmesh(int p_item) const {
 
@@ -248,11 +255,15 @@ void MeshLibrary::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("set_item_name","id","name"),&MeshLibrary::set_item_name);
 	ObjectTypeDB::bind_method(_MD("set_item_mesh","id","mesh:Mesh"),&MeshLibrary::set_item_mesh);
 	ObjectTypeDB::bind_method(_MD("set_item_navmesh","id","navmesh:NavigationMesh"),&MeshLibrary::set_item_navmesh);
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("set_item_shape","id","shape:Shape"),&MeshLibrary::set_item_shape);
+#endif
 	ObjectTypeDB::bind_method(_MD("get_item_name","id"),&MeshLibrary::get_item_name);
 	ObjectTypeDB::bind_method(_MD("get_item_mesh:Mesh","id"),&MeshLibrary::get_item_mesh);
 	ObjectTypeDB::bind_method(_MD("get_item_navmesh:NavigationMesh","id"),&MeshLibrary::get_item_navmesh);
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("get_item_shape:Shape","id"),&MeshLibrary::get_item_shape);
+#endif
 	ObjectTypeDB::bind_method(_MD("remove_item","id"),&MeshLibrary::remove_item);
 	ObjectTypeDB::bind_method(_MD("clear"),&MeshLibrary::clear);
 	ObjectTypeDB::bind_method(_MD("get_item_list"),&MeshLibrary::get_item_list);

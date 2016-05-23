@@ -97,7 +97,9 @@ class GridMap : public Spatial {
 		struct ItemInstances {
 			Set<IndexKey> cells;
 			Ref<Mesh> mesh;
+#ifdef PHYSICAL_ENABLED
 			Ref<Shape> shape;
+#endif
 			Ref<MultiMesh> multimesh;
 			RID multimesh_instance;
 			Ref<NavigationMesh> navmesh;

@@ -34,7 +34,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "print_string.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics/physics_server_sw.h"
+#endif
 #include "errno.h"
 
 #include "X11/Xutil.h"
@@ -418,11 +420,13 @@ void OS_X11::initialize(const VideoMode& p_desired,int p_video_driver,int p_audi
 
 	visual_server->init();
 	//
+#ifdef PHYSICAL_ENABLED
 	physics_server = memnew( PhysicsServerSW );
 	physics_server->init();
 	//physics_2d_server = memnew( Physics2DServerSW );
 	physics_2d_server = Physics2DServerWrapMT::init_server<Physics2DServerSW>();
 	physics_2d_server->init();
+#endif
 
 	input = memnew( InputDefault );
 #ifdef JOYDEV_ENABLED
@@ -460,12 +464,14 @@ void OS_X11::finalize() {
 	memdelete(visual_server);
 	memdelete(rasterizer);
 
+#ifdef PHYSICAL_ENABLED
 	physics_server->finish();
 	memdelete(physics_server);
 
 	physics_2d_server->finish();
 	memdelete(physics_2d_server);
-
+#endif
+	
 	XUnmapWindow( x11_display, x11_window );
 	XDestroyWindow( x11_display, x11_window );
 

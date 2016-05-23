@@ -36,7 +36,9 @@
 #include "servers/visual_server.h"
 #include "servers/visual/visual_server_wrap_mt.h"
 #include "servers/visual/rasterizer.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_server.h"
+#endif
 #include "servers/audio/audio_server_sw.h"
 #include "servers/audio/sample_manager_sw.h"
 #include "servers/spatial_sound/spatial_sound_server_sw.h"
@@ -44,8 +46,10 @@
 #include "drivers/rtaudio/audio_driver_rtaudio.h"
 #include "drivers/alsa/audio_driver_alsa.h"
 #include "drivers/pulseaudio/audio_driver_pulseaudio.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d/physics_2d_server_sw.h"
 #include "servers/physics_2d/physics_2d_server_wrap_mt.h"
+#endif
 #include "main/input_default.h"
 #include "joystick_linux.h"
 
@@ -94,11 +98,15 @@ class OS_X11 : public OS_Unix {
 	unsigned int event_id;
 	uint32_t last_button_state;
 
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer *physics_server;
+endif
 	unsigned int get_mouse_button_state(unsigned int p_x11_state);
 	InputModifierState get_key_modifier_state(unsigned int p_x11_state);
+#ifdef PHYSICAL_ENABLED
 	Physics2DServer *physics_2d_server;
-
+#endif
+	
 	MouseMode mouse_mode;
 	Point2i center;
 

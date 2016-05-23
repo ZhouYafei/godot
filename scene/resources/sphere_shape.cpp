@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "sphere_shape.h"
 #include "servers/physics_server.h"
 
@@ -86,3 +87,4 @@ SphereShape::SphereShape() : Shape( PhysicsServer::get_singleton()->shape_create
 
 	set_radius(1.0);
 }
+#endif

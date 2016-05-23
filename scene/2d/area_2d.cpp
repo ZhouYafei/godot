@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #include "area_2d.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_2d_server.h"
@@ -694,3 +696,4 @@ Area2D::~Area2D() {
 
 
 }
+#endif

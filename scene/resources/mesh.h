@@ -163,8 +163,10 @@ public:
 	AABB get_aabb() const;
 	virtual RID get_rid() const;
 
+#ifdef PHYSICAL_ENABLED
 	Ref<Shape> create_trimesh_shape() const;
 	Ref<Shape> create_convex_shape() const;
+#endif
 
 	Ref<Mesh> create_outline(float p_margin) const;
 

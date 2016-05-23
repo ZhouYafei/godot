@@ -26,6 +26,8 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
+
 #include "joints_2d.h"
 #include "servers/physics_2d_server.h"
 #include "physics_body_2d.h"
@@ -476,3 +478,4 @@ DampedSpringJoint2D::DampedSpringJoint2D() {
 	stiffness=20;
 	damping=1;
 }
+#endif

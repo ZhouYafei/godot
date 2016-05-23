@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "shape.h"
 
 #include "servers/physics_server.h"
@@ -108,3 +109,4 @@ Shape::~Shape() {
 	PhysicsServer::get_singleton()->free(shape);
 }
 
+#endif

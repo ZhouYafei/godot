@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#ifdef PHYSICAL_ENABLED
 #include "collision_shape_2d.h"
 #include "collision_object_2d.h"
 #include "scene/resources/segment_shape_2d.h"
@@ -244,3 +245,4 @@ CollisionShape2D::CollisionShape2D() {
 	can_update_body = false;
 	update_shape_index=-1;
 }
+#endif

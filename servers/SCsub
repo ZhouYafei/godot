@@ -5,8 +5,10 @@ env.add_source_files(env.servers_sources,"*.cpp")
 
 Export('env')
 
-SConscript('physics/SCsub');
-SConscript('physics_2d/SCsub');
+if (env['phys']=='yes'):
+	SConscript('physics/SCsub');
+	SConscript('physics_2d/SCsub');
+
 SConscript('visual/SCsub');
 SConscript('audio/SCsub');
 SConscript('spatial_sound/SCsub');

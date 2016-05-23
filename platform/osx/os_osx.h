@@ -36,15 +36,19 @@
 #include "servers/visual_server.h"
 #include "servers/visual/visual_server_wrap_mt.h"
 #include "servers/visual/rasterizer.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_server.h"
+#endif
 #include "servers/audio/audio_server_sw.h"
 #include "servers/audio/sample_manager_sw.h"
 #include "servers/spatial_sound/spatial_sound_server_sw.h"
 #include "servers/spatial_sound_2d/spatial_sound_2d_server_sw.h"
 #include "drivers/rtaudio/audio_driver_rtaudio.h"
 #include "drivers/alsa/audio_driver_alsa.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d/physics_2d_server_sw.h"
 #include "servers/physics_2d/physics_2d_server_wrap_mt.h"
+#endif
 #include "platform/osx/audio_driver_osx.h"
 #include <ApplicationServices/ApplicationServices.h>
 
@@ -64,9 +68,11 @@ public:
 	MainLoop *main_loop;
 	unsigned int event_id;
 
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer *physics_server;
 	Physics2DServer *physics_2d_server;
-
+#endif
+	
 	IP_Unix *ip_unix;
 
 	AudioDriverOSX audio_driver_osx;

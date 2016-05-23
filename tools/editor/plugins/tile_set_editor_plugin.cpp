@@ -102,7 +102,9 @@ void TileSetEditor::_import_scene(Node *scene, Ref<TileSet> p_library, bool p_me
 			p_library->tile_set_region(id,src_rect);
 		}
 
+#ifdef PHYSICAL_ENABLED
 		Vector<Ref<Shape2D> >collisions;
+#endif
 		Ref<NavigationPolygon> nav_poly;
 		Ref<OccluderPolygon2D> occluder;
 
@@ -116,6 +118,7 @@ void TileSetEditor::_import_scene(Node *scene, Ref<TileSet> p_library, bool p_me
 			if (child2->cast_to<LightOccluder2D>())
 				occluder=child2->cast_to<LightOccluder2D>()->get_occluder_polygon();
 
+#ifdef PHYSICAL_ENABLED
 			if (!child2->cast_to<StaticBody2D>())
 				continue;
 			StaticBody2D *sb = child2->cast_to<StaticBody2D>();
@@ -129,8 +132,10 @@ void TileSetEditor::_import_scene(Node *scene, Ref<TileSet> p_library, bool p_me
 					collisions.push_back(collision);
 				}
 			}
+#endif
 		}
 
+#ifdef PHYSICAL_ENABLED
 		if (collisions.size()) {
 
 			p_library->tile_set_shapes(id,collisions);
@@ -139,6 +144,9 @@ void TileSetEditor::_import_scene(Node *scene, Ref<TileSet> p_library, bool p_me
 			p_library->tile_set_shape_offset(id,Vector2());
 
 		}
+#else
+	p_library->tile_set_shape_offset(id,Vector2());
+#endif
 
 		p_library->tile_set_texture_offset(id,mi->get_offset());
 		p_library->tile_set_navigation_polygon(id,nav_poly);

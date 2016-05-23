@@ -29,6 +29,8 @@
 #ifndef SPHERE_SHAPE_H
 #define SPHERE_SHAPE_H
 
+#ifdef PHYSICAL_ENABLED
+
 
 #include "scene/resources/shape.h"
 
@@ -50,5 +52,7 @@ public:
 
 	SphereShape();
 };
+
+#endif
 
 #endif // SPHERE_SHAPE_H

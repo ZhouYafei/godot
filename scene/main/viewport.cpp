@@ -30,7 +30,9 @@
 #include "os/os.h"
 #include "scene/3d/spatial.h"
 #include "os/input.h"
+#ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
+#endif
 //#include "scene/3d/camera.h"
 
 #include "servers/spatial_sound_server.h"
@@ -286,6 +288,7 @@ void Viewport::update_worlds() {
 
 void Viewport::_test_new_mouseover(ObjectID new_collider) {
 #ifndef _3D_DISABLED
+#ifdef PHYSICAL_ENABLED
 	if (new_collider!=physics_object_over) {
 
 		if (physics_object_over) {
@@ -313,6 +316,7 @@ void Viewport::_test_new_mouseover(ObjectID new_collider) {
 		physics_object_over=new_collider;
 
 	}
+#endif
 #endif
 
 }
@@ -369,11 +373,15 @@ void Viewport::_notification(int p_what) {
 			add_to_group("_viewports");
 			if (get_tree()->is_debugging_collisions_hint()) {
 				//2D
+#ifdef PHYSICAL_ENABLED
 				Physics2DServer::get_singleton()->space_set_debug_contacts(find_world_2d()->get_space(),get_tree()->get_collision_debug_contact_count());
+#endif
 				contact_2d_debug=VisualServer::get_singleton()->canvas_item_create();
 				VisualServer::get_singleton()->canvas_item_set_parent(contact_2d_debug,find_world_2d()->get_canvas());
 				//3D
+#ifdef PHYSICAL_ENABLED
 				PhysicsServer::get_singleton()->space_set_debug_contacts(find_world()->get_space(),get_tree()->get_collision_debug_contact_count());
+#endif
 				contact_3d_debug_multimesh=VisualServer::get_singleton()->multimesh_create();
 				VisualServer::get_singleton()->multimesh_set_instance_count(contact_3d_debug_multimesh,get_tree()->get_collision_debug_contact_count());
 				VisualServer::get_singleton()->multimesh_set_visible_instances(contact_3d_debug_multimesh,0);
@@ -443,6 +451,7 @@ void Viewport::_notification(int p_what) {
 				}
 			}
 
+#ifdef PHYSICAL_ENABLED
 			if (get_tree()->is_debugging_collisions_hint() && contact_2d_debug.is_valid()) {
 
 				VisualServer::get_singleton()->canvas_item_clear(contact_2d_debug);
@@ -692,6 +701,7 @@ void Viewport::_notification(int p_what) {
 				}
 
 			}
+#endif
 
 		} break;
 	}

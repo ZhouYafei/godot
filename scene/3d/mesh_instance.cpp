@@ -155,6 +155,7 @@ DVector<Face3> MeshInstance::get_faces(uint32_t p_usage_flags) const {
 }
 
 
+#ifdef PHYSICAL_ENABLED
 Node* MeshInstance::create_trimesh_collision_node() {
 
 	if (mesh.is_null())
@@ -223,6 +224,7 @@ void MeshInstance::create_convex_collision() {
 
 
 }
+#endif
 
 void MeshInstance::_notification(int p_what) {
 
@@ -239,9 +241,13 @@ void MeshInstance::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("set_skeleton_path","skeleton_path:NodePath"),&MeshInstance::set_skeleton_path);
 	ObjectTypeDB::bind_method(_MD("get_skeleton_path:NodePath"),&MeshInstance::get_skeleton_path);
 	ObjectTypeDB::bind_method(_MD("get_aabb"),&MeshInstance::get_aabb);
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("create_trimesh_collision"),&MeshInstance::create_trimesh_collision);
+#endif
 	ObjectTypeDB::set_method_flags("MeshInstance","create_trimesh_collision",METHOD_FLAGS_DEFAULT);
+#ifdef PHYSICAL_ENABLED
 	ObjectTypeDB::bind_method(_MD("create_convex_collision"),&MeshInstance::create_convex_collision);
+#endif
 	ObjectTypeDB::set_method_flags("MeshInstance","create_convex_collision",METHOD_FLAGS_DEFAULT);
 	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "mesh/mesh", PROPERTY_HINT_RESOURCE_TYPE, "Mesh" ), _SCS("set_mesh"), _SCS("get_mesh"));
 	ADD_PROPERTY( PropertyInfo (Variant::NODE_PATH, "mesh/skeleton"), _SCS("set_skeleton_path"), _SCS("get_skeleton_path"));
