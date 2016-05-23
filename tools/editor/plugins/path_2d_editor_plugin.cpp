@@ -483,7 +483,7 @@ void Path2DEditor::_canvas_draw() {
 		return ;
 
 	Matrix32 xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
-	Ref<Texture> handle= get_icon("EditorHandle","EditorIcons");
+	Ref<Texture> handle= get_icon("port","GraphNode");
 	Size2 handle_size = handle->get_size();
 
 	Ref<Curve2D> curve = node->get_curve();
@@ -491,23 +491,35 @@ void Path2DEditor::_canvas_draw() {
 	int len = curve->get_point_count();
 	Control *vpc = canvas_item_editor->get_viewport_control();
 
+	static Color color_beg = Color(0,1,0,1); // green
+	static Color color_pt = Color(1,1,0,1); // yellow
+	static Color color_end = Color(1,0,0,1); // red
+	static Color color_out = Color(1,0,0,0.3); // red
+	static Color color_in = Color(0,1,0,0.3); // green
 
 	for(int i=0;i<len;i++) {
 
 
 		Vector2 point = xform.xform(curve->get_point_pos(i));
-		vpc->draw_texture_rect(handle,Rect2(point-handle_size*0.5,handle_size),false,Color(1,1,1,1));
+		Color color;
+		if(i == 0)
+			color = color_beg;
+		else if(i == len - 1)
+			color = color_end;
+		else
+			color = color_pt;
+		vpc->draw_texture_rect(handle,Rect2(point-handle_size*0.5,handle_size),false,color);
 
 		if (i<len-1) {
 			Vector2 pointout = xform.xform(curve->get_point_pos(i)+curve->get_point_out(i));
 			vpc->draw_line(point,pointout,Color(0.5,0.5,1.0,0.8),1.0);
-			vpc->draw_texture_rect(handle, Rect2(pointout-handle_size*0.5,handle_size),false,Color(1,0.5,1,0.3));
+			vpc->draw_texture_rect(handle, Rect2(pointout-handle_size*0.5,handle_size),false,color_in);
 		}
 
 		if (i>0) {
 			Vector2 pointin = xform.xform(curve->get_point_pos(i)+curve->get_point_in(i));
 			vpc->draw_line(point,pointin,Color(0.5,0.5,1.0,0.8),1.0);
-			vpc->draw_texture_rect(handle, Rect2(pointin-handle_size*0.5,handle_size),false,Color(1,0.5,1,0.3));
+			vpc->draw_texture_rect(handle, Rect2(pointin-handle_size*0.5,handle_size),false,color_out);
 		}
 
 	}
