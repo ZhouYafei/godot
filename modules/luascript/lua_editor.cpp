@@ -575,6 +575,21 @@ void LuaScriptLanguage::get_recognized_extensions(List<String> *p_extensions) co
 	p_extensions->push_back("lua");
 }
 
+void LuaScriptLanguage::profiling_start() {
+}
+
+void LuaScriptLanguage::profiling_stop() {
+}
+
+int LuaScriptLanguage::profiling_get_accumulated_data(ProfilingInfo *p_info_arr,int p_info_max) {
+
+	return 0;
+}
+
+int LuaScriptLanguage::profiling_get_frame_data(ProfilingInfo *p_info_arr,int p_info_max) {
+
+	return 0;
+}
 
 void LuaScriptLanguage::get_public_functions(List<MethodInfo> *p_functions) const {
 

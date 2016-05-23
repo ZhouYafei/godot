@@ -7,15 +7,6 @@
     <Filter Include="server\audio">
       <UniqueIdentifier>{e7db0dc6-4cf1-474c-85f5-720f8585029c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="server\physics">
-      <UniqueIdentifier>{e57848e0-e1e4-40e0-920f-6cbaba69ffa1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="server\physics\joints">
-      <UniqueIdentifier>{4d706c10-3249-4981-be38-78b6e836e025}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="server\physics_2d">
-      <UniqueIdentifier>{2153889c-ef18-48e9-8756-d7ca7ed2c713}</UniqueIdentifier>
-    </Filter>
     <Filter Include="server\spatial_sound">
       <UniqueIdentifier>{94ddb43b-467c-4e7d-84e7-5617e411ebe4}</UniqueIdentifier>
     </Filter>
@@ -24,6 +15,15 @@
     </Filter>
     <Filter Include="server\visual">
       <UniqueIdentifier>{8674d817-aabf-4fad-8434-ddc5e98bc672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server\physics">
+      <UniqueIdentifier>{54bc609a-4a47-41b1-93f3-b5aa0832d184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server\physics\joints">
+      <UniqueIdentifier>{5bfc0683-42ce-42c4-8cbe-ad5a4f64b8ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server\physics_2d">
+      <UniqueIdentifier>{651c653e-a05e-483e-8ac9-27e66253764b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +70,39 @@
       <Filter>server\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\audio\voice_rb_sw.cpp">
+      <Filter>server\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\spatial_sound\spatial_sound_server_sw.cpp">
+      <Filter>server\spatial_sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\spatial_sound_2d\spatial_sound_2d_server_sw.cpp">
+      <Filter>server\spatial_sound_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\particle_system_sw.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\rasterizer.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\rasterizer_dummy.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\shader_compiler.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\shader_graph.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\shader_language.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\visual_server_raster.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\visual\visual_server_wrap_mt.cpp">
+      <Filter>server\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\audio\audio_rb_resampler.cpp">
       <Filter>server\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\physics\area_pair_sw.cpp">
@@ -141,6 +174,24 @@
     <ClCompile Include="..\..\servers\physics\joints\slider_joint_sw.cpp">
       <Filter>server\physics\joints</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\servers\physics_2d\joints_2d_sw.cpp">
+      <Filter>server\physics_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\physics_2d\physics_2d_server_sw.cpp">
+      <Filter>server\physics_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\physics_2d\physics_2d_server_wrap_mt.cpp">
+      <Filter>server\physics_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\physics_2d\shape_2d_sw.cpp">
+      <Filter>server\physics_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\physics_2d\space_2d_sw.cpp">
+      <Filter>server\physics_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\servers\physics_2d\step_2d_sw.cpp">
+      <Filter>server\physics_2d</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\servers\physics_2d\area_2d_sw.cpp">
       <Filter>server\physics_2d</Filter>
     </ClCompile>
@@ -173,57 +224,6 @@
     </ClCompile>
     <ClCompile Include="..\..\servers\physics_2d\constraint_2d_sw.cpp">
       <Filter>server\physics_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics_2d\joints_2d_sw.cpp">
-      <Filter>server\physics_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics_2d\physics_2d_server_sw.cpp">
-      <Filter>server\physics_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics_2d\shape_2d_sw.cpp">
-      <Filter>server\physics_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics_2d\space_2d_sw.cpp">
-      <Filter>server\physics_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics_2d\step_2d_sw.cpp">
-      <Filter>server\physics_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\spatial_sound\spatial_sound_server_sw.cpp">
-      <Filter>server\spatial_sound</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\spatial_sound_2d\spatial_sound_2d_server_sw.cpp">
-      <Filter>server\spatial_sound_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\particle_system_sw.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\rasterizer.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\rasterizer_dummy.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\shader_compiler.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\shader_graph.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\shader_language.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\visual_server_raster.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\visual_server_wrap_mt.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics_2d\physics_2d_server_wrap_mt.cpp">
-      <Filter>server\physics_2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\audio\audio_rb_resampler.cpp">
-      <Filter>server\audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,6 +270,42 @@
       <Filter>server\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\servers\audio\voice_rb_sw.h">
+      <Filter>server\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\spatial_sound\spatial_sound_server_sw.h">
+      <Filter>server\spatial_sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\spatial_sound_2d\spatial_sound_2d_server_sw.h">
+      <Filter>server\spatial_sound_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\particle_system_sw.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\rasterizer.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\rasterizer_dummy.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\shader_compiler.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\shader_graph.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\shader_language.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\visual_server_raster.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\visual\visual_server_wrap_mt.h">
+      <Filter>server\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\server_wrap_mt_common.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\audio\audio_rb_resampler.h">
       <Filter>server\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\servers\physics\area_pair_sw.h">
@@ -341,6 +377,27 @@
     <ClInclude Include="..\..\servers\physics\joints\slider_joint_sw.h">
       <Filter>server\physics\joints</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\servers\physics_2d\constraint_2d_sw.h">
+      <Filter>server\physics_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\physics_2d\joints_2d_sw.h">
+      <Filter>server\physics_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\physics_2d\physics_2d_server_sw.h">
+      <Filter>server\physics_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\physics_2d\physics_2d_server_wrap_mt.h">
+      <Filter>server\physics_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\physics_2d\shape_2d_sw.h">
+      <Filter>server\physics_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\physics_2d\space_2d_sw.h">
+      <Filter>server\physics_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\servers\physics_2d\step_2d_sw.h">
+      <Filter>server\physics_2d</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\servers\physics_2d\area_2d_sw.h">
       <Filter>server\physics_2d</Filter>
     </ClInclude>
@@ -370,63 +427,6 @@
     </ClInclude>
     <ClInclude Include="..\..\servers\physics_2d\collision_solver_2d_sw.h">
       <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\physics_2d\constraint_2d_sw.h">
-      <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\physics_2d\joints_2d_sw.h">
-      <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\physics_2d\physics_2d_server_sw.h">
-      <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\physics_2d\shape_2d_sw.h">
-      <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\physics_2d\space_2d_sw.h">
-      <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\physics_2d\step_2d_sw.h">
-      <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\spatial_sound\spatial_sound_server_sw.h">
-      <Filter>server\spatial_sound</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\spatial_sound_2d\spatial_sound_2d_server_sw.h">
-      <Filter>server\spatial_sound_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\particle_system_sw.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\rasterizer.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\rasterizer_dummy.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\shader_compiler.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\shader_graph.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\shader_language.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\visual_server_raster.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\visual_server_wrap_mt.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\server_wrap_mt_common.h">
-      <Filter>server</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\physics_2d\physics_2d_server_wrap_mt.h">
-      <Filter>server\physics_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\audio\audio_rb_resampler.h">
-      <Filter>server\audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

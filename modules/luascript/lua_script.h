@@ -364,6 +364,12 @@ public:
 
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
 
+	virtual void profiling_start();
+	virtual void profiling_stop();
+
+	virtual int profiling_get_accumulated_data(ProfilingInfo *p_info_arr,int p_info_max);
+	virtual int profiling_get_frame_data(ProfilingInfo *p_info_arr,int p_info_max);
+
 	lua_State *get_state() const { return L; }
 	Mutex* get_lock() const { return lock; }
 
