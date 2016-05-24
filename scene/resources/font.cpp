@@ -197,7 +197,7 @@ void BitmapFont::_parse_patterns() {
 		Size2 size = tex->get_size();
 		add_char(ch, i
 			, Rect2(Vector2(0, 0), size)
-			, Size2(0, Math::floor((height - size.height) / 2))
+			, Size2(0, -Math::floor((height - size.height) / 2))
 			, size.width
 		);
 	}
