@@ -66,6 +66,8 @@
 #include "addon_editor_plugin.h"
 #include "plugins/spatial_editor_plugin.h"
 #include "plugins/sample_editor_plugin.h"
+#include "plugins/texture_editor_plugin.h"
+#include "plugins/material_editor_plugin.h"
 #include "plugins/sample_library_editor_plugin.h"
 #include "plugins/sample_player_editor_plugin.h"
 #include "plugins/camera_editor_plugin.h"
@@ -74,6 +76,7 @@
 #include "plugins/item_list_editor_plugin.h"
 #include "plugins/stream_editor_plugin.h"
 #include "plugins/multimesh_editor_plugin.h"
+#include "plugins/mesh_instance_editor_plugin.h"
 #include "plugins/mesh_editor_plugin.h"
 #include "plugins/theme_editor_plugin.h"
 
@@ -2154,7 +2157,8 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 				String existing;
 				if (extensions.size()) {
-					existing="new_scene."+extensions.front()->get().to_lower();
+					String root_name(get_edited_scene()->get_name());
+					existing=root_name+"."+extensions.front()->get().to_lower();
 				}
 				file->set_current_path(existing);
 
@@ -5820,6 +5824,7 @@ EditorNode::EditorNode() {
 	HBoxContainer *prop_editor_hb = memnew( HBoxContainer );
 
 	prop_editor_base->add_child(prop_editor_hb);
+	prop_editor_vb=prop_editor_base;
 
 	resource_new_button = memnew( ToolButton );
 	resource_new_button->set_tooltip(TTR("Create a new resource in memory and edit it."));
@@ -6226,9 +6231,9 @@ EditorNode::EditorNode() {
 	add_editor_plugin( memnew( MultiMeshEditorPlugin(this) ) );
 	add_editor_plugin( memnew( MeshInstanceEditorPlugin(this) ) );
 	add_editor_plugin( memnew( AnimationTreeEditorPlugin(this) ) );
-	add_editor_plugin( memnew( SamplePlayerEditorPlugin(this) ) );
+	//add_editor_plugin( memnew( SamplePlayerEditorPlugin(this) ) ); - this is kind of useless at this point
 	add_editor_plugin( memnew( MeshLibraryEditorPlugin(this) ) );
-	add_editor_plugin( memnew( StreamEditorPlugin(this) ) );
+	//add_editor_plugin( memnew( StreamEditorPlugin(this) ) );
 	add_editor_plugin( memnew( StyleBoxEditorPlugin(this) ) );
 	add_editor_plugin( memnew( ParticlesEditorPlugin(this) ) );
 	add_editor_plugin( memnew( ResourcePreloaderEditorPlugin(this) ) );
@@ -6249,11 +6254,13 @@ EditorNode::EditorNode() {
 	add_editor_plugin( memnew( Polygon2DEditorPlugin(this) ) );
 	add_editor_plugin( memnew( LightOccluder2DEditorPlugin(this) ) );
 	add_editor_plugin( memnew( NavigationPolygonEditorPlugin(this) ) );
-	add_editor_plugin( memnew( ColorRampEditorPlugin(this,true) ) );
-	add_editor_plugin( memnew( ColorRampEditorPlugin(this,false) ) );
+	add_editor_plugin( memnew( ColorRampEditorPlugin(this) ) );
 #ifdef PHYSICAL_ENABLED
 	add_editor_plugin( memnew( CollisionShape2DEditorPlugin(this) ) );
 #endif
+	add_editor_plugin( memnew( TextureEditorPlugin(this) ) );
+	add_editor_plugin( memnew( MaterialEditorPlugin(this) ) );
+	add_editor_plugin( memnew( MeshEditorPlugin(this) ) );
 
 	for(int i=0;i<EditorPlugins::get_plugin_count();i++)
 		add_editor_plugin( EditorPlugins::create(i,this) );
