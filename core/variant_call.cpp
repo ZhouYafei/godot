@@ -934,8 +934,9 @@ Variant Variant::call(const StringName& p_method,const Variant** p_args,int p_ar
 
 	if (type==Variant::OBJECT) {
 		//call object
-		Object *obj = _get_obj().obj;
-		if (!obj) {
+		Variant::ObjData& od = _get_obj();
+		Object *obj = od.obj;
+		if (!obj || od.ref.is_null()) {
 			r_error.error=CallError::CALL_ERROR_INSTANCE_IS_NULL;
 			return ret;
 		}
@@ -950,7 +951,7 @@ Variant Variant::call(const StringName& p_method,const Variant** p_args,int p_ar
 
 
 #endif
-		return _get_obj().obj->call(p_method,p_args,p_argcount,r_error);
+		return obj->call(p_method,p_args,p_argcount,r_error);
 
 	//else if (type==Variant::METHOD) {
 
