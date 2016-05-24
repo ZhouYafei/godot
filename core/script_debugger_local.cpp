@@ -58,6 +58,8 @@ void ScriptDebuggerLocal::print_source(ScriptLanguage *p_script,int p_frame,bool
 		}
 
 		for(int n = line_from; n <= line_to; n++) {
+			if(n == 0)
+				continue;
 			print_line(((n==line)?"-> ":"   ")+String::num(n)+":"+lines[n - 1]);
 		}
 	}
