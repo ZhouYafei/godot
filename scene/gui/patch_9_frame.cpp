@@ -9,29 +9,100 @@ void Patch9Frame::_notification(int p_what) {
 		if (texture.is_null())
 			return;
 
-
-		Size2 s=get_size();
 		RID ci = get_canvas_item();
-		VS::get_singleton()->canvas_item_add_style_box(ci,Rect2(Point2(),s),texture->get_rid(),texture->get_region(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center,modulate);
+		Size2 s=get_size();
+		Size2 tex_size = texture->get_size();
+		Vector2 scale = s / tex_size;
 
-//		draw_texture_rect(texture,Rect2(Point2(),s),false,modulate);
+		int left = margin[MARGIN_LEFT];
+		int top = margin[MARGIN_TOP];
+		int right = margin[MARGIN_RIGHT];
+		int bottom = margin[MARGIN_BOTTOM];
 
-/*
-		Vector<Point2> points;
-		points.resize(4);
-		points[0]=Point2(0,0);
-		points[1]=Point2(s.x,0);
-		points[2]=Point2(s.x,s.y);
-		points[3]=Point2(0,s.y);
-		Vector<Point2> uvs;
-		uvs.resize(4);
-		uvs[0]=Point2(0,0);
-		uvs[1]=Point2(1,0);
-		uvs[2]=Point2(1,1);
-		uvs[3]=Point2(0,1);
+		// left top
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(0, 0),
+				Vector2(left, top)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
+		// left center
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(0, top),
+				Vector2(left, tex_size.y - bottom - top)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
+		// left bottom
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(0, tex_size.y - bottom - top),
+				Vector2(left, tex_size.y - bottom)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
 
-		VisualServer::get_singleton()->canvas_item_add_primitive(ci,points,Vector<Color>(),uvs,texture->get_rid());
-*/
+		// center top
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(left, 0),
+				Vector2(tex_size.x - left - right, top)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
+
+		// center center
+		if(draw_center) {
+			Rect2 src_rect = Rect2(
+				Vector2(left, top),
+				Vector2(tex_size.x - left - right, tex_size.y - bottom - top)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
+		// center bottom
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(left, tex_size.y - bottom - top),
+				Vector2(tex_size.x - left - right, tex_size.y - bottom)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
+
+		// right top
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(tex_size.x - right, 0),
+				Vector2(right, top)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
+		// right center
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(tex_size.x - right, top),
+				Vector2(right, tex_size.y - bottom - top)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
+		// right bottom
+		{
+			Rect2 src_rect = Rect2(
+				Vector2(tex_size.x - right, tex_size.y - bottom - top),
+				Vector2(right, tex_size.y - bottom)
+			);
+			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			texture->draw_rect_region(ci, rect, src_rect, modulate);
+		}
 	}
 }
 
