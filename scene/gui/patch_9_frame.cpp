@@ -25,7 +25,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(0, 0),
 				Vector2(left, top)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 		// left center
@@ -34,7 +34,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(0, top),
 				Vector2(left, tex_size.y - bottom - top)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 		// left bottom
@@ -43,7 +43,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(0, tex_size.y - bottom - top),
 				Vector2(left, tex_size.y - bottom)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 
@@ -53,7 +53,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(left, 0),
 				Vector2(tex_size.x - left - right, top)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 
@@ -63,7 +63,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(left, top),
 				Vector2(tex_size.x - left - right, tex_size.y - bottom - top)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 		// center bottom
@@ -72,7 +72,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(left, tex_size.y - bottom - top),
 				Vector2(tex_size.x - left - right, tex_size.y - bottom)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 
@@ -82,7 +82,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(tex_size.x - right, 0),
 				Vector2(right, top)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 		// right center
@@ -91,7 +91,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(tex_size.x - right, top),
 				Vector2(right, tex_size.y - bottom - top)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 		// right bottom
@@ -100,7 +100,7 @@ void Patch9Frame::_notification(int p_what) {
 				Vector2(tex_size.x - right, tex_size.y - bottom - top),
 				Vector2(right, tex_size.y - bottom)
 			);
-			Rect2 rect = Rect2(src_rect.pos / scale, src_rect.size / scale);
+			Rect2 rect = Rect2(src_rect.pos * scale, src_rect.size * scale);
 			texture->draw_rect_region(ci, rect, src_rect, modulate);
 		}
 	}
