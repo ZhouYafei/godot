@@ -352,12 +352,12 @@ void TexPackTexture::draw(RID p_canvas_item, const Point2& p_pos, const Color& p
 
 	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
 	const TexPackAsset::Frame& frame = frames[atlas_index];
-	float scale = asset->get_scale();
 
-	const Rect2& srect = frame.spriteSourceSize;
-	Rect2 rect = Rect2(p_pos, get_size());
-	rect.pos += rect.size * (srect.pos / frame.sourceSize);
-	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+	Vector2 sscale = get_size() / frame.sourceSize;
+	Rect2 rect = Rect2(
+		p_pos + (frame.spriteSourceSize.pos * sscale),
+		frame.spriteSourceSize.size * sscale
+	);
 
 	Rect2 src_rect = frame.frame;
 	if(frame.rotated) {
@@ -382,12 +382,12 @@ void TexPackTexture::draw_rect(RID p_canvas_item,const Rect2& p_rect, bool p_til
 
 	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
 	const TexPackAsset::Frame& frame = frames[atlas_index];
-	float scale = asset->get_scale();
 
-	const Rect2& srect = frame.spriteSourceSize;
-	Rect2 rect = p_rect;
-	rect.pos += rect.size * (srect.pos / frame.sourceSize);
-	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+	Vector2 sscale = frame.sourceSize / p_rect.size;
+	Rect2 rect = Rect2(
+		p_rect.pos + (frame.spriteSourceSize.pos / sscale),
+		p_rect.size * (frame.spriteSourceSize.size / frame.sourceSize)
+	);
 
 	Rect2 src_rect = frame.frame;
 	if(frame.rotated) {
@@ -409,56 +409,103 @@ void TexPackTexture::draw_rect_region(RID p_canvas_item,const Rect2& p_rect, con
 	Ref<Texture> atlas = asset->get_texture();
 	if (!atlas.is_valid())
 		return;
+	float atlas_scale = asset->get_scale();
 
 	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
 	const TexPackAsset::Frame& frame = frames[atlas_index];
 
-	const Rect2& srect = frame.spriteSourceSize;
-	Rect2 rect = p_rect;
-	rect.pos += rect.size * (srect.pos / frame.sourceSize);
-	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+	Rect2 rc=frame.frame;
 
-	float scale = asset->get_scale();
-	Rect2 src_rect = p_src_rect;
-	src_rect.pos /= scale;
-	src_rect.pos += frame.frame.pos;
-	src_rect.size /= scale;
+	Rect2 src=p_src_rect;
+	src.pos /= atlas_scale;
+	src.size /= atlas_scale;
 
-	if(frame.rotated) {
+	src.pos+=(rc.pos-(frame.spriteSourceSize.pos));
+	Rect2 src_c = rc.clip(src);
+	if (src_c.size==Size2())
+		return;
+	Vector2 ofs = (src_c.pos-src.pos) * atlas_scale;
 
-		SWAP(rect.size.x, rect.size.y);
-		rect.size.y = -rect.size.y;
-		SWAP(src_rect.size.x, src_rect.size.y);
-		p_transpose = !p_transpose;
-	}
-	VS::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, rect, atlas->get_rid(), src_rect, p_modulate, p_transpose);
+	Vector2 scale = p_rect.size / p_src_rect.size;
+    if(scale.x < 0)
+    {
+        float mx = (frame.spriteSourceSize.size.width - frame.spriteSourceSize.pos.x);
+        mx -= frame.spriteSourceSize.pos.x;
+        ofs.x = -(ofs.x + mx * atlas_scale);
+    }
+    if(scale.y < 0)
+    {
+        float my = frame.spriteSourceSize.size.height - frame.spriteSourceSize.pos.y;
+        my -= frame.spriteSourceSize.pos.y;
+        ofs.y = -(ofs.y + my * atlas_scale);
+    }
+	Rect2 dr( p_rect.pos+ofs*scale,src_c.size*scale*atlas_scale );
+
+	ERR_EXPLAIN("Texture Packer Texture(TpTex) does not support draw_rect_region rotated image, please disable 'Allow rotation' option!!!");
+	ERR_FAIL_COND(frame.rotated);
+	//if(frame.rotated) {
+
+	//	SWAP(dr.size.x, dr.size.y);
+	//	dr.size.y = -dr.size.y;
+	//	SWAP(src_c.size.x, src_c.size.y);
+	//	p_transpose = !p_transpose;
+	//}
+
+	VS::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item,dr,atlas->get_rid(),src_c,p_modulate,p_transpose);
 }
 
 bool TexPackTexture::get_rect_region(const Rect2& p_rect, const Rect2& p_src_rect,Rect2& r_rect,Rect2& r_src_rect) const {
 
 	if(atlas_index == -1)
-		return false;
+		return;
 
 	Ref<Texture> atlas = asset->get_texture();
 	if (!atlas.is_valid())
-		return false;
+		return;
+	float atlas_scale = asset->get_scale();
 
 	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
 	const TexPackAsset::Frame& frame = frames[atlas_index];
 
-	const Rect2& srect = frame.spriteSourceSize;
-	Rect2 rect = p_rect;
-	rect.pos += rect.size * (srect.pos / frame.sourceSize);
-	rect.size -= rect.size * ((frame.sourceSize - (srect.pos + srect.size)) / frame.sourceSize);
+	Rect2 rc=frame.frame;
 
-	float scale = asset->get_scale();
-	Rect2 src_rect = p_src_rect;
-	src_rect.pos /= scale;
-	src_rect.pos += frame.frame.pos;
-	src_rect.size /= scale;
+	Rect2 src=p_src_rect;
+	src.pos /= atlas_scale;
+	src.size /= atlas_scale;
 
-	r_rect = rect;
-	r_src_rect = src_rect;
+	src.pos+=(rc.pos-(frame.spriteSourceSize.pos));
+	Rect2 src_c = rc.clip(src);
+	if (src_c.size==Size2())
+		return;
+	Vector2 ofs = (src_c.pos-src.pos) * atlas_scale;
+
+	Vector2 scale = p_rect.size / p_src_rect.size;
+    if(scale.x < 0)
+    {
+        float mx = (frame.spriteSourceSize.size.width - frame.spriteSourceSize.pos.x);
+        mx -= frame.spriteSourceSize.pos.x;
+        ofs.x = -(ofs.x + mx * atlas_scale);
+    }
+    if(scale.y < 0)
+    {
+        float my = frame.spriteSourceSize.size.height - frame.spriteSourceSize.pos.y;
+        my -= frame.spriteSourceSize.pos.y;
+        ofs.y = -(ofs.y + my * atlas_scale);
+    }
+	Rect2 dr( p_rect.pos+ofs*scale,src_c.size*scale*atlas_scale );
+
+	ERR_EXPLAIN("Texture Packer Texture(TpTex) does not support get_rect_region from rotated image, please disable 'Allow rotation' option!!!");
+	ERR_FAIL_COND(frame.rotated);
+	//if(frame.rotated) {
+
+	//	SWAP(dr.size.x, dr.size.y);
+	//	dr.size.y = -dr.size.y;
+	//	SWAP(src_c.size.x, src_c.size.y);
+	//	p_transpose = !p_transpose;
+	//}
+
+	r_rect = dr;
+	r_src_rect = src_c;
 
 	return true;
 }
