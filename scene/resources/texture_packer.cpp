@@ -457,11 +457,11 @@ void TexPackTexture::draw_rect_region(RID p_canvas_item,const Rect2& p_rect, con
 bool TexPackTexture::get_rect_region(const Rect2& p_rect, const Rect2& p_src_rect,Rect2& r_rect,Rect2& r_src_rect) const {
 
 	if(atlas_index == -1)
-		return;
+		return false;
 
 	Ref<Texture> atlas = asset->get_texture();
 	if (!atlas.is_valid())
-		return;
+		return false;
 	float atlas_scale = asset->get_scale();
 
 	const Vector<TexPackAsset::Frame>& frames = asset->get_frames();
@@ -476,7 +476,7 @@ bool TexPackTexture::get_rect_region(const Rect2& p_rect, const Rect2& p_src_rec
 	src.pos+=(rc.pos-(frame.spriteSourceSize.pos));
 	Rect2 src_c = rc.clip(src);
 	if (src_c.size==Size2())
-		return;
+		return false;
 	Vector2 ofs = (src_c.pos-src.pos) * atlas_scale;
 
 	Vector2 scale = p_rect.size / p_src_rect.size;
@@ -495,7 +495,7 @@ bool TexPackTexture::get_rect_region(const Rect2& p_rect, const Rect2& p_src_rec
 	Rect2 dr( p_rect.pos+ofs*scale,src_c.size*scale*atlas_scale );
 
 	ERR_EXPLAIN("Texture Packer Texture(TpTex) does not support get_rect_region from rotated image, please disable 'Allow rotation' option!!!");
-	ERR_FAIL_COND(frame.rotated);
+	ERR_FAIL_COND_V(frame.rotated, false);
 	//if(frame.rotated) {
 
 	//	SWAP(dr.size.x, dr.size.y);
