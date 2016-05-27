@@ -137,13 +137,13 @@ void TextureButton::_notification(int p_what) {
 			}
 
 			if (texdraw.is_valid()) {
-				Rect2 drect(Point2(),texdraw->get_size());
+				Rect2 drect(Point2(),texdraw->get_size() * this->scale);
 				draw_texture_rect(texdraw,drect,false,modulate);
 
 			}
 			if (has_focus() && focused.is_valid()) {
 
-				Rect2 drect(Point2(),focused->get_size());
+				Rect2 drect(Point2(),focused->get_size() * this->scale);
 				draw_texture_rect(focused,drect,false,modulate);
 
 			};
