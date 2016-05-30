@@ -144,7 +144,7 @@ MaterialEditor::MaterialEditor() {
 		DVector<Vector3> vertices;
 		DVector<Vector3> normals;
 		DVector<Vector2> uvs;
-		DVector<float> tangents;
+		DVector<real_t> tangents;
 		Matrix3 tt = Matrix3(Vector3(0,1,0),Math_PI*0.5);
 
 		for(int i = 1; i <= lats; i++) {
@@ -221,7 +221,7 @@ MaterialEditor::MaterialEditor() {
 
 		DVector<Vector3> vertices;
 		DVector<Vector3> normals;
-		DVector<float> tangents;
+		DVector<real_t> tangents;
 		DVector<Vector3> uvs;
 
 		int vtx_idx=0;

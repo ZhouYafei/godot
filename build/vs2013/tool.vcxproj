@@ -226,7 +226,9 @@
     <ClCompile Include="..\..\tools\editor\plugins\editor_preview_plugins.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\item_list_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\light_occluder_2d_editor_plugin.cpp" />
+    <ClCompile Include="..\..\tools\editor\plugins\material_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\mesh_editor_plugin.cpp" />
+    <ClCompile Include="..\..\tools\editor\plugins\mesh_instance_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\multimesh_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\navigation_polygon_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\particles_2d_editor_plugin.cpp" />
@@ -247,6 +249,7 @@
     <ClCompile Include="..\..\tools\editor\plugins\sprite_region_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\stream_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\style_box_editor_plugin.cpp" />
+    <ClCompile Include="..\..\tools\editor\plugins\texture_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\theme_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\tile_map_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\tile_set_editor_plugin.cpp" />
@@ -396,7 +399,9 @@
     <ClInclude Include="..\..\tools\editor\plugins\editor_preview_plugins.h" />
     <ClInclude Include="..\..\tools\editor\plugins\item_list_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\light_occluder_2d_editor_plugin.h" />
+    <ClInclude Include="..\..\tools\editor\plugins\material_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\mesh_editor_plugin.h" />
+    <ClInclude Include="..\..\tools\editor\plugins\mesh_instance_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\multimesh_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\navigation_polygon_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\particles_2d_editor_plugin.h" />
@@ -417,6 +422,7 @@
     <ClInclude Include="..\..\tools\editor\plugins\sprite_region_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\stream_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\style_box_editor_plugin.h" />
+    <ClInclude Include="..\..\tools\editor\plugins\texture_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\theme_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\tile_map_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\tile_set_editor_plugin.h" />

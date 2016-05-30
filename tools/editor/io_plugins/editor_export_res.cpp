@@ -66,8 +66,10 @@ void EditorExportResources::finalize() {
 
 Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<EditorExportPlatform> &p_platform) {
 
-	// save xml resouces to binary format
-	if (p_path.ends_with(".xml")) {
+	// save xml/tres resouces to binary format
+	if (p_path.ends_with(".xml") || p_path.ends_with(".tres")) {
+
+		String ext = p_path.ends_with(".xml") ? "xml" : "tres";
 
 		if (cache_map.has(p_path)) {
 
@@ -83,7 +85,7 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 				// check file checksum
 				if (FileAccess::get_md5(p_path) == md5) {
 					print_line("CACHED: " + p_path);
-					p_path = p_path.replace("xml", base_extension);
+					p_path = p_path.replace(ext, base_extension);
 					return data;
 				}
 			}
@@ -114,7 +116,7 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 		cache_map[p_path] = d;
 
 		Vector<uint8_t> data = FileAccess::get_file_as_array(new_path);
-		p_path = p_path.replace("xml", res->get_base_extension());
+		p_path = p_path.replace(ext, res->get_base_extension());
 		return data;
 	}
 	// save json to marshal-binary

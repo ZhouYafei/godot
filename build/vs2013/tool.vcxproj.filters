@@ -654,6 +654,15 @@
     <ClCompile Include="..\..\tools\editor\editor_profiler.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tools\editor\plugins\material_editor_plugin.cpp">
+      <Filter>tools\editor\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\editor\plugins\mesh_instance_editor_plugin.cpp">
+      <Filter>tools\editor\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\editor\plugins\texture_editor_plugin.cpp">
+      <Filter>tools\editor\plugins</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tools\collada\collada.h">
@@ -1315,6 +1324,15 @@
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\editor_profiler.h">
       <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\plugins\texture_editor_plugin.h">
+      <Filter>tools\editor\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\plugins\material_editor_plugin.h">
+      <Filter>tools\editor\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\plugins\mesh_instance_editor_plugin.h">
+      <Filter>tools\editor\plugins</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
