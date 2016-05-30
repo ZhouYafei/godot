@@ -19,6 +19,8 @@ tools/editor/register_exporters.cpp
 tools/editor/doc_data_compressed.h
 tools/editor/certs_compressed.h
 tools/editor/editor_icons.cpp
+tools/editor/translations.h
+tools/editor/builtin_fonts.h
 -fpic
 scene/resources/default_theme/editor_fonts.inc
 scene/resources/default_theme/font_normal_cjk*.inc
@@ -153,6 +155,8 @@ ipch/
 *.opensdf
 *.sdf
 *.cachefile
+*.VC.db
+*.VC.VC.opendb
 
 # Visual Studio profiler
 *.psess

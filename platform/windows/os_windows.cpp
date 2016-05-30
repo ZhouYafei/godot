@@ -58,6 +58,13 @@
 #include <regstr.h>
 #include <process.h>
 
+#if (_MSC_VER >= 1700)
+#define HIDPI_SUPPORT
+#endif
+
+#ifdef HIDPI_SUPPORT
+#include <ShellScalingAPI.h>
+#endif
 static const WORD MAX_CONSOLE_LINES = 1500;
 
 extern "C" {
@@ -734,6 +741,32 @@ LRESULT OS_Windows::WndProc(HWND hWnd,UINT uMsg, WPARAM	wParam,	LPARAM	lParam) {
 			}
 
 		} break;
+		case WM_DROPFILES: {
+
+			HDROP hDropInfo = NULL;
+			hDropInfo = (HDROP) wParam;
+			const int buffsize=4096;
+			wchar_t buf[buffsize];
+
+			int fcount = DragQueryFileW(hDropInfo, 0xFFFFFFFF,NULL,0);
+
+			Vector<String> files;
+
+			for(int i=0;i<fcount;i++) {
+
+				DragQueryFileW(hDropInfo, i, buf, buffsize);
+				String file=buf;
+				files.push_back(file);
+			}
+
+			if (files.size() && main_loop) {
+				main_loop->drop_files(files,0);
+			}
+
+
+		} break;
+
+
 
 		default: {
 
@@ -837,7 +870,13 @@ BOOL CALLBACK OS_Windows::MonitorEnumProc(HMONITOR hMonitor, HDC hdcMonitor, LPR
 	minfo.rect.pos.y=lprcMonitor->top;
 	minfo.rect.size.x=lprcMonitor->right - lprcMonitor->left;
 	minfo.rect.size.y=lprcMonitor->bottom - lprcMonitor->top;
-
+#ifdef HIDPI_SUPPORT
+	UINT dpix,dpiy;
+	GetDpiForMonitor(hMonitor,MDT_EFFECTIVE_DPI,&dpix,&dpiy);
+	minfo.dpi=(dpix + dpiy)/2;
+#else
+	minfo.dpi=72;
+#endif
 	self->monitor_info.push_back(minfo);
 
 	return TRUE;
@@ -1045,6 +1084,8 @@ void OS_Windows::initialize(const VideoMode& p_desired,int p_video_driver,int p_
 	//RegisterTouchWindow(hWnd, 0); // Windows 7
 
 	_ensure_data_dir();
+
+	DragAcceptFiles(hWnd,true);
 
 
 }
@@ -1358,6 +1399,14 @@ Size2 OS_Windows::get_screen_size(int p_screen) const{
 
 	ERR_FAIL_INDEX_V(p_screen,monitor_info.size(),Point2());
 	return Vector2( monitor_info[p_screen].rect.size );
+
+}
+
+int OS_Windows::get_screen_dpi(int p_screen) const {
+
+	ERR_FAIL_INDEX_V(p_screen,monitor_info.size(),72);
+	UINT dpix,dpiy;
+	return monitor_info[p_screen].dpi;
 
 }
 Point2 OS_Windows::get_window_position() const{

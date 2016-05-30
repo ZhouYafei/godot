@@ -41,6 +41,10 @@
 #include "io/config_file.h"
 #include "editor_node.h"
 #include "globals.h"
+#include "translations.h"
+#include "io/file_access_memory.h"
+#include "io/translation_loader_po.h"
+#include "io/compression.h"
 
 Ref<EditorSettings> EditorSettings::singleton=NULL;
 
@@ -298,6 +302,7 @@ void EditorSettings::create() {
 			print_line("EditorSettings: Load OK!");
 		}
 
+		singleton->setup_language();
 		singleton->setup_network();
 		singleton->load_favorites();
 		singleton->list_text_editor_themes();
@@ -323,9 +328,11 @@ void EditorSettings::create() {
 	singleton = Ref<EditorSettings>( memnew( EditorSettings ) );
 	singleton->config_file_path=config_file_path;
 	singleton->settings_path=config_path+"/"+config_dir;
-	singleton->_load_defaults(extra_config);
+	singleton->_load_defaults(extra_config);	
+	singleton->setup_language();
 	singleton->setup_network();
 	singleton->list_text_editor_themes();
+
 
 }
 
@@ -335,6 +342,23 @@ String EditorSettings::get_settings_path() const {
 }
 
 
+
+void EditorSettings::setup_language() {
+
+	String lang = get("global/editor_language");
+	print_line("LANG IS "+lang);
+	if (lang=="en")
+		return; //none to do
+
+	for(int i=0;i<translations.size();i++) {
+		print_line("TESTING "+translations[i]->get_locale());
+		if (translations[i]->get_locale()==lang) {
+			print_line("ok translation");
+			TranslationServer::get_singleton()->set_tool_translation(translations[i]);
+			break;
+		}
+	}
+}
 
 void EditorSettings::setup_network() {
 
@@ -403,8 +427,42 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 
 	_THREAD_SAFE_METHOD_
 
-	set("global/font","");
-	hints["global/font"]=PropertyInfo(Variant::STRING,"global/font",PROPERTY_HINT_GLOBAL_FILE,"*.fnt");
+
+	{
+		String lang_hint="en";
+		String host_lang = OS::get_singleton()->get_locale();
+
+		String best;
+
+		for(int i=0;i<translations.size();i++) {
+			String locale = translations[i]->get_locale();
+			lang_hint+=",";
+			lang_hint+=locale;
+
+			if (host_lang==locale) {
+				best=locale;
+			}
+
+			if (best==String() && host_lang.begins_with(locale)) {
+				best=locale;
+			}
+		}
+
+		if (best==String()) {
+			best="en";
+		}
+
+		set("global/editor_language",best);
+		hints["global/editor_language"]=PropertyInfo(Variant::STRING,"global/editor_language",PROPERTY_HINT_ENUM,lang_hint,PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_RESTART_IF_CHANGED);
+	}
+
+	set("global/show_script_in_scene_tabs",false);
+	set("global/font_size",14);
+	hints["global/font_size"]=PropertyInfo(Variant::INT,"global/font_size",PROPERTY_HINT_RANGE,"10,40,1",PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_RESTART_IF_CHANGED);
+	set("global/source_font_size",14);
+	hints["global/source_font_size"]=PropertyInfo(Variant::INT,"global/source_font_size",PROPERTY_HINT_RANGE,"10,40,1",PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_RESTART_IF_CHANGED);
+	set("global/custom_font","");
+	hints["global/custom_font"]=PropertyInfo(Variant::STRING,"global/custom_font",PROPERTY_HINT_GLOBAL_FILE,"*.fnt",PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_RESTART_IF_CHANGED);
 	set("global/autoscan_project_path","");
 	hints["global/autoscan_project_path"]=PropertyInfo(Variant::STRING,"global/autoscan_project_path",PROPERTY_HINT_GLOBAL_DIR);
 	set("global/default_project_path","");
@@ -412,6 +470,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("global/default_project_export_path","");
 	hints["global/default_project_export_path"]=PropertyInfo(Variant::STRING,"global/default_project_export_path",PROPERTY_HINT_GLOBAL_DIR);
 	set("global/show_script_in_scene_tabs",false);
+
 
 	set("text_editor/color_theme","Default");
 	hints["text_editor/color_theme"]=PropertyInfo(Variant::STRING,"text_editor/color_theme",PROPERTY_HINT_ENUM,"Default");
@@ -428,6 +487,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("text_editor/draw_tabs", true);
 
 	set("text_editor/show_line_numbers", true);
+	set("text_editor/show_breakpoint_gutter", true);
 
 	set("text_editor/trim_trailing_whitespace_on_save", false);
 	set("text_editor/idle_parse_delay",2);
@@ -521,6 +581,8 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("resources/save_compressed_resources",true);
 	set("resources/auto_reload_modified_images",true);
 
+	set("import/automatic_reimport_on_sources_changed",true);
+
 	if (p_extra_config.is_valid()) {
 
 		if (p_extra_config->has_section("init_projects") && p_extra_config->has_section_key("init_projects", "list")) {
@@ -570,7 +632,11 @@ void EditorSettings::_load_default_text_editor_theme() {
 	set("text_editor/selection_color",Color::html("7b5dbe"));
 	set("text_editor/brace_mismatch_color",Color(1,0.2,0.2));
 	set("text_editor/current_line_color",Color(0.3,0.5,0.8,0.15));
+	set("text_editor/mark_color", Color(1.0,0.4,0.4,0.4));
+	set("text_editor/breakpoint_color", Color(0.8,0.8,0.4,0.2));
 	set("text_editor/word_highlighted_color",Color(0.8,0.9,0.9,0.15));
+	set("text_editor/search_result_color",Color(0.05,0.25,0.05,1));
+	set("text_editor/search_result_border_color",Color(0.1,0.45,0.1,1));
 }
 
 void EditorSettings::notify_changes() {
@@ -784,6 +850,7 @@ bool EditorSettings::_save_text_editor_theme(String p_file) {
 	Ref<ConfigFile> cf = memnew( ConfigFile );	// hex is better?
 	cf->set_value(theme_section, "background_color", ((Color)get("text_editor/background_color")).to_html());
 	cf->set_value(theme_section, "caret_color", ((Color)get("text_editor/caret_color")).to_html());
+	cf->set_value(theme_section, "line_number_color", ((Color)get("text_editor/line_number_color")).to_html());
 	cf->set_value(theme_section, "text_color", ((Color)get("text_editor/text_color")).to_html());
 	cf->set_value(theme_section, "text_selected_color", ((Color)get("text_editor/text_selected_color")).to_html());
 	cf->set_value(theme_section, "keyword_color", ((Color)get("text_editor/keyword_color")).to_html());
@@ -798,7 +865,11 @@ bool EditorSettings::_save_text_editor_theme(String p_file) {
 	cf->set_value(theme_section, "selection_color", ((Color)get("text_editor/selection_color")).to_html());
 	cf->set_value(theme_section, "brace_mismatch_color", ((Color)get("text_editor/brace_mismatch_color")).to_html());
 	cf->set_value(theme_section, "current_line_color", ((Color)get("text_editor/current_line_color")).to_html());
+	cf->set_value(theme_section, "mark_color", ((Color)get("text_editor/mark_color")).to_html());
+	cf->set_value(theme_section, "breakpoint_color", ((Color)get("text_editor/breakpoint_color")).to_html());
 	cf->set_value(theme_section, "word_highlighted_color", ((Color)get("text_editor/word_highlighted_color")).to_html());
+	cf->set_value(theme_section, "search_result_color", ((Color)get("text_editor/search_result_color")).to_html());
+	cf->set_value(theme_section, "search_result_border_color", ((Color)get("text_editor/search_result_border_color")).to_html());
 	Error err = cf->save(p_file);
 
 	if (err == OK) {
@@ -828,7 +899,32 @@ EditorSettings::EditorSettings() {
 
 	//singleton=this;
 	last_order=0;
+
+	EditorTranslationList *etl=_editor_translations;
+
+	while(etl->data) {
+
+		Vector<uint8_t> data;
+		data.resize(etl->uncomp_size);
+		Compression::decompress(data.ptr(),etl->uncomp_size,etl->data,etl->comp_size,Compression::MODE_DEFLATE);
+
+		FileAccessMemory *fa = memnew (FileAccessMemory);
+		fa->open_custom(data.ptr(),data.size());
+
+		Ref<Translation> tr = TranslationLoaderPO::load_translation(fa,NULL,"translation_"+String(etl->lang));
+
+		if (tr.is_valid()) {
+			tr->set_locale(etl->lang);
+			translations.push_back(tr);
+		}
+
+		etl++;
+
+	}
+
 	_load_defaults();
+
+
 }
 
 

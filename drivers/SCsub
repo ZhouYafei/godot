@@ -59,6 +59,9 @@ if (env['musepack']=='yes'):
 	SConscript("mpc/SCsub");
 if (env["squish"]=="yes"):
 	SConscript("squish/SCsub");
+if (env["freetype"]!="no"):
+	SConscript("freetype/SCsub");
+
 if (env["lua"]=='yes'):
 	SConscript("lua/SCsub");
 num = 0

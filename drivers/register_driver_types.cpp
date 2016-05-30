@@ -118,6 +118,7 @@ static ResourceFormatLoaderAudioStreamMPC * mpc_stream_loader=NULL;
 #endif
 
 
+
 static ResourceFormatPBM * pbm_loader=NULL;
 
 void register_core_driver_types() {
@@ -145,6 +146,7 @@ void register_core_driver_types() {
 	image_loader_jpg = memnew( ImageLoaderJPG );
 	ImageLoader::add_image_format_loader( image_loader_jpg );
 #endif
+
 
 	pbm_loader = memnew( ResourceFormatPBM );
 	ResourceLoader::add_resource_format_loader(pbm_loader);
@@ -257,6 +259,7 @@ void register_driver_types() {
 }
 
 void unregister_driver_types() {
+
 
 #ifdef TREMOR_ENABLED
 	memdelete( vorbis_stream_loader );

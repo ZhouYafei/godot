@@ -246,6 +246,7 @@ Ref<ResourceImportMetadata> ResourceLoader::load_import_metadata(const String &p
 			break;
 	}
 
+
 	return ret;
 
 }

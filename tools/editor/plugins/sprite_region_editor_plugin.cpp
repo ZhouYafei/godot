@@ -386,6 +386,7 @@ void SpriteRegionEditor::_edit_node()
 
 	rect=node->get_region_rect();
 	dlg_editor->popup_centered_ratio(0.85);
+	dlg_editor->get_ok()->release_focus();
 }
 
 inline float _snap_scalar(float p_offset, float p_step, float p_target) {
@@ -416,6 +417,7 @@ SpriteRegionEditor::SpriteRegionEditor(EditorNode* p_editor)
 	add_child( memnew( VSeparator ));
 	edit_node = memnew( ToolButton );
 	add_child(edit_node);
+	edit_node->set_tooltip(TTR("Sprite Region Editor"));
 	edit_node->connect("pressed",this,"_edit_node");
 
 	dlg_editor = memnew( AcceptDialog );
