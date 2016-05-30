@@ -68,7 +68,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\tools\freetype;..\..\tools\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;DEBUG_MEMORY_ENABLED;SCI_NAMESPACE;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\tools\freetype;..\..\tools\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -107,7 +107,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\tools\freetype;..\..\tools\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -272,49 +272,6 @@
     <ClCompile Include="..\..\tools\editor\script_editor_debugger.cpp" />
     <ClCompile Include="..\..\tools\editor\settings_config_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\spatial_editor_gizmos.cpp" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\autofit\autofit.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftapi.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftbase.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftbbox.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftbdf.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftbitmap.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftcid.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftdebug.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftfstype.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftgasp.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftglyph.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftgxval.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftinit.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftlcdfil.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftmm.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftotval.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftpatent.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftpfr.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftpic.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftstroke.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftsynth.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftsystem.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\fttype1.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftwinfnt.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\base\ftxf86.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\bdf\bdf.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\cache\ftcache.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\cff\cff.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\cid\type1cid.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\gxvalid\gxvalid.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\otvalid\otvalid.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\pcf\pcf.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\pfr\pfr.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\psaux\psaux.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\pshinter\pshinter.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\psnames\psnames.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\raster\raster.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\sfnt\sfnt.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\smooth\smooth.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\truetype\truetype.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\type1\type1.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\type42\type42.c" />
-    <ClCompile Include="..\..\tools\freetype\freetype\src\winfonts\winfnt.c" />
     <ClCompile Include="..\..\tools\pck\pck_packer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -445,101 +402,6 @@
     <ClInclude Include="..\..\tools\editor\script_editor_debugger.h" />
     <ClInclude Include="..\..\tools\editor\settings_config_dialog.h" />
     <ClInclude Include="..\..\tools\editor\spatial_editor_gizmos.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\config\ftconfig.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\config\ftheader.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\config\ftmodule.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\config\ftoption.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\config\ftstdlib.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\freetype.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftadvanc.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftautoh.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftbbox.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftbdf.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftbitmap.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftbzip2.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftcache.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftcffdrv.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftchapters.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftcid.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\fterrdef.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\fterrors.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftgasp.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftglyph.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftgxval.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftgzip.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftimage.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftincrem.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftlcdfil.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftlist.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftlzw.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftmac.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftmm.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftmodapi.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftmoderr.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftotval.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftoutln.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftpfr.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftrender.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftsizes.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftsnames.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftstroke.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftsynth.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftsystem.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\fttrigon.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftttdrv.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\fttypes.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftwinfnt.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ftxf86.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\autohint.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftcalc.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftdebug.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftdriver.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftgloadr.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftmemory.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftobjs.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftpic.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftrfork.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftserv.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftstream.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\fttrace.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\ftvalid.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\internal.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\psaux.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\pshints.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svbdf.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svcid.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svgldict.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svgxval.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svkern.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svmm.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svotval.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svpfr.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svpostnm.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svprop.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svpscmap.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svpsinfo.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svsfnt.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svttcmap.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svtteng.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svttglyf.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svwinfnt.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\services\svxf86nm.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\sfnt.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\t1types.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\internal\tttypes.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\t1tables.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ttnameid.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\tttables.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\tttags.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\freetype\ttunpat.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\include\ftoption.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\src\base\ftbase.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\src\bdf\bdf.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\src\gxvalid\gxvalid.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\src\otvalid\otvalid.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\src\pcf\pcf.h" />
-    <ClInclude Include="..\..\tools\freetype\freetype\src\winfonts\winfnt.h" />
-    <ClInclude Include="..\..\tools\freetype\ft2build.h" />
     <ClInclude Include="..\..\tools\pck\pck_packer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

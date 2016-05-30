@@ -68,7 +68,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\drivers\webp;..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\tools\freetype;..\..\tools\freetype\freetype\include;..\..\drivers\builtin_openssl2;..\..\drivers\builtin_openssl2\crypto;..\..\drivers\builtin_openssl2\crypto\evp;..\..\drivers\builtin_openssl2\crypto\asn1;..\..\drivers\builtin_openssl2\crypto\modes;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;..\..\drivers/theoraplayer/include/theoraplayer;..\..\drivers/theoraplayer/src/YUV;..\..\drivers/theoraplayer/src/YUV/libyuv/include;..\..\drivers/theoraplayer/src/Theora;..\..\drivers/theoraplayer/src/AVFoundation;..\..\drivers/opus;..\..\drivers/opus/celt;..\..\drivers/opus/silk;..\..\drivers/opus/silk/float;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\drivers\webp;..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_openssl2;..\..\drivers\builtin_openssl2\crypto;..\..\drivers\builtin_openssl2\crypto\evp;..\..\drivers\builtin_openssl2\crypto\asn1;..\..\drivers\builtin_openssl2\crypto\modes;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;..\..\drivers/theoraplayer/include/theoraplayer;..\..\drivers/theoraplayer/src/YUV;..\..\drivers/theoraplayer/src/YUV/libyuv/include;..\..\drivers/theoraplayer/src/Theora;..\..\drivers/theoraplayer/src/AVFoundation;..\..\drivers/opus;..\..\drivers/opus/celt;..\..\drivers/opus/silk;..\..\drivers/opus/silk/float;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;OPUS_HAVE_CONFIG_H;USE_ALLOCA;OPUS_ENABLED;_DEBUG;_LIB;DEBUG_MEMORY_ENABLED;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;SCI_NAMESPACE;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;PNG_ENABLED;DDS_ENABLED;ETC1_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;_YUV_C;__THEORA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\drivers\webp;..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\tools\freetype;..\..\tools\freetype\freetype\include;..\..\drivers\builtin_openssl2;..\..\drivers\builtin_openssl2\crypto;..\..\drivers\builtin_openssl2\crypto\evp;..\..\drivers\builtin_openssl2\crypto\asn1;..\..\drivers\builtin_openssl2\crypto\modes;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;..\..\drivers/theoraplayer/include/theoraplayer;..\..\drivers/theoraplayer/src/YUV;..\..\drivers/theoraplayer/src/YUV/libyuv/include;..\..\drivers/theoraplayer/src/Theora;..\..\drivers/theoraplayer/src/AVFoundation;..\..\drivers/opus;..\..\drivers/opus/celt;..\..\drivers/opus/silk;..\..\drivers/opus/silk/float;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\drivers\webp;..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_openssl2;..\..\drivers\builtin_openssl2\crypto;..\..\drivers\builtin_openssl2\crypto\evp;..\..\drivers\builtin_openssl2\crypto\asn1;..\..\drivers\builtin_openssl2\crypto\modes;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;..\..\drivers/theoraplayer/include/theoraplayer;..\..\drivers/theoraplayer/src/YUV;..\..\drivers/theoraplayer/src/YUV/libyuv/include;..\..\drivers/theoraplayer/src/Theora;..\..\drivers/theoraplayer/src/AVFoundation;..\..\drivers/opus;..\..\drivers/opus/celt;..\..\drivers/opus/silk;..\..\drivers/opus/silk/float;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;OPUS_HAVE_CONFIG_H;USE_ALLOCA;OPUS_ENABLED;NDEBUG;_LIB;DEBUG_MEMORY_ENABLED;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;PNG_ENABLED;DDS_ENABLED;ETC1_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;_YUV_C;__THEORA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -107,7 +107,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\drivers\webp;..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\tools\freetype;..\..\tools\freetype\freetype\include;..\..\drivers\builtin_openssl2;..\..\drivers\builtin_openssl2\crypto;..\..\drivers\builtin_openssl2\crypto\evp;..\..\drivers\builtin_openssl2\crypto\asn1;..\..\drivers\builtin_openssl2\crypto\modes;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;..\..\drivers/theoraplayer/include/theoraplayer;..\..\drivers/theoraplayer/src/YUV;..\..\drivers/theoraplayer/src/YUV/libyuv/include;..\..\drivers/theoraplayer/src/Theora;..\..\drivers/theoraplayer/src/AVFoundation;..\..\drivers/opus;..\..\drivers/opus/celt;..\..\drivers/opus/silk;..\..\drivers/opus/silk/float;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\drivers\webp;..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_openssl2;..\..\drivers\builtin_openssl2\crypto;..\..\drivers\builtin_openssl2\crypto\evp;..\..\drivers\builtin_openssl2\crypto\asn1;..\..\drivers\builtin_openssl2\crypto\modes;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;..\..\drivers/theoraplayer/include/theoraplayer;..\..\drivers/theoraplayer/src/YUV;..\..\drivers/theoraplayer/src/YUV/libyuv/include;..\..\drivers/theoraplayer/src/Theora;..\..\drivers/theoraplayer/src/AVFoundation;..\..\drivers/opus;..\..\drivers/opus/celt;..\..\drivers/opus/silk;..\..\drivers/opus/silk/float;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;OPUS_HAVE_CONFIG_H;USE_ALLOCA;OPUS_ENABLED;NDEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;PNG_ENABLED;DDS_ENABLED;ETC1_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;_YUV_C;__THEORA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -1499,6 +1499,49 @@
     <ClCompile Include="..\..\drivers\windows\semaphore_windows.cpp" />
     <ClCompile Include="..\..\drivers\windows\shell_windows.cpp" />
     <ClCompile Include="..\..\drivers\windows\thread_windows.cpp" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\autofit\autofit.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftapi.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbase.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbbox.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbdf.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbitmap.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftcid.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftdebug.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftfstype.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftgasp.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftglyph.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftgxval.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftinit.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftlcdfil.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftmm.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftotval.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftpatent.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftpfr.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftpic.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftstroke.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftsynth.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftsystem.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\fttype1.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftwinfnt.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftxf86.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\bdf\bdf.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\cache\ftcache.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\cff\cff.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\cid\type1cid.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\gxvalid\gxvalid.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\otvalid\otvalid.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\pcf\pcf.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\pfr\pfr.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\psaux\psaux.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\pshinter\pshinter.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\psnames\psnames.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\raster\raster.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\sfnt\sfnt.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\smooth\smooth.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\truetype\truetype.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\type1\type1.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\type42\type42.c" />
+    <ClCompile Include="..\..\drivers\freetype\freetype\src\winfonts\winfnt.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\drivers\alsa\audio_driver_alsa.h" />
@@ -2110,6 +2153,101 @@
     <ClInclude Include="..\..\drivers\windows\semaphore_windows.h" />
     <ClInclude Include="..\..\drivers\windows\shell_windows.h" />
     <ClInclude Include="..\..\drivers\windows\thread_windows.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftconfig.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftheader.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftmodule.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftoption.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftstdlib.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\freetype.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftadvanc.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftautoh.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbbox.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbdf.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbitmap.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbzip2.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftcache.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftcffdrv.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftchapters.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftcid.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fterrdef.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fterrors.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftgasp.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftglyph.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftgxval.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftgzip.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftimage.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftincrem.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftlcdfil.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftlist.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftlzw.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmac.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmm.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmodapi.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmoderr.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftotval.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftoutln.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftpfr.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftrender.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsizes.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsnames.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftstroke.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsynth.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsystem.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fttrigon.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftttdrv.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fttypes.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftwinfnt.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftxf86.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\autohint.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftcalc.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftdebug.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftdriver.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftgloadr.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftmemory.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftobjs.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftpic.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftrfork.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftserv.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftstream.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\fttrace.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftvalid.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\internal.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\psaux.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\pshints.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svbdf.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svcid.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svgldict.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svgxval.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svkern.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svmm.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svotval.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpfr.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpostnm.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svprop.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpscmap.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpsinfo.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svsfnt.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svttcmap.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svtteng.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svttglyf.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svwinfnt.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svxf86nm.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\sfnt.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\t1types.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\tttypes.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\t1tables.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ttnameid.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\tttables.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\tttags.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ttunpat.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\include\ftoption.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\src\base\ftbase.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\src\bdf\bdf.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\src\gxvalid\gxvalid.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\src\otvalid\otvalid.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\src\pcf\pcf.h" />
+    <ClInclude Include="..\..\drivers\freetype\freetype\src\winfonts\winfnt.h" />
+    <ClInclude Include="..\..\drivers\freetype\ft2build.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\drivers\gles2\shaders\blur.glsl" />

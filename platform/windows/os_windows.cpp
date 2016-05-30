@@ -58,9 +58,9 @@
 #include <regstr.h>
 #include <process.h>
 
-#if (_MSC_VER >= 1700)
-#define HIDPI_SUPPORT
-#endif
+//#if (_MSC_VER >= 1700)
+//#define HIDPI_SUPPORT
+//#endif
 
 #ifdef HIDPI_SUPPORT
 #include <ShellScalingAPI.h>

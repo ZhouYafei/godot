@@ -465,6 +465,9 @@
     <ClInclude Include="..\..\core\variant_parser.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\hq2x.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\array.cpp">
@@ -840,6 +843,9 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\variant_parser.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\hq2x.cpp">
       <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
