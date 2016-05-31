@@ -61,6 +61,7 @@ class OS {
 	int _target_fps;
 	float _time_scale;
 	bool _pixel_snap;
+	bool _allow_hidpi;
 
 	Tls tls_last_errors;
 
@@ -421,6 +422,7 @@ public:
 
 	virtual void set_context(int p_context);
 
+	bool is_hidpi_allowed() const { return _allow_hidpi; }
 	OS();
 	virtual ~OS();
 

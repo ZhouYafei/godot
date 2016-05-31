@@ -7,6 +7,7 @@
 #include "scene/resources/sample.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/bit_mask.h"
+#include "tools/editor/editor_scale.h"
 #include "scene/resources/texture_packer.h"
 
 bool EditorTexturePreviewPlugin::handles(const String& p_type) const {
@@ -71,6 +72,7 @@ Ref<Texture> EditorTexturePreviewPlugin::generate(const RES& p_from) {
 	img.clear_mipmaps();
 
 	int thumbnail_size = EditorSettings::get_singleton()->get("file_dialog/thumbnail_size");
+	thumbnail_size*=EDSCALE;
 	if (img.is_compressed()) {
 		if (img.decompress()!=OK)
 			return Ref<Texture>();
@@ -146,6 +148,7 @@ Ref<Texture> EditorBitmapPreviewPlugin::generate(const RES& p_from) {
 	Image img(bm->get_size().width,bm->get_size().height,0,Image::FORMAT_GRAYSCALE,data);
 
 	int thumbnail_size = EditorSettings::get_singleton()->get("file_dialog/thumbnail_size");
+	thumbnail_size*=EDSCALE;
 	if (img.is_compressed()) {
 		if (img.decompress()!=OK)
 			return Ref<Texture>();
@@ -268,6 +271,7 @@ Ref<Texture> EditorMaterialPreviewPlugin::generate(const RES& p_from) {
 	VS::get_singleton()->mesh_surface_set_material(sphere,0,RID());
 
 	int thumbnail_size = EditorSettings::get_singleton()->get("file_dialog/thumbnail_size");
+	thumbnail_size*=EDSCALE;
 	img.resize(thumbnail_size,thumbnail_size);
 
 	Ref<ImageTexture> ptex = Ref<ImageTexture>( memnew( ImageTexture ));
@@ -436,6 +440,7 @@ Ref<Texture> EditorScriptPreviewPlugin::generate(const RES& p_from) {
 	int line = 0;
 	int col=0;
 	int thumbnail_size = EditorSettings::get_singleton()->get("file_dialog/thumbnail_size");
+	thumbnail_size*=EDSCALE;
 	Image img(thumbnail_size,thumbnail_size,0,Image::FORMAT_RGBA);
 
 
@@ -536,7 +541,7 @@ Ref<Texture> EditorSamplePreviewPlugin::generate(const RES& p_from) {
 
 
 	int thumbnail_size = EditorSettings::get_singleton()->get("file_dialog/thumbnail_size");
-
+	thumbnail_size*=EDSCALE;
 	DVector<uint8_t> img;
 	int w = thumbnail_size;
 	int h = thumbnail_size;
@@ -850,6 +855,7 @@ Ref<Texture> EditorMeshPreviewPlugin::generate(const RES& p_from) {
 	VS::get_singleton()->instance_set_base(mesh_instance,RID());
 
 	int thumbnail_size = EditorSettings::get_singleton()->get("file_dialog/thumbnail_size");
+	thumbnail_size*=EDSCALE;
 	img.resize(thumbnail_size,thumbnail_size);
 
 	Ref<ImageTexture> ptex = Ref<ImageTexture>( memnew( ImageTexture ));
