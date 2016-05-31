@@ -838,6 +838,10 @@ void make_default_theme() {
 
 	t->set_constant("separation","HBoxContainer",4);
 	t->set_constant("separation","VBoxContainer",4);
+	t->set_constant("separation","ButtonGroup",4);
+	t->set_constant("center_separation","HBoxContainer",0);
+	t->set_constant("center_separation","VBoxContainer",0);
+	t->set_constant("center_separation","ButtonGroup",0);
 	t->set_constant("margin_left","MarginContainer",8);
 	t->set_constant("margin_top","MarginContainer",0);
 	t->set_constant("margin_right","MarginContainer",0);
