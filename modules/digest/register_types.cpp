@@ -15,6 +15,7 @@
 #include "crypt/crypt.h"
 #include "text/json_asset.h"
 #include "text/text_asset.h"
+#include "text/word_filter.h"
 
 #include "core/io/resource_loader.h"
 #include "os/file_access.h"
@@ -137,6 +138,7 @@ void register_digest_types() {
 
 	ObjectTypeDB::register_type<TextAsset>();
 	ObjectTypeDB::register_type<JsonAsset>();
+	ObjectTypeDB::register_type<WordFilter>();
 	resource_loader_text = memnew( ResourceFormatLoaderTextAsset );
 	ResourceLoader::add_resource_format_loader(resource_loader_text);
 }

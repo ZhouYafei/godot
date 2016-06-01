@@ -841,6 +841,10 @@ void fill_default_theme(Ref<Theme>& t,const Ref<Font> & default_font,const Ref<F
 
 	t->set_constant("separation","HBoxContainer",4 *scale);
 	t->set_constant("separation","VBoxContainer",4 *scale);
+	t->set_constant("separation","ButtonGroup",4 *scale);
+	t->set_constant("center_separation","HBoxContainer",0 *scale);
+	t->set_constant("center_separation","VBoxContainer",0 *scale);
+	t->set_constant("center_separation","ButtonGroup",0 *scale);
 	t->set_constant("margin_left","MarginContainer",8 *scale);
 	t->set_constant("margin_top","MarginContainer",0 *scale);
 	t->set_constant("margin_right","MarginContainer",0 *scale);
