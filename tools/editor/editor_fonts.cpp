@@ -33,6 +33,7 @@
 #include "builtin_fonts.h"
 #include "editor_settings.h"
 #include "scene/resources/dynamic_font.h"
+#include "scene/resources/dynamic_font_stb.h"
 #include "editor_scale.h"
 #include "scene/resources/default_theme/default_theme.h"
 

@@ -60,6 +60,20 @@ void DynamicFontData::set_font_data(const DVector<uint8_t>& p_font) {
 	ERR_FAIL_COND(!valid);
 }
 
+void DynamicFontData::set_font_ptr(const uint8_t* p_font_mem,int p_font_mem_size) {
+
+	DVector<uint8_t> font;
+	font.resize(p_font_mem_size);
+	DVector<uint8_t>::Write wr = font.write();
+	memcpy(wr.ptr(), p_font_mem, p_font_mem_size);
+	wr = DVector<uint8_t>::Write();
+	set_font_data(font);
+}
+
+void DynamicFontData::set_force_autohinter(bool p_force) {
+
+}
+
 Ref<DynamicFontAtSize> DynamicFontData::_get_dynamic_font_at_size(int p_size) {
 
 	ERR_FAIL_COND_V(!valid,Ref<DynamicFontAtSize>());
@@ -393,6 +407,11 @@ void DynamicFont::set_font_data(const Ref<DynamicFontData>& p_data) {
 
 	data=p_data;
 	data_at_size=data->_get_dynamic_font_at_size(size);
+}
+
+void DynamicFont::add_fallback(const Ref<DynamicFontData>& p_data) {
+
+	// TODO:
 }
 
 Ref<DynamicFontData> DynamicFont::get_font_data() const{

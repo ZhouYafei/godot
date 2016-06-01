@@ -57,6 +57,9 @@ friend class DynamicFont;
 public:
 
 	void set_font_data(const DVector<uint8_t>& p_font);
+	void set_font_ptr(const uint8_t* p_font_mem,int p_font_mem_size);
+	void set_force_autohinter(bool p_force);
+
 	DynamicFontData();
 	~DynamicFontData();
 };
@@ -139,6 +142,8 @@ public:
 
 	void set_font_data(const Ref<DynamicFontData>& p_data);
 	Ref<DynamicFontData> get_font_data() const;
+
+	void add_fallback(const Ref<DynamicFontData>& p_data);
 
 	void set_size(int p_size);
 	int get_size() const;
