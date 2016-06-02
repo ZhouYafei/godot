@@ -156,18 +156,6 @@ void OSprite::_animation_draw() {
 			from = to;
 			to = tmp;
 		}
-		//printf("%d %d %d\n", action.from, action.to, index);
-
-		if(index == from) {
-
-			emit_signal("animation_start", action->name);
-
-		} else if(index == to) {
-
-			emit_signal("animation_end", action->name, !loop);
-			if(!loop)
-				_set_process(false);
-		}
 	}
 
 	const OSpriteResource::Pool& pool = data.pools[index];
@@ -222,8 +210,32 @@ void OSprite::_animation_process(float p_delta) {
 		return;
 	current_pos += p_delta * speed_scale;
 
+	bool new_cycle = false;
+	action_time -= p_delta * speed_scale;
+	if(action_time <= 0) {
+		start_trigged = false;
+		end_trigged = false;
+		new_cycle = true;
+		action_time += (action_cache->to - action_cache->from + 1) * res->fps_delta;
+		if(!loop)
+			_set_process(false);
+	}
+
 	if(!is_visible())
 		return;
+
+	if(new_cycle && !end_trigged) {
+
+		end_trigged = true;
+		//printf("animation_end %s %s\n", current_animation.utf8().get_data(), loop ? "true" : "false");
+		emit_signal("animation_end", current_animation, !loop);
+	}
+	else if(!start_trigged) {
+
+		start_trigged = true;
+		//printf("animation_start %s %s\n", current_animation.utf8().get_data(), loop ? "true" : "false");
+		emit_signal("animation_start", current_animation);
+	}
 
 	frame_cache = _get_frame(action_cache);
 
@@ -239,7 +251,7 @@ void OSprite::_set_process(bool p_process, bool p_force) {
 	}
 }
 
-int OSprite::_get_frame(const OSpriteResource::Action *&p_action) const {
+int OSprite::_get_frame(const OSpriteResource::Action *&p_action) {
 
 	static OSprite::OSpriteResource::Data dummy;
 	if(!res.is_valid())
@@ -252,17 +264,27 @@ int OSprite::_get_frame(const OSpriteResource::Action *&p_action) const {
 	int total_frames = p_action->to - p_action->from + 1;
 	int index = int(current_pos / res->fps_delta) % total_frames;
 
-	// index always include([0] <-> [total_frames - 1])
-	if(index < prev_frame && prev_frame != total_frames - 1)
-		index = total_frames - 1;
-	else if(prev_frame == total_frames - 1 && index != 0)
-		index = 0;
-	prev_frame = index;
+	if(prev_frame == -1)
+		prev_frame = (forward) ? p_action->from : p_action->to;
 
-	if(forward)
-		index += p_action->from;
-	else
-		index = p_action->to - index - 1;
+	// make un-loop animation end at last frame
+	if(!loop && forward != (prev_frame < index)) {
+
+		index = prev_frame;
+
+	} else {
+		// index always include([0] <-> [total_frames - 1])
+		if(index < prev_frame && prev_frame != total_frames - 1)
+			index = total_frames - 1;
+		else if(prev_frame == total_frames - 1 && index != 0)
+			index = 0;
+		prev_frame = index;
+
+		if(forward)
+			index += p_action->from;
+		else
+			index = p_action->to - index - 1;
+	}
 
 	return index;
 }
@@ -421,7 +443,7 @@ bool OSprite::has(const String& p_name) const {
 	return res->action_names.has(p_name);
 }
 
-bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
+bool OSprite::play(const String& p_name, bool p_loop, bool p_forward, int p_delay) {
 
 	ERR_FAIL_COND_V(!res.is_valid(), false);
 	ERR_EXPLAIN("Unknown action: " + p_name);
@@ -435,8 +457,12 @@ bool OSprite::play(const String& p_name, bool p_loop, int p_delay) {
 	current_animation = p_name;
 	loop = p_loop;
 	current_pos = 0;
-	prev_frame = 0;
+	prev_frame = -1;
 	frame_cache = _get_frame(action_cache);
+	action_time = (action_cache->to - action_cache->from + 1) * res->fps_delta;
+	forward = p_forward;
+	start_trigged = false;
+	end_trigged = false;
 
 	OSpriteResource::Action *action = res->action_names[p_name];
 	// ignore text actions
@@ -638,9 +664,11 @@ void OSprite::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_resource:OSpriteResource"), &OSprite::get_resource);
 
 	ObjectTypeDB::bind_method(_MD("has", "name"), &OSprite::has);
-	ObjectTypeDB::bind_method(_MD("play", "name", "loop", "delay"), &OSprite::play, false, 0);
+	ObjectTypeDB::bind_method(_MD("play", "name", "loop", "forward", "delay"), &OSprite::play, false, true, 0);
 	ObjectTypeDB::bind_method(_MD("stop"), &OSprite::stop);
-	ObjectTypeDB::bind_method(_MD("is_playing", "track"), &OSprite::is_playing, String(""));
+	ObjectTypeDB::bind_method(_MD("is_playing", "name"), &OSprite::is_playing, String(""));
+	ObjectTypeDB::bind_method(_MD("set_forward", "forward"), &OSprite::set_forward);
+	ObjectTypeDB::bind_method(_MD("is_forward"), &OSprite::is_forward);
 	ObjectTypeDB::bind_method(_MD("get_current_animation"), &OSprite::get_current_animation);
 	ObjectTypeDB::bind_method(_MD("get_current_animation_pos"), &OSprite::get_current_animation_pos);
 	ObjectTypeDB::bind_method(_MD("get_current_animation_length"), &OSprite::get_current_animation_length);
