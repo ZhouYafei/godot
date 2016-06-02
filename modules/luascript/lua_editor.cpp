@@ -575,6 +575,10 @@ void LuaScriptLanguage::get_recognized_extensions(List<String> *p_extensions) co
 	p_extensions->push_back("lua");
 }
 
+void LuaScriptLanguage::reload_all_scripts() {
+
+}
+
 void LuaScriptLanguage::profiling_start() {
 }
 

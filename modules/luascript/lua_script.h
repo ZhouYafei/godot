@@ -162,7 +162,7 @@ public:
 	virtual String get_source_code() const;
 	virtual void set_source_code(const String& p_code);
 	virtual void update_exports();
-	virtual Error reload();
+	virtual Error reload(bool p_keep_state = false);
 
 	virtual bool has_script_signal(const StringName &) const { return false; }
 	virtual void get_script_signal_list(List<MethodInfo,DefaultAllocator> *) const {}
@@ -363,6 +363,7 @@ public:
 	/* LOADER FUNCTIONS */
 
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
+	virtual void reload_all_scripts();
 
 	virtual void profiling_start();
 	virtual void profiling_stop();
