@@ -300,6 +300,9 @@
     <ClCompile Include="..\..\modules\digest\text\word_filter.cpp">
       <Filter>modules\digest\text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\gdscript\gd_function.cpp">
+      <Filter>modules\gdscript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -541,6 +544,9 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\digest\text\word_filter.h">
       <Filter>modules\digest\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\gdscript\gd_function.h">
+      <Filter>modules\gdscript</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
