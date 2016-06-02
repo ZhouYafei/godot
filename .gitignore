@@ -21,7 +21,6 @@ tools/editor/certs_compressed.h
 tools/editor/editor_icons.cpp
 tools/editor/translations.h
 tools/editor/builtin_fonts.h
--fpic
 scene/resources/default_theme/editor_fonts.inc
 scene/resources/default_theme/font_normal_cjk*.inc
 main/fixed_rfs.h
@@ -36,6 +35,7 @@ doc/_build/
 *.bc
 
 # Android specific
+platform/android/java/build.gradle
 platform/android/java/.gradle
 platform/android/java/.gradletasknamecache
 platform/android/java/local.properties
