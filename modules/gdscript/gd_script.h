@@ -192,6 +192,7 @@ friend class GDScript;
 friend class GDFunction;
 friend class GDFunctions;
 friend class GDCompiler;
+friend class GDScriptLanguage;
 
 	Object *owner;
 	Ref<GDScript> script;
