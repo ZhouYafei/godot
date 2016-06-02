@@ -163,8 +163,10 @@
     <ClCompile Include="..\..\modules\digest\sproto_enc.cpp" />
     <ClCompile Include="..\..\modules\digest\text\json_asset.cpp" />
     <ClCompile Include="..\..\modules\digest\text\text_asset.cpp" />
+    <ClCompile Include="..\..\modules\digest\text\word_filter.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_compiler.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_editor.cpp" />
+    <ClCompile Include="..\..\modules\gdscript\gd_function.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_functions.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_parser.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_pretty_print.cpp" />
@@ -277,7 +279,9 @@
     <ClInclude Include="..\..\modules\digest\sproto\sproto.h" />
     <ClInclude Include="..\..\modules\digest\text\json_asset.h" />
     <ClInclude Include="..\..\modules\digest\text\text_asset.h" />
+    <ClInclude Include="..\..\modules\digest\text\word_filter.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_compiler.h" />
+    <ClInclude Include="..\..\modules\gdscript\gd_function.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_functions.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_parser.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_pretty_print.h" />

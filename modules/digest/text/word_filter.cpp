@@ -29,8 +29,6 @@
 #include "word_filter.h"
 #include "json_asset.h"
 
-const wchar_t SYMBOLS[] = L"¡«¡¤£¡@#£¤%¡­¡­&¡Á£¨£©¡ª¡ª+|¡¢¡¾¡¿¡º¡»£»£º¡®¡¯¡°¡±¡¶¡·£¬¡£/£¿";
-
 Error WordFilter::load(const String& p_path) {
 
 	JsonAsset asset;
@@ -63,7 +61,7 @@ Error WordFilter::load(const String& p_path) {
 
 int WordFilter::_check_sensitive_word(const String& p_text, int p_pos, bool p_match_maximum) {
 
-	int len = 0;
+	int len = 1;
 	CharType c = p_text[p_pos];
 	if(!filters.has(c))
 		return -1;
@@ -79,14 +77,22 @@ int WordFilter::_check_sensitive_word(const String& p_text, int p_pos, bool p_ma
 		debug += c;
 		if(!nowMap->nexts.has(c)) {
 			if(nowMap->finish)
-				return len;
+				return len - 1;
 			if(!p_match_maximum || symbols.find(c) == NULL)
 				return -1;
 		} else {
 			nowMap = &nowMap->nexts[c];
 		}
 	}
+	if(nowMap->finish)
+		return len;
 	return -1;
+}
+
+void WordFilter::add_symbols(const String& p_symbols) {
+
+	for(int i = 0; i < p_symbols.length(); i++)
+		symbols.insert(p_symbols[i]);
 }
 
 String WordFilter::filter(const String& p_text, bool p_match_maximum, const String& p_replace) {
@@ -108,6 +114,7 @@ String WordFilter::filter(const String& p_text, bool p_match_maximum, const Stri
 void WordFilter::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("load","path"),&WordFilter::load);
+	ObjectTypeDB::bind_method(_MD("add_symbols","symbols"),&WordFilter::add_symbols);
 	ObjectTypeDB::bind_method(_MD("filter:String","text","match_maximum","replace"),&WordFilter::filter,false,"*");
 }
 
@@ -115,8 +122,6 @@ WordFilter::WordFilter() {
 
 	for(CharType c = 0; c < 128; c++)
 		symbols.insert(c);
-	for(int i = 0; i < sizeof(SYMBOLS) / sizeof(SYMBOLS[0]); i++)
-		symbols.insert(SYMBOLS[i]);
 }
 
 WordFilter::~WordFilter() {

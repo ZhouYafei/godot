@@ -137,9 +137,12 @@ private:
 	CollisionMode collision_mode;
 	bool playing;
 	bool forward;
+	bool start_trigged;
+	bool end_trigged;
 	bool debug_collisions;
 	String current_animation;
 	bool loop;
+	float action_time;
 
 	Color modulate;
 	Color shadow_color;
@@ -162,7 +165,7 @@ private:
 	void _animation_process(float p_delta);
 	void _animation_draw();
 	void _set_process(bool p_process, bool p_force = false);
-	int _get_frame(const OSpriteResource::Action *&p_action) const;
+	int _get_frame(const OSpriteResource::Action *&p_action);
 
 	Array _get_collisions(bool p_global_pos = false) const;
 
@@ -181,7 +184,7 @@ public:
 	Ref<OSpriteResource> get_resource() const;
 
 	bool has(const String& p_name) const;
-	bool play(const String& p_name, bool p_loop = false, int p_delay = 0);
+	bool play(const String& p_name, bool p_loop = false, bool p_forward = true, int p_delay = 0);
 	void stop();
 	bool is_playing(const String& p_name = "") const;
 	void set_forward(bool p_forward = true);

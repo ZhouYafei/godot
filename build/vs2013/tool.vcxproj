@@ -185,6 +185,7 @@
     <ClCompile Include="..\..\tools\editor\editor_run.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_run_native.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_run_script.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_scale.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_selection.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_settings.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_sub_scene.cpp" />
@@ -318,6 +319,7 @@
     <ClInclude Include="..\..\tools\editor\editor_run.h" />
     <ClInclude Include="..\..\tools\editor\editor_run_native.h" />
     <ClInclude Include="..\..\tools\editor\editor_run_script.h" />
+    <ClInclude Include="..\..\tools\editor\editor_scale.h" />
     <ClInclude Include="..\..\tools\editor\editor_selection.h" />
     <ClInclude Include="..\..\tools\editor\editor_settings.h" />
     <ClInclude Include="..\..\tools\editor\editor_sub_scene.h" />

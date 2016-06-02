@@ -705,7 +705,7 @@ void LuaScript::update_exports() {
 #endif
 }
 
-Error LuaScript::reload() {
+Error LuaScript::reload(bool p_keep_state) {
 
 	LUA_MULTITHREAD_GUARD();
 

@@ -55,6 +55,7 @@ public:
 	~WordFilter();
 
 	Error load(const String& p_path);
+	void add_symbols(const String& p_symbols);
 	String filter(const String& p_text, bool p_match_maximum = false, const String& p_replace = "*");
 };
 
