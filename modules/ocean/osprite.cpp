@@ -829,13 +829,13 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 	float rot = get_rot();
 	float scale = get_scale().x;
 
-	Vector2 pos = p_global_pos ? get_global_pos() : Vector2(0, 0);
+	Matrix32 xform = p_global_pos ? get_global_transform() : get_transform();
+
 	for(int i = 0; i < boxes.size(); i++) {
 
 		const Block& box = boxes[i];
-		Vector2 box_pos = pos + box.pos.rotated(rot);
 		Dictionary d;
-		d["pos"] = box_pos;
+		d["pos"] = xform.xform(box.pos);
 		d["radius"] = box.radius * scale;
 		result[i] = d;
 	}
