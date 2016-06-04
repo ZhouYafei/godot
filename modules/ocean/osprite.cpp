@@ -211,30 +211,34 @@ void OSprite::_animation_process(float p_delta) {
 	current_pos += p_delta * speed_scale;
 
 	bool new_cycle = false;
-	action_time -= p_delta * speed_scale;
-	if(action_time <= 0) {
-		start_trigged = false;
-		end_trigged = false;
-		new_cycle = true;
-		action_time += (action_cache->to - action_cache->from + 1) * res->fps_delta;
-		if(!loop)
-			_set_process(false);
+	if(action_cache != NULL) {
+		action_time -= p_delta * speed_scale;
+		if(action_time <= 0) {
+			start_trigged = false;
+			end_trigged = false;
+			new_cycle = true;
+			action_time += (action_cache->to - action_cache->from + 1) * res->fps_delta;
+			if(!loop)
+				_set_process(false);
+		}
 	}
 
 	if(!is_visible())
 		return;
 
-	if(new_cycle && !end_trigged) {
+	if(action_cache != NULL) {
+		if(new_cycle && !end_trigged) {
 
-		end_trigged = true;
-		//printf("animation_end %s %s\n", current_animation.utf8().get_data(), loop ? "true" : "false");
-		emit_signal("animation_end", current_animation, !loop);
-	}
-	else if(!start_trigged) {
+			end_trigged = true;
+			//printf("animation_end %s %s\n", current_animation.utf8().get_data(), loop ? "true" : "false");
+			emit_signal("animation_end", current_animation, !loop);
+		}
+		else if(!start_trigged) {
 
-		start_trigged = true;
-		//printf("animation_start %s %s\n", current_animation.utf8().get_data(), loop ? "true" : "false");
-		emit_signal("animation_start", current_animation);
+			start_trigged = true;
+			//printf("animation_start %s %s\n", current_animation.utf8().get_data(), loop ? "true" : "false");
+			emit_signal("animation_start", current_animation);
+		}
 	}
 
 	frame_cache = _get_frame(action_cache);
