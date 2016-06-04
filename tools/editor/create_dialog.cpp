@@ -37,6 +37,8 @@
 #if 1
 
 #include "os/keyboard.h"
+#include "editor_settings.h"
+#include "editor_help.h"
 
 
 void CreateDialog::popup(bool p_dontclear) {
@@ -107,6 +109,21 @@ void CreateDialog::add_type(const String& p_type,HashMap<String,TreeItem*>& p_ty
 		}
 
 	}
+
+	if (bool(EditorSettings::get_singleton()->get("scenetree_editor/start_create_dialog_fully_expanded"))) {
+		item->set_collapsed(false);
+	} else {
+		// don't collapse search results
+		bool collapse = (search_box->get_text() == "");
+		// don't collapse the root node
+		collapse &= (item != p_root);
+		// don't collapse abstract nodes on the first tree level
+		collapse &= ((parent != p_root) || (ObjectTypeDB::can_instance(p_type)));
+		item->set_collapsed(collapse);
+	}
+
+	const String& description = EditorHelp::get_doc_data()->class_list[p_type].brief_description;
+	item->set_tooltip(0,description);
 
 
 	if (has_icon(p_type,"EditorIcons")) {

@@ -195,6 +195,18 @@ void EditorNode::_unhandled_input(const InputEvent& p_event) {
 			case KEY_F6: _menu_option_confirm(RUN_PLAY_SCENE,true); break;
 			//case KEY_F7: _menu_option_confirm(RUN_PAUSE,true); break;
 			case KEY_F8: _menu_option_confirm(RUN_STOP,true); break;
+			case KEY_F11: {
+				if (p_event.key.mod.shift) {
+					if (p_event.key.mod.control) {
+						set_distraction_free_mode(!get_distraction_free_mode());
+					} else if (distraction_free_mode) {
+						distraction_free_mode = false;
+						_update_top_menu_visibility();
+					} else {
+						set_docks_visible(!get_docks_visible());
+					}
+				}
+			} break;
 		}
 
 	}
@@ -1524,6 +1536,7 @@ void EditorNode::push_item(Object *p_object,const String& p_property) {
 
 	if (!p_object) {
 		property_editor->edit(NULL);
+		connections_dock->set_node(NULL);
 		scene_tree_dock->set_selected(NULL);
 		return;
 	}
@@ -1669,6 +1682,7 @@ void EditorNode::_edit_current() {
 
 		scene_tree_dock->set_selected(NULL);
 		property_editor->edit( NULL );
+		connections_dock->set_node(NULL);
 		object_menu->set_disabled(true);
 
 		_display_top_editors(false);
@@ -1688,6 +1702,7 @@ void EditorNode::_edit_current() {
 		ERR_FAIL_COND(!current_res);
 		scene_tree_dock->set_selected(NULL);
 		property_editor->edit( current_res );
+		connections_dock->set_node(NULL);
 		object_menu->set_disabled(false);
 
 		//resources_dock->add_resource(Ref<Resource>(current_res));
@@ -1704,6 +1719,7 @@ void EditorNode::_edit_current() {
 
 
 		property_editor->edit( current_node );
+		connections_dock->set_node( current_node );
 		scene_tree_dock->set_selected(current_node);
 		object_menu->get_popup()->clear();
 
@@ -1712,6 +1728,7 @@ void EditorNode::_edit_current() {
 	} else {
 
 		property_editor->edit( current_obj );
+		connections_dock->set_node(NULL);
 		//scene_tree_dock->set_selected(current_node);
 		//object_menu->get_popup()->clear();
 
@@ -2751,10 +2768,12 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 			if (ischecked) {
 				file_server->stop();
+				run_native->set_deploy_dumb(false);
 				//debug_button->set_icon(gui_base->get_icon("FileServer","EditorIcons"));
 				//debug_button->get_popup()->set_item_text( debug_button->get_popup()->get_item_index(RUN_FILE_SERVER),"Enable File Server");
 			} else {
 				file_server->start();
+				run_native->set_deploy_dumb(true);
 				//debug_button->set_icon(gui_base->get_icon("FileServerActive","EditorIcons"));
 				//debug_button->get_popup()->set_item_text( debug_button->get_popup()->get_item_index(RUN_FILE_SERVER),"Disable File Server");
 			}
@@ -2770,13 +2789,13 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 			ScriptEditor::get_singleton()->get_debugger()->set_live_debugging(!ischecked);
 		} break;
 
-		case RUN_DEPLOY_DUMB_CLIENTS: {
+		/*case RUN_DEPLOY_DUMB_CLIENTS: {
 
 			bool ischecked = debug_button->get_popup()->is_item_checked( debug_button->get_popup()->get_item_index(RUN_DEPLOY_DUMB_CLIENTS));
 			debug_button->get_popup()->set_item_checked( debug_button->get_popup()->get_item_index(RUN_DEPLOY_DUMB_CLIENTS),!ischecked);
 			run_native->set_deploy_dumb(!ischecked);
 
-		} break;
+		} break;*/
 		case RUN_DEPLOY_REMOTE_DEBUG: {
 
 			bool ischecked = debug_button->get_popup()->is_item_checked( debug_button->get_popup()->get_item_index(RUN_DEPLOY_REMOTE_DEBUG));
@@ -2800,7 +2819,11 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 		} break;
 		case RUN_RELOAD_SCRIPTS: {
 
-			ScriptEditor::get_singleton()->get_debugger()->reload_scripts();
+
+			bool ischecked = debug_button->get_popup()->is_item_checked( debug_button->get_popup()->get_item_index(RUN_RELOAD_SCRIPTS));
+			debug_button->get_popup()->set_item_checked( debug_button->get_popup()->get_item_index(RUN_RELOAD_SCRIPTS),!ischecked);
+
+			ScriptEditor::get_singleton()->set_live_auto_reload_running_scripts(!ischecked);
 		} break;
 		case SETTINGS_UPDATE_ALWAYS: {
 
@@ -4525,32 +4548,59 @@ void EditorNode::_update_dock_slots_visibility() {
 		right_hsplit,
 	};
 
-	for(int i=0;i<DOCK_SLOT_MAX;i++) {
+	if (!docks_visible) {
 
-		if (dock_slot[i]->get_tab_count())
-			dock_slot[i]->show();
-		else
+		for(int i=0;i<DOCK_SLOT_MAX;i++) {
 			dock_slot[i]->hide();
-
-	}
-
-
-	for(int i=0;i<DOCK_SLOT_MAX/2;i++) {
-		bool in_use = dock_slot[i*2+0]->get_tab_count() || dock_slot[i*2+1]->get_tab_count();
-		if (in_use)
-			splits[i]->show();
-		else
-			splits[i]->hide();
-	}
-
-	for(int i=0;i<DOCK_SLOT_MAX;i++) {
-
-		if (!dock_slot[i]->is_hidden() && dock_slot[i]->get_tab_count()) {
-			dock_slot[i]->set_current_tab(0);
 		}
+
+		for(int i=0;i<DOCK_SLOT_MAX/2;i++) {
+			splits[i]->hide();
+		}
+
+		right_hsplit->hide();
+		bottom_panel->hide();
+	} else {
+		for(int i=0;i<DOCK_SLOT_MAX;i++) {
+
+			if (dock_slot[i]->get_tab_count())
+				dock_slot[i]->show();
+			else
+				dock_slot[i]->hide();
+
+		}
+
+
+		for(int i=0;i<DOCK_SLOT_MAX/2;i++) {
+			bool in_use = dock_slot[i*2+0]->get_tab_count() || dock_slot[i*2+1]->get_tab_count();
+			if (in_use)
+				splits[i]->show();
+			else
+				splits[i]->hide();
+		}
+
+		for(int i=0;i<DOCK_SLOT_MAX;i++) {
+
+			if (!dock_slot[i]->is_hidden() && dock_slot[i]->get_tab_count()) {
+				dock_slot[i]->set_current_tab(0);
+			}
+		}
+		bottom_panel->show();
+		right_hsplit->show();
 	}
 }
 
+void EditorNode::_update_top_menu_visibility() {
+	if (distraction_free_mode) {
+		play_cc->hide();
+		menu_hb->hide();
+		scene_tabs->hide();
+	} else {
+		play_cc->show();
+		menu_hb->show();
+		scene_tabs->show();
+	}
+}
 
 void EditorNode::_load_docks_from_config(Ref<ConfigFile> p_layout, const String& p_section) {
 
@@ -4916,6 +4966,31 @@ void EditorNode::_bottom_panel_switch(bool p_enable,int p_idx) {
 	}
 }
 
+void EditorNode::set_docks_visible(bool p_show) {
+	docks_visible = p_show;
+	_update_dock_slots_visibility();
+}
+
+bool EditorNode::get_docks_visible() const {
+	return docks_visible;
+}
+
+void EditorNode::set_distraction_free_mode(bool p_enter) {
+	distraction_free_mode = p_enter;
+
+	if (p_enter) {
+		if (docks_visible) {
+			set_docks_visible(false);
+		}
+	} else {
+		set_docks_visible(true);
+	}
+	_update_top_menu_visibility();
+}
+
+bool EditorNode::get_distraction_free_mode() const {
+	return distraction_free_mode;
+}
 
 void EditorNode::add_control_to_dock(DockSlot p_slot,Control* p_control) {
 	ERR_FAIL_INDEX(p_slot,DOCK_SLOT_MAX);
@@ -5139,7 +5214,7 @@ void EditorNode::_bind_methods() {
 	ADD_SIGNAL( MethodInfo("play_pressed") );
 	ADD_SIGNAL( MethodInfo("pause_pressed") );
 	ADD_SIGNAL( MethodInfo("stop_pressed") );
-	ADD_SIGNAL( MethodInfo("request_help") );
+	ADD_SIGNAL( MethodInfo("request_help") );	
 	ADD_SIGNAL( MethodInfo("script_add_function_request",PropertyInfo(Variant::OBJECT,"obj"),PropertyInfo(Variant::STRING,"function"),PropertyInfo(Variant::STRING_ARRAY,"args")) );
 	ADD_SIGNAL( MethodInfo("resource_saved",PropertyInfo(Variant::OBJECT,"obj")) );
 
@@ -5170,6 +5245,8 @@ EditorNode::EditorNode() {
 	last_checked_version=0;
 	changing_scene=false;
 	_initializing_addons=false;
+	docks_visible = true;
+	distraction_free_mode=false;
 
 	FileAccess::set_backup_save(true);
 
@@ -5635,7 +5712,7 @@ EditorNode::EditorNode() {
 	//s1->set_size(Point2(10,15));
 
 
-	CenterContainer *play_cc = memnew( CenterContainer );
+	play_cc = memnew( CenterContainer );
 	play_cc->set_ignore_mouse(true);
 	gui_base->add_child( play_cc );
 	play_cc->set_area_as_parent_rect();
@@ -5716,16 +5793,20 @@ EditorNode::EditorNode() {
 	debug_button->set_tooltip(TTR("Debug options"));
 
 	p=debug_button->get_popup();
-	p->add_check_item(TTR("Live Editing"),RUN_LIVE_DEBUG);
-	p->add_check_item(TTR("File Server"),RUN_FILE_SERVER);
-	p->add_separator();
-	p->add_check_item(TTR("Deploy Remote Debug"),RUN_DEPLOY_REMOTE_DEBUG);
-	p->add_check_item(TTR("Deploy File Server Clients"),RUN_DEPLOY_DUMB_CLIENTS);
+	p->add_check_item(TTR("Deploy with Remote Debug"),RUN_DEPLOY_REMOTE_DEBUG);
+	p->set_item_tooltip(p->get_item_count()-1,TTR("When exporting or deploying, the resulting executable will attempt to connect to the IP of this computer in order to be debugged."));
+	p->add_check_item(TTR("Small Deploy with Network FS"),RUN_FILE_SERVER);
+	p->set_item_tooltip(p->get_item_count()-1,TTR("When this option is enabled, export or deploy will produce a minimal executable.\nThe filesystem will be provided from the project by the editor over the network. On Android, deploy will use the USB cable for faster performance. This option speeds up testing for games with a large footprint."));
 	p->add_separator();
 	p->add_check_item(TTR("Visible Collision Shapes"),RUN_DEBUG_COLLISONS);
+	p->set_item_tooltip(p->get_item_count()-1,TTR("Collision shapes and raycast nodes (for 2D and 3D) will be visible on the running game if this option is turned on."));
 	p->add_check_item(TTR("Visible Navigation"),RUN_DEBUG_NAVIGATION);
+	p->set_item_tooltip(p->get_item_count()-1,TTR("Navigation meshes and polygons will be visible on the running game if this option is turned on."));
 	p->add_separator();
-	p->add_item(TTR("Reload Scripts"),RUN_RELOAD_SCRIPTS);
+	p->add_check_item(TTR("Sync Scene Changes"),RUN_LIVE_DEBUG);
+	p->set_item_tooltip(p->get_item_count()-1,TTR("When this option is turned on, any changes made to the scene in the editor will be replicated in the running game.\nThis works remotely, and is more efficient with networked filesystem."));
+	p->add_check_item(TTR("Sync Script Changes"),RUN_RELOAD_SCRIPTS);
+	p->set_item_tooltip(p->get_item_count()-1,TTR("When this option is turned on, any script that is saved will be reloaded on the running game.\nThis works remotely, and is more efficient with networked filesystem."));
 	p->connect("item_pressed",this,"_menu_option");
 
 	/*
@@ -5850,7 +5931,7 @@ EditorNode::EditorNode() {
 	scene_tree_dock = memnew( SceneTreeDock(this,scene_root,editor_selection,editor_data) );
 	scene_tree_dock->set_name(TTR("Scene"));
 	//top_pallete->add_child(scene_tree_dock);
-	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scene_tree_dock);
+	dock_slot[DOCK_SLOT_RIGHT_UL]->add_child(scene_tree_dock);
 #if 0
 	resources_dock = memnew( ResourcesDock(this) );
 	resources_dock->set_name("Resources");
@@ -5858,7 +5939,7 @@ EditorNode::EditorNode() {
 	dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(resources_dock);
 	//top_pallete->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 #endif
-	dock_slot[DOCK_SLOT_RIGHT_BL]->hide();
+	dock_slot[DOCK_SLOT_LEFT_BR]->hide();
 	/*Control *editor_spacer = memnew( Control );
 	editor_spacer->set_custom_minimum_size(Size2(260,200));
 	editor_spacer->set_v_size_flags(Control::SIZE_EXPAND_FILL);
@@ -5880,7 +5961,7 @@ EditorNode::EditorNode() {
 
 	VBoxContainer *prop_editor_base = memnew( VBoxContainer );
 	prop_editor_base->set_name(TTR("Inspector")); // Properties?
-	dock_slot[DOCK_SLOT_RIGHT_UL]->add_child(prop_editor_base);
+	dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(prop_editor_base);
 
 	HBoxContainer *prop_editor_hb = memnew( HBoxContainer );
 
@@ -5992,10 +6073,14 @@ EditorNode::EditorNode() {
 	property_editor->set_undo_redo(&editor_data.get_undo_redo());
 
 
+	connections_dock = memnew( ConnectionsDock(this) );
+	connections_dock->set_undoredo(&editor_data.get_undo_redo());
+	dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(connections_dock);
+
 	scenes_dock = memnew( ScenesDock(this) );
 	scenes_dock->set_name(TTR("FileSystem"));
 	scenes_dock->set_use_thumbnails(int(EditorSettings::get_singleton()->get("file_dialog/display_mode"))==EditorFileDialog::DISPLAY_THUMBNAILS);
-	dock_slot[DOCK_SLOT_LEFT_BR]->add_child(scenes_dock);
+	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scenes_dock);
 	//prop_pallete->add_child(scenes_dock);
 	scenes_dock->connect("open",this,"open_request");
 	scenes_dock->connect("instance",this,"_instance_request");
