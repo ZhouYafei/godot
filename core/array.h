@@ -74,6 +74,8 @@ public:
 	void invert();
 
 	int find(const Variant& p_value) const;
+	int find_last(const Variant& p_value) const;
+	int count(const Variant& p_value) const;
 
 	void erase(const Variant& p_value);
 

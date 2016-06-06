@@ -230,7 +230,6 @@ Button::TextAlign Button::get_text_align() const {
 	return align;
 }
 
-
 void Button::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_text","text"),&Button::set_text);
