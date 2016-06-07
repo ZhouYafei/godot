@@ -166,6 +166,7 @@
     <ClCompile Include="..\..\scene\3d\immediate_geometry.cpp" />
     <ClCompile Include="..\..\scene\3d\interpolated_camera.cpp" />
     <ClCompile Include="..\..\scene\3d\light.cpp" />
+    <ClCompile Include="..\..\scene\3d\listener.cpp" />
     <ClCompile Include="..\..\scene\3d\mesh_instance.cpp" />
     <ClCompile Include="..\..\scene\3d\multimesh_instance.cpp" />
     <ClCompile Include="..\..\scene\3d\navigation.cpp">
@@ -224,6 +225,7 @@
     <ClCompile Include="..\..\scene\gui\graph_edit.cpp" />
     <ClCompile Include="..\..\scene\gui\graph_node.cpp" />
     <ClCompile Include="..\..\scene\gui\grid_container.cpp" />
+    <ClCompile Include="..\..\scene\gui\input_action.cpp" />
     <ClCompile Include="..\..\scene\gui\item_list.cpp" />
     <ClCompile Include="..\..\scene\gui\label.cpp" />
     <ClCompile Include="..\..\scene\gui\line_edit.cpp" />
@@ -376,6 +378,7 @@
     <ClInclude Include="..\..\scene\3d\immediate_geometry.h" />
     <ClInclude Include="..\..\scene\3d\interpolated_camera.h" />
     <ClInclude Include="..\..\scene\3d\light.h" />
+    <ClInclude Include="..\..\scene\3d\listener.h" />
     <ClInclude Include="..\..\scene\3d\mesh_instance.h" />
     <ClInclude Include="..\..\scene\3d\multimesh_instance.h" />
     <ClInclude Include="..\..\scene\3d\navigation.h" />
@@ -431,6 +434,7 @@
     <ClInclude Include="..\..\scene\gui\graph_edit.h" />
     <ClInclude Include="..\..\scene\gui\graph_node.h" />
     <ClInclude Include="..\..\scene\gui\grid_container.h" />
+    <ClInclude Include="..\..\scene\gui\input_action.h" />
     <ClInclude Include="..\..\scene\gui\item_list.h" />
     <ClInclude Include="..\..\scene\gui\label.h" />
     <ClInclude Include="..\..\scene\gui\line_edit.h" />

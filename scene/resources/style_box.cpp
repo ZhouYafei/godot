@@ -138,7 +138,10 @@ void StyleBoxTexture::draw(RID p_canvas_item,const Rect2& p_rect,const Color& p_
 	r.pos.y-=expand_margin[MARGIN_TOP];
 	r.size.x+=expand_margin[MARGIN_LEFT]+expand_margin[MARGIN_RIGHT];
 	r.size.y+=expand_margin[MARGIN_TOP]+expand_margin[MARGIN_BOTTOM];
-	VisualServer::get_singleton()->canvas_item_add_style_box( p_canvas_item,r,region_rect,texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center);
+	if(region_rect.size.length() != 0)
+		VisualServer::get_singleton()->canvas_item_add_style_box( p_canvas_item,r,region_rect,texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center);
+	else
+		VisualServer::get_singleton()->canvas_item_add_style_box( p_canvas_item,r,texture->get_region(),texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center);
 }
 
 void StyleBoxTexture::set_draw_center(bool p_draw) {
@@ -229,6 +232,7 @@ StyleBoxTexture::StyleBoxTexture() {
 		expand_margin[i]=0;
 	}
 	draw_center=true;
+	region_rect=Rect2(Vector2(0,0),Size2(0,0));
 
 }
 StyleBoxTexture::~StyleBoxTexture() {

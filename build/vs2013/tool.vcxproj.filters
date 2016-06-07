@@ -420,9 +420,6 @@
     <ClCompile Include="..\..\tools\editor\inspector_dock.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tools\editor\plugins\sprite_region_editor_plugin.cpp">
-      <Filter>tools\editor\plugins</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_export_scene.cpp">
       <Filter>tools\editor\io_plugins</Filter>
     </ClCompile>
@@ -452,6 +449,15 @@
     </ClCompile>
     <ClCompile Include="..\..\tools\editor\editor_scale.cpp">
       <Filter>tools\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\editor\node_dock.cpp">
+      <Filter>tools\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\editor\io_plugins\editor_bitmask_import_plugin.cpp">
+      <Filter>tools\editor\io_plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tools\editor\plugins\texture_region_editor_plugin.cpp">
+      <Filter>tools\editor\plugins</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -812,9 +818,6 @@
     <ClInclude Include="..\..\tools\editor\inspector_dock.h">
       <Filter>tools\editor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\tools\editor\plugins\sprite_region_editor_plugin.h">
-      <Filter>tools\editor\plugins</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\tools\editor\editor_name_dialog.h">
       <Filter>tools\editor</Filter>
     </ClInclude>
@@ -841,6 +844,15 @@
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\editor_scale.h">
       <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\node_dock.h">
+      <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\io_plugins\editor_bitmask_import_plugin.h">
+      <Filter>tools\editor\io_plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\plugins\texture_region_editor_plugin.h">
+      <Filter>tools\editor\plugins</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
