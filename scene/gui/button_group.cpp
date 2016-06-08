@@ -33,7 +33,7 @@ void ButtonGroup::_add_button(BaseButton *p_button) {
 
 	buttons.insert(p_button);
 	p_button->set_toggle_mode(true);
-	p_button->set_click_on_press(true);
+	//p_button->set_click_on_press(true);
 	p_button->connect("pressed",this,"_pressed",make_binds(p_button));
 
 }
