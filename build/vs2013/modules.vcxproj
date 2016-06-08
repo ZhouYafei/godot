@@ -242,14 +242,15 @@
     <ClCompile Include="..\..\modules\spine\src\spine\MeshAttachment.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\RegionAttachment.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\Skeleton.c" />
-    <ClCompile Include="..\..\modules\spine\src\spine\SkeletonBinary.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonBounds.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonData.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\SkeletonJson.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\Skin.c" />
-    <ClCompile Include="..\..\modules\spine\src\spine\SkinnedMeshAttachment.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\Slot.c" />
     <ClCompile Include="..\..\modules\spine\src\spine\SlotData.c" />
+    <ClCompile Include="..\..\modules\spine\src\spine\TransformConstraint.c" />
+    <ClCompile Include="..\..\modules\spine\src\spine\TransformConstraintData.c" />
+    <ClCompile Include="..\..\modules\spine\src\spine\WeightedMeshAttachment.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\behavior_tree\core\bt_action_node.h" />
@@ -320,15 +321,16 @@
     <ClInclude Include="..\..\modules\spine\include\spine\MeshAttachment.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\RegionAttachment.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\Skeleton.h" />
-    <ClInclude Include="..\..\modules\spine\include\spine\SkeletonBinary.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonBounds.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonData.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\SkeletonJson.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\Skin.h" />
-    <ClInclude Include="..\..\modules\spine\include\spine\SkinnedMeshAttachment.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\Slot.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\SlotData.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\spine.h" />
+    <ClInclude Include="..\..\modules\spine\include\spine\TransformConstraint.h" />
+    <ClInclude Include="..\..\modules\spine\include\spine\TransformConstraintData.h" />
+    <ClInclude Include="..\..\modules\spine\include\spine\WeightedMeshAttachment.h" />
     <ClInclude Include="..\..\modules\spine\register_types.h" />
     <ClInclude Include="..\..\modules\spine\spine.h" />
     <ClInclude Include="..\..\modules\spine\spine_batcher.h" />
