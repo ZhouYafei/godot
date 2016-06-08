@@ -13,126 +13,10 @@ void Patch9Frame::_notification(int p_what) {
 		Size2 s=get_size();
 		Size2 tex_size = texture->get_size();
 		Vector2 scale = s / tex_size;
-		RID ci = get_canvas_item();
-		VS::get_singleton()->canvas_item_add_style_box(ci,Rect2(Point2(),s),region_rect,texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center,modulate);
-//		draw_texture_rect(texture,Rect2(Point2(),s),false,modulate);
-
-		int left = margin[MARGIN_LEFT];
-		int top = margin[MARGIN_TOP];
-		int right = margin[MARGIN_RIGHT];
-		int bottom = margin[MARGIN_BOTTOM];
-
-		// left top
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(0, 0),
-				Vector2(left, top)
-			);
-			Rect2 rect = Rect2(
-				Vector2(0, 0),
-				Vector2(left, top)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-		// left center
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(0, top),
-				Vector2(left, tex_size.y - bottom - top)
-			);
-			Rect2 rect = Rect2(
-				Vector2(0, top),
-				Vector2(left, s.y - bottom - top)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-		// left bottom
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(0, tex_size.y - bottom),
-				Vector2(left, bottom)
-			);
-			Rect2 rect = Rect2(
-				Vector2(0, s.y - bottom),
-				Vector2(left, bottom)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-
-		// center top
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(left, 0),
-				Vector2(tex_size.x - left - right, top)
-			);
-			Rect2 rect = Rect2(
-				Vector2(left, 0),
-				Vector2(s.x - left - right, top)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-
-		// center center
-		if(draw_center) {
-			Rect2 src_rect = Rect2(
-				Vector2(left, top),
-				Vector2(tex_size.x - left - right, tex_size.y - bottom - top)
-			);
-			Rect2 rect = Rect2(
-				Vector2(left, top),
-				Vector2(s.x - left - right, s.y - bottom - top)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-		// center bottom
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(left, tex_size.y - bottom),
-				Vector2(tex_size.x - left - right, bottom)
-			);
-			Rect2 rect = Rect2(
-				Vector2(left, s.y - bottom),
-				Vector2(s.x - left - right, bottom)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-
-		// right top
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(tex_size.x - right, 0),
-				Vector2(right, top)
-			);
-			Rect2 rect = Rect2(
-				Vector2(s.x - right, 0),
-				Vector2(right, top)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-		// right center
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(tex_size.x - right, top),
-				Vector2(right, tex_size.y - bottom - top)
-			);
-			Rect2 rect = Rect2(
-				Vector2(s.x - right, top),
-				Vector2(right, s.y - bottom - top)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
-		// right bottom
-		{
-			Rect2 src_rect = Rect2(
-				Vector2(tex_size.x - right, tex_size.y - bottom),
-				Vector2(right, bottom)
-			);
-			Rect2 rect = Rect2(
-				Vector2(s.x - right, s.y - bottom),
-				Vector2(right, bottom)
-			);
-			texture->draw_rect_region(ci, rect, src_rect, modulate);
-		}
+		if(region_rect.size.length() != 0)
+			VS::get_singleton()->canvas_item_add_style_box(ci,Rect2(Point2(),s),region_rect,texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center,modulate);
+		else
+			VS::get_singleton()->canvas_item_add_style_box(ci,Rect2(Point2(),s),texture->get_region(),texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center,modulate);
 	}
 }
 
@@ -261,6 +145,7 @@ Patch9Frame::Patch9Frame() {
 	modulate=Color(1,1,1,1);
 	set_ignore_mouse(true);
 	draw_center=true;
+	region_rect=Rect2(Vector2(0,0),Size2(0,0));
 }
 
 

@@ -645,6 +645,12 @@
     <ClCompile Include="..\..\scene\resources\texture_packer.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\scene\gui\input_action.cpp">
+      <Filter>scene\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\scene\3d\listener.cpp">
+      <Filter>scene\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene\register_scene_types.h">
@@ -1261,6 +1267,12 @@
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\texture_packer.h">
       <Filter>scene\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scene\gui\input_action.h">
+      <Filter>scene\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scene\3d\listener.h">
+      <Filter>scene\3d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

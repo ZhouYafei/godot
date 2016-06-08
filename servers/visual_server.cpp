@@ -706,7 +706,7 @@ void VisualServer::_bind_methods() {
 
 }
 
-void VisualServer::_canvas_item_add_style_box(RID p_item, const Rect2& p_rect, const Rect2& p_source, RID p_texture,const Vector<float>& p_margins, const Color& p_modulate) {
+void VisualServer::_canvas_item_add_style_box(RID p_item, const Rect2& p_rect, const Rect2& p_source, RID p_texture,const Vector<real_t>& p_margins, const Color& p_modulate) {
 
 	ERR_FAIL_COND(p_margins.size()!=4);
 	canvas_item_add_style_box(p_item,p_rect,p_source,p_texture,Vector2(p_margins[0],p_margins[1]),Vector2(p_margins[2],p_margins[3]),true,p_modulate);

@@ -8540,7 +8540,6 @@ void RasterizerGLES2::canvas_draw_style_box(const Rect2& p_rect, const Rect2& p_
 
 	if (p_draw_center) {
 
-		src_center.pos += p_region.pos;
 		_draw_textured_quad(
 			rect_center,
 			src_center,

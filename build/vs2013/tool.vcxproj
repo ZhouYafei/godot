@@ -196,6 +196,7 @@
     <ClCompile Include="..\..\tools\editor\import_settings.cpp" />
     <ClCompile Include="..\..\tools\editor\inspector_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_atlas.cpp" />
+    <ClCompile Include="..\..\tools\editor\io_plugins\editor_bitmask_import_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_export_res.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_export_scene.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_font_import_plugin.cpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_texture_import_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_translation_import_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\multi_node_edit.cpp" />
+    <ClCompile Include="..\..\tools\editor\node_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\optimized_save_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\output_strings.cpp" />
     <ClCompile Include="..\..\tools\editor\pane_drag.cpp" />
@@ -247,10 +249,10 @@
     <ClCompile Include="..\..\tools\editor\plugins\shader_graph_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\spatial_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\sprite_frames_editor_plugin.cpp" />
-    <ClCompile Include="..\..\tools\editor\plugins\sprite_region_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\stream_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\style_box_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\texture_editor_plugin.cpp" />
+    <ClCompile Include="..\..\tools\editor\plugins\texture_region_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\theme_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\tile_map_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\tile_set_editor_plugin.cpp" />
@@ -330,6 +332,7 @@
     <ClInclude Include="..\..\tools\editor\import_settings.h" />
     <ClInclude Include="..\..\tools\editor\inspector_dock.h" />
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_atlas.h" />
+    <ClInclude Include="..\..\tools\editor\io_plugins\editor_bitmask_import_plugin.h" />
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_export_res.h" />
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_font_import_plugin.h" />
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_import_collada.h" />
@@ -340,6 +343,7 @@
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_texture_import_plugin.h" />
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_translation_import_plugin.h" />
     <ClInclude Include="..\..\tools\editor\multi_node_edit.h" />
+    <ClInclude Include="..\..\tools\editor\node_dock.h" />
     <ClInclude Include="..\..\tools\editor\optimized_save_dialog.h" />
     <ClInclude Include="..\..\tools\editor\output_strings.h" />
     <ClInclude Include="..\..\tools\editor\pane_drag.h" />
@@ -378,10 +382,10 @@
     <ClInclude Include="..\..\tools\editor\plugins\shader_graph_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\spatial_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\sprite_frames_editor_plugin.h" />
-    <ClInclude Include="..\..\tools\editor\plugins\sprite_region_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\stream_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\style_box_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\texture_editor_plugin.h" />
+    <ClInclude Include="..\..\tools\editor\plugins\texture_region_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\theme_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\tile_map_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\tile_set_editor_plugin.h" />
