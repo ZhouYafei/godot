@@ -120,16 +120,16 @@ public:
 			ERR_FAIL_COND_V(res->data == NULL, RES());
 			spSkeletonJson_dispose(json);
 		}
-		else if (p_path.ends_with(".skel")) {
+		//else if (p_path.ends_with(".skel")) {
 
-			String p_atlas = p_path.replace(".skel", ".atlas");
-			res->atlas = spAtlas_createFromFile(p_atlas.utf8().get_data(), 0);
-			ERR_FAIL_COND_V(res->atlas == NULL, RES());
+		//	String p_atlas = p_path.replace(".skel", ".atlas");
+		//	res->atlas = spAtlas_createFromFile(p_atlas.utf8().get_data(), 0);
+		//	ERR_FAIL_COND_V(res->atlas == NULL, RES());
 
-			res->data = spSkeletonBinary_readSkeletonData(p_path.utf8().get_data(), res->atlas, 1);
-			ERR_EXPLAIN("Invalid spine binary: " + p_path);
-			ERR_FAIL_COND_V(res->data == NULL, RES());
-		}
+		//	res->data = spSkeletonBinary_readSkeletonData(p_path.utf8().get_data(), res->atlas, 1);
+		//	ERR_EXPLAIN("Invalid spine binary: " + p_path);
+		//	ERR_FAIL_COND_V(res->data == NULL, RES());
+		//}
 
 		res->set_path(p_path);
 		return ref;

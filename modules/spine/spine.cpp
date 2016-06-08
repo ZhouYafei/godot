@@ -136,7 +136,7 @@ static Ref<Texture> spine_get_texture(spMeshAttachment* attachment) {
 	return *ref;
 }
 
-static Ref<Texture> spine_get_texture(spSkinnedMeshAttachment* attachment) {
+static Ref<Texture> spine_get_texture(spWeightedMeshAttachment* attachment) {
 
 	Ref<Texture> *ref = static_cast<Ref<Texture> *>(
 		((spAtlasRegion*)attachment->rendererObject)->page->rendererObject
@@ -180,7 +180,8 @@ const float * Spine::_spine_calc_avatar_uvs(spAttachment *p_attachment, spAtlasR
 				uvs[SP_VERTEX_Y4] = v2;
 			}
 		} break;
-	case SP_ATTACHMENT_MESH: {
+	case SP_ATTACHMENT_MESH:
+	case SP_ATTACHMENT_LINKED_MESH: {
 			spMeshAttachment* self = (spMeshAttachment*) p_attachment;
 			uvs = memnew_arr(float, self->verticesCount);
 			for(int i = 0; i < self->verticesCount; i += 2) {
@@ -188,8 +189,9 @@ const float * Spine::_spine_calc_avatar_uvs(spAttachment *p_attachment, spAtlasR
 				uvs[i + 1] = v + self->regionUVs[i + 1] * height;
 			}
 		} break;
-	case SP_ATTACHMENT_SKINNED_MESH: {
-			spSkinnedMeshAttachment* self = (spSkinnedMeshAttachment*) p_attachment;
+	case SP_ATTACHMENT_WEIGHTED_MESH:
+	case SP_ATTACHMENT_WEIGHTED_LINKED_MESH: {
+			spWeightedMeshAttachment* self = (spWeightedMeshAttachment*) p_attachment;
 			uvs = memnew_arr(float, self->uvsCount);
 			for(int i = 0; i < self->uvsCount; i += 2) {
 				uvs[i] = u + self->regionUVs[i] * width;
@@ -226,7 +228,8 @@ void Spine::_spine_get_texture_uvs(spSlot* p_slot, Ref<Texture>& p_texture, cons
 				p_texture = spine_get_texture(attachment);
 			}
 		} break;
-		case SP_ATTACHMENT_MESH: {
+		case SP_ATTACHMENT_MESH:
+		case SP_ATTACHMENT_LINKED_MESH: {
 
 			spMeshAttachment* attachment = (spMeshAttachment*)p_slot->attachment;
 			if(!p_texture.is_null()) {
@@ -237,9 +240,10 @@ void Spine::_spine_get_texture_uvs(spSlot* p_slot, Ref<Texture>& p_texture, cons
 				p_texture = spine_get_texture(attachment);
 			}
 		} break;
-		case SP_ATTACHMENT_SKINNED_MESH: {
+		case SP_ATTACHMENT_WEIGHTED_MESH:
+		case SP_ATTACHMENT_WEIGHTED_LINKED_MESH: {
 
-			spSkinnedMeshAttachment* attachment = (spSkinnedMeshAttachment*)p_slot->attachment;
+			spWeightedMeshAttachment* attachment = (spWeightedMeshAttachment*)p_slot->attachment;
 			if(!p_texture.is_null()) {
 				spAtlasRegion *atlas = (spAtlasRegion *) attachment->rendererObject;
 				p_uvs = _spine_calc_avatar_uvs(p_slot->attachment, atlas);
@@ -265,7 +269,7 @@ void Spine::_animation_draw() {
 	Color color;
 	const float *uvs = NULL;
 	int verties_count = 0;
-	const int *triangles = NULL;
+	const unsigned short *triangles = NULL;
 	int triangles_count = 0;
 	float r = 0, g = 0, b = 0, a = 0;
 
@@ -287,7 +291,7 @@ void Spine::_animation_draw() {
 				spRegionAttachment_computeWorldVertices(attachment, slot->bone, world_verts.ptr());
 				_spine_get_texture_uvs(slot, texture, uvs);
 				verties_count = 8;
-				static const int quadTriangles[6] = { 0, 1, 2, 2, 3, 0 };
+				static const unsigned short quadTriangles[6] = { 0, 1, 2, 2, 3, 0 };
 				triangles = quadTriangles;
 				triangles_count = 6;
 				r = attachment->r;
@@ -296,7 +300,8 @@ void Spine::_animation_draw() {
 				a = attachment->a;
 				break;
 			}
-			case SP_ATTACHMENT_MESH: {
+			case SP_ATTACHMENT_MESH:
+			case SP_ATTACHMENT_LINKED_MESH: {
 
 				spMeshAttachment* attachment = (spMeshAttachment*)slot->attachment;
 				spMeshAttachment_computeWorldVertices(attachment, slot, world_verts.ptr());
@@ -310,10 +315,11 @@ void Spine::_animation_draw() {
 				a = attachment->a;
 				break;
 			}
-			case SP_ATTACHMENT_SKINNED_MESH: {
+			case SP_ATTACHMENT_WEIGHTED_MESH:
+			case SP_ATTACHMENT_WEIGHTED_LINKED_MESH: {
 
-				spSkinnedMeshAttachment* attachment = (spSkinnedMeshAttachment*)slot->attachment;
-				spSkinnedMeshAttachment_computeWorldVertices(attachment, slot, world_verts.ptr());
+				spWeightedMeshAttachment* attachment = (spWeightedMeshAttachment*)slot->attachment;
+				spWeightedMeshAttachment_computeWorldVertices(attachment, slot, world_verts.ptr());
 				_spine_get_texture_uvs(slot, texture, uvs);
 				verties_count = attachment->uvsCount;
 				triangles = attachment->triangles;
@@ -387,7 +393,8 @@ void Spine::_animation_draw() {
 					triangles_count = 0;
 					break;
 				}
-				case SP_ATTACHMENT_MESH: {
+				case SP_ATTACHMENT_MESH:
+				case SP_ATTACHMENT_LINKED_MESH: {
 
 					if (!debug_attachment_mesh)
 						continue;
@@ -399,12 +406,13 @@ void Spine::_animation_draw() {
 					triangles_count = attachment->trianglesCount;
 					break;
 				}
-				case SP_ATTACHMENT_SKINNED_MESH: {
+				case SP_ATTACHMENT_WEIGHTED_MESH:
+				case SP_ATTACHMENT_WEIGHTED_LINKED_MESH: {
 
 					if (!debug_attachment_skinned_mesh)
 						continue;
-					spSkinnedMeshAttachment* attachment = (spSkinnedMeshAttachment*)slot->attachment;
-					spSkinnedMeshAttachment_computeWorldVertices(attachment, slot, world_verts.ptr());
+					spWeightedMeshAttachment* attachment = (spWeightedMeshAttachment*)slot->attachment;
+					spWeightedMeshAttachment_computeWorldVertices(attachment, slot, world_verts.ptr());
 					verties_count = attachment->uvsCount;
 					color = Color(1, 0, 1, 1);
 					triangles = attachment->triangles;
@@ -466,8 +474,8 @@ void Spine::_animation_draw() {
 		// Bone lengths.
 		for(int i = 0; i < skeleton->bonesCount; i++) {
 			spBone *bone = skeleton->bones[i];
-			float x = bone->data->length * bone->m00 + bone->worldX;
-			float y = bone->data->length * bone->m10 + bone->worldY;
+			float x = bone->data->length * bone->a + bone->worldX;
+			float y = bone->data->length * bone->c + bone->worldY;
 			draw_line(Point2(flip_x ? -bone->worldX : bone->worldX,
 				flip_y ? bone->worldY : -bone->worldY),
 				Point2(flip_x ? -x : x, flip_y ? y : -y),
@@ -516,8 +524,8 @@ void Spine::_animation_process(float p_delta) {
 		}
 		const spBone *bone = info.bone;
 		node->call("set_pos", Vector2(bone->worldX + bone->skeleton->x, -bone->worldY + bone->skeleton->y) + info.ofs);
-		node->call("set_scale", Vector2(bone->worldScaleX, bone->worldScaleY) * info.scale);
-		node->call("set_rot", Math::atan2(bone->m10, bone->m11) + Math::deg2rad(info.rot));
+		node->call("set_scale", Vector2(bone->worldSignX, bone->worldSignY) * info.scale);
+		node->call("set_rot", Math::atan2(bone->c, bone->d) + Math::deg2rad(info.rot));
 	}
 	update();
 }
@@ -1012,7 +1020,8 @@ Dictionary Spine::get_attachment(const String& p_slot_name, const String& p_atta
 			dict["vertices"] = vertices;
 		} break;
 
-		case SP_ATTACHMENT_MESH:  {
+		case SP_ATTACHMENT_MESH:
+		case SP_ATTACHMENT_LINKED_MESH: {
 
 			spMeshAttachment *info = (spMeshAttachment *)attachment;
 			dict["type"] = "mesh";
@@ -1020,9 +1029,10 @@ Dictionary Spine::get_attachment(const String& p_slot_name, const String& p_atta
 			dict["color"] = Color(info->r, info->g, info->b, info->a);
 		} break;
 
-		case SP_ATTACHMENT_SKINNED_MESH:  {
+		case SP_ATTACHMENT_WEIGHTED_MESH:
+		case SP_ATTACHMENT_WEIGHTED_LINKED_MESH: {
 
-			spSkinnedMeshAttachment *info = (spSkinnedMeshAttachment *)attachment;
+			spWeightedMeshAttachment *info = (spWeightedMeshAttachment *)attachment;
 			dict["type"] = "skinned_mesh";
 			dict["path"] = info->path;
 			dict["color"] = Color(info->r, info->g, info->b, info->a);
@@ -1038,24 +1048,22 @@ Dictionary Spine::get_bone(const String& p_bone_name) const {
 	ERR_FAIL_COND_V(bone == NULL, Variant());
 	Dictionary dict;
 	dict["x"] = bone->x;
-	dict["y"] = bone->y;
+	dict["x"] = bone->x;
 	dict["rotation"] = bone->rotation;
-	dict["rotationIK"] = bone->rotationIK;
 	dict["scaleX"] = bone->scaleX;
 	dict["scaleY"] = bone->scaleY;
-	dict["flipX"] = bone->flipX;
-	dict["flipY"] = bone->flipY;
-	dict["m00"] = bone->m00;
-	dict["m01"] = bone->m01;
-	dict["m10"] = bone->m10;
-	dict["m11"] = bone->m11;
+	dict["appliedRotation"] = bone->appliedRotation;
+	dict["appliedScaleX"] = bone->appliedScaleX;
+	dict["appliedScaleY"] = bone->appliedScaleY;
+
+	dict["a"] = bone->a;
+	dict["b"] = bone->b;
 	dict["worldX"] = bone->worldX;
+	dict["c"] = bone->c;
+	dict["d"] = bone->d;
 	dict["worldY"] = bone->worldY;
-	dict["worldRotation"] = bone->worldRotation;
-	dict["worldScaleX"] = bone->worldScaleX;
-	dict["worldScaleY"] = bone->worldScaleY;
-	dict["worldFlipX"] = bone->worldFlipX;
-	dict["worldFlipY"] = bone->worldFlipY;
+	dict["worldSignX"] = bone->worldSignX;
+	dict["worldSignY"] = bone->worldSignY;
 
 	return dict;
 }
@@ -1353,14 +1361,14 @@ Rect2 Spine::get_item_rect() const {
 			spRegionAttachment_computeWorldVertices(attachment, slot->bone, world_verts.ptr());
 			verticesCount = 8;
 		}
-		else if (slot->attachment->type == SP_ATTACHMENT_MESH) {
+		else if (slot->attachment->type == SP_ATTACHMENT_MESH || slot->attachment->type == SP_ATTACHMENT_LINKED_MESH) {
 			spMeshAttachment* mesh = (spMeshAttachment*)slot->attachment;
 			spMeshAttachment_computeWorldVertices(mesh, slot, world_verts.ptr());
 			verticesCount = mesh->verticesCount;
 		}
-		else if (slot->attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
-			spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)slot->attachment;
-			spSkinnedMeshAttachment_computeWorldVertices(mesh, slot, world_verts.ptr());
+		else if (slot->attachment->type == SP_ATTACHMENT_WEIGHTED_MESH || slot->attachment->type == SP_ATTACHMENT_WEIGHTED_LINKED_MESH) {
+			spWeightedMeshAttachment* mesh = (spWeightedMeshAttachment*)slot->attachment;
+			spWeightedMeshAttachment_computeWorldVertices(mesh, slot, world_verts.ptr());
 			verticesCount = mesh->uvsCount;
 		}
 		else
