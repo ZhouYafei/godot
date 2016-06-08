@@ -50,7 +50,14 @@ void _spAtlasPage_createTexture(spAtlasPage* self, const char* path) {
 		return _spAtlasPage_createTexture(self, s.utf8().get_data());
 	}
 	TextureRef *ref = memnew(TextureRef);
-	*ref = ResourceLoader::load(path, "Texture");
+
+#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED)
+	String tex_path = String(path).basename() + ".pkm";
+#else
+	String tex_path = String(path).basename() + ".dds";
+#endif
+
+	*ref = ResourceLoader::load(tex_path, "Texture");
 	ERR_FAIL_COND(ref->is_null());
 	self->rendererObject = ref;
 	self->width = (*ref)->get_width();

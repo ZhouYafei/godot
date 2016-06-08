@@ -118,7 +118,10 @@ void (*dispose) (spTimeline* self), /**/
 		void (*apply) (const spTimeline* self, spSkeleton* skeleton, float lastTime, float time, spEvent** firedEvents,
 				int* eventsCount, float alpha)) {
 	_spTimeline_init(SUPER(self), type, dispose, apply);
-	self->curves = CALLOC(float, (framesCount - 1) * BEZIER_SIZE);
+	if(framesCount > 1)
+		self->curves = CALLOC(float, (framesCount - 1) * BEZIER_SIZE);
+	else
+		self->curves = NULL;
 }
 
 void _spCurveTimeline_deinit (spCurveTimeline* self) {
