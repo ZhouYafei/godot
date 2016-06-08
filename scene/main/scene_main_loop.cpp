@@ -66,7 +66,7 @@ void SceneTree::node_removed(Node *p_node) {
 }
 
 
-void SceneTree::add_to_group(const StringName& p_group, Node *p_node) {
+SceneTree::Group *SceneTree::add_to_group(const StringName& p_group, Node *p_node) {
 
 	Map<StringName,Group>::Element *E=group_map.find(p_group);
 	if (!E) {
@@ -75,10 +75,12 @@ void SceneTree::add_to_group(const StringName& p_group, Node *p_node) {
 
 	if (E->get().nodes.find(p_node)!=-1) {
 		ERR_EXPLAIN("Already in group: "+p_group);
-		ERR_FAIL();
+		ERR_FAIL_V(&E->get());
 	}
 	E->get().nodes.push_back(p_node);
-	E->get().last_tree_version=0;
+	//E->get().last_tree_version=0;
+	E->get().changed=true;
+	return &E->get();
 }
 
 void SceneTree::remove_from_group(const StringName& p_group, Node *p_node) {
@@ -127,7 +129,7 @@ void SceneTree::_flush_ugc() {
 
 void SceneTree::_update_group_order(Group& g) {
 
-	if (g.last_tree_version==tree_version)
+	if (!g.changed)
 		return;
 	if (g.nodes.empty())
 		return;
@@ -137,7 +139,8 @@ void SceneTree::_update_group_order(Group& g) {
 
 	SortArray<Node*,Node::Comparator> node_sort;
 	node_sort.sort(nodes,node_count);
-	g.last_tree_version=tree_version;
+	g.changed=false;
+
 }
 
 
@@ -149,8 +152,6 @@ void SceneTree::call_group(uint32_t p_call_flags,const StringName& p_group,const
 	Group &g=E->get();
 	if (g.nodes.empty())
 		return;
-
-	_update_group_order(g);
 
 
 	if (p_call_flags&GROUP_CALL_UNIQUE && !(p_call_flags&GROUP_CALL_REALTIME)) {
@@ -176,6 +177,8 @@ void SceneTree::call_group(uint32_t p_call_flags,const StringName& p_group,const
 		unique_group_calls[ug]=args;
 		return;
 	}
+
+	_update_group_order(g);
 
 	Vector<Node*> nodes_copy = g.nodes;
 	Node **nodes = &nodes_copy[0];
