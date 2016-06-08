@@ -4338,6 +4338,8 @@ double PropertyValueEvaluator::eval(const String& p_text) {
 	}
 
 	ScriptInstance *script_instance = script->instance_create(this);
+	if(script_instance == NULL)
+		return p_text.to_double();
 
 	Variant::CallError call_err;
 	script_instance->call("set_this",obj);
