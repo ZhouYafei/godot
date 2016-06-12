@@ -175,7 +175,7 @@ EditorLog::EditorLog() {
 	HBoxContainer *hb = memnew( HBoxContainer );
 	vb->add_child(hb);
 	title = memnew( Label );
-	title->set_text(_TR(" Output:"));
+	title->set_text(TTR(" Output:"));
 	title->set_h_size_flags(SIZE_EXPAND_FILL);
 	hb->add_child(title);
 

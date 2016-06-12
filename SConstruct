@@ -132,7 +132,7 @@ opts.Add('minizip','Build Minizip Archive Support: (yes/no)','yes')
 opts.Add('squish','Squish BC(dds) Texture Compression/Decompression(yes/no)','yes')
 opts.Add('theora','Theora Video (yes/no)','yes')
 opts.Add('theoralib','Theora Video (yes/no)','no')
-opts.Add('freetype','Freetype support in editor','yes')
+opts.Add('freetype','Freetype support in editor','builtin')
 opts.Add('speex','Speex Audio (yes/no)','yes')
 opts.Add('xml','XML Save/Load support (yes/no)','yes')
 opts.Add('png','PNG Image loader support (yes/no)','yes')
@@ -206,6 +206,7 @@ elif env_base['p'] != "":
 	env_base["platform"]=selected_platform
 
 
+
 if selected_platform in platform_list:
 
 	sys.path.append("./platform/"+selected_platform)
@@ -261,6 +262,14 @@ if selected_platform in platform_list:
 
 	#must happen after the flags, so when flags are used by configure, stuff happens (ie, ssl on x11)
 	detect.configure(env)
+
+
+	if (env["freetype"]!="no"):
+		env.Append(CCFLAGS=['-DFREETYPE_ENABLED'])
+		if (env["freetype"]=="builtin"):
+			env.Append(CPPPATH=['#drivers/freetype'])
+			env.Append(CPPPATH=['#drivers/freetype/freetype/include'])
+
 
 	#env['platform_libsuffix'] = env['LIBSUFFIX']
 

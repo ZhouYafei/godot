@@ -1078,6 +1078,7 @@ void ScenesDock::_file_option(int p_option) {
 				if (path.ends_with("/") || !files->is_selected(i))
 					continue;
 				torem.push_back(path);
+
 			}
 
 			if (torem.empty()) {
@@ -1127,7 +1128,13 @@ void ScenesDock::_file_option(int p_option) {
 			}
 
 		} break;
+		case FILE_COPY_PATH:
 
+			int idx = files->get_current();
+			if (idx<0 || idx>=files->get_item_count())
+				break;
+			String path = files->get_item_metadata(idx);
+			OS::get_singleton()->set_clipboard(path);
 	}
 }
 
@@ -1571,6 +1578,7 @@ void ScenesDock::_files_list_rmb_select(int p_item,const Vector2& p_pos) {
 	}
 
 	if (filenames.size()==1) {
+		file_options->add_item(TTR("Copy Path"), FILE_COPY_PATH);
 		file_options->add_item(TTR("Rename or Move.."),FILE_MOVE);
 	} else {
 		file_options->add_item(TTR("Move To.."),FILE_MOVE);

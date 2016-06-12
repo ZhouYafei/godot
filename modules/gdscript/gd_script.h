@@ -407,6 +407,7 @@ public:
     virtual void debug_status_changed(){};
 
 	virtual void reload_all_scripts();
+	virtual void reload_tool_script(const Ref<Script>& p_script,bool p_soft_reload);
 
 	virtual void frame();
 
