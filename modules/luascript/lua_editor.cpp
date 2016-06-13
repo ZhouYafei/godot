@@ -579,6 +579,9 @@ void LuaScriptLanguage::reload_all_scripts() {
 
 }
 
+void LuaScriptLanguage::reload_tool_script(const Ref<Script>& p_script,bool p_soft_reload) {
+}
+
 void LuaScriptLanguage::profiling_start() {
 }
 

@@ -364,6 +364,7 @@ public:
 
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
 	virtual void reload_all_scripts();
+	virtual void reload_tool_script(const Ref<Script>& p_script,bool p_soft_reload);
 
 	virtual void profiling_start();
 	virtual void profiling_stop();
