@@ -759,7 +759,10 @@ Rect2 OSprite::get_item_rect() const {
 	const OSpriteResource::Data& data = res->datas[action->index];
 
 	Rect2 rect = data.pools[index].rect;
-	if(res->frames[data.pools[index].frame].rotated) {
+	const OSpriteResource::Pool& pool = data.pools[index];
+	if(pool.frame == -1)
+		return Node2D::get_item_rect();
+	if(res->frames[pool.frame].rotated) {
 
 		rect.size.y = -rect.size.y;
 		SWAP(rect.size.x, rect.size.y);
