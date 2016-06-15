@@ -146,18 +146,6 @@ void OSprite::_animation_draw() {
 		return;
 	}
 
-	int from = action->from;
-	int to = action->to;
-
-	if(playing) {
-
-		if(!forward) {
-			int tmp = from;
-			from = to;
-			to = tmp;
-		}
-	}
-
 	const OSpriteResource::Pool& pool = data.pools[index];
 	if(pool.frame == -1)
 		return;
@@ -209,6 +197,8 @@ void OSprite::_animation_process(float p_delta) {
 	if (speed_scale == 0)
 		return;
 	current_pos += p_delta * speed_scale;
+	if(current_pos <= delay)
+		return;
 
 	bool new_cycle = false;
 	if(action_cache != NULL) {
@@ -272,9 +262,12 @@ int OSprite::_get_frame(const OSpriteResource::Action *&p_action) {
 		prev_frame = (forward) ? p_action->from : p_action->to;
 
 	// make un-loop animation end at last frame
-	if(!loop && forward != (prev_frame < index)) {
-
-		index = prev_frame;
+	if(!loop) {
+		// prev_frame is last frame when rewind
+		if(forward && (prev_frame > index))
+			index = prev_frame;
+		else if(!forward && (prev_frame < index))
+			index = prev_frame;
 
 	} else {
 		// index always include([0] <-> [total_frames - 1])
@@ -283,12 +276,11 @@ int OSprite::_get_frame(const OSpriteResource::Action *&p_action) {
 		else if(prev_frame == total_frames - 1 && index != 0)
 			index = 0;
 		prev_frame = index;
-
-		if(forward)
-			index += p_action->from;
-		else
-			index = p_action->to - index - 1;
 	}
+	if(forward)
+		index += p_action->from;
+	else
+		index = p_action->to - index - 1;
 
 	return index;
 }
@@ -306,16 +298,17 @@ bool OSprite::_set(const StringName& p_name, const Variant& p_value) {
 				stop();
 			else if (has(which)) {
 				reset();
-				play(which, loop);
+				play(which, loop, forward);
 			}
 		} else
 			current_animation = which;
 	}
 	else if (name == "playback/loop") {
 
-		loop = p_value;
 		if (res.is_valid() && has(current_animation))
-			play(current_animation, loop);
+			play(current_animation, p_value, forward);
+		else
+			loop = p_value;
 	}
 	else if (name == "playback/forward") {
 
@@ -385,7 +378,7 @@ void OSprite::_notification(int p_what) {
 	case NOTIFICATION_READY: {
 
 		if (active && has(current_animation)) {
-			play(current_animation, loop);
+			play(current_animation, loop, forward);
 		}
 	} break;
 	case NOTIFICATION_PROCESS: {
@@ -429,7 +422,7 @@ void OSprite::set_resource(Ref<OSprite::OSpriteResource> p_data) {
 		current_animation = anim;
 
 	if (current_animation != "[stop]")
-		play(current_animation, loop);
+		play(current_animation, loop, forward);
 	else
 		reset();
 
@@ -457,14 +450,14 @@ bool OSprite::play(const String& p_name, bool p_loop, bool p_forward, int p_dela
 	if(p_loop && current_animation == p_name && p_loop == loop)
 		return true;
 
-	delay = p_delay;
 	current_animation = p_name;
 	loop = p_loop;
+	forward = p_forward;
+	delay = p_delay;
 	current_pos = 0;
 	prev_frame = -1;
 	frame_cache = _get_frame(action_cache);
 	action_time = (action_cache->to - action_cache->from + 1) * res->fps_delta;
-	forward = p_forward;
 	start_trigged = false;
 	end_trigged = false;
 
@@ -759,7 +752,10 @@ Rect2 OSprite::get_item_rect() const {
 	const OSpriteResource::Data& data = res->datas[action->index];
 
 	Rect2 rect = data.pools[index].rect;
-	if(res->frames[data.pools[index].frame].rotated) {
+	const OSpriteResource::Pool& pool = data.pools[index];
+	if(pool.frame == -1)
+		return Node2D::get_item_rect();
+	if(res->frames[pool.frame].rotated) {
 
 		rect.size.y = -rect.size.y;
 		SWAP(rect.size.x, rect.size.y);
