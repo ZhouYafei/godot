@@ -1847,7 +1847,7 @@ GridMap::GridMap() {
 	baked_light_instance=NULL;
 	use_baked_light=false;
 
-
+	navigation = NULL;
 }
 
 

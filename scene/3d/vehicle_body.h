@@ -180,7 +180,7 @@ public:
 	void set_steering(float p_steering);
 	float get_steering() const;
 
-	Vector3 get_linear_velocity();
+	Vector3 get_linear_velocity() const;
 
 	VehicleBody();
 };
