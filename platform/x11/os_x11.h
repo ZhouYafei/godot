@@ -127,7 +127,7 @@ class OS_X11 : public OS_Unix {
 
 #ifdef PHYSICAL_ENABLED
 	PhysicsServer *physics_server;
-endif
+#endif
 	unsigned int get_mouse_button_state(unsigned int p_x11_state);
 	InputModifierState get_key_modifier_state(unsigned int p_x11_state);
 #ifdef PHYSICAL_ENABLED
