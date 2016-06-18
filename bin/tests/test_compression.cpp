@@ -35,7 +35,7 @@
 
 #include "core/io/compression.h"
 #include "core/os/file_access.h"
-#include "scene/resources/default_theme/font_normal.inc"
+#include "scene/resources/default_theme/font_lodpi.inc"
 
 namespace TestCompression {
 
@@ -85,12 +85,12 @@ MainLoop* test() {
 
 	print_line("this is test compression");
 
-	Report(_builtin_normal_font_img_data, 10, "Raw");
+	Report(_lodpi_font_img_data, 10, "Raw");
 
 	print_line("try compress data:");
 
-	const unsigned char* src = _builtin_normal_font_img_data;
-	int src_size = _builtin_normal_font_img_width*_builtin_normal_font_img_height*2;
+	const unsigned char* src = _lodpi_font_img_data;
+	int src_size = _lodpi_font_img_width*_lodpi_font_img_height*2;
 	print_line(" src size is :" + itos(src_size));
 	Compression::Mode cmode = Compression::MODE_DEFLATE;
 	int dst_size = Compression::get_max_compressed_buffer_size(src_size,cmode);
