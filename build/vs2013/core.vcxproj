@@ -174,6 +174,7 @@
     <ClInclude Include="..\..\core\io\resource_format_xml.h" />
     <ClInclude Include="..\..\core\io\resource_loader.h" />
     <ClInclude Include="..\..\core\io\resource_saver.h" />
+    <ClInclude Include="..\..\core\io\sha256.h" />
     <ClInclude Include="..\..\core\io\stream_peer.h" />
     <ClInclude Include="..\..\core\io\stream_peer_ssl.h" />
     <ClInclude Include="..\..\core\io\stream_peer_tcp.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="..\..\core\io\resource_format_xml.cpp" />
     <ClCompile Include="..\..\core\io\resource_loader.cpp" />
     <ClCompile Include="..\..\core\io\resource_saver.cpp" />
+    <ClCompile Include="..\..\core\io\sha256.c" />
     <ClCompile Include="..\..\core\io\stream_peer.cpp" />
     <ClCompile Include="..\..\core\io\stream_peer_ssl.cpp" />
     <ClCompile Include="..\..\core\io\stream_peer_tcp.cpp" />
