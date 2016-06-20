@@ -657,7 +657,7 @@ void register_scene_types() {
 
 	OS::get_singleton()->yield(); //may take time to init
 
-	make_default_theme();
+	//make_default_theme();
 	resource_saver_text = memnew( ResourceFormatSaverText );
 	ResourceSaver::add_resource_format_saver(resource_saver_text);
 
