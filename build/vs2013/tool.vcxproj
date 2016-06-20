@@ -162,7 +162,6 @@
     <ClCompile Include="..\..\tools\editor\code_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\connections_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\create_dialog.cpp" />
-    <ClCompile Include="..\..\tools\editor\default_saver.cpp" />
     <ClCompile Include="..\..\tools\editor\dependency_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_asset_installer.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_data.cpp" />
@@ -187,10 +186,9 @@
     <ClCompile Include="..\..\tools\editor\editor_run_native.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_run_script.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_scale.cpp" />
-    <ClCompile Include="..\..\tools\editor\editor_selection.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_settings.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_sub_scene.cpp" />
-    <ClCompile Include="..\..\tools\editor\editor_vu.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_themes.cpp" />
     <ClCompile Include="..\..\tools\editor\fileserver\editor_file_server.cpp" />
     <ClCompile Include="..\..\tools\editor\file_type_cache.cpp" />
     <ClCompile Include="..\..\tools\editor\groups_editor.cpp" />
@@ -210,10 +208,8 @@
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_translation_import_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\multi_node_edit.cpp" />
     <ClCompile Include="..\..\tools\editor\node_dock.cpp" />
-    <ClCompile Include="..\..\tools\editor\optimized_save_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\output_strings.cpp" />
     <ClCompile Include="..\..\tools\editor\pane_drag.cpp" />
-    <ClCompile Include="..\..\tools\editor\plugins\animation_data_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\animation_player_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\animation_tree_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\baked_light_baker.cpp" />
@@ -225,7 +221,6 @@
     <ClCompile Include="..\..\tools\editor\plugins\collision_polygon_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\collision_shape_2d_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\color_ramp_editor_plugin.cpp" />
-    <ClCompile Include="..\..\tools\editor\plugins\control_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\cube_grid_theme_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\editor_preview_plugins.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\item_list_editor_plugin.cpp" />
@@ -268,7 +263,6 @@
     <ClCompile Include="..\..\tools\editor\reparent_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\resources_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\run_settings_dialog.cpp" />
-    <ClCompile Include="..\..\tools\editor\scenes.cpp" />
     <ClCompile Include="..\..\tools\editor\scenes_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\scene_tree_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\scene_tree_editor.cpp" />
@@ -295,7 +289,6 @@
     <ClInclude Include="..\..\tools\editor\code_editor.h" />
     <ClInclude Include="..\..\tools\editor\connections_dialog.h" />
     <ClInclude Include="..\..\tools\editor\create_dialog.h" />
-    <ClInclude Include="..\..\tools\editor\default_saver.h" />
     <ClInclude Include="..\..\tools\editor\dependency_editor.h" />
     <ClInclude Include="..\..\tools\editor\doc_code_font.h" />
     <ClInclude Include="..\..\tools\editor\doc_data_compressed.h" />
@@ -324,10 +317,9 @@
     <ClInclude Include="..\..\tools\editor\editor_run_native.h" />
     <ClInclude Include="..\..\tools\editor\editor_run_script.h" />
     <ClInclude Include="..\..\tools\editor\editor_scale.h" />
-    <ClInclude Include="..\..\tools\editor\editor_selection.h" />
     <ClInclude Include="..\..\tools\editor\editor_settings.h" />
     <ClInclude Include="..\..\tools\editor\editor_sub_scene.h" />
-    <ClInclude Include="..\..\tools\editor\editor_vu.h" />
+    <ClInclude Include="..\..\tools\editor\editor_themes.h" />
     <ClInclude Include="..\..\tools\editor\fileserver\editor_file_server.h" />
     <ClInclude Include="..\..\tools\editor\file_type_cache.h" />
     <ClInclude Include="..\..\tools\editor\groups_editor.h" />
@@ -346,10 +338,8 @@
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_translation_import_plugin.h" />
     <ClInclude Include="..\..\tools\editor\multi_node_edit.h" />
     <ClInclude Include="..\..\tools\editor\node_dock.h" />
-    <ClInclude Include="..\..\tools\editor\optimized_save_dialog.h" />
     <ClInclude Include="..\..\tools\editor\output_strings.h" />
     <ClInclude Include="..\..\tools\editor\pane_drag.h" />
-    <ClInclude Include="..\..\tools\editor\plugins\animation_data_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\animation_player_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\animation_tree_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\baked_light_baker.h" />
@@ -359,7 +349,6 @@
     <ClInclude Include="..\..\tools\editor\plugins\collision_polygon_2d_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\collision_polygon_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\color_ramp_editor_plugin.h" />
-    <ClInclude Include="..\..\tools\editor\plugins\control_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\cube_grid_theme_editor_plugin.h" />
     <ClInclude Include="..\..\tools\editor\plugins\editor_preview_plugins.h" />
     <ClInclude Include="..\..\tools\editor\plugins\item_list_editor_plugin.h" />
@@ -402,7 +391,6 @@
     <ClInclude Include="..\..\tools\editor\reparent_dialog.h" />
     <ClInclude Include="..\..\tools\editor\resources_dock.h" />
     <ClInclude Include="..\..\tools\editor\run_settings_dialog.h" />
-    <ClInclude Include="..\..\tools\editor\scenes.h" />
     <ClInclude Include="..\..\tools\editor\scenes_dock.h" />
     <ClInclude Include="..\..\tools\editor\scene_tree_dock.h" />
     <ClInclude Include="..\..\tools\editor\scene_tree_editor.h" />

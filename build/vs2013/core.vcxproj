@@ -124,7 +124,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\core\allocators.h" />
     <ClInclude Include="..\..\core\array.h" />
-    <ClInclude Include="..\..\core\balloon_allocator.h" />
     <ClInclude Include="..\..\core\bind\core_bind.h" />
     <ClInclude Include="..\..\core\color.h" />
     <ClInclude Include="..\..\core\command_queue_mt.h" />
@@ -135,7 +134,6 @@
     <ClInclude Include="..\..\core\error_list.h" />
     <ClInclude Include="..\..\core\error_macros.h" />
     <ClInclude Include="..\..\core\event_queue.h" />
-    <ClInclude Include="..\..\core\fpstr.h" />
     <ClInclude Include="..\..\core\func_ref.h" />
     <ClInclude Include="..\..\core\globals.h" />
     <ClInclude Include="..\..\core\global_constants.h" />
@@ -187,7 +185,6 @@
     <ClInclude Include="..\..\core\list.h" />
     <ClInclude Include="..\..\core\map.h" />
     <ClInclude Include="..\..\core\math\aabb.h" />
-    <ClInclude Include="..\..\core\math\bezier_curve.h" />
     <ClInclude Include="..\..\core\math\bsp_tree.h" />
     <ClInclude Include="..\..\core\math\camera_matrix.h" />
     <ClInclude Include="..\..\core\math\face3.h" />
@@ -207,7 +204,6 @@
     <ClInclude Include="..\..\core\math\vector3.h" />
     <ClInclude Include="..\..\core\message_queue.h" />
     <ClInclude Include="..\..\core\method_bind.h" />
-    <ClInclude Include="..\..\core\multi_bucket_array.h" />
     <ClInclude Include="..\..\core\object.h" />
     <ClInclude Include="..\..\core\object_type_db.h" />
     <ClInclude Include="..\..\core\os\copymem.h" />
@@ -241,7 +237,6 @@
     <ClInclude Include="..\..\core\ref_ptr.h" />
     <ClInclude Include="..\..\core\register_core_types.h" />
     <ClInclude Include="..\..\core\resource.h" />
-    <ClInclude Include="..\..\core\res_ptr.h" />
     <ClInclude Include="..\..\core\rid.h" />
     <ClInclude Include="..\..\core\ring_buffer.h" />
     <ClInclude Include="..\..\core\safe_refcount.h" />
@@ -259,7 +254,6 @@
     <ClInclude Include="..\..\core\undo_redo.h" />
     <ClInclude Include="..\..\core\ustring.h" />
     <ClInclude Include="..\..\core\variant.h" />
-    <ClInclude Include="..\..\core\variant_call_bind.h" />
     <ClInclude Include="..\..\core\variant_parser.h" />
     <ClInclude Include="..\..\core\vector.h" />
     <ClInclude Include="..\..\core\version.h" />
@@ -279,7 +273,6 @@
     <ClCompile Include="..\..\core\dvector.cpp" />
     <ClCompile Include="..\..\core\error_macros.cpp" />
     <ClCompile Include="..\..\core\event_queue.cpp" />
-    <ClCompile Include="..\..\core\fpstr.cpp" />
     <ClCompile Include="..\..\core\func_ref.cpp" />
     <ClCompile Include="..\..\core\globals.cpp" />
     <ClCompile Include="..\..\core\global_constants.cpp" />
@@ -324,13 +317,11 @@
     <ClCompile Include="..\..\core\io\xml_parser.cpp" />
     <ClCompile Include="..\..\core\io\zip.c" />
     <ClCompile Include="..\..\core\math\aabb.cpp" />
-    <ClCompile Include="..\..\core\math\bezier_curve.cpp" />
     <ClCompile Include="..\..\core\math\bsp_tree.cpp" />
     <ClCompile Include="..\..\core\math\camera_matrix.cpp" />
     <ClCompile Include="..\..\core\math\face3.cpp" />
     <ClCompile Include="..\..\core\math\geometry.cpp" />
     <ClCompile Include="..\..\core\math\math_2d.cpp" />
-    <ClCompile Include="..\..\core\math\math_defs.cpp" />
     <ClCompile Include="..\..\core\math\math_funcs.cpp" />
     <ClCompile Include="..\..\core\math\matrix3.cpp" />
     <ClCompile Include="..\..\core\math\plane.cpp" />
@@ -365,7 +356,6 @@
     <ClCompile Include="..\..\core\os\thread_dummy.cpp" />
     <ClCompile Include="..\..\core\os\thread_safe.cpp" />
     <ClCompile Include="..\..\core\packed_data_container.cpp" />
-    <ClCompile Include="..\..\core\pair.cpp" />
     <ClCompile Include="..\..\core\path_db.cpp" />
     <ClCompile Include="..\..\core\path_remap.cpp" />
     <ClCompile Include="..\..\core\pool_allocator.cpp" />
@@ -375,10 +365,8 @@
     <ClCompile Include="..\..\core\ref_ptr.cpp" />
     <ClCompile Include="..\..\core\register_core_types.cpp" />
     <ClCompile Include="..\..\core\resource.cpp" />
-    <ClCompile Include="..\..\core\res_ptr.cpp" />
     <ClCompile Include="..\..\core\rid.cpp" />
     <ClCompile Include="..\..\core\safe_refcount.cpp" />
-    <ClCompile Include="..\..\core\script_debugger_debugger.cpp" />
     <ClCompile Include="..\..\core\script_debugger_local.cpp" />
     <ClCompile Include="..\..\core\script_debugger_remote.cpp" />
     <ClCompile Include="..\..\core\script_encryption_key.cpp" />
@@ -392,8 +380,6 @@
     <ClCompile Include="..\..\core\variant_construct_string.cpp" />
     <ClCompile Include="..\..\core\variant_op.cpp" />
     <ClCompile Include="..\..\core\variant_parser.cpp" />
-    <ClCompile Include="..\..\core\vmap.cpp" />
-    <ClCompile Include="..\..\core\vset.cpp" />
     <ClCompile Include="..\..\platform\android\globals\global_defaults.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)global_defaults_android.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)global_defaults_android.obj</ObjectFileName>

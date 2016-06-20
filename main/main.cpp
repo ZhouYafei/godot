@@ -962,16 +962,6 @@ Error Main::setup2() {
 	GLOBAL_DEF("application/icon",String());
 	Globals::get_singleton()->set_custom_property_info("application/icon",PropertyInfo(Variant::STRING,"application/icon",PROPERTY_HINT_FILE,"*.png,*.webp"));
 
-	if (bool(GLOBAL_DEF("display/emulate_touchscreen",false))) {
-		if (!OS::get_singleton()->has_touchscreen_ui_hint() && Input::get_singleton() && !editor) {
-			//only if no touchscreen ui hint, set emulation
-			InputDefault *id = Input::get_singleton()->cast_to<InputDefault>();
-			if (id)
-				id->set_emulate_touch(true);
-		}
-	}
-
-
 
 	MAIN_PRINT("Main: Load Remaps");
 
@@ -1518,7 +1508,7 @@ bool Main::start() {
 	}
 
 	if (bool(GLOBAL_DEF("display/emulate_touchscreen",false))) {
-		if (!OS::get_singleton()->has_touchscreen_ui_hint() && Input::get_singleton()) {
+		if (!OS::get_singleton()->has_touchscreen_ui_hint() && Input::get_singleton() && !editor) {
 			//only if no touchscreen ui hint, set emulation
 			InputDefault *id = Input::get_singleton()->cast_to<InputDefault>();
 			if (id)

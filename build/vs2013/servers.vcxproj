@@ -127,10 +127,8 @@
     <ClCompile Include="..\..\servers\audio\audio_mixer_sw.cpp" />
     <ClCompile Include="..\..\servers\audio\audio_rb_resampler.cpp" />
     <ClCompile Include="..\..\servers\audio\audio_server_sw.cpp" />
-    <ClCompile Include="..\..\servers\audio\reverb_buffers_sw.cpp" />
     <ClCompile Include="..\..\servers\audio\reverb_sw.cpp" />
     <ClCompile Include="..\..\servers\audio\sample_manager_sw.cpp" />
-    <ClCompile Include="..\..\servers\audio\voice_rb_sw.cpp" />
     <ClCompile Include="..\..\servers\audio_server.cpp" />
     <ClCompile Include="..\..\servers\physics\area_pair_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\area_sw.cpp" />
@@ -142,15 +140,12 @@
     <ClCompile Include="..\..\servers\physics\collision_object_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\collision_solver_sat.cpp" />
     <ClCompile Include="..\..\servers\physics\collision_solver_sw.cpp" />
-    <ClCompile Include="..\..\servers\physics\constraint_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\gjk_epa.cpp" />
     <ClCompile Include="..\..\servers\physics\joints\cone_twist_joint_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\joints\generic_6dof_joint_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\joints\hinge_joint_sw.cpp" />
-    <ClCompile Include="..\..\servers\physics\joints\jacobian_entry_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\joints\pin_joint_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\joints\slider_joint_sw.cpp" />
-    <ClCompile Include="..\..\servers\physics\joints_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\physics_server_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\shape_sw.cpp" />
     <ClCompile Include="..\..\servers\physics\space_sw.cpp" />
@@ -165,7 +160,6 @@
     <ClCompile Include="..\..\servers\physics_2d\collision_object_2d_sw.cpp" />
     <ClCompile Include="..\..\servers\physics_2d\collision_solver_2d_sat.cpp" />
     <ClCompile Include="..\..\servers\physics_2d\collision_solver_2d_sw.cpp" />
-    <ClCompile Include="..\..\servers\physics_2d\constraint_2d_sw.cpp" />
     <ClCompile Include="..\..\servers\physics_2d\joints_2d_sw.cpp" />
     <ClCompile Include="..\..\servers\physics_2d\physics_2d_server_sw.cpp" />
     <ClCompile Include="..\..\servers\physics_2d\physics_2d_server_wrap_mt.cpp" />
@@ -182,8 +176,6 @@
     <ClCompile Include="..\..\servers\visual\particle_system_sw.cpp" />
     <ClCompile Include="..\..\servers\visual\rasterizer.cpp" />
     <ClCompile Include="..\..\servers\visual\rasterizer_dummy.cpp" />
-    <ClCompile Include="..\..\servers\visual\shader_compiler.cpp" />
-    <ClCompile Include="..\..\servers\visual\shader_graph.cpp" />
     <ClCompile Include="..\..\servers\visual\shader_language.cpp" />
     <ClCompile Include="..\..\servers\visual\visual_server_raster.cpp" />
     <ClCompile Include="..\..\servers\visual\visual_server_wrap_mt.cpp" />
@@ -195,7 +187,6 @@
     <ClInclude Include="..\..\servers\audio\audio_mixer_sw.h" />
     <ClInclude Include="..\..\servers\audio\audio_rb_resampler.h" />
     <ClInclude Include="..\..\servers\audio\audio_server_sw.h" />
-    <ClInclude Include="..\..\servers\audio\reverb_buffers_sw.h" />
     <ClInclude Include="..\..\servers\audio\reverb_sw.h" />
     <ClInclude Include="..\..\servers\audio\sample_manager_sw.h" />
     <ClInclude Include="..\..\servers\audio\voice_rb_sw.h" />
@@ -251,8 +242,6 @@
     <ClInclude Include="..\..\servers\visual\particle_system_sw.h" />
     <ClInclude Include="..\..\servers\visual\rasterizer.h" />
     <ClInclude Include="..\..\servers\visual\rasterizer_dummy.h" />
-    <ClInclude Include="..\..\servers\visual\shader_compiler.h" />
-    <ClInclude Include="..\..\servers\visual\shader_graph.h" />
     <ClInclude Include="..\..\servers\visual\shader_language.h" />
     <ClInclude Include="..\..\servers\visual\visual_server_raster.h" />
     <ClInclude Include="..\..\servers\visual\visual_server_wrap_mt.h" />

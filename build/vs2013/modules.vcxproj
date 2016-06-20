@@ -169,7 +169,6 @@
     <ClCompile Include="..\..\modules\gdscript\gd_function.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_functions.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_parser.cpp" />
-    <ClCompile Include="..\..\modules\gdscript\gd_pretty_print.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_script.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_script_prof.cpp" />
     <ClCompile Include="..\..\modules\gdscript\gd_tokenizer.cpp" />
@@ -285,7 +284,6 @@
     <ClInclude Include="..\..\modules\gdscript\gd_function.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_functions.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_parser.h" />
-    <ClInclude Include="..\..\modules\gdscript\gd_pretty_print.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_script.h" />
     <ClInclude Include="..\..\modules\gdscript\gd_tokenizer.h" />
     <ClInclude Include="..\..\modules\gdscript\register_types.h" />
