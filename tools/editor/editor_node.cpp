@@ -29,8 +29,7 @@
 #include "version.h"
 #include "editor_node.h"
 #include "print_string.h"
-#include "editor_icons.h"
-#include "editor_fonts.h"
+#include "editor_themes.h"
 
 #include "editor_help.h"
 #include "core/io/resource_saver.h"
@@ -209,6 +208,18 @@ void EditorNode::_unhandled_input(const InputEvent& p_event) {
 			case KEY_F6: _menu_option_confirm(RUN_PLAY_SCENE,true); break;
 			//case KEY_F7: _menu_option_confirm(RUN_PAUSE,true); break;
 			case KEY_F8: _menu_option_confirm(RUN_STOP,true); break;*/
+			case KEY_TAB:
+				if (p_event.key.mod.command) {
+					int current_tab = editor_data.get_edited_scene();
+					int tab_offset = 1;
+					if (p_event.key.mod.shift)
+						tab_offset = -1;
+					int next_tab = current_tab + tab_offset;
+					next_tab = next_tab >= 0 ? next_tab : editor_data.get_edited_scene_count() - 1;
+					next_tab %= editor_data.get_edited_scene_count();
+					_scene_tab_changed(next_tab);
+				}
+			break;
 		}
 
 	}
@@ -746,100 +757,6 @@ void EditorNode::_set_scene_metadata(const String& p_file) {
 
 }
 
-static Error _fix_object_paths(Object* obj, Node* root, String save_path) {
-
-	Globals* g = Globals::get_singleton();
-
-	String import_dir = root->get_meta("__editor_import_file__");
-	import_dir = import_dir.get_base_dir();
-	import_dir = DirAccess::normalize_path(import_dir);
-	if (import_dir[import_dir.length()-1] != '/') {
-		import_dir = import_dir + "/";
-	};
-
-	String resource_dir = DirAccess::normalize_path(g->get_resource_path());
-	if (resource_dir[resource_dir.length()-1] != '/') {
-		resource_dir = resource_dir + "/";
-	};
-
-
-	List<PropertyInfo> list;
-	obj->get_property_list(&list, false);
-
-	List<PropertyInfo>::Element *E = list.front();
-
-	while (E) {
-
-		Variant v = obj->get(E->get().name);
-		if (v.get_type() == Variant::OBJECT) {
-
-			Ref<Resource> res = (RefPtr)v;
-			if (res.is_null()) {
-				E = E->next();
-				continue;
-			}
-
-			if (res->get_path() != "") {
-
-				String res_path = res->get_path();
-				res_path = Globals::get_singleton()->globalize_path(res_path);
-				res_path = DirAccess::normalize_path(res_path);
-
-				if (res_path.find(resource_dir) != 0) {
-
-					// path of resource is not inside engine's resource path
-
-					String new_path;
-
-					if (res_path.find(import_dir) == 0) {
-
-						// path of resource is relative to path of import file
-						new_path = save_path + "/" + res_path.substr(import_dir.length(), res_path.length() - import_dir.length());
-
-					} else {
-
-						// path of resource is not relative to import file
-						new_path = save_path + "/" + res_path.get_file();
-					};
-
-					res->set_path(g->localize_path(new_path));
-					DirAccess* d = DirAccess::create(DirAccess::ACCESS_RESOURCES);
-					d->make_dir_recursive(new_path.get_base_dir());
-					printf("copying from %ls to %ls\n", res_path.c_str(), new_path.c_str());
-					Error err = d->copy(res_path, new_path);
-					memdelete(d);
-					ERR_FAIL_COND_V(err != OK, err);
-				}
-
-			} else {
-
-				_fix_object_paths(res.operator->(), root, save_path);
-			};
-		};
-
-
-		E = E->next();
-	};
-
-	return OK;
-};
-
-static Error _fix_imported_scene_paths(Node* node, Node* root, String save_path) {
-
-	if (node == root || node->get_owner() == root) {
-		Error e = _fix_object_paths(node, root, save_path);
-		ERR_FAIL_COND_V(e != OK, e);
-	};
-
-	for (int i=0; i<node->get_child_count(); i++) {
-
-		Error e = _fix_imported_scene_paths(node->get_child(i), root, save_path);
-		ERR_FAIL_COND_V(e != OK, e);
-	};
-
-	return OK;
-};
-
 
 bool EditorNode::_find_and_save_resource(RES res,Map<RES,bool>& processed,int32_t flags) {
 
@@ -1256,7 +1173,6 @@ void EditorNode::_dialog_action(String p_file) {
 		} break;
 		case FILE_RUN_SCRIPT: {
 
-			print_line("RUN: "+p_file);
 			Ref<Script> scr = ResourceLoader::load(p_file,"Script",true);
 			if (scr.is_null()) {
 				add_io_error("Script Failed to Load:\n"+p_file);
@@ -1400,7 +1316,6 @@ void EditorNode::_dialog_action(String p_file) {
 			ret = unzGoToFirstFile(pkg);
 
 			EditorProgress p("ltask",TTR("Loading Export Templates"),fc);
-			print_line("BEGIN IMPORT");
 
 			fc=0;
 
@@ -1430,7 +1345,6 @@ void EditorNode::_dialog_action(String p_file) {
 				file=file.get_file();
 
 				p.step(TTR("Importing:")+" "+file,fc);
-				print_line("IMPORT "+file);
 
 				FileAccess *f = FileAccess::open(EditorSettings::get_singleton()->get_settings_path()+"/templates/"+file,FileAccess::WRITE);
 
@@ -2218,7 +2132,7 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 				String existing;
 				if (extensions.size()) {
 					String root_name(get_edited_scene()->get_name());
-					existing=root_name+"."+extensions.front()->get().to_lower();
+					existing=root_name+".tscn";//+extensions.front()->get().to_lower();
 				}
 				file->set_current_path(existing);
 
@@ -3649,7 +3563,6 @@ Error EditorNode::load_scene(const String& p_scene, bool p_ignore_broken_deps,bo
 	load_errors->clear();
 	String lpath = Globals::get_singleton()->localize_path(p_scene);
 
-	print_line("LOCAL PATH: "+lpath+" from "+p_scene);
 	if (!lpath.begins_with("res://")) {
 
 		current_option=-1;
@@ -4296,7 +4209,6 @@ void EditorNode::_dock_select_input(const InputEvent& p_input) {
 				dock_slot[dock_popup_selected]->set_current_tab(0);
 			}
 
-			print_line("performing reparent");
 			dock_slot[nrect]->add_child(dock);
 			dock_popup_selected=nrect;
 			dock_slot[nrect]->set_current_tab(dock_slot[nrect]->get_tab_count()-1);
@@ -4709,9 +4621,9 @@ void EditorNode::_update_layouts_menu() {
 
 	editor_layouts->set_size(Vector2());
 	editor_layouts->add_shortcut(ED_SHORTCUT("layout/save",TTR("Save Layout")), SETTINGS_LAYOUT_SAVE);
-	editor_layouts->add_shortcut(ED_SHORTCUT("layout/load",TTR("Load Layout")), SETTINGS_LAYOUT_DELETE);
+	editor_layouts->add_shortcut(ED_SHORTCUT("layout/delete",TTR("Delete Layout")), SETTINGS_LAYOUT_DELETE);
 	editor_layouts->add_separator();
-	editor_layouts->add_shortcut(ED_SHORTCUT("property_editor/reset",TTR("Default")), SETTINGS_LAYOUT_DEFAULT);
+	editor_layouts->add_shortcut(ED_SHORTCUT("layout/default",TTR("Default")), SETTINGS_LAYOUT_DEFAULT);
 
 	Ref<ConfigFile> config;
 	config.instance();
@@ -5270,7 +5182,6 @@ EditorNode::EditorNode() {
 		EditorSettings::create();
 	{
 		int dpi_mode = EditorSettings::get_singleton()->get("global/hidpi_mode");
-		print_line("DPI MODE: "+itos(dpi_mode));
 		if (dpi_mode==0) {
 			editor_set_hidpi( OS::get_singleton()->get_screen_dpi(0) > 150 );
 		} else if (dpi_mode==2) {
@@ -5321,7 +5232,6 @@ EditorNode::EditorNode() {
 	ObjectTypeDB::set_type_enabled("CollisionShape",true);
 	ObjectTypeDB::set_type_enabled("CollisionShape2D",true);
 	ObjectTypeDB::set_type_enabled("CollisionPolygon2D",true);
-	//ObjectTypeDB::set_type_enabled("BodyVolumeConvexPolygon",true);
 
 	Control *theme_base = memnew( Control );
 	add_child(theme_base);
@@ -5331,44 +5241,9 @@ EditorNode::EditorNode() {
 	theme_base->add_child(gui_base);
 	gui_base->set_area_as_parent_rect();
 
-
-	theme = Ref<Theme>( memnew( Theme ) );
-	theme_base->set_theme( theme );
-	editor_register_icons(theme);
-	editor_register_fonts(theme);
-
-	//theme->set_icon("folder","EditorFileDialog",Theme::get_default()->get_icon("folder","EditorFileDialog"));
-	//theme->set_color("files_disabled","EditorFileDialog",Color(0,0,0,0.7));
-
-	String global_font = EditorSettings::get_singleton()->get("global/custom_font");
-	if (global_font!="") {
-		Ref<Font> fnt = ResourceLoader::load(global_font);
-		if (fnt.is_valid()) {
-			theme->set_default_theme_font(fnt);
-		}
-	}
-
-
-
-	Ref<StyleBoxTexture> focus_sbt=memnew( StyleBoxTexture );
-	focus_sbt->set_texture(theme->get_icon("EditorFocus","EditorIcons"));
-	for(int i=0;i<4;i++) {
-		focus_sbt->set_margin_size(Margin(i),16);
-		focus_sbt->set_default_margin(Margin(i),16);
-	}
-	focus_sbt->set_draw_center(false);
-	theme->set_stylebox("EditorFocus","EditorStyles",focus_sbt);
-
-
-	String custom_theme = EditorSettings::get_singleton()->get("global/custom_theme");
-	if (custom_theme!="") {
-		Ref<Theme> theme = ResourceLoader::load(custom_theme);
-		if (theme.is_valid()) {
-			gui_base->set_theme(theme);
-		}
-	}
-
-
+	theme_base->set_theme( create_default_theme() );
+	theme = create_editor_theme();
+	gui_base->set_theme(theme);
 
 	resource_preview = memnew( EditorResourcePreview );
 	add_child(resource_preview);
@@ -5654,8 +5529,8 @@ EditorNode::EditorNode() {
 	p->add_submenu_item(TTR("Convert To.."),"Export");
 	pm_export->add_item(TTR("Translatable Strings.."),FILE_DUMP_STRINGS);
 	pm_export->add_separator();
-	pm_export->add_item(TTR("MeshLibrary.."),FILE_EXPORT_MESH_LIBRARY);
-	pm_export->add_item(TTR("TileSet.."),FILE_EXPORT_TILESET);
+	pm_export->add_shortcut(ED_SHORTCUT("editor/convert_to_MeshLibrary", TTR("MeshLibrary..")), FILE_EXPORT_MESH_LIBRARY);
+	pm_export->add_shortcut(ED_SHORTCUT("editor/convert_to_TileSet", TTR("TileSet..")), FILE_EXPORT_TILESET);
 	pm_export->connect("item_pressed",this,"_menu_option");
 
 	p->add_separator();

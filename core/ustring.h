@@ -47,11 +47,9 @@ public:
 	operator const char*() {return get_data();};
 };
 
-#ifndef CHARTYPE_16BITS
+
 typedef wchar_t CharType;
-#else
-typedef wchar_t uint16_t;
-#endif
+
 
 struct StrRange {
 

@@ -116,6 +116,7 @@ static bool use_debug_profiler=false;
 static bool force_lowdpi=false;
 static int init_screen=-1;
 static bool use_vsync=true;
+static bool editor=false;
 
 static String unescape_cmdline(const String& p_str) {
 
@@ -287,7 +288,7 @@ Error Main::setup(const char *execpath,int argc, char *argv[],bool p_second_phas
 	packed_data->add_pack_source(zip_packed_data);
 #endif
 
-	bool editor=false;
+
 
 	while(I) {
 
@@ -961,14 +962,14 @@ Error Main::setup2() {
 	GLOBAL_DEF("application/icon",String());
 	Globals::get_singleton()->set_custom_property_info("application/icon",PropertyInfo(Variant::STRING,"application/icon",PROPERTY_HINT_FILE,"*.png,*.webp"));
 
-	//if (bool(GLOBAL_DEF("display/emulate_touchscreen",false))) {
-	//	if (!OS::get_singleton()->has_touchscreen_ui_hint() && Input::get_singleton()) {
-	//		//only if no touchscreen ui hint, set emulation
-	//		InputDefault *id = Input::get_singleton()->cast_to<InputDefault>();
-	//		if (id)
-	//			id->set_emulate_touch(true);
-	//	}
-	//}
+	if (bool(GLOBAL_DEF("display/emulate_touchscreen",false))) {
+		if (!OS::get_singleton()->has_touchscreen_ui_hint() && Input::get_singleton() && !editor) {
+			//only if no touchscreen ui hint, set emulation
+			InputDefault *id = Input::get_singleton()->cast_to<InputDefault>();
+			if (id)
+				id->set_emulate_touch(true);
+		}
+	}
 
 
 

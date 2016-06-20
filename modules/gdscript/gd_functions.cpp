@@ -89,6 +89,7 @@ const char *GDFunctions::get_func_name(Function p_func) {
 		"funcref",
 		"convert",
 		"typeof",
+		"type_exists",
 		"str",
 		"print",
 		"printt",
@@ -534,6 +535,12 @@ void GDFunctions::call(Function p_func,const Variant **p_args,int p_arg_count,Va
 
 			VALIDATE_ARG_COUNT(1);
 			r_ret = p_args[0]->get_type();
+
+		} break;
+		case TYPE_EXISTS: {
+
+			VALIDATE_ARG_COUNT(1);
+			r_ret = ObjectTypeDB::type_exists(*p_args[0]);
 
 		} break;
 		case TEXT_STR: {
@@ -1162,6 +1169,7 @@ bool GDFunctions::is_deterministic(Function p_func) {
 		case LOGIC_NEAREST_PO2:
 		case TYPE_CONVERT:
 		case TYPE_OF:
+		case TYPE_EXISTS:
 		case TEXT_STR:
 		case COLOR8:
 // enable for debug only, otherwise not desirable - case GEN_RANGE:
@@ -1422,6 +1430,13 @@ MethodInfo GDFunctions::get_info(Function p_func) {
 
 			MethodInfo mi("typeof",PropertyInfo(Variant::NIL,"what"));
 			mi.return_val.type=Variant::INT;
+			return mi;
+
+		} break;
+		case TYPE_EXISTS: {
+
+			MethodInfo mi("type_exists",PropertyInfo(Variant::STRING,"type"));
+			mi.return_val.type=Variant::BOOL;
 			return mi;
 
 		} break;

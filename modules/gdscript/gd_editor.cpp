@@ -552,11 +552,6 @@ static Ref<Reference> _get_parent_class(GDCompletionContext& context) {
 
 				int base_idx = GDScriptLanguage::get_singleton()->get_global_map()[base];
 				native = GDScriptLanguage::get_singleton()->get_global_array()[base_idx];
-				if (!native.is_valid()) {
-
-					print_line("Global not a class: '"+base+"'");
-
-				}
 				return native;
 			}
 
@@ -2179,10 +2174,8 @@ Error GDScriptLanguage::complete_code(const String& p_code, const String& p_base
 	switch(p.get_completion_type()) {
 
 		case GDParser::COMPLETION_NONE: {
-			print_line("No completion");
 		} break;
 		case GDParser::COMPLETION_BUILT_IN_TYPE_CONSTANT: {
-			print_line("Built in type constant");
 			List<StringName> constants;
 			Variant::get_numeric_constants_for_type(p.get_completion_built_in_constant(),&constants);
 			for(List<StringName>::Element *E=constants.front();E;E=E->next()) {
@@ -2198,7 +2191,6 @@ Error GDScriptLanguage::complete_code(const String& p_code, const String& p_base
 			_find_identifiers(context,p.get_completion_line(),isfunction,options);
 		} break;
 		case GDParser::COMPLETION_PARENT_FUNCTION: {
-			print_line("parent function");
 
 		} break;
 		case GDParser::COMPLETION_METHOD:
