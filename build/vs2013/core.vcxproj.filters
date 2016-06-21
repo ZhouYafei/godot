@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\core\array.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\core\balloon_allocator.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\core\color.h">
       <Filter>core</Filter>
     </ClInclude>
@@ -70,9 +67,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\event_queue.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\core\fpstr.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\func_ref.h">
@@ -111,9 +105,6 @@
     <ClInclude Include="..\..\core\method_bind.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\core\multi_bucket_array.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\core\object.h">
       <Filter>core</Filter>
     </ClInclude>
@@ -148,9 +139,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\register_core_types.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\core\res_ptr.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\resource.h">
@@ -205,9 +193,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\variant.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\core\variant_call_bind.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\vector.h">
@@ -334,9 +319,6 @@
       <Filter>core\io</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\math\aabb.h">
-      <Filter>core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\core\math\bezier_curve.h">
       <Filter>core\math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\math\bsp_tree.h">
@@ -500,9 +482,6 @@
     <ClCompile Include="..\..\core\event_queue.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\core\fpstr.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\core\func_ref.cpp">
       <Filter>core</Filter>
     </ClCompile>
@@ -539,9 +518,6 @@
     <ClCompile Include="..\..\core\packed_data_container.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\core\pair.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\core\path_db.cpp">
       <Filter>core</Filter>
     </ClCompile>
@@ -566,9 +542,6 @@
     <ClCompile Include="..\..\core\register_core_types.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\core\res_ptr.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\core\resource.cpp">
       <Filter>core</Filter>
     </ClCompile>
@@ -576,9 +549,6 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\safe_refcount.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\core\script_debugger_debugger.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\script_debugger_local.cpp">
@@ -612,12 +582,6 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\variant_op.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\core\vmap.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\core\vset.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\bind\core_bind.cpp">
@@ -725,9 +689,6 @@
     <ClCompile Include="..\..\core\math\aabb.cpp">
       <Filter>core\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\core\math\bezier_curve.cpp">
-      <Filter>core\math</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\core\math\bsp_tree.cpp">
       <Filter>core\math</Filter>
     </ClCompile>
@@ -741,9 +702,6 @@
       <Filter>core\math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\math\math_2d.cpp">
-      <Filter>core\math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\core\math\math_defs.cpp">
       <Filter>core\math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\math\math_funcs.cpp">

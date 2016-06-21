@@ -687,9 +687,6 @@
     <ClCompile Include="..\..\drivers\chibi\cp_envelope.cpp">
       <Filter>drivers\chibi</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\chibi\cp_file_access_wrapper.cpp">
-      <Filter>drivers\chibi</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\drivers\chibi\cp_instrument.cpp">
       <Filter>drivers\chibi</Filter>
     </ClCompile>
@@ -742,9 +739,6 @@
       <Filter>drivers\chibi</Filter>
     </ClCompile>
     <ClCompile Include="..\..\drivers\chibi\cp_player_data_notes.cpp">
-      <Filter>drivers\chibi</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\chibi\cp_player_data_reserved.cpp">
       <Filter>drivers\chibi</Filter>
     </ClCompile>
     <ClCompile Include="..\..\drivers\chibi\cp_player_data_utils.cpp">
@@ -833,9 +827,6 @@
     </ClCompile>
     <ClCompile Include="..\..\drivers\ogg\framing.c">
       <Filter>drivers\ogg</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\png\example.c">
-      <Filter>drivers\png</Filter>
     </ClCompile>
     <ClCompile Include="..\..\drivers\png\image_loader_png.cpp">
       <Filter>drivers\png</Filter>

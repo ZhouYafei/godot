@@ -799,7 +799,6 @@
     <ClCompile Include="..\..\drivers\builtin_zlib\zlib\uncompr.c" />
     <ClCompile Include="..\..\drivers\builtin_zlib\zlib\zutil.c" />
     <ClCompile Include="..\..\drivers\chibi\cp_envelope.cpp" />
-    <ClCompile Include="..\..\drivers\chibi\cp_file_access_wrapper.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_instrument.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_loader_it.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_loader_it_info.cpp" />
@@ -818,7 +817,6 @@
     <ClCompile Include="..\..\drivers\chibi\cp_player_data_filter.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_player_data_nna.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_player_data_notes.cpp" />
-    <ClCompile Include="..\..\drivers\chibi\cp_player_data_reserved.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_player_data_utils.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_sample.cpp" />
     <ClCompile Include="..\..\drivers\chibi\cp_sample_manager.cpp" />
@@ -1050,11 +1048,6 @@
     <ClCompile Include="..\..\drivers\opus\silk\VQ_WMat_EC.c" />
     <ClCompile Include="..\..\drivers\opus\stream.c" />
     <ClCompile Include="..\..\drivers\opus\wincerts.c" />
-    <ClCompile Include="..\..\drivers\png\example.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)example_png.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)example_png.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)example_png.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\..\drivers\png\image_loader_png.cpp" />
     <ClCompile Include="..\..\drivers\png\png.c" />
     <ClCompile Include="..\..\drivers\png\pngerror.c" />

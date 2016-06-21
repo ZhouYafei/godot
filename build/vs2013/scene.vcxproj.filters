@@ -66,9 +66,6 @@
     <ClCompile Include="..\..\scene\2d\node_2d.cpp">
       <Filter>scene\2d</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\scene\2d\node_2d_singleton.cpp">
-      <Filter>scene\2d</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\scene\2d\parallax_background.cpp">
       <Filter>scene\2d</Filter>
     </ClCompile>
@@ -162,13 +159,7 @@
     <ClCompile Include="..\..\scene\3d\navigation.cpp">
       <Filter>scene\3d</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\scene\3d\navigation_agent.cpp">
-      <Filter>scene\3d</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\scene\3d\navigation_mesh.cpp">
-      <Filter>scene\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\scene\3d\optimized_spatial_scene.cpp">
       <Filter>scene\3d</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\3d\particles.cpp">
@@ -246,9 +237,6 @@
     <ClCompile Include="..\..\scene\animation\animation_tree_player.cpp">
       <Filter>scene\animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\scene\animation\transitioner.cpp">
-      <Filter>scene\animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\scene\animation\tween.cpp">
       <Filter>scene\animation</Filter>
     </ClCompile>
@@ -295,9 +283,6 @@
       <Filter>scene\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\gui\control.cpp">
-      <Filter>scene\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\scene\gui\custom_button.cpp">
       <Filter>scene\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\gui\dialogs.cpp">
@@ -402,9 +387,6 @@
     <ClCompile Include="..\..\scene\main\canvas_layer.cpp">
       <Filter>scene\main</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\scene\main\misc.cpp">
-      <Filter>scene\main</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\scene\main\node.cpp">
       <Filter>scene\main</Filter>
     </ClCompile>
@@ -412,9 +394,6 @@
       <Filter>scene\main</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\main\scene_main_loop.cpp">
-      <Filter>scene\main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\scene\main\scene_singleton.cpp">
       <Filter>scene\main</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\main\timer.cpp">
@@ -483,9 +462,6 @@
     <ClCompile Include="..\..\scene\resources\gibberish_stream.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\scene\resources\height_map_shape.cpp">
-      <Filter>scene\resources</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\scene\resources\material.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
@@ -517,9 +493,6 @@
       <Filter>scene\resources</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\resources\rectangle_shape_2d.cpp">
-      <Filter>scene\resources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\scene\resources\rich_text.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\resources\room.cpp">
@@ -574,9 +547,6 @@
       <Filter>scene\resources</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\resources\video_stream.cpp">
-      <Filter>scene\resources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\scene\resources\volume.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\resources\world.cpp">
@@ -686,9 +656,6 @@
     <ClInclude Include="..\..\scene\2d\node_2d.h">
       <Filter>scene\2d</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\scene\2d\node_2d_singleton.h">
-      <Filter>scene\2d</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\scene\2d\parallax_background.h">
       <Filter>scene\2d</Filter>
     </ClInclude>
@@ -782,13 +749,7 @@
     <ClInclude Include="..\..\scene\3d\navigation.h">
       <Filter>scene\3d</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\scene\3d\navigation_agent.h">
-      <Filter>scene\3d</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\scene\3d\navigation_mesh.h">
-      <Filter>scene\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\scene\3d\optimized_spatial_scene.h">
       <Filter>scene\3d</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\3d\particles.h">
@@ -866,9 +827,6 @@
     <ClInclude Include="..\..\scene\animation\animation_tree_player.h">
       <Filter>scene\animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\scene\animation\transitioner.h">
-      <Filter>scene\animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\scene\animation\tween.h">
       <Filter>scene\animation</Filter>
     </ClInclude>
@@ -912,9 +870,6 @@
       <Filter>scene\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\gui\control.h">
-      <Filter>scene\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\scene\gui\custom_button.h">
       <Filter>scene\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\gui\dialogs.h">
@@ -1019,9 +974,6 @@
     <ClInclude Include="..\..\scene\main\canvas_layer.h">
       <Filter>scene\main</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\scene\main\misc.h">
-      <Filter>scene\main</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\scene\main\node.h">
       <Filter>scene\main</Filter>
     </ClInclude>
@@ -1029,9 +981,6 @@
       <Filter>scene\main</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\main\scene_main_loop.h">
-      <Filter>scene\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\scene\main\scene_singleton.h">
       <Filter>scene\main</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\main\timer.h">
@@ -1100,9 +1049,6 @@
     <ClInclude Include="..\..\scene\resources\gibberish_stream.h">
       <Filter>scene\resources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\scene\resources\height_map_shape.h">
-      <Filter>scene\resources</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\scene\resources\material.h">
       <Filter>scene\resources</Filter>
     </ClInclude>
@@ -1134,9 +1080,6 @@
       <Filter>scene\resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\rectangle_shape_2d.h">
-      <Filter>scene\resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\scene\resources\rich_text.h">
       <Filter>scene\resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\room.h">
@@ -1191,9 +1134,6 @@
       <Filter>scene\resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\video_stream.h">
-      <Filter>scene\resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\scene\resources\volume.h">
       <Filter>scene\resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\world.h">

@@ -66,9 +66,6 @@
     <ClCompile Include="..\..\modules\gdscript\gd_parser.cpp">
       <Filter>modules\gdscript</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\modules\gdscript\gd_pretty_print.cpp">
-      <Filter>modules\gdscript</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\modules\gdscript\gd_script.cpp">
       <Filter>modules\gdscript</Filter>
     </ClCompile>
@@ -318,9 +315,6 @@
       <Filter>modules\gdscript</Filter>
     </ClInclude>
     <ClInclude Include="..\..\modules\gdscript\gd_parser.h">
-      <Filter>modules\gdscript</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\modules\gdscript\gd_pretty_print.h">
       <Filter>modules\gdscript</Filter>
     </ClInclude>
     <ClInclude Include="..\..\modules\gdscript\gd_script.h">

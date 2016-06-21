@@ -60,16 +60,10 @@
     <ClCompile Include="..\..\servers\audio\audio_server_sw.cpp">
       <Filter>server\audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\servers\audio\reverb_buffers_sw.cpp">
-      <Filter>server\audio</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\servers\audio\reverb_sw.cpp">
       <Filter>server\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\audio\sample_manager_sw.cpp">
-      <Filter>server\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\audio\voice_rb_sw.cpp">
       <Filter>server\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\spatial_sound\spatial_sound_server_sw.cpp">
@@ -85,12 +79,6 @@
       <Filter>server\visual</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\visual\rasterizer_dummy.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\shader_compiler.cpp">
-      <Filter>server\visual</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\visual\shader_graph.cpp">
       <Filter>server\visual</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\visual\shader_language.cpp">
@@ -135,13 +123,7 @@
     <ClCompile Include="..\..\servers\physics\collision_solver_sw.cpp">
       <Filter>server\physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\servers\physics\constraint_sw.cpp">
-      <Filter>server\physics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\servers\physics\gjk_epa.cpp">
-      <Filter>server\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics\joints_sw.cpp">
       <Filter>server\physics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\physics\physics_server_sw.cpp">
@@ -163,9 +145,6 @@
       <Filter>server\physics\joints</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\physics\joints\hinge_joint_sw.cpp">
-      <Filter>server\physics\joints</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\servers\physics\joints\jacobian_entry_sw.cpp">
       <Filter>server\physics\joints</Filter>
     </ClCompile>
     <ClCompile Include="..\..\servers\physics\joints\pin_joint_sw.cpp">
@@ -222,9 +201,6 @@
     <ClCompile Include="..\..\servers\physics_2d\collision_solver_2d_sw.cpp">
       <Filter>server\physics_2d</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\servers\physics_2d\constraint_2d_sw.cpp">
-      <Filter>server\physics_2d</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\servers\audio_server.h">
@@ -260,9 +236,6 @@
     <ClInclude Include="..\..\servers\audio\audio_server_sw.h">
       <Filter>server\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\servers\audio\reverb_buffers_sw.h">
-      <Filter>server\audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\servers\audio\reverb_sw.h">
       <Filter>server\audio</Filter>
     </ClInclude>
@@ -285,12 +258,6 @@
       <Filter>server\visual</Filter>
     </ClInclude>
     <ClInclude Include="..\..\servers\visual\rasterizer_dummy.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\shader_compiler.h">
-      <Filter>server\visual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\servers\visual\shader_graph.h">
       <Filter>server\visual</Filter>
     </ClInclude>
     <ClInclude Include="..\..\servers\visual\shader_language.h">

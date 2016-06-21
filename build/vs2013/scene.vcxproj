@@ -137,7 +137,6 @@
     <ClCompile Include="..\..\scene\2d\navigation2d.cpp" />
     <ClCompile Include="..\..\scene\2d\navigation_polygon.cpp" />
     <ClCompile Include="..\..\scene\2d\node_2d.cpp" />
-    <ClCompile Include="..\..\scene\2d\node_2d_singleton.cpp" />
     <ClCompile Include="..\..\scene\2d\parallax_background.cpp" />
     <ClCompile Include="..\..\scene\2d\parallax_layer.cpp" />
     <ClCompile Include="..\..\scene\2d\particles_2d.cpp" />
@@ -172,9 +171,7 @@
     <ClCompile Include="..\..\scene\3d\navigation.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">Disabled</Optimization>
     </ClCompile>
-    <ClCompile Include="..\..\scene\3d\navigation_agent.cpp" />
     <ClCompile Include="..\..\scene\3d\navigation_mesh.cpp" />
-    <ClCompile Include="..\..\scene\3d\optimized_spatial_scene.cpp" />
     <ClCompile Include="..\..\scene\3d\particles.cpp" />
     <ClCompile Include="..\..\scene\3d\path.cpp" />
     <ClCompile Include="..\..\scene\3d\physics_body.cpp" />
@@ -200,7 +197,6 @@
     <ClCompile Include="..\..\scene\animation\animation_cache.cpp" />
     <ClCompile Include="..\..\scene\animation\animation_player.cpp" />
     <ClCompile Include="..\..\scene\animation\animation_tree_player.cpp" />
-    <ClCompile Include="..\..\scene\animation\transitioner.cpp" />
     <ClCompile Include="..\..\scene\animation\tween.cpp" />
     <ClCompile Include="..\..\scene\animation\tween_interpolaters.cpp" />
     <ClCompile Include="..\..\scene\audio\event_player.cpp" />
@@ -219,7 +215,6 @@
     <ClCompile Include="..\..\scene\gui\color_ramp_edit.cpp" />
     <ClCompile Include="..\..\scene\gui\container.cpp" />
     <ClCompile Include="..\..\scene\gui\control.cpp" />
-    <ClCompile Include="..\..\scene\gui\custom_button.cpp" />
     <ClCompile Include="..\..\scene\gui\dialogs.cpp" />
     <ClCompile Include="..\..\scene\gui\file_dialog.cpp" />
     <ClCompile Include="..\..\scene\gui\graph_edit.cpp" />
@@ -264,11 +259,9 @@
     <ClCompile Include="..\..\scene\main\canvas_layer.cpp" />
     <ClCompile Include="..\..\scene\main\http_request.cpp" />
     <ClCompile Include="..\..\scene\main\instance_placeholder.cpp" />
-    <ClCompile Include="..\..\scene\main\misc.cpp" />
     <ClCompile Include="..\..\scene\main\node.cpp" />
     <ClCompile Include="..\..\scene\main\resource_preloader.cpp" />
     <ClCompile Include="..\..\scene\main\scene_main_loop.cpp" />
-    <ClCompile Include="..\..\scene\main\scene_singleton.cpp" />
     <ClCompile Include="..\..\scene\main\timer.cpp" />
     <ClCompile Include="..\..\scene\main\viewport.cpp" />
     <ClCompile Include="..\..\scene\register_scene_types.cpp" />
@@ -295,7 +288,6 @@
     <ClCompile Include="..\..\scene\resources\event_stream.cpp" />
     <ClCompile Include="..\..\scene\resources\font.cpp" />
     <ClCompile Include="..\..\scene\resources\gibberish_stream.cpp" />
-    <ClCompile Include="..\..\scene\resources\height_map_shape.cpp" />
     <ClCompile Include="..\..\scene\resources\material.cpp" />
     <ClCompile Include="..\..\scene\resources\mesh.cpp" />
     <ClCompile Include="..\..\scene\resources\mesh_data_tool.cpp" />
@@ -307,7 +299,6 @@
     <ClCompile Include="..\..\scene\resources\polygon_path_finder.cpp" />
     <ClCompile Include="..\..\scene\resources\ray_shape.cpp" />
     <ClCompile Include="..\..\scene\resources\rectangle_shape_2d.cpp" />
-    <ClCompile Include="..\..\scene\resources\rich_text.cpp" />
     <ClCompile Include="..\..\scene\resources\room.cpp" />
     <ClCompile Include="..\..\scene\resources\sample.cpp" />
     <ClCompile Include="..\..\scene\resources\sample_library.cpp" />
@@ -328,7 +319,6 @@
     <ClCompile Include="..\..\scene\resources\theme.cpp" />
     <ClCompile Include="..\..\scene\resources\tile_set.cpp" />
     <ClCompile Include="..\..\scene\resources\video_stream.cpp" />
-    <ClCompile Include="..\..\scene\resources\volume.cpp" />
     <ClCompile Include="..\..\scene\resources\world.cpp" />
     <ClCompile Include="..\..\scene\resources\world_2d.cpp" />
     <ClCompile Include="..\..\scene\scene_string_names.cpp" />
@@ -349,7 +339,6 @@
     <ClInclude Include="..\..\scene\2d\navigation2d.h" />
     <ClInclude Include="..\..\scene\2d\navigation_polygon.h" />
     <ClInclude Include="..\..\scene\2d\node_2d.h" />
-    <ClInclude Include="..\..\scene\2d\node_2d_singleton.h" />
     <ClInclude Include="..\..\scene\2d\parallax_background.h" />
     <ClInclude Include="..\..\scene\2d\parallax_layer.h" />
     <ClInclude Include="..\..\scene\2d\particles_2d.h" />
@@ -382,9 +371,7 @@
     <ClInclude Include="..\..\scene\3d\mesh_instance.h" />
     <ClInclude Include="..\..\scene\3d\multimesh_instance.h" />
     <ClInclude Include="..\..\scene\3d\navigation.h" />
-    <ClInclude Include="..\..\scene\3d\navigation_agent.h" />
     <ClInclude Include="..\..\scene\3d\navigation_mesh.h" />
-    <ClInclude Include="..\..\scene\3d\optimized_spatial_scene.h" />
     <ClInclude Include="..\..\scene\3d\particles.h" />
     <ClInclude Include="..\..\scene\3d\path.h" />
     <ClInclude Include="..\..\scene\3d\physics_body.h" />
@@ -410,7 +397,6 @@
     <ClInclude Include="..\..\scene\animation\animation_cache.h" />
     <ClInclude Include="..\..\scene\animation\animation_player.h" />
     <ClInclude Include="..\..\scene\animation\animation_tree_player.h" />
-    <ClInclude Include="..\..\scene\animation\transitioner.h" />
     <ClInclude Include="..\..\scene\animation\tween.h" />
     <ClInclude Include="..\..\scene\audio\event_player.h" />
     <ClInclude Include="..\..\scene\audio\sample_player.h" />
@@ -428,7 +414,6 @@
     <ClInclude Include="..\..\scene\gui\color_ramp_edit.h" />
     <ClInclude Include="..\..\scene\gui\container.h" />
     <ClInclude Include="..\..\scene\gui\control.h" />
-    <ClInclude Include="..\..\scene\gui\custom_button.h" />
     <ClInclude Include="..\..\scene\gui\dialogs.h" />
     <ClInclude Include="..\..\scene\gui\file_dialog.h" />
     <ClInclude Include="..\..\scene\gui\graph_edit.h" />
@@ -471,11 +456,9 @@
     <ClInclude Include="..\..\scene\main\canvas_layer.h" />
     <ClInclude Include="..\..\scene\main\http_request.h" />
     <ClInclude Include="..\..\scene\main\instance_placeholder.h" />
-    <ClInclude Include="..\..\scene\main\misc.h" />
     <ClInclude Include="..\..\scene\main\node.h" />
     <ClInclude Include="..\..\scene\main\resource_preloader.h" />
     <ClInclude Include="..\..\scene\main\scene_main_loop.h" />
-    <ClInclude Include="..\..\scene\main\scene_singleton.h" />
     <ClInclude Include="..\..\scene\main\timer.h" />
     <ClInclude Include="..\..\scene\main\viewport.h" />
     <ClInclude Include="..\..\scene\register_scene_types.h" />
@@ -503,7 +486,6 @@
     <ClInclude Include="..\..\scene\resources\event_stream.h" />
     <ClInclude Include="..\..\scene\resources\font.h" />
     <ClInclude Include="..\..\scene\resources\gibberish_stream.h" />
-    <ClInclude Include="..\..\scene\resources\height_map_shape.h" />
     <ClInclude Include="..\..\scene\resources\material.h" />
     <ClInclude Include="..\..\scene\resources\mesh.h" />
     <ClInclude Include="..\..\scene\resources\mesh_data_tool.h" />
@@ -515,7 +497,6 @@
     <ClInclude Include="..\..\scene\resources\polygon_path_finder.h" />
     <ClInclude Include="..\..\scene\resources\ray_shape.h" />
     <ClInclude Include="..\..\scene\resources\rectangle_shape_2d.h" />
-    <ClInclude Include="..\..\scene\resources\rich_text.h" />
     <ClInclude Include="..\..\scene\resources\room.h" />
     <ClInclude Include="..\..\scene\resources\sample.h" />
     <ClInclude Include="..\..\scene\resources\sample_library.h" />
@@ -537,7 +518,6 @@
     <ClInclude Include="..\..\scene\resources\theme.h" />
     <ClInclude Include="..\..\scene\resources\tile_set.h" />
     <ClInclude Include="..\..\scene\resources\video_stream.h" />
-    <ClInclude Include="..\..\scene\resources\volume.h" />
     <ClInclude Include="..\..\scene\resources\world.h" />
     <ClInclude Include="..\..\scene\resources\world_2d.h" />
     <ClInclude Include="..\..\scene\scene_string_names.h" />
