@@ -1882,8 +1882,17 @@ Error Image::_decompress_bc() {
 #if SQUISH_ENABLED
 	print_line("decompressing bc");
 
+	int wd=width,ht=height;
+	if (wd%4!=0) {
+		wd+=4-(wd%4);
+	}
+	if (ht%4!=0) {
+		ht+=4-(ht%4);
+	}
+
+
 	int mm;
-	int size = _get_dst_image_size(width,height,FORMAT_RGBA,mm,mipmaps);
+	int size = _get_dst_image_size(wd,ht,FORMAT_RGBA,mm,mipmaps);
 
 	DVector<uint8_t> newdata;
 	newdata.resize(size);
@@ -1893,6 +1902,8 @@ Error Image::_decompress_bc() {
 
 	int dxt_format = squish::kDxt1;
 	switch(format) {
+	int rofs=0;
+	int wofs=0;
 
 	case FORMAT_BC1:
 		dxt_format = squish::kDxt1;
@@ -1912,6 +1923,9 @@ Error Image::_decompress_bc() {
 		ERR_EXPLAIN(String("Cannot decompress Unknown BC texture format:%d.") + String::num(format));
 		ERR_FAIL_V(FAILED);
 	}
+	//print_line("width: "+itos(wd)+" height: "+itos(ht));
+
+	for(int i=0;i<=mm;i++) {
 
 	squish::DecompressImage(&w[0], width, height, &r[0], dxt_format);
 
@@ -1920,6 +1934,11 @@ Error Image::_decompress_bc() {
 
 	data=newdata;
 	format=FORMAT_RGBA;
+	if (wd!=width || ht!=height) {
+		//todo, crop
+		width=wd;
+		height=ht;
+	}
 
 	return OK;
 #else
