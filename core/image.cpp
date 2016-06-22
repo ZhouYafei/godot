@@ -1902,9 +1902,6 @@ Error Image::_decompress_bc() {
 
 	int dxt_format = squish::kDxt1;
 	switch(format) {
-	int rofs=0;
-	int wofs=0;
-
 	case FORMAT_BC1:
 		dxt_format = squish::kDxt1;
 		break;
@@ -1925,10 +1922,20 @@ Error Image::_decompress_bc() {
 	}
 	//print_line("width: "+itos(wd)+" height: "+itos(ht));
 
+	int rofs=0;
+	int wofs=0;
+
 	for(int i=0;i<=mm;i++) {
 
-	squish::DecompressImage(&w[0], width, height, &r[0], dxt_format);
+		int len = (wd*ht)/16;
+		squish::DecompressImage(&w[wofs], width, height, &r[rofs], dxt_format);
 
+		rofs+=len*8;
+		wofs+=wd*ht*4;
+
+		wd/=2;
+		ht/=2;
+	}
 	w=DVector<uint8_t>::Write();
 	r=DVector<uint8_t>::Read();
 
