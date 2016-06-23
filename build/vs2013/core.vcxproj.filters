@@ -453,6 +453,9 @@
     <ClInclude Include="..\..\core\io\sha256.h">
       <Filter>core\io</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\method_ptrcall.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\array.cpp">

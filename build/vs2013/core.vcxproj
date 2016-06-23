@@ -204,6 +204,7 @@
     <ClInclude Include="..\..\core\math\vector3.h" />
     <ClInclude Include="..\..\core\message_queue.h" />
     <ClInclude Include="..\..\core\method_bind.h" />
+    <ClInclude Include="..\..\core\method_ptrcall.h" />
     <ClInclude Include="..\..\core\object.h" />
     <ClInclude Include="..\..\core\object_type_db.h" />
     <ClInclude Include="..\..\core\os\copymem.h" />
