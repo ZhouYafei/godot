@@ -1941,11 +1941,11 @@ Error Image::_decompress_bc() {
 
 	data=newdata;
 	format=FORMAT_RGBA;
-	if (wd!=width || ht!=height) {
-		//todo, crop
-		width=wd;
-		height=ht;
-	}
+	//if (wd!=width || ht!=height) {
+	//	//todo, crop
+	//	width=wd;
+	//	height=ht;
+	//}
 
 	return OK;
 #else
