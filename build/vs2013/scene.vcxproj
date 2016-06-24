@@ -284,6 +284,7 @@
     <ClCompile Include="..\..\scene\resources\curve.cpp" />
     <ClCompile Include="..\..\scene\resources\default_theme\default_theme.cpp" />
     <ClCompile Include="..\..\scene\resources\dynamic_font.cpp" />
+    <ClCompile Include="..\..\scene\resources\dynamic_font_stb.cpp" />
     <ClCompile Include="..\..\scene\resources\environment.cpp" />
     <ClCompile Include="..\..\scene\resources\event_stream.cpp" />
     <ClCompile Include="..\..\scene\resources\font.cpp" />
@@ -482,6 +483,7 @@
     <ClInclude Include="..\..\scene\resources\default_theme\default_theme.h" />
     <ClInclude Include="..\..\scene\resources\default_theme\theme_data.h" />
     <ClInclude Include="..\..\scene\resources\dynamic_font.h" />
+    <ClInclude Include="..\..\scene\resources\dynamic_font_stb.h" />
     <ClInclude Include="..\..\scene\resources\environment.h" />
     <ClInclude Include="..\..\scene\resources\event_stream.h" />
     <ClInclude Include="..\..\scene\resources\font.h" />

@@ -621,6 +621,9 @@
     <ClCompile Include="..\..\scene\3d\listener.cpp">
       <Filter>scene\3d</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\scene\resources\dynamic_font_stb.cpp">
+      <Filter>scene\resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene\register_scene_types.h">
@@ -1213,6 +1216,9 @@
     </ClInclude>
     <ClInclude Include="..\..\scene\3d\listener.h">
       <Filter>scene\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scene\resources\dynamic_font_stb.h">
+      <Filter>scene\resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
