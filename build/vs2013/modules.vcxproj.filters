@@ -49,6 +49,9 @@
     <Filter Include="modules\ik">
       <UniqueIdentifier>{8e79086f-cb9b-44ad-91e9-16c54ebc9055}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\cscript">
+      <UniqueIdentifier>{b97628e5-675c-4235-b8aa-1f761399a1d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\modules\register_module_types.cpp">
@@ -303,6 +306,12 @@
     <ClCompile Include="..\..\modules\spine\src\spine\WeightedMeshAttachment.c">
       <Filter>modules\spine\spine-c</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\cscript\godot_c.cpp">
+      <Filter>modules\cscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\cscript\register_types.cpp">
+      <Filter>modules\cscript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -547,6 +556,12 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\spine\include\spine\WeightedMeshAttachment.h">
       <Filter>modules\spine\spine-c</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\cscript\godot_c.h">
+      <Filter>modules\cscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\cscript\register_types.h">
+      <Filter>modules\cscript</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
