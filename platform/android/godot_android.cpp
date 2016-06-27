@@ -933,7 +933,7 @@ static Variant::Type get_jni_type(const String& p_type) {
 #else
 		{"[F",Variant::REAL_ARRAY},
 #endif
-		{"[java.lang.String",Variant::STRING_ARRAY},
+		{"[Ljava.lang.String;",Variant::STRING_ARRAY},
 		{NULL,Variant::NIL}
 	};
 
@@ -964,7 +964,7 @@ static const char* get_jni_sig(const String& p_type) {
 		{"java.lang.String","Ljava/lang/String;"},
 		{"[I","[I"},
 		{"[F","[F"},
-		{"[java.lang.String","[Ljava/lang/String;"},
+		{"[Ljava.lang.String;","[Ljava/lang/String;"},
 		{NULL,"V"}
 	};
 

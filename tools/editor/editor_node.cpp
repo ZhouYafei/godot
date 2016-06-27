@@ -185,6 +185,16 @@ void EditorNode::_unhandled_input(const InputEvent& p_event) {
 		if (ED_IS_SHORTCUT("editor/distraction_free_mode", p_event)) {
 			set_distraction_free_mode(!get_distraction_free_mode());
 		}
+		if (ED_IS_SHORTCUT("editor/next_tab", p_event)) {
+			int next_tab = editor_data.get_edited_scene() + 1;
+			next_tab %= editor_data.get_edited_scene_count();
+			_scene_tab_changed(next_tab);
+		}
+		if (ED_IS_SHORTCUT("editor/prev_tab", p_event)) {
+			int next_tab = editor_data.get_edited_scene() - 1;
+			next_tab = next_tab >= 0 ? next_tab : editor_data.get_edited_scene_count() - 1;
+			_scene_tab_changed(next_tab);
+		}
 
 		switch(p_event.key.scancode) {
 
@@ -208,18 +218,7 @@ void EditorNode::_unhandled_input(const InputEvent& p_event) {
 			case KEY_F6: _menu_option_confirm(RUN_PLAY_SCENE,true); break;
 			//case KEY_F7: _menu_option_confirm(RUN_PAUSE,true); break;
 			case KEY_F8: _menu_option_confirm(RUN_STOP,true); break;*/
-			case KEY_TAB:
-				if (p_event.key.mod.command) {
-					int current_tab = editor_data.get_edited_scene();
-					int tab_offset = 1;
-					if (p_event.key.mod.shift)
-						tab_offset = -1;
-					int next_tab = current_tab + tab_offset;
-					next_tab = next_tab >= 0 ? next_tab : editor_data.get_edited_scene_count() - 1;
-					next_tab %= editor_data.get_edited_scene_count();
-					_scene_tab_changed(next_tab);
-				}
-			break;
+
 		}
 
 	}
@@ -3544,7 +3543,7 @@ void EditorNode::fix_dependencies(const String& p_for_file) {
 	dependency_fixer->edit(p_for_file);
 }
 
-Error EditorNode::load_scene(const String& p_scene, bool p_ignore_broken_deps,bool p_set_inherited) {
+Error EditorNode::load_scene(const String& p_scene, bool p_ignore_broken_deps,bool p_set_inherited,bool p_clear_errors) {
 
 	if (!is_inside_tree()) {
 		defer_load_scene = p_scene;
@@ -3563,7 +3562,9 @@ Error EditorNode::load_scene(const String& p_scene, bool p_ignore_broken_deps,bo
 	}
 
 
-	load_errors->clear();
+	if (p_clear_errors)
+		load_errors->clear();
+
 	String lpath = Globals::get_singleton()->localize_path(p_scene);
 
 	if (!lpath.begins_with("res://")) {
@@ -4000,15 +4001,17 @@ bool EditorNode::_find_editing_changed_scene(Node *p_from) {
 
 
 void EditorNode::add_io_error(const String& p_error) {
-	CharString err_ut = p_error.utf8();
-	ERR_PRINT(err_ut.get_data());
+	//CharString err_ut = p_error.utf8();
+	//ERR_PRINT(!err_ut.get_data());
 	_load_error_notify(singleton,p_error);
 }
 
 void EditorNode::_load_error_notify(void* p_ud,const String& p_text) {
 
+
 	EditorNode*en=(EditorNode*)p_ud;
-	en->load_errors->set_text(en->load_errors->get_text()+p_text+"\n");
+	en->load_errors->add_image(en->gui_base->get_icon("Error","EditorIcons"));
+	en->load_errors->add_text(p_text+"\n");
 	en->load_error_dialog->popup_centered_ratio(0.5);
 
 }
@@ -5505,6 +5508,11 @@ EditorNode::EditorNode() {
 	ED_SHORTCUT("editor/fullscreen_mode",TTR("Fullscreen Mode"),KEY_MASK_SHIFT|KEY_F11);
 	ED_SHORTCUT("editor/distraction_free_mode",TTR("Distraction Free Mode"),KEY_MASK_CMD|KEY_MASK_SHIFT|KEY_F11);
 
+
+	ED_SHORTCUT("editor/next_tab", TTR("Next tab"), KEY_MASK_CMD+KEY_TAB);
+	ED_SHORTCUT("editor/prev_tab", TTR("Previous tab"), KEY_MASK_CMD+KEY_MASK_SHIFT+KEY_TAB);
+
+
 	Separator *vs=NULL;
 
 	file_menu->set_tooltip(TTR("Operations with scene files."));
@@ -6427,8 +6435,9 @@ EditorNode::EditorNode() {
 	set_process_unhandled_input(true);
 	_playing_edited=false;
 
-	load_errors = memnew( TextEdit );
-	load_errors->set_readonly(true);
+//	Panel *errors = memnew( Panel );
+	load_errors = memnew( RichTextLabel );
+//	load_errors->set_readonly(true);
 	load_error_dialog = memnew( AcceptDialog );
 	load_error_dialog->add_child(load_errors);
 	load_error_dialog->set_title(TTR("Load Errors"));

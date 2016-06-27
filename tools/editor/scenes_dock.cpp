@@ -1695,7 +1695,7 @@ ScenesDock::ScenesDock(EditorNode *p_editor) {
 
 	button_favorite->set_focus_mode(FOCUS_NONE);
 
-	Control *spacer = memnew( Control);
+//	Control *spacer = memnew( Control);
 
 
 

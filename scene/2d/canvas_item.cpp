@@ -766,6 +766,17 @@ void CanvasItem::draw_set_transform(const Point2& p_offset, float p_rot, const S
 	VisualServer::get_singleton()->canvas_item_add_set_transform(canvas_item,xform);
 }
 
+void CanvasItem::draw_set_transform_matrix(const Matrix32& p_matrix) {
+
+	if (!drawing) {
+		ERR_EXPLAIN("Drawing is only allowed inside NOTIFICATION_DRAW, _draw() function or 'draw' signal.");
+		ERR_FAIL();
+	}
+
+	VisualServer::get_singleton()->canvas_item_add_set_transform(canvas_item,p_matrix);
+
+}
+
 void CanvasItem::draw_polygon(const Vector<Point2>& p_points, const Vector<Color>& p_colors,const Vector<Point2>& p_uvs, Ref<Texture> p_texture) {
 
 	if (!drawing) {
@@ -1033,7 +1044,7 @@ void CanvasItem::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("_is_visible_"),&CanvasItem::_is_visible_);
 
 	ObjectTypeDB::bind_method(_MD("edit_set_state","state"),&CanvasItem::edit_set_state);
-	ObjectTypeDB::bind_method(_MD("edit_get"),&CanvasItem::edit_get_state);
+	ObjectTypeDB::bind_method(_MD("edit_get_state:Variant"),&CanvasItem::edit_get_state);
 	ObjectTypeDB::bind_method(_MD("edit_set_rect","rect"),&CanvasItem::edit_set_rect);
 	ObjectTypeDB::bind_method(_MD("edit_rotate","degrees"),&CanvasItem::edit_rotate);
 
@@ -1087,6 +1098,7 @@ void CanvasItem::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("draw_char","font:Font","pos","char","next","modulate"),&CanvasItem::draw_char,DEFVAL(Color(1,1,1)));
 
 	ObjectTypeDB::bind_method(_MD("draw_set_transform","pos","rot","scale"),&CanvasItem::draw_set_transform);
+	ObjectTypeDB::bind_method(_MD("draw_set_transform_matrix","xform"),&CanvasItem::draw_set_transform_matrix);
 	ObjectTypeDB::bind_method(_MD("get_transform"),&CanvasItem::get_transform);
 	ObjectTypeDB::bind_method(_MD("get_global_transform"),&CanvasItem::get_global_transform);
 	ObjectTypeDB::bind_method(_MD("get_global_transform_with_canvas"),&CanvasItem::get_global_transform_with_canvas);
