@@ -171,6 +171,10 @@ void EditorNode::_update_title() {
 
 void EditorNode::_unhandled_input(const InputEvent& p_event) {
 
+	if (Node::get_viewport()->get_modal_stack_top())
+		return; //ignore because of modal window
+
+
 	if (p_event.type==InputEvent::KEY && p_event.key.pressed && !p_event.key.echo && !gui_base->get_viewport()->gui_has_modal_stack()) {
 
 
@@ -1164,7 +1168,11 @@ void EditorNode::_dialog_action(String p_file) {
 
 			load_scene(p_file);
 		} break;
+		case SETTINGS_PICK_MAIN_SCENE: {
 
+			Globals::get_singleton()->set("application/main_scene",p_file);
+			//would be nice to show the project manager opened with the hilighted field..
+		} break;
 		case FILE_SAVE_OPTIMIZED: {
 
 
@@ -1853,10 +1861,29 @@ void EditorNode::_run(bool p_current,const String& p_custom) {
 
 			current_option=-1;
 			//accept->get_cancel()->hide();
-			accept->get_ok()->set_text(TTR("I see.."));
-			accept->set_text(TTR("No main scene has ever been defined.\nSelect one from \"Project Settings\" under the 'application' category."));
-			accept->popup_centered_minsize();
+			pick_main_scene->set_text(TTR("No main scene has ever been defined, select one?\nYou can change it later in later in \"Project Settings\" under the 'application' category."));
+			pick_main_scene->popup_centered_minsize();
 			return;
+		}
+
+		if (!FileAccess::exists(run_filename)) {
+
+			current_option=-1;
+			//accept->get_cancel()->hide();
+			pick_main_scene->set_text(TTR("Selected scene '"+run_filename+"' does not exist, select a valid one?\nYou can change it later in \"Project Settings\" under the 'application' category."));
+			pick_main_scene->popup_centered_minsize();
+			return;
+
+		}
+
+		if (ResourceLoader::get_resource_type(run_filename)!="PackedScene") {
+
+			current_option=-1;
+			//accept->get_cancel()->hide();
+			pick_main_scene->set_text(TTR("Selected scene '"+run_filename+"' is not a scene file, select a valid one?\nYou can change it later in \"Project Settings\" under the 'application' category."));
+			pick_main_scene->popup_centered_minsize();
+			return;
+
 		}
 
 	}
@@ -2772,6 +2799,30 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 			file_templates->popup_centered_ratio();
 
 		} break;
+		case SETTINGS_PICK_MAIN_SCENE: {
+
+
+			//print_tree();
+			file->set_mode(EditorFileDialog::MODE_OPEN_FILE);
+			//not for now?
+			List<String> extensions;
+			ResourceLoader::get_recognized_extensions_for_type("PackedScene",&extensions);
+			file->clear_filters();
+			for(int i=0;i<extensions.size();i++) {
+
+				file->add_filter("*."+extensions[i]+" ; "+extensions[i].to_upper());
+			}
+
+
+			//file->set_current_path(current_path);
+			Node *scene = editor_data.get_edited_scene_root();
+			if (scene) {
+				file->set_current_path(scene->get_filename());
+			};
+			file->set_title(TTR("Pick a Manu Scene"));
+			file->popup_centered_ratio();
+
+		} break;
 		case SETTINGS_ABOUT: {
 
 			about->popup_centered(Size2(500,130)*EDSCALE);
@@ -2785,10 +2836,12 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 			List<Ref<Resource> > cached;
 			ResourceCache::get_cached_resources(&cached);
-
+			//this should probably be done in a thread..
 			for(List<Ref<Resource> >::Element *E=cached.front();E;E=E->next()) {
 
-				if (!E->get()->can_reload_from_file())
+				if (!E->get()->editor_can_reload_from_file())
+					continue;
+				if (!E->get()->get_path().is_resource_file() && !E->get()->get_path().is_abs_path())
 					continue;
 				if (!FileAccess::exists(E->get()->get_path()))
 					continue;
@@ -6442,7 +6495,7 @@ EditorNode::EditorNode() {
 	load_error_dialog->add_child(load_errors);
 	load_error_dialog->set_title(TTR("Load Errors"));
 	load_error_dialog->set_child_rect(load_errors);
-	add_child(load_error_dialog);
+	gui_base->add_child(load_error_dialog);
 
 	//EditorImport::add_importer( Ref<EditorImporterCollada>( memnew(EditorImporterCollada )));
 
@@ -6467,7 +6520,10 @@ EditorNode::EditorNode() {
 	Node::set_human_readable_collision_renaming(true);
 
 
-
+	pick_main_scene = memnew( ConfirmationDialog );
+	gui_base->add_child(pick_main_scene);
+	pick_main_scene->get_ok()->set_text("Select");
+	pick_main_scene->connect("confirmed",this,"_menu_option",varray(SETTINGS_PICK_MAIN_SCENE));
 
 //	Ref<ImageTexture> it = gui_base->get_icon("logo","Icons");
 //	OS::get_singleton()->set_icon( it->get_data() );

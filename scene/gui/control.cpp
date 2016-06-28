@@ -49,24 +49,24 @@
 
 Variant Control::edit_get_state() const {
 
-	Array state;
-	state.push_back(get_pos());
-	state.push_back(get_size());
-	state.push_back(get_rotation());
-	state.push_back(get_scale());
+	Dictionary s;
+	s["rect"]=get_rect();
+	s["rot"]=get_rotation();
+	s["scale"]=get_scale();
+	return s;
 
 	return state;
 
 }
 void Control::edit_set_state(const Variant& p_state) {
 
-	Array state = p_state;
-	ERR_FAIL_COND( state.size() != 4);
+	Dictionary s=p_state;
 
-	set_pos(state[0]);
-	set_size(state[1]);
-	set_rotation(state[2]);
-	set_scale(state[3]);
+	Rect2 state=s["rect"];
+	set_pos(state.pos);
+	set_size(state.size);
+	set_rotation(s["rot"]);
+	set_scale(s["scale"]);
 }
 
 void Control::set_custom_minimum_size(const Size2& p_custom) {
@@ -761,6 +761,11 @@ bool Control::is_window_modal_on_top() const {
 		return false;
 
 	return get_viewport()->_gui_is_modal_on_top(this);
+}
+
+uint64_t Control::get_modal_frame() const {
+
+	return data.modal_frame;
 }
 
 
@@ -1844,6 +1849,7 @@ void Control::show_modal(bool p_exclusive) {
 	raise();
 	data.modal_exclusive=p_exclusive;
 	data.MI=get_viewport()->_gui_show_modal(this);
+	data.modal_frame=OS::get_singleton()->get_frames_drawn();
 
 }
 
@@ -2556,6 +2562,7 @@ Control::Control() {
 	data.drag_owner=0;
 	data.rotation_cache=0;
 	data.scale_cache=Vector2(1,1);
+	data.modal_frame=0;
 
 
 	for (int i=0;i<4;i++) {

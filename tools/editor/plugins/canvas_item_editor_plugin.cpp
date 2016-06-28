@@ -1384,6 +1384,8 @@ void CanvasItemEditor::_viewport_input_event(const InputEvent& p_event) {
 				se->undo_state=canvas_item->edit_get_state();
 				if (canvas_item->cast_to<Node2D>())
 					se->undo_pivot=canvas_item->cast_to<Node2D>()->edit_get_pivot();
+				if (canvas_item->cast_to<Control>())
+					se->undo_pivot=Vector2();
 				return;
 			}
 
@@ -1568,35 +1570,35 @@ void CanvasItemEditor::_viewport_input_event(const InputEvent& p_event) {
 			if (drag==DRAG_ROTATE) {
 
 				Vector2 center = canvas_item->get_global_transform_with_canvas().get_origin();
-				if (Node2D *node = canvas_item->cast_to<Node2D>()) {
-					Matrix32 rot;
-					rot.elements[1] = (dfrom - center).normalized();
-					rot.elements[0] = rot.elements[1].tangent();
-					node->set_rot(snap_angle(rot.xform_inv(dto-center).angle() + node->get_rot(), node->get_rot()));
-					display_rotate_to = dto;
-					display_rotate_from = center;
-					viewport->update();
+				{
+					Node2D *node = canvas_item->cast_to<Node2D>();
+
+
+					if (node) {
+						Matrix32 rot;
+						rot.elements[1] = (dfrom - center).normalized();
+						rot.elements[0] = rot.elements[1].tangent();
+						node->set_rot(snap_angle(rot.xform_inv(dto-center).angle() + node->get_rot(), node->get_rot()));
+						display_rotate_to = dto;
+						display_rotate_from = center;
+						viewport->update();
+					}
 				}
 
-				if (E->get()->cast_to<Control>())
 				{
-					float angle=Math::atan2(center.x-dto.x,center.y-dto.y)*180/3.1415926;
-					if (angle<90)
-						E->get()->cast_to<Control>()->set_rotation(Math::deg2rad(angle+90));
-					else
-						E->get()->cast_to<Control>()->set_rotation(Math::deg2rad(angle-270));
+					Control *node = canvas_item->cast_to<Control>();
+
+
+					if (node) {
+						Matrix32 rot;
+						rot.elements[1] = (dfrom - center).normalized();
+						rot.elements[0] = rot.elements[1].tangent();
+						node->set_rotation(snap_angle(rot.xform_inv(dto-center).angle() + node->get_rotation(), node->get_rotation()));
+						display_rotate_to = dto;
+						display_rotate_from = center;
+						viewport->update();
+					}
 				}
-				else
-				{
-					Matrix32 rot;
-					rot.elements[1] = (dfrom - center).normalized();
-					rot.elements[0] = rot.elements[1].tangent();
-					Vector2 inv = rot.xform_inv(dto-center);
-					float ang = Math::atan2(inv.x, inv.y);
-					canvas_item->edit_rotate(ang);
-				}
-				display_rotate_to = dto;
-				display_rotate_from = center;
 
 				continue;
 			}
