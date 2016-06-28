@@ -55,7 +55,7 @@ Variant Control::edit_get_state() const {
 	s["scale"]=get_scale();
 	return s;
 
-	return state;
+	return s;
 
 }
 void Control::edit_set_state(const Variant& p_state) {
