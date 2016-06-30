@@ -159,6 +159,7 @@ opts.Add('rfs', 'Fixed rfs')
 opts.Add('sdk', "Third-Party SDK", "")
 opts.Add('colored', 'Enable colored output for the compilation (yes/no)', 'no')
 opts.Add('disable_tooltip', "Disable control default tooltip behavior (yes/no)", 'no')
+opts.Add('deprecated','Enable deprecated features (yes/no)','yes')
 opts.Add('extra_suffix', 'Custom extra suffix added to the base filename of all generated binary files.', '')
 opts.Add('vsproj', 'Generate Visual Studio Project. (yes/no)', 'no')
 opts.Add('phys', 'Enable physical collision system', 'yes')
@@ -194,6 +195,9 @@ sys.modules.pop('detect')
 if (env_base['target']=='debug'):
 	env_base.Append(CPPFLAGS=['-DDEBUG_MEMORY_ALLOC']);
 	env_base.Append(CPPFLAGS=['-DSCI_NAMESPACE'])
+
+if (env_base['deprecated']!='no'):
+	env_base.Append(CPPFLAGS=['-DENABLE_DEPRECATED']);
 
 env_base.platforms = {}
 
