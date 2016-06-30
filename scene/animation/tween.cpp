@@ -36,8 +36,11 @@ void Tween::_add_interpolate(InterpolateData& p_data) {
 	if(map_interpolates.has(key)) {
 
 		InterpolateDatas::Element *E = map_interpolates[key];
-		E->get() = p_data;
-		return;
+		// skip diff time tween
+		if(E->get().delay == p_data.delay) {
+			E->get() = p_data;
+			return;
+		}
 	}
 	// add to list
 	interpolates.push_back(p_data);

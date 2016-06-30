@@ -35,7 +35,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 	switch(p_option) {
 		case MENU_OPTION_CREATE_STATIC_TRIMESH_BODY:
 		case MENU_OPTION_CREATE_STATIC_CONVEX_BODY: {
-
+#ifdef PHYSICAL_ENABLED
 			bool trimesh_shape = (p_option==MENU_OPTION_CREATE_STATIC_TRIMESH_BODY);
 
 			EditorSelection *editor_selection = EditorNode::get_singleton()->get_editor_selection();
@@ -103,12 +103,13 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 			}
 
 			ur->commit_action();
-
+#endif
 		} break;
 
 		case MENU_OPTION_CREATE_TRIMESH_COLLISION_SHAPE:
 		case MENU_OPTION_CREATE_CONVEX_COLLISION_SHAPE: {
 
+#ifdef PHYSICAL_ENABLED
 			if (node==get_tree()->get_edited_scene_root()) {
 				err_dialog->set_text(TTR("This doesn't work on scene root!"));
 				err_dialog->popup_centered_minsize();
@@ -139,7 +140,7 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 			ur->add_do_reference(cshape);
 			ur->add_undo_method(node->get_parent(),"remove_child",cshape);
 			ur->commit_action();
-
+#endif
 		} break;
 
 		case MENU_OPTION_CREATE_NAVMESH: {
