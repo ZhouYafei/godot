@@ -1423,6 +1423,14 @@ bool Main::start() {
 							ERR_CONTINUE( obj==NULL );
 
 							n = obj->cast_to<Node>();
+
+							// script object, add to global constant first
+							//	gd_parser(check from constants) needs this global variable
+							if (global_var) {
+								for(int i=0;i<ScriptServer::get_language_count();i++) {
+									ScriptServer::get_language(i)->add_global_constant(name,n);
+								}
+							}
 							n->set_script(s.get_ref_ptr());
 						}
 
@@ -1434,7 +1442,7 @@ bool Main::start() {
 						//sml->get_root()->add_child(n);
 						to_add.push_back(n);
 
-						if (global_var) {
+						if (global_var && !res->is_type("Script")) {
 							for(int i=0;i<ScriptServer::get_language_count();i++) {
 								ScriptServer::get_language(i)->add_global_constant(name,n);
 							}
