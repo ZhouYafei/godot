@@ -417,7 +417,7 @@ if selected_platform in platform_list:
 	if (env['phys']=='yes'):
 		env.Append(CPPFLAGS=['-DPHYSICAL_ENABLED'])
 
-	if (env['arm-linux']=='yes')
+	if (env['arm-linux']=='yes'):
 		env.Append(CPPFLAGS=['-DARMLINUX_ENABLED'])
 		
 	Export('env')
