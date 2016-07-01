@@ -51,7 +51,7 @@ void _spAtlasPage_createTexture(spAtlasPage* self, const char* path) {
 	}
 	TextureRef *ref = memnew(TextureRef);
 
-#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED)
+#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
 	String tex_path = String(path).basename() + ".pkm";
 #else
 	String tex_path = String(path).basename() + ".dds";
