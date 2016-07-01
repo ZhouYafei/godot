@@ -1133,7 +1133,7 @@ void GDFunctions::call(Function p_func,const Variant **p_args,int p_arg_count,Va
 				r_ret=Variant();
 				break;
 			}
-			if (p_args[1] != NULL && p_args[1]->get_type()!=Variant::STRING) {
+			if (p_arg_count > 1 && p_args[1]->get_type()!=Variant::STRING) {
 				r_error.error=Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 				r_error.argument=1;
 				r_error.expected=Variant::STRING;
