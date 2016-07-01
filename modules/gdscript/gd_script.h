@@ -261,6 +261,7 @@ class GDScriptLanguage : public ScriptLanguage {
 
 	typedef HashMap<size_t, FuncInfo*> MapFuncInfos;
 	MapFuncInfos func_infos;
+	bool profiler_stoped;
 
 #endif
 
@@ -272,9 +273,8 @@ class GDScriptLanguage : public ScriptLanguage {
     CallLevel *_call_stack;
 
 	void _add_global(const StringName& p_name,const Variant& p_value);
-	void _profiler_start(GDFunction *p_function, int p_line);
-	void _profiler_end();
-	void _profiler_dump();
+	void _profiler_enter(GDFunction *p_function, int p_line);
+	void _profiler_leave();
 
 	Mutex *lock;
 
@@ -302,7 +302,7 @@ public:
         if (ScriptDebugger::get_singleton()->get_lines_left()>0 && ScriptDebugger::get_singleton()->get_depth()>=0)
             ScriptDebugger::get_singleton()->set_depth( ScriptDebugger::get_singleton()->get_depth() +1 );
 
-		_profiler_start(p_function, *p_line);
+		_profiler_enter(p_function, *p_line);
 
         if (_debug_call_stack_pos >= _debug_max_call_stack) {
             //stack overflow
@@ -327,7 +327,7 @@ public:
         if (ScriptDebugger::get_singleton()->get_lines_left()>0 && ScriptDebugger::get_singleton()->get_depth()>=0)
 	    ScriptDebugger::get_singleton()->set_depth( ScriptDebugger::get_singleton()->get_depth() -1 );
 
-		_profiler_end();
+		_profiler_leave();
 
         if (_debug_call_stack_pos==0) {
 
@@ -425,6 +425,11 @@ public:
 	/* LOADER FUNCTIONS */
 
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
+
+	void profiler_start();
+	void profiler_stop();
+	void profiler_clean();
+	void profiler_dump(const String& p_path = "");
 
 	GDScriptLanguage();
 	~GDScriptLanguage();

@@ -73,7 +73,6 @@ typedef struct Stack {
 } Stack;
 static Stack stacks[MAX_STACK_LEVEL];
 static int stack_level = 0;
-//bool enable_profiler = false;
 
 struct CostCompare {
 
@@ -83,10 +82,10 @@ struct CostCompare {
 	}
 };
 
-void GDScriptLanguage::_profiler_start(GDFunction *p_function, int p_line) {
+void GDScriptLanguage::_profiler_enter(GDFunction *p_function, int p_line) {
 
-	//if(!enable_profiler)
-	//	return;
+	if(profiler_stoped)
+		return;
 	ERR_FAIL_COND(stack_level >= MAX_STACK_LEVEL);
 
 	size_t id = (size_t) p_function;
@@ -106,11 +105,10 @@ void GDScriptLanguage::_profiler_start(GDFunction *p_function, int p_line) {
 	stack_level += 1;
 }
 
-void GDScriptLanguage::_profiler_end() {
+void GDScriptLanguage::_profiler_leave() {
 
-	//if(!enable_profiler)
-	//	return;
-	ERR_FAIL_COND(stack_level == 0);
+	if(stack_level == 0)
+		return;
 
 	Stack& stack = stacks[stack_level - 1];
 	uint64_t now;
@@ -127,7 +125,28 @@ void GDScriptLanguage::_profiler_end() {
 	stack_level -= 1;
 }
 
-void GDScriptLanguage::_profiler_dump() {
+void GDScriptLanguage::profiler_start() {
+
+	profiler_stoped = false;
+}
+
+void GDScriptLanguage::profiler_clean() {
+
+	// cleanup profiler function infos
+	{
+		const size_t *K = NULL;
+		while(K = func_infos.next(K))
+			memdelete(func_infos[*K]);
+		func_infos.clear();
+	}
+}
+
+void GDScriptLanguage::profiler_stop() {
+
+	profiler_stoped = true;
+}
+
+void GDScriptLanguage::profiler_dump(const String& p_path) {
 
 	if(func_infos.empty())
 		return;
@@ -148,7 +167,7 @@ void GDScriptLanguage::_profiler_dump() {
 	sort_funcs.sort_custom<CostCompare>();
 
 	Error err;
-	FileAccessRef f = FileAccess::open("user://profiler.txt", FileAccess::WRITE, &err);
+	FileAccessRef f = FileAccess::open(p_path.empty() ? "user://profiler.txt" : p_path, FileAccess::WRITE, &err);
 
 	String format(L"file:%s func:%s line:%d\n\tcost\t%fs\ttimes:%d\n");
 
@@ -173,23 +192,26 @@ void GDScriptLanguage::_profiler_dump() {
 	}
 
 	printf("Profiler file save as user://profiler.txt\n");
-
-	// cleanup profiler function infos
-	{
-		const size_t *K = NULL;
-		while(K = func_infos.next(K))
-			memdelete(func_infos[*K]);
-		func_infos.clear();
-	}
 }
 #else
-void GDScriptLanguage::_profiler_start(GDFunction *p_function, int p_line) {
+
+void GDScriptLanguage::profiler_start() {
+}
+
+void GDScriptLanguage::profiler_stop() {
+
+}
+
+void GDScriptLanguage::_profiler_enter(GDFunction *p_function, int p_line) {
 }
 
 void GDScriptLanguage::_profiler_end() {
 }
 
-void GDScriptLanguage::_profiler_dump() {
+void GDScriptLanguage::profiler_clean() {
+}
+
+void GDScriptLanguage::profiler_dump() {
 }
 
 #endif
