@@ -544,6 +544,9 @@ void DynamicFontAtSize::_update_char(CharType p_char) {
 				ERR_FAIL_COND(ofs >= tex.imgdata.size());
 				wr[ofs+0]=255; //grayscale as 1
 				wr[ofs+1]=slot->bitmap.buffer[i*slot->bitmap.width+j];
+				// alpha atlas shader hack(for etc1/dds)
+				if(wr[ofs+1] == 255)
+					wr[ofs+1] = 254;
 			}
 		}
 	}

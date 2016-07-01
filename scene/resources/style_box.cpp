@@ -221,10 +221,10 @@ void StyleBoxTexture::_bind_methods() {
 	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "margin/right", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_margin_size"),_SCS("get_margin_size"), MARGIN_RIGHT );
 	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "margin/top", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_margin_size"),_SCS("get_margin_size"), MARGIN_TOP);
 	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "margin/bottom", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_margin_size"),_SCS("get_margin_size"), MARGIN_BOTTOM );
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/left", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_LEFT );
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/right", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_RIGHT );
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/top", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_TOP );
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/bottom", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_BOTTOM );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/left", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_LEFT );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/right", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_RIGHT );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/top", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_TOP );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/bottom", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_BOTTOM );
 	ADD_PROPERTY( PropertyInfo( Variant::BOOL, "draw_center" ) , _SCS("set_draw_center"),_SCS("get_draw_center"));
 
 }
@@ -423,10 +423,10 @@ void StyleBoxImageMask::_bind_methods() {
 
 	ADD_PROPERTY( PropertyInfo(Variant::IMAGE, "image"), _SCS("set_image"), _SCS("get_image"));
 	ADD_PROPERTY( PropertyInfo(Variant::BOOL, "expand"), _SCS("set_expand"), _SCS("get_expand"));
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/left", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_LEFT );
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/right", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_RIGHT );
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/top", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_TOP );
-	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/bottom", PROPERTY_HINT_RANGE,"0,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_BOTTOM );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/left", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_LEFT );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/right", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_RIGHT );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/top", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_TOP );
+	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/bottom", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_BOTTOM );
 
 }
 
