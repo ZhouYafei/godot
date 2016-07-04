@@ -172,6 +172,8 @@ class ScenesDock : public VBoxContainer {
 
 	TreeItem* _find(TreeItem *p_item, const String& p_path);
 
+	void _preview_invalidated(const String& p_path);
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
