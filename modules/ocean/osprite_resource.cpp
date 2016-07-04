@@ -216,7 +216,7 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 		if(ext != "json")
 			continue;
 
-#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED)
+#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
 		String tex_path = pack_path + path.basename() + ".pkm";
 #else
 		String tex_path = pack_path + path.basename() + ".dds";
@@ -244,8 +244,8 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 			String name = names[i];
 			String base = name.basename();
 			int index = base.to_int();
-			if(index >= this->frames.size())
-				continue;
+			while(index >= this->frames.size())
+				this->frames.resize(this->frames.size() * 2);
 			loaded = true;
 
 			Frame& frame = this->frames[index];
@@ -408,7 +408,10 @@ Error OSprite::OSpriteResource::load(const String& p_path) {
 	}
 
 	Array frames = d["frames"].operator Array();
-	this->frames.resize(frames.size());
+	if(frames.size() == 0)
+		this->frames.resize(16);
+	else
+		this->frames.resize(frames.size());
 
 	if(!_load_texture_pack(p_path, pixel_alpha)) {
 		if(!_load_texture_frames(p_path, pixel_alpha)) {

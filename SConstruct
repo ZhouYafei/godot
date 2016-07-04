@@ -163,7 +163,7 @@ opts.Add('deprecated','Enable deprecated features (yes/no)','yes')
 opts.Add('extra_suffix', 'Custom extra suffix added to the base filename of all generated binary files.', '')
 opts.Add('vsproj', 'Generate Visual Studio Project. (yes/no)', 'no')
 opts.Add('phys', 'Enable physical collision system', 'yes')
-
+opts.Add('arm_linux', 'Enable arm(etc1) texture support', 'no')
 # add platform specific options
 
 for k in platform_opts.keys():
@@ -416,6 +416,9 @@ if selected_platform in platform_list:
 
 	if (env['phys']=='yes'):
 		env.Append(CPPFLAGS=['-DPHYSICAL_ENABLED'])
+
+	if (env['arm_linux']=='yes'):
+		env.Append(CPPFLAGS=['-DARMLINUX_ENABLED'])
 		
 	Export('env')
 

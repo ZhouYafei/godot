@@ -64,7 +64,7 @@ Error TexPackAsset::load(const String& p_path) {
 
 	String base_path = p_path.substr(0, p_path.find_last("/") + 1);
 	String path = meta["image"];
-#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED)
+#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
 	String tex_path = base_path + path.basename() + ".pkm";
 #else
 	String tex_path = base_path + path.basename() + ".dds";

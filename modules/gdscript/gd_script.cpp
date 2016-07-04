@@ -1809,6 +1809,7 @@ GDScriptLanguage::GDScriptLanguage() {
 	strings._script_source=StaticCString::create("script/source");
 	_debug_parse_err_line=-1;
 	_debug_parse_err_file="";
+	profiler_stoped=true;
 
 #ifdef NO_THREADS
 	lock=NULL;
@@ -1838,7 +1839,8 @@ GDScriptLanguage::GDScriptLanguage() {
 
 GDScriptLanguage::~GDScriptLanguage() {
 
-
+	profiler_clean();
+	profiler_stop();
 	if (lock) {
 		memdelete(lock);
 		lock=NULL;

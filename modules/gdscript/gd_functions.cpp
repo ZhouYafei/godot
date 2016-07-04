@@ -110,6 +110,7 @@ const char *GDFunctions::get_func_name(Function p_func) {
 		"autoload",
 		"deb",
 		"instance_from_id",
+		"profiler",
 	};
 
 	return _names[p_func];
@@ -135,6 +136,20 @@ void GDFunctions::call(Function p_func,const Variant **p_args,int p_arg_count,Va
 		return;\
 	}
 
+#define VALIDATE_ARG_RANGE(m_min,m_max) \
+	if (p_arg_count<m_min) {\
+		r_error.error=Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;\
+		r_error.argument=m_min;\
+		r_ret=Variant();\
+		return;\
+	}\
+	if (p_arg_count>m_max) {\
+		r_error.error=Variant::CallError::CALL_ERROR_TOO_MANY_ARGUMENTS;\
+		r_error.argument=m_max;\
+		r_ret=Variant();\
+		return;\
+	}
+
 #define VALIDATE_ARG_NUM(m_arg) \
 	if (!p_args[m_arg]->is_num()) {\
 		r_error.error=Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;\
@@ -147,6 +162,7 @@ void GDFunctions::call(Function p_func,const Variant **p_args,int p_arg_count,Va
 #else
 
 #define VALIDATE_ARG_COUNT(m_count)
+#define VALIDATE_ARG_RANGE(m_min,m_max)
 #define VALIDATE_ARG_NUM(m_arg)
 #endif
 
@@ -1107,6 +1123,41 @@ void GDFunctions::call(Function p_func,const Variant **p_args,int p_arg_count,Va
 
 		} break;
 
+		case PROFILER: {
+
+			VALIDATE_ARG_RANGE(1,2)
+			if (p_args[0]->get_type()!=Variant::STRING) {
+				r_error.error=Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument=0;
+				r_error.expected=Variant::STRING;
+				r_ret=Variant();
+				break;
+			}
+			if (p_arg_count > 1 && p_args[1]->get_type()!=Variant::STRING) {
+				r_error.error=Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument=1;
+				r_error.expected=Variant::STRING;
+				r_ret=Variant();
+				break;
+			}
+
+			String what = *p_args[0];
+			if(what == "start") {
+				GDScriptLanguage::get_singleton()->profiler_start();
+			}
+			else if(what == "stop") {
+				GDScriptLanguage::get_singleton()->profiler_stop();
+			}
+			else if(what == "clean") {
+				GDScriptLanguage::get_singleton()->profiler_clean();
+			}
+			else if(what == "dump") {
+				String path = *p_args[1];
+				GDScriptLanguage::get_singleton()->profiler_dump(path);
+			}
+
+		} break;
+
 		case DEB: {
 
 			VALIDATE_ARG_COUNT(0);
@@ -1566,6 +1617,12 @@ MethodInfo GDFunctions::get_info(Function p_func) {
 		case INSTANCE_FROM_ID: {
 			MethodInfo mi("instance_from_id",PropertyInfo(Variant::INT,"instance_id"));
 			mi.return_val.type=Variant::OBJECT;
+			return mi;
+		} break;
+
+		case PROFILER: {
+			MethodInfo mi("profiler",PropertyInfo(Variant::STRING,"what"),PropertyInfo(Variant::STRING,"path"));
+			mi.return_val.type=Variant::NIL;
 			return mi;
 		} break;
 

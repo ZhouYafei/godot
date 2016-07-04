@@ -102,6 +102,7 @@ public:
 		AUTOLOAD,
 		DEB,
 		INSTANCE_FROM_ID,
+		PROFILER,
 		FUNC_MAX
 
 	};
