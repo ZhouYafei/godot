@@ -636,6 +636,7 @@ public class Godot extends Activity implements SensorEventListener, IDownloaderC
 		for(int i=0;i<singleton_count;i++) {
 			singletons[i].onMainStart();
 		}
+		super.onStart();
 	}
 
 	@Override
