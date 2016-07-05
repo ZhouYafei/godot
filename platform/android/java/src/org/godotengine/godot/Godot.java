@@ -118,6 +118,10 @@ public class Godot extends Activity implements SensorEventListener, IDownloaderC
 	static private Intent mCurrentIntent;
 
 	@Override public void onNewIntent(Intent intent) {
+		
+		for(int i=0;i<singleton_count;i++) {
+			singletons[i].onMainNewIntent(intent);
+		}
 		mCurrentIntent = intent;
 	}
 
@@ -182,14 +186,15 @@ public class Godot extends Activity implements SensorEventListener, IDownloaderC
 			Godot.singletons[Godot.singleton_count++]=this;
 		}
 
-		protected void onMainActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-		}
+		protected void onMainActivityResult(int requestCode, int resultCode, Intent data) {}
 
 		protected void onMainPause() {}
 		protected void onMainResume() {}
 		protected void onMainDestroy() {}
+		protected void onMainStart() {}
+		protected void onMainStop() {}
+		protected void onMainRestart() {}
+		protected void onMainNewIntent(Intent intent) {}
 
 		protected void onGLDrawFrame(GL10 gl) {}
 		protected void onGLSurfaceChanged(GL10 gl, int width, int height) {} // singletons will always miss first onGLSurfaceChanged call
@@ -623,6 +628,32 @@ public class Godot extends Activity implements SensorEventListener, IDownloaderC
 		
 		
 
+	}
+
+	@Override
+	public void onStart() {
+
+		for(int i=0;i<singleton_count;i++) {
+			singletons[i].onMainStart();
+		}
+	}
+
+	@Override
+	public void onStop() {
+
+		for(int i=0;i<singleton_count;i++) {
+			singletons[i].onMainStop();
+		}
+		super.onStop();
+	}
+
+	@Override
+	public void onRestart() {
+
+		for(int i=0;i<singleton_count;i++) {
+			singletons[i].onMainRestart();
+		}
+		super.onRestart();
 	}
 
 	public void UiChangeListener() {
