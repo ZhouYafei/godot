@@ -17,7 +17,8 @@
                   android:launchMode="singleTask"
                   android:screenOrientation="landscape"
                   android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize">
-                                                                                                  
+        $$ADD_LAUNCHER_CHUNKS$$
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -201,5 +202,7 @@ $$ADD_PERMISSION_CHUNKS$$
 <uses-permission android:name="godot.custom.19"/>
 
 <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="23"/>
-         
+
+$$ADD_METADATA_CHUNKS$$
+
 </manifest> 
