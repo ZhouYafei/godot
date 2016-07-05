@@ -1,6 +1,11 @@
 // package com.android.godot; // for 1.1
 package org.godotengine.godot; // for 2.0
 
+import android.app.Activity;
+import android.util.Log;
+import android.content.Intent;
+import javax.microedition.khronos.opengles.GL10;
+
 // Dictionary.java
 
 public class SDK extends Godot.SingletonBase {
@@ -16,10 +21,10 @@ public class SDK extends Godot.SingletonBase {
         registerClass("SDK", new String[]{
             "init",
             "request"
-        })
+        });
         // you might want to try initializing your singleton here, but android
         // threads are weird and this runs in another thread, so you usually have to do
-        activity.runOnUiThread(new Runnable() {
+        p_activity.runOnUiThread(new Runnable() {
                 public void run() {
                     //useful way to get config info from engine.cfg
 //                     String key = GodotLib.getGlobal("plugin/api_key");
@@ -28,12 +33,16 @@ public class SDK extends Godot.SingletonBase {
         });
     }
 
-    public int init(int p_handler, String p_callback) {
+    public boolean init(int p_handler, String p_callback) {
         sdkHandler = p_handler;
         sdkCallback = p_callback;
+
+        return true;
     }
 
-    public int request(String p_what, Dictionary p_data) {
+    public String request(String p_what, Dictionary p_data) {
+
+        return "OK";
     }
 
     // forwarded callbacks you can reimplement, as SDKs often need them

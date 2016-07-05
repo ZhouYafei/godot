@@ -46,11 +46,14 @@ android {
 			java.srcDirs = ['src'
 				$$GRADLE_JAVA_DIRS$$
 			]
-			resources.srcDirs = [
+			//resources.srcDirs = [
+			//	'res'
+			//	$$GRADLE_RES_DIRS$$  
+			//]
+			res.srcDirs = [
 				'res'
 				$$GRADLE_RES_DIRS$$  
 			]
-			res.srcDirs = ['res']
 		//            libs.srcDirs = ['libs']
 			aidl.srcDirs = [
 				'aidl'
