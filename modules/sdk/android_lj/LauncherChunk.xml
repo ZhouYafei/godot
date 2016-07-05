@@ -1,0 +1,6 @@
+/></activity>
+        <activity
+            android:name="com.ljapps.p636.SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">

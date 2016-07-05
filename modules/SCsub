@@ -15,6 +15,7 @@ for x in env.module_list:
 		continue
 	if env['module_'+x+'_enabled'] == "yes":
 		env_modules.Append(CPPFLAGS=["-DMODULE_"+x.upper()+"_ENABLED"])
+		env.current_module=x
 		SConscript(x+"/SCsub")
 
 lib = env_modules.Library("modules",env.modules_sources)

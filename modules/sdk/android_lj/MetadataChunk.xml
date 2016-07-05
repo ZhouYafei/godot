@@ -1,0 +1,9 @@
+    <meta-data
+        android:name="XMGAME_CHANNEL_CODE"
+        android:value="4be97f7d1659435889383628a88d888a" />
+    <meta-data
+        android:name="XMGAME_PRODUCT_CODE"
+        android:value="xmdemo" />
+    <meta-data
+        android:name="CHANNEL_LABEL"
+        android:value="lj_test" />

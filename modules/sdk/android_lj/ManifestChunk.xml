@@ -1,0 +1,14 @@
+    <activity
+        android:name="com.xinmei365.game.proxy.XMSDKLoginActivity"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:screenOrientation="behind"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
+    <!-- alipay sdk begin -->
+    <activity
+        android:name="com.alipay.sdk.app.H5PayActivity"
+        android:configChanges="orientation|keyboardHidden|navigation"
+        android:exported="false"
+        android:screenOrientation="landscape"
+        android:windowSoftInputMode="adjustResize|stateHidden" >
+    </activity>

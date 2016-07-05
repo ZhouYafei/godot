@@ -1349,23 +1349,23 @@ def android_add_jni_dir(self,subpath):
 	self.android_jni_dirs.append(base_path)
 
 def android_add_to_manifest(self,file):
-	base_path = self.Dir(".").abspath+"/modules/"+self.current_module+"/"+file
+	base_path = self.Dir(".").abspath+"/"+file
 	f = open(base_path,"rb")
 	self.android_manifest_chunk+=f.read()
 def android_add_to_launcher(self,file):
-	base_path = self.Dir(".").abspath+"/modules/"+self.current_module+"/"+file
+	base_path = self.Dir(".").abspath+"/"+file
 	f = open(base_path,"rb")
 	self.android_launcher_chunk+=f.read()
 def android_add_to_metadata(self,file):
-	base_path = self.Dir(".").abspath+"/modules/"+self.current_module+"/"+file
+	base_path = self.Dir(".").abspath+"/"+file
 	f = open(base_path,"rb")
 	self.android_metadata_chunk+=f.read()
 def android_add_to_permissions(self,file):
-	base_path = self.Dir(".").abspath+"/modules/"+self.current_module+"/"+file
+	base_path = self.Dir(".").abspath+"/"+file
 	f = open(base_path,"rb")
 	self.android_permission_chunk+=f.read()
 def android_add_to_attributes(self,file):
-	base_path = self.Dir(".").abspath+"/modules/"+self.current_module+"/"+file
+	base_path = self.Dir(".").abspath+"/"+file
 	f = open(base_path,"rb")
 	self.android_appattributes_chunk+=f.read()
 
