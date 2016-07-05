@@ -79,6 +79,9 @@ for x in env.android_jni_dirs:
 
 gradle_asset_dirs_text=""
 
+for x in env.android_asset_dirs:
+	gradle_asset_dirs_text+=",'"+x.replace("\\","/")+"'"
+
 gradle_text = gradle_text.replace("$$GRADLE_REPOSITORY_URLS$$",gradle_maven_repos_text)
 gradle_text = gradle_text.replace("$$GRADLE_DEPENDENCIES$$",gradle_maven_dependencies_text)
 gradle_text = gradle_text.replace("$$GRADLE_JAVA_DIRS$$",gradle_java_dirs_text)

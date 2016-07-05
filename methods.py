@@ -1347,6 +1347,9 @@ def android_add_aidl_dir(self,subpath):
 def android_add_jni_dir(self,subpath):
 	base_path = self.Dir(".").abspath+"/modules/"+self.current_module+"/"+subpath
 	self.android_jni_dirs.append(base_path)
+def android_add_asset_dir(self,subpath):
+	base_path = self.Dir(".").abspath+"/modules/"+self.current_module+"/"+subpath
+	self.android_asset_dirs.append(base_path)
 
 def android_add_to_manifest(self,file):
 	base_path = self.Dir(".").abspath+"/"+file

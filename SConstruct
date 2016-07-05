@@ -82,6 +82,7 @@ env_base.android_java_dirs=[]
 env_base.android_res_dirs=[]
 env_base.android_aidl_dirs=[]
 env_base.android_jni_dirs=[]
+env_base.android_asset_dirs=[]
 env_base.android_manifest_chunk=""
 env_base.android_launcher_chunk=""
 env_base.android_permission_chunk=""
