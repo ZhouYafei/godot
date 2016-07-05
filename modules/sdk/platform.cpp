@@ -37,7 +37,7 @@ void Platform::_bind_methods() {
 
  	ObjectTypeDB::bind_method(_MD("request"),&Platform::request);
  	ObjectTypeDB::bind_method(_MD("get_pending_event_count"),&Platform::get_pending_event_count);
- 	ObjectTypeDB::bind_method(_MD("pop_pending_event"),&Platform::pop_pending_event);
+ 	ObjectTypeDB::bind_method(_MD("pop_pending_event:Dictionary"),&Platform::pop_pending_event);
 }
 
 String Platform::request(Variant p_params) {
