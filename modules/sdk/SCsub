@@ -11,11 +11,11 @@ elif p in ['android']:
 	# will copy this to the java folder
 	if env['sdk'] == 'lj':
 		env.android_add_java_dir("android_lj/java")
+		env.android_add_to_attributes("android_lj/AttributesChunk.xml")
 		env.android_add_to_manifest("android_lj/ManifestChunk.xml")
 		env.android_add_to_launcher("android_lj/LauncherChunk.xml")
 		env.android_add_to_permissions("android_lj/PermissionsChunk.xml")
 		env.android_add_to_metadata("android_lj/MetadataChunk.xml")
-		# env.android_add_to_attributes("android_lj/")
 
 		# if you have a jar, the path is relative to platform/android/java/gradlew, so it will start with ../../../modules/module_name/
 		env.android_add_dependency("compile files('../../../modules/sdk/android_lj/libs/ljsdk-sdk.1.5.3.jar')")
