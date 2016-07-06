@@ -116,6 +116,7 @@ private:
 	struct PendingCommand {
 		StringName key;
 		int args;
+		int objbits;
 		Variant arg[10];
 	};
 	List<PendingCommand> pending_commands;

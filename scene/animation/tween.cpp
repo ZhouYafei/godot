@@ -54,7 +54,7 @@ void Tween::_add_pending_command(StringName p_key
 
 	pending_commands.push_back(PendingCommand());
 	PendingCommand& cmd = pending_commands.back()->get();
-
+	cmd.objbits = 0;
 	cmd.key = p_key;
 	int& count = cmd.args;
 	if(p_arg10.get_type() != Variant::NIL)
@@ -97,6 +97,16 @@ void Tween::_add_pending_command(StringName p_key
 		cmd.arg[8] = p_arg9;
 	if(count > 9)
 		cmd.arg[9] = p_arg10;
+	
+	for(int i = 0; i < cmd.args; i++) {
+
+		Variant& v = cmd.arg[i];
+		// save object's instance id for pending command arguments
+		if(v.get_type() == Variant::OBJECT) {
+			v = (v.operator Object *())->get_instance_ID();
+			cmd.objbits |= (1 << i);
+		}	
+	}
 }
 
 void Tween::_process_pending_commands() {
@@ -104,6 +114,26 @@ void Tween::_process_pending_commands() {
 	for(List<PendingCommand>::Element *E=pending_commands.front();E;E=E->next()) {
 
 		PendingCommand& cmd = E->get();
+
+		bool obj_freed = false;
+		for(int i = 0; i < cmd.args; i++) {
+
+			// check object from instance id
+			if((cmd.objbits & (1 << i)) != 0) {
+
+				Variant& v = cmd.arg[i];
+				Object *obj = ObjectDB::get_instance(v.operator ObjectID());
+				if(obj == NULL) {
+					// if object freed, ignore current tween
+					obj_freed = true;
+					break;
+				}
+				v = obj;
+			}
+		}
+		if(obj_freed)
+			continue;
+
 		Variant::CallError err;
 		Variant *arg[10] = {
 			&cmd.arg[0],
