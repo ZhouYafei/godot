@@ -64,7 +64,7 @@ import com.xinmei365.game.proxy.util.LogUtils;
  * http://doc.sdk.feiliu.com/docs_java_feiliu
  */
 public class SDK extends Godot.SingletonBase implements XMUserListener {
-    private int sdkHandler = 0;
+    private Integer sdkHandler = 0;
     private String sdkCallback = "";
     private Activity activity = null;
     private Dialog dialog = null;
@@ -77,50 +77,137 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
     public SDK(Activity p_activity) {
         // register class name and functions to bind
         registerClass("SDK", new String[]{
-            "request",
+            "init",
+            "login",
+            "pay",
+            "logout",
+            "exit",
+            "set_ext_data",
+            "get_channel_label",
             "showToast"
         });
         // save main activity
         activity = p_activity;
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showToast("初始化SDK");
+                // initialize sdk
+                doInit();
+            }
+        });
     }
 
-    private void handlerCallback(String p_what, Dictionary p_data) {
-        GodotLib.calldeferred(sdkHandler, sdkCallback, new Object[]{ p_what, p_data });
+    private void handlerCallback(final String p_what, final Dictionary p_data) {
+        // GodotLib.calldeferred(sdkHandler, sdkCallback, new Object[]{ p_what, p_data });
+        if(p_data != null)
+            GodotLib.calldeferred(sdkHandler, sdkCallback, new Object[]{ p_what, p_data });
+        else
+            GodotLib.calldeferred(sdkHandler, sdkCallback, new Object[]{ p_what });
+    }
+
+    // public functions
+    public void init(int p_handler, String p_callback) {
+        this.sdkHandler = p_handler;
+        this.sdkCallback = p_callback;
+    }
+
+    public void login(final String p_custom_param) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                doLogin(p_custom_param);
+            }
+        });
+    }
+
+    public void pay(final Dictionary p_data) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    doPay(p_data);
+                }
+                catch(Exception e) {
+                    // TODO:
+                    //return "INVALID_PARAM";
+                }
+            }
+        });
+    }
+
+    public void logout(final String p_custom_param) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                doLogout(p_custom_param);
+            }
+        });
+    }
+
+    public void exit() {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                doExit();
+            }
+        });
+    }
+
+    public void set_ext_data(final Dictionary p_data) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    doSetExtData(p_data);
+                }
+                catch(Exception e) {
+                    // TODO:
+                    //return "INVALID_PARAM";
+                }
+            }
+        });
+    }
+
+    public String get_channel_label() {
+        return getChannelLabel();
+    }
+
+    public void showToast(final String content) {
+        activity.runOnUiThread(new Runnable() {
+            
+            @Override
+            public void run() {
+                Toast.makeText(activity, content, Toast.LENGTH_LONG).show();               
+            }
+        });
     }
 
     /**
      * 初始化
      */
     private void doInit() {
-        // you might want to try initializing your singleton here, but android
-        // threads are weird and this runs in another thread, so you usually have to do
-        activity.runOnUiThread(new Runnable() {
-                public void run() {
-                    // useful way to get config info from engine.cfg
-                    // String key = GodotLib.getGlobal("plugin/api_key");
-                    // 需要先调用初始化 之后才可以调用其它的方法 
-                    GameProxy.getInstance().init(activity, new XMInitCallback() {
+        // useful way to get config info from engine.cfg
+        // String key = GodotLib.getGlobal("plugin/api_key");
+        // 需要先调用初始化 之后才可以调用其它的方法 
+        GameProxy.getInstance().init(activity, new XMInitCallback() {
 
-                        @Override
-                        public void onInitSuccess() {
-                            showToast("初始化成功");
-                            Dictionary data = new Dictionary();
-                            data.put("result", true);
-                            handlerCallback("init", data);
-                        }
+            @Override
+            public void onInitSuccess() {
+                showToast("初始化成功");
+                Dictionary data = new Dictionary();
+                data.put("result", true);
+                handlerCallback("init", data);
+            }
 
-                        @Override
-                        public void onInitFailure(String msg) {
-                            showToast("初始化失败");
-                            Dictionary data = new Dictionary();
-                            data.put("result", false);
-                            handlerCallback("init", data);
-                        }
-                    });
-                    GameProxy.getInstance().onCreate(activity);
-                    GameProxy.getInstance().setUserListener(activity, SDK.this);
-                }
+            @Override
+            public void onInitFailure(String msg) {
+                showToast("初始化失败");
+                Dictionary data = new Dictionary();
+                data.put("result", false);
+                handlerCallback("init", data);
+            }
         });
+        GameProxy.getInstance().onCreate(activity);
+        GameProxy.getInstance().setUserListener(activity, SDK.this);
+        // call onresume to resume sdk
+        GameProxy.getInstance().onResume(activity);
     }
 
     /**
@@ -131,9 +218,9 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
      * @param customObject
      *            用户自定义参数，在登陆回调中原样返回
      */
-    private void doLogin(Object p_object) {
+    private void doLogin(final String p_custom_param) {
         LogUtils.d("doLogin");
-        GameProxy.getInstance().login(activity, p_object);
+        GameProxy.getInstance().login(activity, p_custom_param);
     }
 
     /**
@@ -154,7 +241,7 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
      * @param payCallBack
      *            支付回调接口
      */
-    private void doPay(Dictionary p_data) { 
+    private void doPay(final Dictionary p_data) { 
         Integer amount = Integer.parseInt(p_data.get("amount").toString());
         String item_name = p_data.get("item_name").toString();
         Integer point_count = Integer.parseInt(p_data.get("point_count").toString());
@@ -202,8 +289,8 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
      * @param customObject
      *            用户自定义参数，在登陆回调中原样返回
      */
-    private void doLogout(Object p_object) {
-        GameProxy.getInstance().logout(activity, p_object);
+    private void doLogout(final String p_custom_param) {
+        GameProxy.getInstance().logout(activity, p_custom_param);
     }
 
     /**
@@ -318,7 +405,6 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
         return XMUtils.getChannelLabel(activity);
     }
 
-
     @Override
     public void onLoginSuccess(final XMUser user, Object customParams) {
         showToast("登录成功");
@@ -328,7 +414,7 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
         // doSetExtData();
 
         Dictionary data = new Dictionary();
-        data.put("custom_param", customParams);
+        data.put("custom_param", (customParams == null) ? "" : customParams);
         data.put("result", true);
         data.put("user_name", user.getUsername());
         data.put("user_id", user.getUserID());
@@ -345,7 +431,7 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
     public void onLoginFailed(String reason, Object customParams) {
         showToast("登录失败");
         Dictionary data = new Dictionary();
-        data.put("custom_param", customParams);
+        data.put("custom_param", (customParams == null) ? "" : customParams);
         data.put("result", false);
         handlerCallback("login", data);
     }
@@ -356,78 +442,9 @@ public class SDK extends Godot.SingletonBase implements XMUserListener {
         xmuser = null;
         showToast("已成功登出");
         Dictionary data = new Dictionary();
-        data.put("custom_param", customParams);
+        data.put("custom_param", (customParams == null) ? "" : customParams);
         data.put("result", true);
         handlerCallback("logout", data);
-    }
-
-    public Object request(String p_what, Object p_object) {
-
-        // setup sdk handler(instance id) and callback function name
-        //  and initialize sdk
-        if(p_what.equals("init")) {
-            if(sdkHandler == 0) {
-                Dictionary p_data = (Dictionary) p_object;
-                if(p_data == null)
-                    return "INVALID_PARAM";
-
-                try {
-                    sdkHandler = Integer.parseInt(p_data.get("handler").toString());
-                    sdkCallback = p_data.get("callback").toString();
-                }
-                catch(Exception e) {
-                    return "INVALID_PARAM";
-                }
-                doInit();
-            }
-        }
-        else if(p_what.equals("login")) {
-            doLogin(p_object);
-        }
-        else if(p_what.equals("pay")) {
-            Dictionary p_data = (Dictionary) p_object;
-            if(p_data == null)
-                return "INVALID_PARAM";
-
-            try {
-                doPay(p_data);
-            }
-            catch(Exception e) {
-                return "INVALID_PARAM";
-            }
-        }
-        else if(p_what.equals("logout")) {
-            doLogout(p_object);
-        }
-        else if(p_what.equals("exit")) {
-            doExit();
-        }
-        else if(p_what.equals("set_ext_data")) {
-            Dictionary p_data = (Dictionary) p_object;
-            if(p_data == null)
-                return "INVALID_PARAM";
-
-            try {
-                doSetExtData(p_data);
-            }
-            catch(Exception e) {
-                return "INVALID_PARAM";
-            }
-        }
-        else if(p_what.equals("get_channel_label")) {
-            return getChannelLabel();
-        }
-        return "OK";
-    }
-
-    public void showToast(final String content) {
-        activity.runOnUiThread(new Runnable() {
-            
-            @Override
-            public void run() {
-                Toast.makeText(activity, content, Toast.LENGTH_LONG).show();               
-            }
-        });
     }
 
     // forwarded callbacks you can reimplement, as SDKs often need them
