@@ -357,6 +357,7 @@ bool EditorResourcePreview::check_for_invalidation(const String& p_path) {
 	}
 
 	return call_invalidated;
+
 }
 
 EditorResourcePreview::EditorResourcePreview() {
