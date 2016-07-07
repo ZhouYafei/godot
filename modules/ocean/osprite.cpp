@@ -903,6 +903,8 @@ OSprite::~OSprite() {
 
 	// cleanup
 	_dispose();
+	// remove self
+	OSpriteCollision::get_singleton()->remove(this);
 }
 
 #endif // MODULE_OCEAN_ENABLED
