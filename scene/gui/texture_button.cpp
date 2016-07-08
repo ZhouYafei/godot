@@ -130,7 +130,7 @@ void TextureButton::_notification(int p_what) {
 				}
 				mat.scale_basis(scale);
 
-				VisualServer::get_singleton()->canvas_item_set_transform(canvas_item, mat);
+				VisualServer::get_singleton()->canvas_item_set_transform(get_canvas_item(), mat);
 			}
 
 			if (texdraw.is_valid()) {
