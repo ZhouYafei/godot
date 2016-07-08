@@ -33,6 +33,7 @@
 
 #include <stdlib.h>
 #include "core/io/file_access_pack.h"
+#include "core/io/file_access_memory.h"
 #include "unzip.h"
 #include "map.h"
 
@@ -92,6 +93,8 @@ class FileAccessZip : public FileAccess {
 	mutable bool at_eof;
 
 	const ZipArchive* archive;
+	FileAccessMemory *mem;
+	Vector<uint8_t> data;
 
 public:
 

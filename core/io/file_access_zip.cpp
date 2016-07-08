@@ -44,7 +44,8 @@ static void* godot_open(void* data, const char* p_fname, int mode) {
 	};
 
 	FileAccess* f = (FileAccess*)data;
-	f->open(p_fname, FileAccess::READ);
+	if(!f->is_open())
+		f->open(p_fname, FileAccess::READ);
 
 	return f->is_open()?data:NULL;
 
@@ -279,11 +280,17 @@ Error FileAccessZip::_open(const String& p_path, int p_mode_flags) {
 
 	int err = unzGetCurrentFileInfo64(zfile,&file_info,NULL,0,NULL,0,NULL,0);
 	ERR_FAIL_COND_V(err != UNZ_OK, FAILED);
+	at_eof = false;
 
 	return OK;
 };
 
 void FileAccessZip::close() {
+
+	if(mem != NULL) {
+		memdelete(mem);
+		mem = NULL;
+	}
 
 	if (!zfile)
 		return;
@@ -301,37 +308,54 @@ bool FileAccessZip::is_open() const {
 
 void FileAccessZip::seek(size_t p_position) {
 
+	if(mem != NULL) return mem->seek(p_position);
+
+	// load zipped file into file_access_memory
 	ERR_FAIL_COND(!zfile);
-	unzSeekCurrentFile(zfile, p_position);
+	FileAccessMemory *f = memnew(FileAccessMemory);
+	unzSeekCurrentFile(zfile, 0);
+	data.resize(file_info.uncompressed_size);
+	size_t len = get_buffer(&data[0], data.size());
+	// close zipped file
+	close();
+	if(len != data.size()) {
+		WARN_PRINT("get_buffer less data than requested");
+	}
+	f->open_custom(&data[0], len);
+	f->seek(p_position);
+	this->mem = f;
 };
 
 void FileAccessZip::seek_end(int64_t p_position) {
 
-	ERR_FAIL_COND(!zfile);
-	unzSeekCurrentFile(zfile, get_len() + p_position);
+	if(mem) mem->seek_end(p_position);
+	seek(get_len() + p_position);
 };
 
 size_t FileAccessZip::get_pos() const {
 
+	if(mem) return mem->get_pos();
 	ERR_FAIL_COND_V(!zfile, 0);
 	return unztell(zfile);
 };
 
 size_t FileAccessZip::get_len() const {
 
+	if(mem) return mem->get_len();
 	ERR_FAIL_COND_V(!zfile, 0);
 	return file_info.uncompressed_size;
 };
 
 bool FileAccessZip::eof_reached() const {
 
+	if(mem) return mem->eof_reached();
 	ERR_FAIL_COND_V(!zfile, true);
-
 	return at_eof;
 };
 
 uint8_t FileAccessZip::get_8() const {
 
+	if(mem) return mem->get_8();
 	uint8_t ret = 0;
 	get_buffer(&ret, 1);
 	return ret;
@@ -339,6 +363,7 @@ uint8_t FileAccessZip::get_8() const {
 
 int FileAccessZip::get_buffer(uint8_t *p_dst,int p_length) const {
 
+	if(mem) return mem->get_buffer(p_dst, p_length);
 	ERR_FAIL_COND_V(!zfile, -1);
 	at_eof = unzeof(zfile);
 	if (at_eof)
@@ -352,6 +377,7 @@ int FileAccessZip::get_buffer(uint8_t *p_dst,int p_length) const {
 
 Error FileAccessZip::get_error() const {
 
+	if(mem) return mem->get_error();
 	if (!zfile) {
 
 		return ERR_UNCONFIGURED;
@@ -377,6 +403,8 @@ bool FileAccessZip::file_exists(const String& p_name) {
 FileAccessZip::FileAccessZip(const String& p_path, const PackedData::PackedFile& p_file) {
 
 	zfile = NULL;
+	at_eof = false;
+	mem = NULL;
 	archive=dynamic_cast<ZipArchive *>(p_file.src);
 	ERR_FAIL_COND(archive==NULL);
 	_open(p_path, FileAccess::READ);
