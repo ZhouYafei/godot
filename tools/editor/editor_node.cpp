@@ -600,7 +600,6 @@ void EditorNode::save_resource(const Ref<Resource>& p_resource) {
 void EditorNode::save_resource_as(const Ref<Resource>& p_resource,const String& p_at_path) {
 
 	file->set_mode(EditorFileDialog::MODE_SAVE_FILE);
-	bool relpaths =  (p_resource->has_meta("__editor_relpaths__") && p_resource->get_meta("__editor_relpaths__").operator bool());
 
 	current_option=RESOURCE_SAVE_AS;
 	List<String> extensions;
@@ -1554,9 +1553,10 @@ void EditorNode::_property_editor_back() {
 
 void EditorNode::_imported(Node *p_node) {
 
-	Node *scene = editor_data.get_edited_scene_root();
-//	add_edited_scene(p_node);
 /*
+	Node *scene = editor_data.get_edited_scene_root();
+	add_edited_scene(p_node);
+
 	if (scene) {
 		String path = scene->get_filename();
 		p_node->set_filename(path);
@@ -2132,7 +2132,6 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 			}
 
 			file->set_mode(EditorFileDialog::MODE_SAVE_FILE);
-			bool relpaths = (scene->has_meta("__editor_relpaths__") && scene->get_meta("__editor_relpaths__").operator bool());
 
 
 			List<String> extensions;
@@ -2213,8 +2212,6 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 			}
 
-			bool relpaths = (scene->has_meta("__editor_relpaths__") && scene->get_meta("__editor_relpaths__").operator bool());
-
 			file->set_mode(EditorFileDialog::MODE_SAVE_FILE);
 
 			file->set_current_path(cpath);
@@ -2223,8 +2220,8 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 		} break;
 		case FILE_SAVE_OPTIMIZED: {
-			Node *scene = editor_data.get_edited_scene_root();
 #if 0
+			Node *scene = editor_data.get_edited_scene_root();
 			if (!scene) {
 
 				current_option=-1;
@@ -5646,8 +5643,6 @@ EditorNode::EditorNode() {
 	ED_SHORTCUT("editor/next_tab", TTR("Next tab"), KEY_MASK_CMD+KEY_TAB);
 	ED_SHORTCUT("editor/prev_tab", TTR("Previous tab"), KEY_MASK_CMD+KEY_MASK_SHIFT+KEY_TAB);
 
-
-	Separator *vs=NULL;
 
 	file_menu->set_tooltip(TTR("Operations with scene files."));
 	p=file_menu->get_popup();

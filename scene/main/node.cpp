@@ -1216,7 +1216,6 @@ void Node::add_to_group(const StringName& p_identifier,bool p_persistent) {
 
 	GroupData gd;
 
-	SceneTree::Group *gptr=NULL;
 	if (data.tree) {
 		gd.group=data.tree->add_to_group(p_identifier,this);
 	} else {

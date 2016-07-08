@@ -478,7 +478,6 @@ Ref<Texture> EditorScriptPreviewPlugin::generate(const RES& p_from) {
 	Color keyword_color = EditorSettings::get_singleton()->get("text_editor/keyword_color");
 	Color text_color = EditorSettings::get_singleton()->get("text_editor/text_color");
 	Color symbol_color = EditorSettings::get_singleton()->get("text_editor/symbol_color");
-	Color comment_color = EditorSettings::get_singleton()->get("text_editor/comment_color");
 
 
 	for(int i=0;i<thumbnail_size;i++) {
@@ -643,7 +642,7 @@ Ref<Texture> EditorSamplePreviewPlugin::generate(const RES& p_from) {
 						-1, -1, -1, -1, 2, 4, 6, 8
 					};
 
-					int16_t nibble,signed_nibble,diff,step;
+					int16_t nibble,diff,step;
 
 					ima_adpcm.last_nibble++;
 					const uint8_t *src_ptr=sdata;
@@ -663,10 +662,6 @@ Ref<Texture> EditorSamplePreviewPlugin::generate(const RES& p_from) {
 						ima_adpcm.step_index=0;
 					if (ima_adpcm.step_index>88)
 						ima_adpcm.step_index=88;
-
-					/*
-					signed_nibble = (nibble&7) * ((nibble&8)?-1:1);
-					diff = (2 * signed_nibble + 1) * step / 4; */
 
 					diff = step >> 3 ;
 					if (nibble & 1)
@@ -784,15 +779,13 @@ Ref<Texture> EditorSamplePreviewPlugin::generate(const RES& p_from) {
 
 				for(int j=0;j<h;j++) {
 
-					int half,ofs;
+					int half;
 					float v;
 					if (j<(h/2)) {
 						half=0;
-						ofs=0;
 						v = (j/(float)(h/2)) * 2.0 - 1.0;
 					} else {
 						half=1;
-						ofs=h/2;
 						if( (float)(h/2) != 0 ) {
 							v = ((j-(h/2))/(float)(h/2)) * 2.0 - 1.0;
 						} else {

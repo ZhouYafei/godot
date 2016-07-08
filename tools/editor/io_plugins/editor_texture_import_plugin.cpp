@@ -1770,7 +1770,6 @@ void EditorTextureImportPlugin::reimport_multiple_files(const Vector<String>& p_
 	Vector<String> valid;
 
 
-	bool warning=false;
 	for(int i=0;i<p_list.size();i++) {
 
 		Ref<ResourceImportMetadata> rimd = ResourceLoader::load_import_metadata(p_list[i]);
@@ -1778,7 +1777,6 @@ void EditorTextureImportPlugin::reimport_multiple_files(const Vector<String>& p_
 		if (type=="texture" || type.begins_with("texture_")) {
 
 			if ((rimd->has_option("atlas") && rimd->get_option("atlas")) || (rimd->has_option("large") && rimd->get_option("large"))) {
-				warning=true;
 				continue;
 			}
 
