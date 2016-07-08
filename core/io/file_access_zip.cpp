@@ -44,7 +44,8 @@ static void* godot_open(void* data, const char* p_fname, int mode) {
 	};
 
 	FileAccess* f = (FileAccess*)data;
-	f->open(p_fname, FileAccess::READ);
+	if(!f->is_open())
+		f->open(p_fname, FileAccess::READ);
 
 	return f->is_open()?data:NULL;
 
@@ -279,6 +280,7 @@ Error FileAccessZip::_open(const String& p_path, int p_mode_flags) {
 
 	int err = unzGetCurrentFileInfo64(zfile,&file_info,NULL,0,NULL,0,NULL,0);
 	ERR_FAIL_COND_V(err != UNZ_OK, FAILED);
+	at_eof = false;
 
 	return OK;
 };
@@ -377,6 +379,7 @@ bool FileAccessZip::file_exists(const String& p_name) {
 FileAccessZip::FileAccessZip(const String& p_path, const PackedData::PackedFile& p_file) {
 
 	zfile = NULL;
+	at_eof = false;
 	archive=dynamic_cast<ZipArchive *>(p_file.src);
 	ERR_FAIL_COND(archive==NULL);
 	_open(p_path, FileAccess::READ);
