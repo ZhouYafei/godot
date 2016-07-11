@@ -39,6 +39,7 @@
 #include "core/os/file_access.h"
 #include "core/io/resource_loader.h"
 #include "scene/resources/texture.h"
+#include "core/os/dir_access.h"
 
 typedef Ref<Texture> TextureRef;
 
@@ -51,11 +52,17 @@ void _spAtlasPage_createTexture(spAtlasPage* self, const char* path) {
 	}
 	TextureRef *ref = memnew(TextureRef);
 
+	String tex_path = path;
+
 #if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
-	String tex_path = String(path).basename() + ".pkm";
+	tex_path = String(path).basename() + ".pkm";
 #else
-	String tex_path = String(path).basename() + ".dds";
+	tex_path = String(path).basename() + ".dds";
 #endif
+	DirAccessRef da = DirAccess::create(DirAccess::ACCESS_RESOURCES);
+	// if dds/pkm not exists, use original texture file name
+	if(!da->file_exists(tex_path))
+		tex_path = path;
 
 	*ref = ResourceLoader::load(tex_path, "Texture");
 	ERR_FAIL_COND(ref->is_null());

@@ -216,11 +216,16 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 		if(ext != "json")
 			continue;
 
+		String tex_path = path;
 #if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
-		String tex_path = pack_path + path.basename() + ".pkm";
+		tex_path = String(path).basename() + ".pkm";
 #else
-		String tex_path = pack_path + path.basename() + ".dds";
+		tex_path = String(path).basename() + ".dds";
 #endif
+		DirAccessRef da = DirAccess::create(DirAccess::ACCESS_RESOURCES);
+		// if dds/pkm not exists, use original texture file name
+		if(!da->file_exists(tex_path))
+			tex_path = path;
 
 		Ref<Texture> tex = ResourceLoader::load(tex_path, "Texture");
 		if(tex.is_null())

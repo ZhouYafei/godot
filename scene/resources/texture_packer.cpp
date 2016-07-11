@@ -28,6 +28,7 @@
 /*************************************************************************/
 #include "texture_packer.h"
 #include "modules/digest/text/json_asset.h"
+#include "core/os/dir_access.h"
 
 static void _parse_rect2(const Dictionary& d, Rect2& rect) {
 
@@ -64,11 +65,18 @@ Error TexPackAsset::load(const String& p_path) {
 
 	String base_path = p_path.substr(0, p_path.find_last("/") + 1);
 	String path = meta["image"];
+
+	String tex_path = path;
 #if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
-	String tex_path = base_path + path.basename() + ".pkm";
+	tex_path = String(path).basename() + ".pkm";
 #else
-	String tex_path = base_path + path.basename() + ".dds";
+	tex_path = String(path).basename() + ".dds";
 #endif
+	DirAccessRef da = DirAccess::create(DirAccess::ACCESS_RESOURCES);
+	// if dds/pkm not exists, use original texture file name
+	if(!da->file_exists(tex_path))
+		tex_path = path;
+
 	this->texture = ResourceLoader::load(tex_path, "Texture");
 	if(this->texture.is_null())
 		return ERR_CANT_OPEN;
