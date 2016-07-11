@@ -68,9 +68,9 @@ Error TexPackAsset::load(const String& p_path) {
 
 	String tex_path = path;
 #if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
-	tex_path = String(path).basename() + ".pkm";
+	tex_path = base_path + path.basename() + ".pkm";
 #else
-	tex_path = String(path).basename() + ".dds";
+	tex_path = base_path + path.basename() + ".dds";
 #endif
 	DirAccessRef da = DirAccess::create(DirAccess::ACCESS_RESOURCES);
 	// if dds/pkm not exists, use original texture file name
