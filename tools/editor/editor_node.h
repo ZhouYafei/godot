@@ -74,7 +74,6 @@
 #include "tools/editor/editor_sub_scene.h"
 #include "editor_import_export.h"
 #include "editor_reimport_dialog.h"
-#include "import_settings.h"
 #include "tools/editor/editor_plugin.h"
 #include "tools/editor/editor_name_dialog.h"
 
@@ -125,6 +124,7 @@ private:
 		FILE_OPEN_SCENE,
 		FILE_SAVE_SCENE,
 		FILE_SAVE_AS_SCENE,
+		FILE_SAVE_ALL_SCENES,
 		FILE_SAVE_BEFORE_RUN,
 		FILE_SAVE_AND_RUN,
 		FILE_IMPORT_SUBSCENE,
@@ -177,7 +177,6 @@ private:
 		RUN_RELOAD_SCRIPTS,
 		SETTINGS_UPDATE_ALWAYS,
 		SETTINGS_UPDATE_CHANGES,
-		SETTINGS_IMPORT,
 		SETTINGS_EXPORT_PREFERENCES,
 		SETTINGS_PREFERENCES,
 		SETTINGS_OPTIMIZED_PRESETS,
@@ -338,7 +337,6 @@ private:
 	Vector<EditorPlugin*> editor_table;
 
 	EditorReImportDialog *reimport_dialog;
-	ImportSettingsDialog *import_settings;
 
 	ProgressDialog *progress_dialog;
 	BackgroundProgress *progress_hb;
@@ -441,7 +439,7 @@ private:
 
 	void _node_renamed();
 	void _editor_select(int p_which);
-	void _set_scene_metadata(const String &p_file);
+	void _set_scene_metadata(const String &p_file, int p_idx=-1);
 	void _get_scene_metadata(const String& p_file);
 	void _update_title();
 	void _update_scene_tabs();
@@ -451,7 +449,7 @@ private:
 
 	void _rebuild_import_menu();
 
-	void _save_scene(String p_file);
+	void _save_scene(String p_file, int idx = -1);
 
 
 	void _instance_request(const String& p_path);

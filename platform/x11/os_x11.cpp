@@ -118,7 +118,9 @@ void OS_X11::initialize(const VideoMode& p_desired,int p_video_driver,int p_audi
 	x11_display = XOpenDisplay(NULL);
 
 	char * modifiers = XSetLocaleModifiers ("@im=none");
-	ERR_FAIL_COND( modifiers == NULL );
+	if (modifiers==NULL) {
+		WARN_PRINT("Error setting locale modifiers");
+	}
 
 	const char* err;
 	xrr_get_monitors = NULL;
@@ -1777,7 +1779,6 @@ static String _get_clipboard(Atom p_source, Window x11_window, ::Display* x11_di
 
 	if (Sown == x11_window) {
 
-		printf("returning internal clipboard\n");
 		return p_internal_clipboard;
 	};
 

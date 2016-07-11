@@ -521,6 +521,7 @@ GDParser::Node* GDParser::_parse_expression(Node *p_parent,bool p_static,bool p_
 		} else if (/*tokenizer->get_token()==GDTokenizer::TK_OP_ADD ||*/ tokenizer->get_token()==GDTokenizer::TK_OP_SUB || tokenizer->get_token()==GDTokenizer::TK_OP_NOT || tokenizer->get_token()==GDTokenizer::TK_OP_BIT_INVERT) {
 
 			//single prefix operators like !expr -expr ++expr --expr
+			alloc_node<OperatorNode>();
 			Expression e;
 			e.is_op=true;
 
@@ -1542,6 +1543,10 @@ void GDParser::_parse_block(BlockNode *p_block,bool p_static) {
 					return;
 				}
 				tokenizer->advance();
+				if(tokenizer->get_token()==GDTokenizer::TK_SEMICOLON) {
+					// Ignore semicolon after 'pass'
+					tokenizer->advance();
+				}
 			} break;
 			case GDTokenizer::TK_PR_VAR: {
 				//variale declaration and (eventual) initialization

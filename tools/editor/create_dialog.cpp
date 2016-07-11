@@ -43,12 +43,13 @@
 
 void CreateDialog::popup(bool p_dontclear) {
 
-	popup_centered_ratio(0.6);
+	popup_centered_ratio();
 	if (p_dontclear)
 		search_box->select_all();
 	else
 		search_box->clear();
 	search_box->grab_focus();
+
 	_update_search();
 
 
@@ -166,9 +167,10 @@ void CreateDialog::_update_search() {
 
 		if (!ObjectTypeDB::can_instance(type))
 			continue; // cant create what can't be instanced
-		if (search_box->get_text()=="")
+
+		if (search_box->get_text()=="") {
 			add_type(type,types,root,&to_select);
-		else {
+		} else {
 
 			bool found=false;
 			String type=I->get();
@@ -187,7 +189,7 @@ void CreateDialog::_update_search() {
 				add_type(I->get(),types,root,&to_select);
 		}
 
-		if (EditorNode::get_editor_data().get_custom_types().has(type)) {
+		if (EditorNode::get_editor_data().get_custom_types().has(type) && ObjectTypeDB::is_type(type, base_type)) {
 			//there are custom types based on this... cool.
 			//print_line("there are custom types");
 
@@ -199,6 +201,7 @@ void CreateDialog::_update_search() {
 
 				if (!show)
 					continue;
+
 				if (!types.has(type))
 					add_type(type,types,root,&to_select);
 
@@ -217,7 +220,7 @@ void CreateDialog::_update_search() {
 
 				}
 
-				if (!to_select && (search_box->get_text()=="" || ct[i].name.findn(search_box->get_text())!=-1)) {
+				if (!to_select) {
 					to_select=item;
 				}
 
@@ -247,7 +250,6 @@ void CreateDialog::_notification(int p_what) {
 	if (p_what==NOTIFICATION_ENTER_TREE) {
 
 		connect("confirmed",this,"_confirmed");
-		_update_search();
 	}
 	if (p_what==NOTIFICATION_EXIT_TREE) {
 

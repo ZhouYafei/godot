@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  import_settings.h                                                    */
+/*  editor_autoload_settings.h                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -26,57 +26,69 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-#ifndef IMPORT_SETTINGS_H
-#define IMPORT_SETTINGS_H
 
-#include "object.h"
-#include "scene/gui/dialogs.h"
+#ifndef EDITOR_AUTOLOAD_SETTINGS_H
+#define EDITOR_AUTOLOAD_SETTINGS_H
+
 #include "scene/gui/tree.h"
-#include "scene/gui/label.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/file_dialog.h"
-#include "scene/gui/progress_bar.h"
-#include "scene/gui/slider.h"
-#include "scene/gui/spin_box.h"
-#include "scene/resources/mesh.h"
-#include "editor_import_export.h"
-#include "editor_file_system.h"
-#include "editor_dir_dialog.h"
-class EditorNode;
 
+#include "editor_file_dialog.h"
 
-class ImportSettingsDialog : public ConfirmationDialog {
+class EditorAutoloadSettings : public VBoxContainer {
 
-	OBJ_TYPE(ImportSettingsDialog,ConfirmationDialog);
+	OBJ_TYPE( EditorAutoloadSettings, VBoxContainer );
 
-	TreeItem *edited;
-	EditorNode *editor;
+	enum {
+		BUTTON_MOVE_UP,
+		BUTTON_MOVE_DOWN,
+		BUTTON_DELETE
+	};
+
+	static StringName autoload_changed;
+
+	struct AutoLoadInfo {
+		String name;
+		int order;
+
+		bool operator==(const AutoLoadInfo& p_info) {
+			return order == p_info.order;
+		}
+	};
+
+	List<AutoLoadInfo> autoload_cache;
+
+	bool updating_autoload;
+	int number_of_autoloads;
+	String selected_autoload;
+
 	Tree *tree;
-	bool updating;
+	EditorLineEditFileChooser *autoload_add_path;
+	LineEdit *autoload_add_name;
 
-	void _button_pressed(Object *p_button, int p_col, int p_id);
-	void _item_pressed(int p_idx);
-	bool _generate_fs(TreeItem *p_parent,EditorFileSystemDirectory *p_dir);
+	bool _autoload_name_is_valid(const String& p_string, String *r_error = NULL);
 
-	String texformat;
+	void _autoload_add();
+	void _autoload_selected();
+	void _autoload_edited();
+	void _autoload_button_pressed(Object *p_item, int p_column, int p_button);
+	void _autoload_file_callback(const String& p_path);
 
-	void _item_edited();
-	virtual void ok_pressed();
+	Variant get_drag_data_fw(const Point2& p_point, Control *p_from);
+	bool can_drop_data_fw(const Point2& p_point, const Variant& p_data, Control *p_from) const;
+	void drop_data_fw(const Point2& p_point, const Variant& p_data, Control *p_from);
 
 protected:
 
-
 	void _notification(int p_what);
 	static void _bind_methods();
+
 public:
 
-	void update_tree();
+	void update_autoload();
 
-
-	void popup_import_settings();
-	ImportSettingsDialog(EditorNode *p_editor);
+	EditorAutoloadSettings();
 
 };
 
-#endif // IMPORT_SETTINGS_H
+#endif
+
