@@ -211,7 +211,11 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 		FileAccess *f = FileAccess::open(tex_path,FileAccess::READ,&err);
 		// if dds/pkm not exists, use original texture file name
 		if(!f) {
-			tex_path = pack_path + path;
+			tex_path = pack_path + path.basename() + ".png";
+			f = FileAccess::open(tex_path,FileAccess::READ,&err);
+			if(!f)
+				break;
+			memdelete(f);
 		} else {
 			memdelete(f);
 		}
