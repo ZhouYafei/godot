@@ -28,7 +28,7 @@
 /*************************************************************************/
 #include "texture_packer.h"
 #include "modules/digest/text/json_asset.h"
-#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
 
 static void _parse_rect2(const Dictionary& d, Rect2& rect) {
 
@@ -72,10 +72,15 @@ Error TexPackAsset::load(const String& p_path) {
 #else
 	tex_path = base_path + path.basename() + ".dds";
 #endif
-	DirAccessRef da = DirAccess::create(DirAccess::ACCESS_RESOURCES);
+
+	Error err;
+	FileAccess *f = FileAccess::open(tex_path,FileAccess::READ,&err);
 	// if dds/pkm not exists, use original texture file name
-	if(!da->file_exists(tex_path))
-		tex_path = path;
+	if(!f) {
+		tex_path = base_path + path;
+	} else {
+		memdelete(f);
+	}
 
 	this->texture = ResourceLoader::load(tex_path, "Texture");
 	if(this->texture.is_null())

@@ -195,41 +195,30 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 	String base_path = p_path.basename();
 	String pack_path = base_path + "/";
 
-	Error err;
-	DirAccessRef da = DirAccess::open(pack_path, &err);
-	if(err != OK)
-		return false;
-
-	if(!da->list_dir_begin())
-		return false;
-
+	int idx = 0;
 	bool loaded = false;
 	for(;;) {
 
-		String path = da->get_next();
-		if(path == "")
-			break;
-		if(path == "." || path == "..")
-			continue;
+		String path = String::num(idx++) + ".json";
 
-		String ext = path.extension();
-		if(ext != "json")
-			continue;
-
-		String tex_path = path;
+		String tex_path;
 #if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
 		tex_path = pack_path + path.basename() + ".pkm";
 #else
 		tex_path = pack_path + path.basename() + ".dds";
 #endif
-		DirAccessRef da = DirAccess::create(DirAccess::ACCESS_RESOURCES);
+		Error err;
+		FileAccess *f = FileAccess::open(tex_path,FileAccess::READ,&err);
 		// if dds/pkm not exists, use original texture file name
-		if(!da->file_exists(tex_path))
-			tex_path = path;
+		if(!f) {
+			tex_path = pack_path + path;
+		} else {
+			memdelete(f);
+		}
 
 		Ref<Texture> tex = ResourceLoader::load(tex_path, "Texture");
 		if(tex.is_null())
-			continue;
+			break;
 
 		path = pack_path + path;
 		Ref<JsonAsset> pack = ResourceLoader::load(path, "JsonAsset");
@@ -272,7 +261,6 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 			//_parse_size(info["sourceSize"], source_size);
 		}
 	}
-	da->list_dir_end();
 	return loaded;
 }
 
