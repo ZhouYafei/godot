@@ -59,10 +59,14 @@ void _spAtlasPage_createTexture(spAtlasPage* self, const char* path) {
 #else
 	tex_path = String(path).basename() + ".dds";
 #endif
-	DirAccessRef da = DirAccess::create(DirAccess::ACCESS_RESOURCES);
+	Error err;
+	FileAccess *f = FileAccess::open(tex_path,FileAccess::READ,&err);
 	// if dds/pkm not exists, use original texture file name
-	if(!da->file_exists(tex_path))
+	if(!f) {
 		tex_path = path;
+	} else {
+		memdelete(f);
+	}
 
 	*ref = ResourceLoader::load(tex_path, "Texture");
 	ERR_FAIL_COND(ref->is_null());

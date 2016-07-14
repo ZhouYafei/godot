@@ -164,6 +164,7 @@
     <ClCompile Include="..\..\tools\editor\create_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\dependency_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_asset_installer.cpp" />
+    <ClCompile Include="..\..\tools\editor\editor_autoload_settings.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_data.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_dir_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_file_dialog.cpp" />
@@ -192,7 +193,6 @@
     <ClCompile Include="..\..\tools\editor\fileserver\editor_file_server.cpp" />
     <ClCompile Include="..\..\tools\editor\file_type_cache.cpp" />
     <ClCompile Include="..\..\tools\editor\groups_editor.cpp" />
-    <ClCompile Include="..\..\tools\editor\import_settings.cpp" />
     <ClCompile Include="..\..\tools\editor\inspector_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_atlas.cpp" />
     <ClCompile Include="..\..\tools\editor\io_plugins\editor_bitmask_import_plugin.cpp" />
@@ -295,6 +295,7 @@
     <ClInclude Include="..\..\tools\editor\doc_font.h" />
     <ClInclude Include="..\..\tools\editor\doc_title_font.h" />
     <ClInclude Include="..\..\tools\editor\editor_asset_installer.h" />
+    <ClInclude Include="..\..\tools\editor\editor_autoload_settings.h" />
     <ClInclude Include="..\..\tools\editor\editor_data.h" />
     <ClInclude Include="..\..\tools\editor\editor_dir_dialog.h" />
     <ClInclude Include="..\..\tools\editor\editor_file_dialog.h" />
@@ -323,7 +324,6 @@
     <ClInclude Include="..\..\tools\editor\fileserver\editor_file_server.h" />
     <ClInclude Include="..\..\tools\editor\file_type_cache.h" />
     <ClInclude Include="..\..\tools\editor\groups_editor.h" />
-    <ClInclude Include="..\..\tools\editor\import_settings.h" />
     <ClInclude Include="..\..\tools\editor\inspector_dock.h" />
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_atlas.h" />
     <ClInclude Include="..\..\tools\editor\io_plugins\editor_bitmask_import_plugin.h" />
