@@ -39,6 +39,9 @@ class OSpriteCollision : public Node {
 	typedef HashMap<size_t, CollisionIds> CollisionMaps;
 	CollisionMaps objects;
 
+	typedef Vector<CollisionIds> CollisionObjects;
+	CollisionObjects collision_objects;
+
 	void _set_process(bool p_mode);
 	void _check_collision();
 	bool _is_collision(size_t left, size_t right);
@@ -52,9 +55,9 @@ public:
 	OSpriteCollision();
 	virtual ~OSpriteCollision();
 
-	void add(OSprite *sprite);
-	void remove(OSprite *sprite);
-	void changed(OSprite *sprite);
+	void add(OSprite *sprite, OSprite::CollisionMode p_mode);
+	void remove(OSprite *sprite, OSprite::CollisionMode p_mode);
+	void changed(OSprite *sprite, OSprite::CollisionMode p_oldmode, OSprite::CollisionMode p_newmode);
 
 	static OSpriteCollision *get_singleton();
 };

@@ -372,7 +372,7 @@ void OSprite::_notification(int p_what) {
 		if (active)
 			_set_process(true);
 
-		OSpriteCollision::get_singleton()->add(this);
+		OSpriteCollision::get_singleton()->add(this, collision_mode);
 
 	} break;
 	case NOTIFICATION_READY: {
@@ -403,7 +403,7 @@ void OSprite::_notification(int p_what) {
 	case NOTIFICATION_EXIT_TREE: {
 
 		_set_process(false);
-		OSpriteCollision::get_singleton()->remove(this);
+		OSpriteCollision::get_singleton()->remove(this, collision_mode);
 	} break;
 	}
 }
@@ -635,8 +635,9 @@ OSprite::AnimationProcessMode OSprite::get_animation_process_mode() const {
 
 void OSprite::set_collision_mode(CollisionMode p_mode) {
 
+	CollisionMode old_mode = collision_mode;
 	collision_mode = p_mode;
-	OSpriteCollision::get_singleton()->changed(this);
+	OSpriteCollision::get_singleton()->changed(this, old_mode, collision_mode);
 }
 
 OSprite::CollisionMode OSprite::get_collision_mode() const {
@@ -904,7 +905,7 @@ OSprite::~OSprite() {
 	// cleanup
 	_dispose();
 	// remove self
-	OSpriteCollision::get_singleton()->remove(this);
+	OSpriteCollision::get_singleton()->remove(this, collision_mode);
 }
 
 #endif // MODULE_OCEAN_ENABLED

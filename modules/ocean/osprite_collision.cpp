@@ -63,6 +63,8 @@ OSpriteCollision::OSpriteCollision() {
 
 	singleton = this;
 
+	collision_objects.resize(OSprite::COLLISION_MAX);
+
 	set_name("@OSpriteCollision");
 }
 
@@ -71,9 +73,10 @@ OSpriteCollision::~OSpriteCollision() {
 	singleton = NULL;
 }
 
-void OSpriteCollision::add(OSprite *sprite) {
+void OSpriteCollision::add(OSprite *sprite, OSprite::CollisionMode p_mode) {
 
-	if(sprite->get_collision_mode() == OSprite::COLLISION_IGNORED)
+	OSprite::CollisionMode mode = p_mode;
+	if(mode == OSprite::COLLISION_IGNORED)
 		return;
 
 	if(objects.empty())
@@ -81,9 +84,10 @@ void OSpriteCollision::add(OSprite *sprite) {
 
 	size_t id = (size_t) sprite;
 	objects.set(id, CollisionIds());
+	collision_objects[mode].insert(id);
 }
 
-void OSpriteCollision::remove(OSprite *sprite) {
+void OSpriteCollision::remove(OSprite *sprite, OSprite::CollisionMode p_mode) {
 
 	size_t id = (size_t) sprite;
 	if(!objects.has(id))
@@ -99,22 +103,50 @@ void OSpriteCollision::remove(OSprite *sprite) {
 	}
 
 	objects.erase(id);
+	OSprite::CollisionMode mode = p_mode;
+	collision_objects[mode].erase(id);
 
 	if(objects.empty())
 		_set_process(false);
 }
 
-void OSpriteCollision::changed(OSprite *sprite) {
+static bool sCollisionFlags[OSprite::COLLISION_MAX][OSprite::COLLISION_MAX] = {
+	// ignore
+	{ false, false, false }, // ignore/fish/bullet
+	// fish
+	{ false, false, true },	 // ignore/fish/bullet
+	// bullet
+	{ false, true, false },  // ignore/fish/bullet
+};
+
+void OSpriteCollision::changed(OSprite *sprite, OSprite::CollisionMode p_oldmode, OSprite::CollisionMode p_newmode) {
 
 	size_t id = (size_t) sprite;
 	if(sprite->get_collision_mode() == OSprite::COLLISION_IGNORED) {
 
 		if(objects.has(id)) 
-			remove(sprite);
+			remove(sprite, p_oldmode);
 	} else {
 
 		if(!objects.has(id))
-			add(sprite);
+			add(sprite, p_newmode);
+		else {
+
+			CollisionIds& ids = objects[id];
+			for(CollisionIds::Element *E = ids.front(); E; E = E->next()) {
+
+				size_t right = E->get();
+				OSprite *c = (OSprite *) right;
+				// still collision, ignore
+				if(sCollisionFlags[p_newmode][c->get_collision_mode()])
+					continue;
+				// remove ignore-collision objects
+				_on_collision_leave(id, right);
+				_on_collision_leave(right, id);
+			}
+			collision_objects[p_oldmode].erase(id);
+			collision_objects[p_newmode].insert(id);
+		}
 	}
 }
 
@@ -137,15 +169,6 @@ void OSpriteCollision::_set_process(bool p_mode) {
 		set_fixed_process(false);
 	}
 }
-
-static bool sCollisionFlags[OSprite::COLLISION_MAX][OSprite::COLLISION_MAX] = {
-	// ignore
-	{ false, false, false }, // ignore/fish/bullet
-	// fish
-	{ false, false, true },	 // ignore/fish/bullet
-	// bullet
-	{ false, true, false },  // ignore/fish/bullet
-};
 
 bool OSpriteCollision::_is_collision(size_t left, size_t right) {
 
@@ -228,32 +251,26 @@ void OSpriteCollision::_on_collision_leave(size_t left, size_t right) {
 
 void OSpriteCollision::_check_collision() {
 
-	List<size_t> owners;
-	objects.get_key_list(&owners);
-	for(List<size_t>::Element *E = owners.front(); E; E = E->next()) {
+	CollisionIds& bullets = collision_objects[OSprite::COLLISION_BULLET];
+	CollisionIds& fishs = collision_objects[OSprite::COLLISION_FISH];
+	for(CollisionIds::Element *B = bullets.front(); B; B = B->next()) {
 
-		size_t owner = E->get();
-		CollisionIds& ids = objects[owner];
-		for(CollisionIds::Element *IE = ids.front(); IE;) {
+		size_t bullet = B->get();
+		if(!((OSprite *) bullet)->is_inside_tree())
+			continue;
 
-			size_t body = IE->get();
-			IE = IE->next();
-			if(!_is_collision(owner, body)) {
+		for(CollisionIds::Element *F = fishs.front(); F; F = F->next()) {
 
-				// body leave
-				_on_collision_leave(owner, body);
-				_on_collision_leave(body, owner);
-			}
-		}
+			size_t fish = F->get();
+			if(!((OSprite *) fish)->is_inside_tree())
+				continue;
 
-		for(List<size_t>::Element *E2 = E->next(); E2; E2 = E2->next()) {
-
-			size_t body = E2->get();
-			if(_is_collision(owner, body)) {
-
-				// body enter
-				_on_collision_enter(owner, body);
-				_on_collision_enter(body, owner);
+			if(_is_collision(bullet, fish)) {
+				_on_collision_enter(bullet, fish);
+				_on_collision_enter(fish, bullet);
+			} else {
+				_on_collision_leave(bullet, fish);
+				_on_collision_leave(fish, bullet);
 			}
 		}
 	}
