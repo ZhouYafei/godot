@@ -4363,10 +4363,6 @@ int TextEdit::get_breakpoint_gutter_width() const {
 	return cache.breakpoint_gutter_width;
 }
 
-bool TextEdit::is_show_line_numbers() const {
-
-    return line_numbers;
-}
 bool TextEdit::is_text_field() const {
 
 
