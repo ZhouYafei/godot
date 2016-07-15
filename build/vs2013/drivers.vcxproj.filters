@@ -3975,6 +3975,9 @@
     <ClCompile Include="..\..\drivers\freetype\freetype\src\winfonts\winfnt.c">
       <Filter>drivers\freetype\freetype\src\winfonts</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_msa.c">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\drivers\register_driver_types.h">
@@ -6088,6 +6091,12 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\freetype\freetype\src\winfonts\winfnt.h">
       <Filter>drivers\freetype\freetype\src\winfonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\common_sse2.h">
+      <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\webp\dsp\msa_macro.h">
+      <Filter>drivers\webp\dsp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

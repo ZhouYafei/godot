@@ -1367,6 +1367,7 @@
     <ClCompile Include="..\..\drivers\webp\dsp\dec_clip_tables.c" />
     <ClCompile Include="..\..\drivers\webp\dsp\dec_mips32.c" />
     <ClCompile Include="..\..\drivers\webp\dsp\dec_mips_dsp_r2.c" />
+    <ClCompile Include="..\..\drivers\webp\dsp\dec_msa.c" />
     <ClCompile Include="..\..\drivers\webp\dsp\dec_neon.c" />
     <ClCompile Include="..\..\drivers\webp\dsp\dec_sse2.c" />
     <ClCompile Include="..\..\drivers\webp\dsp\dec_sse41.c" />
@@ -2108,9 +2109,11 @@
     <ClInclude Include="..\..\drivers\webp\dec\vp8i.h" />
     <ClInclude Include="..\..\drivers\webp\dec\vp8li.h" />
     <ClInclude Include="..\..\drivers\webp\dec\webpi.h" />
+    <ClInclude Include="..\..\drivers\webp\dsp\common_sse2.h" />
     <ClInclude Include="..\..\drivers\webp\dsp\dsp.h" />
     <ClInclude Include="..\..\drivers\webp\dsp\lossless.h" />
     <ClInclude Include="..\..\drivers\webp\dsp\mips_macro.h" />
+    <ClInclude Include="..\..\drivers\webp\dsp\msa_macro.h" />
     <ClInclude Include="..\..\drivers\webp\dsp\neon.h" />
     <ClInclude Include="..\..\drivers\webp\dsp\yuv.h" />
     <ClInclude Include="..\..\drivers\webp\dsp\yuv_tables_sse2.h" />
