@@ -249,6 +249,9 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 
 	String err_text;
 
+#ifdef ENABLE_PROFILER
+	GDScriptLanguage::get_singleton()->_profiler_enter(this, line);
+#endif
 #ifdef DEBUG_ENABLED
 
 	if (ScriptDebugger::get_singleton())
@@ -1157,6 +1160,9 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 
 	}
 
+#endif
+#ifdef ENABLE_PROFILER
+	GDScriptLanguage::get_singleton()->_profiler_leave();
 #endif
 	if (ScriptDebugger::get_singleton())
 		GDScriptLanguage::get_singleton()->exit_function();

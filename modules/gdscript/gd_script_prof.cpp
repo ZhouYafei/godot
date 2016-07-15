@@ -169,7 +169,7 @@ void GDScriptLanguage::profiler_dump(const String& p_path) {
 	Error err;
 	FileAccessRef f = FileAccess::open(p_path.empty() ? "user://profiler.txt" : p_path, FileAccess::WRITE, &err);
 
-	String format(L"file:%s func:%s line:%d\n\tcost\t%fs\ttimes:%d\n");
+	String format(L"file:%s func:%s line:%d\n    cost %fs times:%d\n");
 
 	for(FuncInfos::Element *E = sort_funcs.front(); E; E = E->next()) {
 
@@ -180,7 +180,6 @@ void GDScriptLanguage::profiler_dump(const String& p_path) {
 #else
 		uint64_t& us = info.cost;
 #endif
-
 		bool error;
 		Array args;
 		args.push_back(info.path);

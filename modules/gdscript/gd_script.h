@@ -302,8 +302,6 @@ public:
         if (ScriptDebugger::get_singleton()->get_lines_left()>0 && ScriptDebugger::get_singleton()->get_depth()>=0)
             ScriptDebugger::get_singleton()->set_depth( ScriptDebugger::get_singleton()->get_depth() +1 );
 
-		_profiler_enter(p_function, *p_line);
-
         if (_debug_call_stack_pos >= _debug_max_call_stack) {
             //stack overflow
             _debug_error="Stack Overflow (Stack Size: "+itos(_debug_max_call_stack)+")";
@@ -326,8 +324,6 @@ public:
 
         if (ScriptDebugger::get_singleton()->get_lines_left()>0 && ScriptDebugger::get_singleton()->get_depth()>=0)
 	    ScriptDebugger::get_singleton()->set_depth( ScriptDebugger::get_singleton()->get_depth() -1 );
-
-		_profiler_leave();
 
         if (_debug_call_stack_pos==0) {
 
@@ -428,6 +424,11 @@ public:
 
 	void profiler_start();
 	void profiler_stop();
+#ifdef ENABLE_PROFILER
+	bool is_profiler_stoped() const { return profiler_stoped; }
+#else
+	bool is_profiler_stoped() const { return false; }
+#endif
 	void profiler_clean();
 	void profiler_dump(const String& p_path = "");
 
