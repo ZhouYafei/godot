@@ -81,7 +81,7 @@ public:
 			err = asset->load(p_path);
 			res = Ref<TextAsset>(asset);
 		}
-		else if(p_path.ends_with(".json") || p_path.ends_with(".schema")) {
+		else if(p_path.ends_with(".json") || p_path.ends_with(".jsb") || p_path.ends_with(".schema")) {
 
 			JsonAsset *asset = memnew(JsonAsset);
 			err = asset->load(p_path);
@@ -98,6 +98,7 @@ public:
 
 		p_extensions->push_back("txt");
 		p_extensions->push_back("json");
+		p_extensions->push_back("jsb");
 		p_extensions->push_back("schema");
 	}
 
@@ -111,7 +112,7 @@ public:
 		String el = p_path.extension().to_lower();
 		if (el=="txt")
 			return "TextAsset";
-		else if(el=="json" || el=="schema")
+		else if(el=="json" || el=="jsb" || el=="schema")
 			return "JsonAsset";
 		return "";
 	}
