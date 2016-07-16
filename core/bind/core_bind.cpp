@@ -350,6 +350,14 @@ int _OS::get_iterations_per_second() const {
 
 }
 
+bool _OS::has_virtual_keyboard() {
+	return OS::get_singleton()->has_virtual_keyboard();
+}
+
+void _OS::show_virtual_keyboard(const String& p_existing_text, const Rect2& p_screen_rect) {
+	OS::get_singleton()->show_virtual_keyboard(p_existing_text, p_screen_rect);
+}
+
 void _OS::set_target_fps(int p_fps) {
 	OS::get_singleton()->set_target_fps(p_fps);
 }
@@ -1094,6 +1102,9 @@ void _OS::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_screen_orientation","orientation"),&_OS::set_screen_orientation);
 	ObjectTypeDB::bind_method(_MD("get_screen_orientation"),&_OS::get_screen_orientation);
+
+	ObjectTypeDB::bind_method(_MD("has_virtual_keyboard"), &_OS::has_virtual_keyboard);
+	ObjectTypeDB::bind_method(_MD("show_virtual_keyboard", "p_existing_text", "p_screen_rect"), &_OS::show_virtual_keyboard);
 
 	ObjectTypeDB::bind_method(_MD("set_keep_screen_on","enabled"),&_OS::set_keep_screen_on);
 	ObjectTypeDB::bind_method(_MD("is_keep_screen_on"),&_OS::is_keep_screen_on);
