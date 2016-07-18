@@ -707,7 +707,7 @@ void EditorNode::_get_scene_metadata(const String& p_file) {
 	cf.instance();
 
 	Error err = cf->load(path);
-	if (err!=OK)
+	if (err!=OK || !cf->has_section("editor_states"))
 		return; //must not exist
 
 	List<String> esl;
@@ -743,7 +743,14 @@ void EditorNode::_set_scene_metadata(const String& p_file, int p_idx) {
 	Ref<ConfigFile> cf;
 	cf.instance();
 
-	Dictionary md = editor_data.get_edited_scene()==p_idx?editor_data.get_editor_states():editor_data.get_scene_editor_states(p_idx);
+	Dictionary md;
+
+	if (p_idx<0 || editor_data.get_edited_scene()==p_idx) {
+		md = editor_data.get_editor_states();
+	} else {
+		md = editor_data.get_scene_editor_states(p_idx);
+	}
+
 	List<Variant> keys;
 	md.get_key_list(&keys);
 
@@ -2157,7 +2164,7 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 				String existing;
 				if (extensions.size()) {
 					String root_name(get_edited_scene()->get_name());
-					existing=root_name+".tscn";//+extensions.front()->get().to_lower();
+					existing=root_name+"."+extensions.front()->get().to_lower();
 				}
 				file->set_current_path(existing);
 
