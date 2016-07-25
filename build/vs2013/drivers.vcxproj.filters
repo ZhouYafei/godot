@@ -325,82 +325,82 @@
     <Filter Include="drivers\freetype\freetype">
       <UniqueIdentifier>{e04f06d1-90ed-4185-8e1c-7fc894d7f682}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\include">
+    <Filter Include="drivers\freetype\include">
       <UniqueIdentifier>{3b101607-af82-4802-9666-e51ab9747a74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\include\freetype">
+    <Filter Include="drivers\freetype\include\freetype">
       <UniqueIdentifier>{fdbae62d-6daa-46d7-bc93-e02f0cf70a0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\include\freetype\config">
+    <Filter Include="drivers\freetype\include\freetype\config">
       <UniqueIdentifier>{33b9e447-5003-4c4c-a54c-2a2c60c48a70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\include\freetype\internal">
+    <Filter Include="drivers\freetype\include\freetype\internal">
       <UniqueIdentifier>{a08fd345-2585-44b7-9b8b-5ebf5649c789}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\include\freetype\internal\services">
+    <Filter Include="drivers\freetype\include\freetype\internal\services">
       <UniqueIdentifier>{e7ac2a7b-40d1-4bd8-9ff2-b57c1217ea11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src">
+    <Filter Include="drivers\freetype\src">
       <UniqueIdentifier>{9424d16a-f940-4534-b3e5-fb3ed460a8bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\autofit">
+    <Filter Include="drivers\freetype\src\autofit">
       <UniqueIdentifier>{0da2df31-c3e4-4a6a-a463-1aa1684971bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\base">
+    <Filter Include="drivers\freetype\src\base">
       <UniqueIdentifier>{e1383871-d179-4f1b-939f-13eaad7546dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\bdf">
+    <Filter Include="drivers\freetype\src\bdf">
       <UniqueIdentifier>{ed43de64-cbd7-471c-8988-c20354b6df61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\cache">
+    <Filter Include="drivers\freetype\src\cache">
       <UniqueIdentifier>{997475c8-a778-4f51-92e7-0f2e7505fb10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\cff">
+    <Filter Include="drivers\freetype\src\cff">
       <UniqueIdentifier>{411de2d9-18a8-4cb7-baee-4c0bc75fac26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\cid">
+    <Filter Include="drivers\freetype\src\cid">
       <UniqueIdentifier>{b95ca409-024d-419c-9231-4921cad0957f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\gxvalid">
+    <Filter Include="drivers\freetype\src\gxvalid">
       <UniqueIdentifier>{3356ae00-c073-4603-9b4e-0b38a91c22c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\otvalid">
+    <Filter Include="drivers\freetype\src\otvalid">
       <UniqueIdentifier>{c37165b8-6d3d-48b7-831d-6dc2231953d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\pcf">
+    <Filter Include="drivers\freetype\src\pcf">
       <UniqueIdentifier>{54635251-3b6b-419b-bd68-7bc23c9aab42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\pfr">
+    <Filter Include="drivers\freetype\src\pfr">
       <UniqueIdentifier>{0a189cf3-16e9-4de1-9ef3-4cf6539bcbfc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\psaux">
+    <Filter Include="drivers\freetype\src\psaux">
       <UniqueIdentifier>{266d4f26-ba9b-4880-affb-9bb21661020e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\pshinter">
+    <Filter Include="drivers\freetype\src\pshinter">
       <UniqueIdentifier>{61064667-69b6-49d4-be6a-5ae7021b0e28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\psnames">
+    <Filter Include="drivers\freetype\src\psnames">
       <UniqueIdentifier>{6e81fa16-ed9f-4ff1-8747-197a418b21fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\raster">
+    <Filter Include="drivers\freetype\src\raster">
       <UniqueIdentifier>{7fa5ba08-813c-4d07-95c0-123f581112b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\sfnt">
+    <Filter Include="drivers\freetype\src\sfnt">
       <UniqueIdentifier>{9d49863e-3a33-4e7b-81aa-4e6bdc32572b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\smooth">
+    <Filter Include="drivers\freetype\src\smooth">
       <UniqueIdentifier>{65fa7baf-dc1e-4fba-ac03-34cabad0e7e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\truetype">
+    <Filter Include="drivers\freetype\src\truetype">
       <UniqueIdentifier>{490be426-e433-4c73-9e28-72af49934ddb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\type1">
+    <Filter Include="drivers\freetype\src\type1">
       <UniqueIdentifier>{1f6d5d2e-71f5-481b-9c8e-9df3059316bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\type42">
+    <Filter Include="drivers\freetype\src\type42">
       <UniqueIdentifier>{77ad28ac-1117-4885-a29e-3ece04da1af3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="drivers\freetype\freetype\src\winfonts">
+    <Filter Include="drivers\freetype\src\winfonts">
       <UniqueIdentifier>{f5faf92e-ca0b-4fed-b308-b970013f6753}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -3846,137 +3846,137 @@
     <ClCompile Include="..\..\drivers\builtin_openssl2\ssl\ssl_utst.c">
       <Filter>drivers\builtin_openssl\ssl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\autofit\autofit.c">
-      <Filter>drivers\freetype\freetype\src\autofit</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftapi.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftapi.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftbase.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbase.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftbbox.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbbox.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftbdf.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbdf.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftbitmap.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftbitmap.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftcid.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftcid.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftdebug.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftdebug.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftfstype.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftfstype.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftgasp.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftgasp.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftglyph.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftglyph.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftgxval.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftgxval.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftinit.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftinit.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftlcdfil.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftlcdfil.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftmm.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftmm.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftotval.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftotval.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftpatent.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftpatent.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftpfr.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftpfr.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftpic.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftpic.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftstroke.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftstroke.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftsynth.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftsynth.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftsystem.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftsystem.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\fttype1.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\fttype1.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftwinfnt.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftwinfnt.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\base\ftxf86.c">
+      <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\base\ftxf86.c">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\bdf\bdf.c">
+      <Filter>drivers\freetype\src\bdf</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\bdf\bdf.c">
-      <Filter>drivers\freetype\freetype\src\bdf</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\cache\ftcache.c">
+      <Filter>drivers\freetype\src\cache</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\cache\ftcache.c">
-      <Filter>drivers\freetype\freetype\src\cache</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\cff\cff.c">
+      <Filter>drivers\freetype\src\cff</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\cff\cff.c">
-      <Filter>drivers\freetype\freetype\src\cff</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\cid\type1cid.c">
+      <Filter>drivers\freetype\src\cid</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\cid\type1cid.c">
-      <Filter>drivers\freetype\freetype\src\cid</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\gxvalid\gxvalid.c">
+      <Filter>drivers\freetype\src\gxvalid</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\gxvalid\gxvalid.c">
-      <Filter>drivers\freetype\freetype\src\gxvalid</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\otvalid\otvalid.c">
+      <Filter>drivers\freetype\src\otvalid</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\otvalid\otvalid.c">
-      <Filter>drivers\freetype\freetype\src\otvalid</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\pcf\pcf.c">
+      <Filter>drivers\freetype\src\pcf</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\pcf\pcf.c">
-      <Filter>drivers\freetype\freetype\src\pcf</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\pfr\pfr.c">
+      <Filter>drivers\freetype\src\pfr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\pfr\pfr.c">
-      <Filter>drivers\freetype\freetype\src\pfr</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\psaux\psaux.c">
+      <Filter>drivers\freetype\src\psaux</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\psaux\psaux.c">
-      <Filter>drivers\freetype\freetype\src\psaux</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\pshinter\pshinter.c">
+      <Filter>drivers\freetype\src\pshinter</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\pshinter\pshinter.c">
-      <Filter>drivers\freetype\freetype\src\pshinter</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\psnames\psnames.c">
+      <Filter>drivers\freetype\src\psnames</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\psnames\psnames.c">
-      <Filter>drivers\freetype\freetype\src\psnames</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\raster\raster.c">
+      <Filter>drivers\freetype\src\raster</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\raster\raster.c">
-      <Filter>drivers\freetype\freetype\src\raster</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\sfnt\sfnt.c">
+      <Filter>drivers\freetype\src\sfnt</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\sfnt\sfnt.c">
-      <Filter>drivers\freetype\freetype\src\sfnt</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\smooth\smooth.c">
+      <Filter>drivers\freetype\src\smooth</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\smooth\smooth.c">
-      <Filter>drivers\freetype\freetype\src\smooth</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\truetype\truetype.c">
+      <Filter>drivers\freetype\src\truetype</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\truetype\truetype.c">
-      <Filter>drivers\freetype\freetype\src\truetype</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\type1\type1.c">
+      <Filter>drivers\freetype\src\type1</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\type1\type1.c">
-      <Filter>drivers\freetype\freetype\src\type1</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\type42\type42.c">
+      <Filter>drivers\freetype\src\type42</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\type42\type42.c">
-      <Filter>drivers\freetype\freetype\src\type42</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\freetype\src\winfonts\winfnt.c">
-      <Filter>drivers\freetype\freetype\src\winfonts</Filter>
+    <ClCompile Include="..\..\drivers\freetype\src\winfonts\winfnt.c">
+      <Filter>drivers\freetype\src\winfonts</Filter>
     </ClCompile>
     <ClCompile Include="..\..\drivers\webp\dsp\dec_msa.c">
       <Filter>drivers\webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\freetype\src\autofit\autofit.c">
+      <Filter>drivers\freetype\src\autofit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4334,9 +4334,6 @@
     <ClInclude Include="..\..\drivers\builtin_zlib\zlib\zconf.h">
       <Filter>drivers\builtin_zlib\zlib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\drivers\builtin_zlib\zlib\zconf.in.h">
-      <Filter>drivers\builtin_zlib\zlib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\drivers\builtin_zlib\zlib\zlib.h">
       <Filter>drivers\builtin_zlib\zlib</Filter>
     </ClInclude>
@@ -4545,9 +4542,6 @@
       <Filter>drivers\rtaudio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\drivers\rtaudio\RtAudio.h">
-      <Filter>drivers\rtaudio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\rtaudio\RtError.h">
       <Filter>drivers\rtaudio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\drivers\speex\_kiss_fft_guts.h">
@@ -5810,293 +5804,275 @@
     <ClInclude Include="..\..\drivers\freetype\ft2build.h">
       <Filter>drivers\freetype</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\ftoption.h">
-      <Filter>drivers\freetype\freetype\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\freetype.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftadvanc.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftautoh.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbbox.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbdf.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbitmap.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftbzip2.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftcache.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftcffdrv.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftchapters.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftcid.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fterrdef.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fterrors.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftgasp.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftglyph.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftgxval.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftgzip.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftimage.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftincrem.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftlcdfil.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftlist.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftlzw.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmac.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmm.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmodapi.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftmoderr.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftotval.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftoutln.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftpfr.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftrender.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsizes.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsnames.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftstroke.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsynth.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftsystem.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fttrigon.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftttdrv.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\fttypes.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftwinfnt.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ftxf86.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\t1tables.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ttnameid.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\tttables.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\tttags.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\ttunpat.h">
-      <Filter>drivers\freetype\freetype\include\freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftconfig.h">
-      <Filter>drivers\freetype\freetype\include\freetype\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftheader.h">
-      <Filter>drivers\freetype\freetype\include\freetype\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftmodule.h">
-      <Filter>drivers\freetype\freetype\include\freetype\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftoption.h">
-      <Filter>drivers\freetype\freetype\include\freetype\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\config\ftstdlib.h">
-      <Filter>drivers\freetype\freetype\include\freetype\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\autohint.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftcalc.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftdebug.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftdriver.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftgloadr.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftmemory.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftobjs.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftpic.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftrfork.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftserv.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftstream.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\fttrace.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\ftvalid.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\internal.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\psaux.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\pshints.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\sfnt.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\t1types.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\tttypes.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svbdf.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svcid.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svgldict.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svgxval.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svkern.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svmm.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svotval.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpfr.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpostnm.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svprop.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpscmap.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svpsinfo.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svsfnt.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svttcmap.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svtteng.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svttglyf.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svwinfnt.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\include\freetype\internal\services\svxf86nm.h">
-      <Filter>drivers\freetype\freetype\include\freetype\internal\services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\src\base\ftbase.h">
-      <Filter>drivers\freetype\freetype\src\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\src\bdf\bdf.h">
-      <Filter>drivers\freetype\freetype\src\bdf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\src\gxvalid\gxvalid.h">
-      <Filter>drivers\freetype\freetype\src\gxvalid</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\src\otvalid\otvalid.h">
-      <Filter>drivers\freetype\freetype\src\otvalid</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\src\pcf\pcf.h">
-      <Filter>drivers\freetype\freetype\src\pcf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\drivers\freetype\freetype\src\winfonts\winfnt.h">
-      <Filter>drivers\freetype\freetype\src\winfonts</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\drivers\webp\dsp\common_sse2.h">
       <Filter>drivers\webp\dsp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\drivers\webp\dsp\msa_macro.h">
       <Filter>drivers\webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\config\ftconfig.h">
+      <Filter>drivers\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\config\ftheader.h">
+      <Filter>drivers\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\config\ftmodule.h">
+      <Filter>drivers\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\config\ftoption.h">
+      <Filter>drivers\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\config\ftstdlib.h">
+      <Filter>drivers\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\autohint.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftcalc.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftdebug.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftdriver.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftgloadr.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\fthash.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftmemory.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftobjs.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftpic.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftrfork.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftserv.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftstream.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\fttrace.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\ftvalid.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\internal.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\psaux.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\pshints.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\sfnt.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\t1types.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\tttypes.h">
+      <Filter>drivers\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svbdf.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svcid.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svfntfmt.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svgldict.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svgxval.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svkern.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svmm.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svotval.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svpfr.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svpostnm.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svprop.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svpscmap.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svpsinfo.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svsfnt.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svttcmap.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svtteng.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svttglyf.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\internal\services\svwinfnt.h">
+      <Filter>drivers\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ttunpat.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\freetype.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftadvanc.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftautoh.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftbbox.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftbdf.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftbitmap.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftbzip2.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftcache.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftcffdrv.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftchapters.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftcid.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\fterrdef.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\fterrors.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftfntfmt.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftgasp.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftglyph.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftgxval.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftgzip.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftimage.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftincrem.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftlcdfil.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftlist.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftlzw.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftmac.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftmm.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftmodapi.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftmoderr.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftotval.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftoutln.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftpfr.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftrender.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftsizes.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftsnames.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftstroke.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftsynth.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftsystem.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\fttrigon.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftttdrv.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\fttypes.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ftwinfnt.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\t1tables.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\ttnameid.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\tttables.h">
+      <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\freetype\include\freetype\tttags.h">
+      <Filter>drivers\freetype\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

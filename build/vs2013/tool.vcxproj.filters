@@ -198,9 +198,6 @@
     <ClCompile Include="..\..\tools\editor\scene_tree_editor.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tools\editor\scenes_dock.cpp">
-      <Filter>tools\editor</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\tools\editor\script_create_dialog.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
@@ -444,6 +441,9 @@
     <ClCompile Include="..\..\tools\editor\editor_autoload_settings.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tools\editor\filesystem_dock.cpp">
+      <Filter>tools\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tools\collada\collada.h">
@@ -585,9 +585,6 @@
       <Filter>tools\editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\scene_tree_editor.h">
-      <Filter>tools\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\tools\editor\scenes_dock.h">
       <Filter>tools\editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\script_create_dialog.h">
@@ -822,6 +819,9 @@
       <Filter>tools\editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\editor_autoload_settings.h">
+      <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\filesystem_dock.h">
       <Filter>tools\editor</Filter>
     </ClInclude>
   </ItemGroup>

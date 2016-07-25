@@ -600,9 +600,6 @@
     <ClCompile Include="..\..\scene\main\instance_placeholder.cpp">
       <Filter>scene\main</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\scene\resources\scene_format_text.cpp">
-      <Filter>scene\resources</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\scene\main\http_request.cpp">
       <Filter>scene\main</Filter>
     </ClCompile>
@@ -622,6 +619,9 @@
       <Filter>scene\3d</Filter>
     </ClCompile>
     <ClCompile Include="..\..\scene\resources\dynamic_font_stb.cpp">
+      <Filter>scene\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\scene\resources\scene_format_text.cpp">
       <Filter>scene\resources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1193,9 +1193,6 @@
     <ClInclude Include="..\..\scene\main\instance_placeholder.h">
       <Filter>scene\main</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\scene\resources\scene_format_text.h">
-      <Filter>scene\resources</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\scene\main\http_request.h">
       <Filter>scene\main</Filter>
     </ClInclude>
@@ -1218,6 +1215,9 @@
       <Filter>scene\3d</Filter>
     </ClInclude>
     <ClInclude Include="..\..\scene\resources\dynamic_font_stb.h">
+      <Filter>scene\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scene\resources\scene_format_text.h">
       <Filter>scene\resources</Filter>
     </ClInclude>
   </ItemGroup>
