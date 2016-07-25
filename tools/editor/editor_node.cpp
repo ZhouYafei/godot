@@ -568,8 +568,8 @@ void EditorNode::save_resource_in_path(const Ref<Resource>& p_resource,const Str
 	int flg=0;
 	if (EditorSettings::get_singleton()->get("on_save/compress_binary_resources"))
 		flg|=ResourceSaver::FLAG_COMPRESS;
-	if (EditorSettings::get_singleton()->get("on_save/save_paths_as_relative"))
-		flg|=ResourceSaver::FLAG_RELATIVE_PATHS;
+	//if (EditorSettings::get_singleton()->get("on_save/save_paths_as_relative"))
+	//	flg|=ResourceSaver::FLAG_RELATIVE_PATHS;
 
 	String path = Globals::get_singleton()->localize_path(p_path);
 	Error err = ResourceSaver::save(path,p_resource,flg|ResourceSaver::FLAG_REPLACE_SUBRESOURCE_PATHS);
@@ -1015,8 +1015,8 @@ void EditorNode::_save_scene(String p_file, int idx) {
 	int flg=0;
 	if (EditorSettings::get_singleton()->get("on_save/compress_binary_resources"))
 		flg|=ResourceSaver::FLAG_COMPRESS;
-	if (EditorSettings::get_singleton()->get("on_save/save_paths_as_relative"))
-		flg|=ResourceSaver::FLAG_RELATIVE_PATHS;
+	//if (EditorSettings::get_singleton()->get("on_save/save_paths_as_relative"))
+	//	flg|=ResourceSaver::FLAG_RELATIVE_PATHS;
 	flg|=ResourceSaver::FLAG_REPLACE_SUBRESOURCE_PATHS;
 
 
@@ -3825,7 +3825,12 @@ void EditorNode::request_instance_scene(const String &p_path) {
 
 }
 
-ScenesDock *EditorNode::get_scenes_dock() {
+void EditorNode::request_instance_scenes(const Vector<String>& p_files) {
+
+	scene_tree_dock->instance_scenes(p_files);
+}
+
+FileSystemDock *EditorNode::get_scenes_dock() {
 
 	return scenes_dock;
 }
@@ -3834,10 +3839,9 @@ SceneTreeDock *EditorNode::get_scene_tree_dock() {
 	return scene_tree_dock;
 }
 
-void EditorNode::_instance_request(const String& p_path){
+void EditorNode::_instance_request(const Vector<String>& p_files) {
 
-
-	request_instance_scene(p_path);
+	request_instance_scenes(p_files);
 }
 
 void EditorNode::_property_keyed(const String& p_keyed,const Variant& p_value,bool p_advance) {
@@ -6165,7 +6169,7 @@ EditorNode::EditorNode() {
 	//node_dock->set_undoredo(&editor_data.get_undo_redo());
 	dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(node_dock);
 
-	scenes_dock = memnew( ScenesDock(this) );
+	scenes_dock = memnew( FileSystemDock(this) );
 	scenes_dock->set_name(TTR("FileSystem"));
 	scenes_dock->set_use_thumbnails(int(EditorSettings::get_singleton()->get("file_dialog/display_mode"))==EditorFileDialog::DISPLAY_THUMBNAILS);
 	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scenes_dock);

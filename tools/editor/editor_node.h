@@ -42,7 +42,7 @@
 #include "scene/gui/split_container.h"
 #include "scene/gui/center_container.h"
 #include "scene/gui/texture_progress.h"
-#include "tools/editor/scenes_dock.h"
+#include "tools/editor/filesystem_dock.h"
 #include "tools/editor/scene_tree_editor.h"
 #include "tools/editor/property_editor.h"
 #include "tools/editor/create_dialog.h"
@@ -275,7 +275,7 @@ private:
 	PropertyEditor *property_editor;
 	NodeDock *node_dock;
 	VBoxContainer *prop_editor_vb;
-	ScenesDock *scenes_dock;
+	FileSystemDock *scenes_dock;
 	EditorRunNative *run_native;
 
 	HBoxContainer *search_bar;
@@ -452,7 +452,7 @@ private:
 	void _save_scene(String p_file, int idx = -1);
 
 
-	void _instance_request(const String& p_path);
+	void _instance_request(const Vector<String>& p_files);
 
 	void _property_keyed(const String& p_keyed, const Variant& p_value, bool p_advance);
 	void _transform_keyed(Object *sp,const String& p_sub,const Transform& p_key);
@@ -666,7 +666,8 @@ public:
 	static VSplitContainer *get_top_split() { return singleton->top_split; }
 
 	void request_instance_scene(const String &p_path);
-	ScenesDock *get_scenes_dock();
+	void request_instance_scenes(const Vector<String>& p_files);
+	FileSystemDock *get_scenes_dock();
 	SceneTreeDock *get_scene_tree_dock();
 	static UndoRedo* get_undo_redo() { return &singleton->editor_data.get_undo_redo(); }
 

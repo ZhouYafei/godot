@@ -1613,6 +1613,11 @@ void OS_OSX::move_window_to_foreground() {
 	[window_object orderFrontRegardless];
 }
 
+void OS_OSX::request_attention() {
+
+	[NSApp requestUserAttention:NSCriticalRequest];
+}
+
 String OS_OSX::get_executable_path() const {
 
 	int ret;
