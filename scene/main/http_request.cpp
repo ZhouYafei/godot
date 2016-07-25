@@ -120,6 +120,8 @@ Error HTTPRequest::request(const String& p_url, const Vector<String>& p_custom_h
 			has_user_agent=true;
 		if (headers[i].findn("Accept:")==0)
 			has_accept=true;
+		if (headers[i].findn("Range:")==0)
+			has_range=true;
 	}
 
 	if (!has_user_agent) {
@@ -379,7 +381,13 @@ bool HTTPRequest::_update_connection() {
 				}
 
 				if (download_to_file!=String()) {
-					file=FileAccess::open(download_to_file,FileAccess::WRITE);
+					file=FileAccess::open(download_to_file,FileAccess::READ_WRITE);
+					if (!file)
+						file = FileAccess::open(download_to_file, FileAccess::WRITE);
+					else if(has_range) {
+						// seek to end of file
+						file->seek_end(0);
+					}
 					if (!file) {
 
 						call_deferred("_request_done",RESULT_DOWNLOAD_FILE_CANT_OPEN,response_code,response_headers,ByteArray());
@@ -510,6 +518,16 @@ HTTPClient::Status HTTPRequest::get_http_client_status() const {
 	return client->get_status();
 }
 
+int HTTPRequest::get_http_client_read_chunk_size() const {
+
+	return client->get_read_chunk_size();
+}
+
+void HTTPRequest::set_http_client_read_chunk_size(int p_size) {
+
+	client->set_read_chunk_size(p_size);
+}
+
 void HTTPRequest::set_max_redirects(int p_max) {
 
 	max_redirects=p_max;
@@ -535,6 +553,8 @@ void HTTPRequest::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("cancel_request"),&HTTPRequest::cancel_request);
 
 	ObjectTypeDB::bind_method(_MD("get_http_client_status"),&HTTPRequest::get_http_client_status);
+	ObjectTypeDB::bind_method(_MD("get_http_client_read_chunk_size"),&HTTPRequest::get_http_client_read_chunk_size);
+	ObjectTypeDB::bind_method(_MD("set_http_client_read_chunk_size","bytes"),&HTTPRequest::set_http_client_read_chunk_size);
 
 	ObjectTypeDB::bind_method(_MD("set_use_threads","enable"),&HTTPRequest::set_use_threads);
 	ObjectTypeDB::bind_method(_MD("is_using_threads"),&HTTPRequest::is_using_threads);
@@ -588,6 +608,7 @@ HTTPRequest::HTTPRequest()
 	got_response=false;
 	validate_ssl=false;
 	use_ssl=false;
+	has_range=false;
 	response_code=0;
 	request_sent=false;
 	requesting=false;

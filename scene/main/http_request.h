@@ -66,6 +66,7 @@ private:
 	Vector<String> headers;
 	bool validate_ssl;
 	bool use_ssl;
+	bool has_range;
 
 	bool request_sent;
 	Ref<HTTPClient> client;
@@ -117,6 +118,8 @@ public:
 	Error request(const String& p_url,const Vector<String>& p_custom_headers=Vector<String>(),bool p_ssl_validate_domain=true); //connects to a full url and perform request
 	void cancel_request();
 	HTTPClient::Status get_http_client_status() const;
+	int get_http_client_read_chunk_size() const;
+	void set_http_client_read_chunk_size(int p_size);
 
 	void set_use_threads(bool p_use);
 	bool is_using_threads() const;
