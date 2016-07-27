@@ -68,7 +68,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;GLEW_STATIC;DEBUG_MEMORY_ENABLED;SCI_NAMESPACE;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;GLEW_STATIC;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -107,7 +107,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;GLEW_STATIC;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -191,6 +191,7 @@
     <ClCompile Include="..\..\tools\editor\editor_sub_scene.cpp" />
     <ClCompile Include="..\..\tools\editor\editor_themes.cpp" />
     <ClCompile Include="..\..\tools\editor\fileserver\editor_file_server.cpp" />
+    <ClCompile Include="..\..\tools\editor\filesystem_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\file_type_cache.cpp" />
     <ClCompile Include="..\..\tools\editor\groups_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\inspector_dock.cpp" />
@@ -263,7 +264,6 @@
     <ClCompile Include="..\..\tools\editor\reparent_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\resources_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\run_settings_dialog.cpp" />
-    <ClCompile Include="..\..\tools\editor\scenes_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\scene_tree_dock.cpp" />
     <ClCompile Include="..\..\tools\editor\scene_tree_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\script_create_dialog.cpp" />
@@ -322,6 +322,7 @@
     <ClInclude Include="..\..\tools\editor\editor_sub_scene.h" />
     <ClInclude Include="..\..\tools\editor\editor_themes.h" />
     <ClInclude Include="..\..\tools\editor\fileserver\editor_file_server.h" />
+    <ClInclude Include="..\..\tools\editor\filesystem_dock.h" />
     <ClInclude Include="..\..\tools\editor\file_type_cache.h" />
     <ClInclude Include="..\..\tools\editor\groups_editor.h" />
     <ClInclude Include="..\..\tools\editor\inspector_dock.h" />
@@ -391,7 +392,6 @@
     <ClInclude Include="..\..\tools\editor\reparent_dialog.h" />
     <ClInclude Include="..\..\tools\editor\resources_dock.h" />
     <ClInclude Include="..\..\tools\editor\run_settings_dialog.h" />
-    <ClInclude Include="..\..\tools\editor\scenes_dock.h" />
     <ClInclude Include="..\..\tools\editor\scene_tree_dock.h" />
     <ClInclude Include="..\..\tools\editor\scene_tree_editor.h" />
     <ClInclude Include="..\..\tools\editor\script_create_dialog.h" />

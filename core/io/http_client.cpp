@@ -572,8 +572,11 @@ ByteArray HTTPClient::read_response_body_chunk() {
 				to_read-=rec;
 				_offset += rec;
 			} else {
-				if (to_read>0) //ended up reading less
+				if (to_read > 0) { //ended up reading less
+					w = ByteArray::Write();
 					ret.resize(_offset);
+					w = ret.write();
+				}
 				break;
 			}
 		}
@@ -652,6 +655,7 @@ void HTTPClient::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_response_body_length"),&HTTPClient::get_response_body_length);
 	ObjectTypeDB::bind_method(_MD("read_response_body_chunk"),&HTTPClient::read_response_body_chunk);
 	ObjectTypeDB::bind_method(_MD("set_read_chunk_size","bytes"),&HTTPClient::set_read_chunk_size);
+	ObjectTypeDB::bind_method(_MD("get_read_chunk_size"),&HTTPClient::get_read_chunk_size);
 
 	ObjectTypeDB::bind_method(_MD("set_blocking_mode","enabled"),&HTTPClient::set_blocking_mode);
 	ObjectTypeDB::bind_method(_MD("is_blocking_mode_enabled"),&HTTPClient::is_blocking_mode_enabled);
@@ -747,6 +751,11 @@ void HTTPClient::_bind_methods() {
 void HTTPClient::set_read_chunk_size(int p_size) {
 	ERR_FAIL_COND(p_size<256 || p_size>(1<<24));
 	read_chunk_size=p_size;
+}
+
+int HTTPClient::get_read_chunk_size() const {
+
+	return read_chunk_size;
 }
 
 String HTTPClient::query_string_from_dict(const Dictionary& p_dict) {

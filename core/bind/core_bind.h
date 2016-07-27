@@ -176,9 +176,6 @@ public:
 	void set_iterations_per_second(int p_ips);
 	int get_iterations_per_second() const;
 
-	bool has_virtual_keyboard();
-	void show_virtual_keyboard(const String& p_existing_text, const Rect2& p_screen_rect = Rect2());
-
 	void set_target_fps(int p_fps);
 	float get_target_fps() const;
 
