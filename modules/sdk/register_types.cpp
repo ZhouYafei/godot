@@ -32,30 +32,30 @@
 #include "core/globals.h"
 #include "register_types.h"
 
-#include "platform.h"
+#include "sdk.h"
 #ifdef PLATFORM_IOS_91_ENABLED
 #include "ios_91/platform_91.h"
 #endif
 
-static Platform *_platform = NULL;
+static Sdk *_sdk = NULL;
 
 void register_sdk_types() {
 
-	ObjectTypeDB::register_type<Platform>();
+	ObjectTypeDB::register_type<Sdk>();
 
 #if defined(PLATFORM_IOS_91_ENABLED)
 	ObjectTypeDB::register_type<Platform91>();
 	_platform = memnew(Platform91);
-#elif defined(PLATFROM_IOS_360_ENABLED)
+#elif defined(ANDROID)
 #else
-	_platform = memnew(Platform);
+	_sdk = memnew(Sdk);
 #endif
-	Globals::get_singleton()->add_singleton( Globals::Singleton("Platform",_platform ) );
+	Globals::get_singleton()->add_singleton( Globals::Singleton("Sdk",_sdk ) );
 }
 
 void unregister_sdk_types() {
 
-	memdelete(_platform);
+	memdelete(_sdk);
 }
 
 #else
