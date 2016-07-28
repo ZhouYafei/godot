@@ -7,8 +7,6 @@ import com.u8.sdk.log.Log;
 import com.u8.sdk.verify.UToken;
 // u8sdk end
 
-import org.godotengine.godot.order.*;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
