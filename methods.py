@@ -1334,6 +1334,13 @@ def android_add_maven_repository(self,url):
 def android_add_dependency(self,depline):
 	self.android_dependencies.append(depline)
 
+def android_add_dependency_jar(self,subpath):
+	base_path = self.Dir(".").abspath+"/"+subpath
+	if len(self.android_dependencies) == 0:
+		self.android_dependencies.append("compile files('%s')" % base_path)
+	else:
+		self.android_dependencies.append("\tcompile files('%s')" % base_path)
+
 def android_add_java_dir(self,subpath):
 	base_path = self.Dir(".").abspath+"/"+subpath
 	self.android_java_dirs.append(base_path)

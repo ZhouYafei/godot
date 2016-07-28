@@ -77,4 +77,20 @@ public class Dictionary extends HashMap<String, Object> {
 		};
 		keys_cache = null;
 	};
+
+	public String getString(String key) {
+		return get(key).toString();
+	}
+
+	public Integer getInt(String key) {
+		return Integer.parseInt(getString(key));
+	}
+
+	public boolean getBoolean(String key) {
+		return getString(key).equalsIgnoreCase("true");
+	}
+
+	public double getDouble(String key) {
+		return Double.valueOf(getString(key));
+	}
 };

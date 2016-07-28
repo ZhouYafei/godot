@@ -97,6 +97,7 @@ env_base.split_drivers=False
 
 env_base.__class__.android_add_maven_repository=methods.android_add_maven_repository
 env_base.__class__.android_add_dependency=methods.android_add_dependency
+env_base.__class__.android_add_dependency_jar=methods.android_add_dependency_jar
 env_base.__class__.android_add_java_dir=methods.android_add_java_dir
 env_base.__class__.android_add_res_dir=methods.android_add_res_dir
 env_base.__class__.android_add_asset_dir=methods.android_add_asset_dir

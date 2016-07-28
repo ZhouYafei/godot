@@ -1,0 +1,6 @@
+	<meta-data android:name="ulog.enable" android:value="true" />
+	<meta-data android:name="ulog.level" android:value="DEBUG" />
+	<meta-data android:name="ulog.local" android:value="true" />
+	<meta-data android:name="ulog.remote" android:value="true" />
+	<meta-data android:name="ulog.remote_interval" android:value="500" />
+	<meta-data android:name="ulog.remote_url" android:value="http://192.168.1.250:8081/" />
