@@ -1517,7 +1517,6 @@
     <ClCompile Include="..\..\drivers\freetype\src\base\ftsystem.c" />
     <ClCompile Include="..\..\drivers\freetype\src\base\fttype1.c" />
     <ClCompile Include="..\..\drivers\freetype\src\base\ftwinfnt.c" />
-    <ClCompile Include="..\..\drivers\freetype\src\base\ftxf86.c" />
     <ClCompile Include="..\..\drivers\freetype\src\bdf\bdf.c" />
     <ClCompile Include="..\..\drivers\freetype\src\cache\ftcache.c" />
     <ClCompile Include="..\..\drivers\freetype\src\cff\cff.c" />

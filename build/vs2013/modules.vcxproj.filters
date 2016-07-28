@@ -111,9 +111,6 @@
     <ClCompile Include="..\..\modules\digest\snappy\csnappy_decompress.cpp">
       <Filter>modules\digest\snappy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\modules\sdk\platform.cpp">
-      <Filter>modules\sdk</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\modules\sdk\register_types.cpp">
       <Filter>modules\sdk</Filter>
     </ClCompile>
@@ -312,6 +309,9 @@
     <ClCompile Include="..\..\modules\cscript\register_types.cpp">
       <Filter>modules\cscript</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\sdk\sdk.cpp">
+      <Filter>modules\sdk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -364,9 +364,6 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\digest\snappy\csnappy_internal_userspace.h">
       <Filter>modules\digest\snappy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\modules\sdk\platform.h">
-      <Filter>modules\sdk</Filter>
     </ClInclude>
     <ClInclude Include="..\..\modules\sdk\register_types.h">
       <Filter>modules\sdk</Filter>
@@ -562,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\cscript\register_types.h">
       <Filter>modules\cscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\sdk\sdk.h">
+      <Filter>modules\sdk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
