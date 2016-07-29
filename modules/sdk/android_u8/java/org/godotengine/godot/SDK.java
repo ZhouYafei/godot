@@ -24,6 +24,7 @@ public class SDK extends Godot.SingletonBase {
 	public final static String CALLBACK_SWITCH_LOGIN = "switch_login";
 	public final static String CALLBACK_LOGOUT = "logout";
 	public final static String CALLBACK_PAY = "pay";
+	public final static String CALLBACK_RESULT = "result";
 
 	private Integer sdkHandler = 0;
 	private String sdkCallback = "";

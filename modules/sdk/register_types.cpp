@@ -50,7 +50,7 @@ void register_sdk_types() {
 #else
 	_sdk = memnew(Sdk);
 #endif
-	Globals::get_singleton()->add_singleton( Globals::Singleton("Sdk",_sdk ) );
+	Globals::get_singleton()->add_singleton( Globals::Singleton("SDK",_sdk ) );
 }
 
 void unregister_sdk_types() {

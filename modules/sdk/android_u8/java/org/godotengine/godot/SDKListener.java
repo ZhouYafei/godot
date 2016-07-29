@@ -78,12 +78,12 @@ public class SDKListener implements IU8SDKListener {
 					// 这里不需要提示，一般SDK有提示
 					// sdk.tip("SDK登录失败");
 					break;
-    				case U8Code.CODE_SHARE_SUCCESS:
-    				sdk.tip("分享成功");
-    				break;
-    				case U8Code.CODE_SHARE_FAILED:
-    				sdk.tip("分享失败");
-    				break;
+					case U8Code.CODE_SHARE_SUCCESS:
+					sdk.tip("分享成功");
+					break;
+					case U8Code.CODE_SHARE_FAILED:
+					sdk.tip("分享失败");
+					break;
 					case U8Code.CODE_PAY_FAIL:
 					sdk.tip("支付失败");
 					break;
@@ -92,7 +92,7 @@ public class SDKListener implements IU8SDKListener {
 					// context.tip("支付成功,到账时间可能稍有延迟");
  					break;
 				}
-				sdk.sendCallback("result", d);
+				sdk.sendCallback(SDK.CALLBACK_RESULT, d);
 			}			
 		});
 	}
