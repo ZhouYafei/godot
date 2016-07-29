@@ -45,6 +45,7 @@ public class SDK extends Godot.SingletonBase {
 			"is_support",
 			// U8User plugin
 			"login",
+			"login_custom",
 			"switch_login",
 			"logout",
 			"show_user_center",
@@ -81,6 +82,20 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// U8 SDK common
 	///////////////////////////////////////////////////////////////////////////
+	// 初始化，设置engine的回调对象/函数
+	public void init(int p_handler, String p_callback) {
+		Log.d("U8SDK", "SDK.init");
+		this.sdkHandler = p_handler;
+		this.sdkCallback = p_callback;
+	}
+	// 弹出系统提示（toast）
+	public void tip(final String tip) {
+		U8SDK.getInstance().runOnMainThread(new Runnable() {
+			@Override public void run() {
+				Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
 	// U8SDK 初始化，必须在onCreate中调用
 	private void initSDK() {
 		U8SDK.getInstance().setSDKListener(new SDKListener(this));
@@ -116,21 +131,18 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// U8User plugin implements
 	///////////////////////////////////////////////////////////////////////////
-	// 初始化，设置engine的回调对象/函数
-	public void init(int p_handler, String p_callback) {
-		this.sdkHandler = p_handler;
-		this.sdkCallback = p_callback;
-	}
-	// 弹出系统提示（toast）
-	public void tip(final String tip) {
+	// 登录接口
+	public void login() {
+		Log.d("U8SDK", "SDK.login");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
-				Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show();
+				U8User.getInstance().login();
 			}
 		});
 	}
 	// 登录接口
-	public void login(final String extension) {
+	public void login_custom(final String extension) {
+		Log.d("U8SDK", "SDK.login");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8User.getInstance().login(extension);
@@ -139,6 +151,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 切换帐号接口
 	public void switch_login() {
+		Log.d("U8SDK", "SDK.switch_login");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8User.getInstance().switchLogin();
@@ -147,6 +160,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 登出接口
 	public void logout() {
+		Log.d("U8SDK", "SDK.logout");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8User.getInstance().logout();
@@ -155,6 +169,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 显示用户中心接口
 	public void show_user_center() {
+		Log.d("U8SDK", "SDK.show_user_center");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8User.getInstance().showAccountCenter();
@@ -163,6 +178,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 提交扩展数据
 	public void submit_extra(final Dictionary data) {
+		Log.d("U8SDK", "SDK.submit_extra");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 
@@ -191,6 +207,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// SDK退出接口
 	public void exit() {
+		Log.d("U8SDK", "SDK.exit");
 		 U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8User.getInstance().exit();
@@ -203,6 +220,7 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// 支付接口
 	public void pay(final Dictionary data){
+		Log.d("U8SDK", "SDK.pay");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 
@@ -242,6 +260,7 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// 开始推送功能
 	public void start_push() {
+		Log.d("U8SDK", "SDK.start_push");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8Push.getInstance().startPush();
@@ -250,6 +269,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 停止推送功能
 	public void stop_push() {
+		Log.d("U8SDK", "SDK.stop_push");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8Push.getInstance().stopPush();
@@ -258,6 +278,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 增加标签
 	public void add_tags(final String[] tags) {
+		Log.d("U8SDK", "SDK.add_tags");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8Push.getInstance().addTags(tags);
@@ -266,6 +287,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 删除标签
 	public void remove_tags(final String[] tags) {
+		Log.d("U8SDK", "SDK.remove_tags");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8Push.getInstance().removeTags(tags);
@@ -274,6 +296,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 增加别名
 	public void add_alias(final String alias) {
+		Log.d("U8SDK", "SDK.add_alias");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8Push.getInstance().addAlias(alias);
@@ -282,6 +305,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 删除别名
 	public void remove_alias(final String alias) {
+		Log.d("U8SDK", "SDK.remove_alias");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8Push.getInstance().removeAlias(alias);
@@ -293,6 +317,7 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// 分享接口
 	public void share(final Dictionary data) {
+		Log.d("U8SDK", "SDK.share");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 
@@ -321,6 +346,7 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// 统计分析
 	public void analytics(final Dictionary data) {
+		Log.d("U8SDK", "SDK.analytics");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				String type = data.getString("type");
@@ -358,6 +384,7 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// 下载
 	public void download(final String url, final boolean showConfirm, final boolean force) {
+		Log.d("U8SDK", "SDK.download");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8Download.getInstance().download(url, showConfirm, force);

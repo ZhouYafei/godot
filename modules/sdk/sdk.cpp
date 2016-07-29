@@ -175,7 +175,12 @@ void Sdk::tip(const String& p_tip) {
 	printf("SDK: tip '%s'\n", p_tip.utf8().get_data());
 }
 
-void Sdk::login(const String& p_extension) {
+void Sdk::login() {
+
+	login_custom("");
+}
+
+void Sdk::login_custom(const String& p_extension) {
 
 	Dictionary d;
 	d["success"] = true;
@@ -274,7 +279,8 @@ void Sdk::_bind_methods() {
  	ObjectTypeDB::bind_method(_MD("init", "inst_id", "callback"),&Sdk::init);
  	ObjectTypeDB::bind_method(_MD("is_support", "plugin_name", "what"),&Sdk::is_support);
  	ObjectTypeDB::bind_method(_MD("tip", "tip"),&Sdk::tip);
- 	ObjectTypeDB::bind_method(_MD("login", "extension"),&Sdk::login);
+ 	ObjectTypeDB::bind_method(_MD("login"),&Sdk::login);
+ 	ObjectTypeDB::bind_method(_MD("login_custom", "extension"),&Sdk::login_custom);
  	ObjectTypeDB::bind_method(_MD("switch_login"),&Sdk::switch_login);
  	ObjectTypeDB::bind_method(_MD("logout"),&Sdk::logout);
  	ObjectTypeDB::bind_method(_MD("show_user_center"),&Sdk::show_user_center);

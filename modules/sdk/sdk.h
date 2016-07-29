@@ -52,7 +52,8 @@ public:
 	void init(int p_handler, const String& p_callback);
 	bool is_support(const String& p_plugin, const String& p_what);
 	void tip(const String& p_tip);
-	void login(const String& p_extension);
+	void login();
+	void login_custom(const String& p_extension);
 	void switch_login();
 	void logout();
 	void show_user_center();
