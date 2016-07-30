@@ -294,6 +294,10 @@ void Sdk::_bind_methods() {
 
  	ObjectTypeDB::bind_method(_MD("init", "inst_id", "callback"),&Sdk::init);
  	ObjectTypeDB::bind_method(_MD("is_support", "plugin_name", "what"),&Sdk::is_support);
+ 	ObjectTypeDB::bind_method(_MD("get_curr_channel"),&Sdk::get_curr_channel);
+ 	ObjectTypeDB::bind_method(_MD("get_logic_channel"),&Sdk::get_logic_channel);
+ 	ObjectTypeDB::bind_method(_MD("get_app_id"),&Sdk::get_app_id);
+ 	ObjectTypeDB::bind_method(_MD("get_app_key"),&Sdk::get_app_key);
  	ObjectTypeDB::bind_method(_MD("tip", "tip"),&Sdk::tip);
  	ObjectTypeDB::bind_method(_MD("login"),&Sdk::login);
  	ObjectTypeDB::bind_method(_MD("login_custom", "extension"),&Sdk::login_custom);
