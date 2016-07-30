@@ -51,6 +51,10 @@ protected:
 public:
 	void init(int p_handler, const String& p_callback);
 	bool is_support(const String& p_plugin, const String& p_what);
+	int get_curr_channel();
+	int get_logic_channel();
+	int get_app_id();
+	String get_app_key();
 	void tip(const String& p_tip);
 	void login();
 	void login_custom(const String& p_extension);

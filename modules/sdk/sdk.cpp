@@ -170,6 +170,22 @@ bool Sdk::is_support(const String& p_plugin, const String& p_what) {
 	return false;
 }
 
+int Sdk::get_curr_channel() {
+	return 0;
+}
+
+int Sdk::get_logic_channel() {
+	return 0;
+}
+
+int Sdk::get_app_id() {
+	return -1;
+}
+
+String Sdk::get_app_key() {
+	return "";
+}
+
 void Sdk::tip(const String& p_tip) {
 
 	printf("SDK: tip '%s'\n", p_tip.utf8().get_data());

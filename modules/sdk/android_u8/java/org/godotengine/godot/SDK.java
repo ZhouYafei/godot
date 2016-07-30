@@ -43,6 +43,10 @@ public class SDK extends Godot.SingletonBase {
 			"init",
 			"tip",
 			"is_support",
+			"get_curr_channel",
+			"get_logic_channel",
+			"get_app_id",
+			"get_app_key",
 			// U8User plugin
 			"login",
 			"login_custom",
@@ -128,6 +132,22 @@ public class SDK extends Godot.SingletonBase {
 		else
 			return false;
 	}
+	// 获取当前接入的渠道号
+	public int get_curr_channel() {
+		return U8SDK.getInstance().getCurrChannel();
+	}
+	// 获取CPS,CPA,CPD等非SDK联运渠道的逻辑渠道号
+	public int get_logic_channel() {
+		return U8SDK.getInstance().getLogicChannel();
+	}
+	// 获取u8server配置的AppID
+	public int get_app_id() {
+		return U8SDK.getInstance().getAppID();
+	}
+	// 获取u8server配置的AppKey
+	public String get_app_key() {
+		return U8SDK.getInstance().getAppKey();
+	}
 	///////////////////////////////////////////////////////////////////////////
 	// U8User plugin implements
 	///////////////////////////////////////////////////////////////////////////
@@ -142,7 +162,7 @@ public class SDK extends Godot.SingletonBase {
 	}
 	// 登录接口
 	public void login_custom(final String extension) {
-		Log.d("U8SDK", "SDK.login");
+		Log.d("U8SDK", "SDK.login_custom");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
 				U8User.getInstance().login(extension);
