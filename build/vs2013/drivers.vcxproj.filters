@@ -3915,9 +3915,6 @@
     <ClCompile Include="..\..\drivers\freetype\src\base\ftwinfnt.c">
       <Filter>drivers\freetype\src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\drivers\freetype\src\base\ftxf86.c">
-      <Filter>drivers\freetype\src\base</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\drivers\freetype\src\bdf\bdf.c">
       <Filter>drivers\freetype\src\bdf</Filter>
     </ClCompile>

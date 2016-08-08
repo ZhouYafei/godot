@@ -211,12 +211,12 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)register_types_ocean.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\modules\register_module_types.cpp" />
-    <ClCompile Include="..\..\modules\sdk\platform.cpp" />
     <ClCompile Include="..\..\modules\sdk\register_types.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_sdk.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)register_types_sdk.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)register_types_sdk.obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="..\..\modules\sdk\sdk.cpp" />
     <ClCompile Include="..\..\modules\spine\register_types.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_spine.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)register_types_spine.obj</ObjectFileName>
@@ -303,8 +303,8 @@
     <ClInclude Include="..\..\modules\ocean\osprite_collision.h" />
     <ClInclude Include="..\..\modules\ocean\register_types.h" />
     <ClInclude Include="..\..\modules\register_module_types.h" />
-    <ClInclude Include="..\..\modules\sdk\platform.h" />
     <ClInclude Include="..\..\modules\sdk\register_types.h" />
+    <ClInclude Include="..\..\modules\sdk\sdk.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\Animation.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\AnimationState.h" />
     <ClInclude Include="..\..\modules\spine\include\spine\AnimationStateData.h" />

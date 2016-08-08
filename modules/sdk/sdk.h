@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  platform.h                                                           */
+/*  sdk.h                                                                */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -27,39 +27,58 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 #ifdef MODULE_SDK_ENABLED
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#ifndef SDK_H
+#define SDK_H
 
 #include "core/object.h"
 
-class Platform : public Object {
+class Sdk : public Object {
 
-	OBJ_TYPE(Platform, Object);
+	OBJ_TYPE(Sdk, Object);
 
-	static Platform* instance;
+	int handler;
+	String callback;
 
-	List<Variant> pending_events;
+	static Sdk* instance;
+
+	void on_result(int p_code, const String& p_msg);
 
 protected:
+	void sendCallback(const String p_what, const Dictionary& p_data = Dictionary());
+
 	static void _bind_methods();
 
-	virtual String on_request(const String& p_type, const Dictionary& p_params);
-
 public:
+	void init(int p_handler, const String& p_callback);
+	bool is_support(const String& p_plugin, const String& p_what);
+	int get_curr_channel();
+	int get_logic_channel();
+	int get_app_id();
+	String get_app_key();
+	void tip(const String& p_tip);
+	void login();
+	void login_custom(const String& p_extension);
+	void switch_login();
+	void logout();
+	void show_user_center();
+	void submit_extra(const Dictionary& p_data);
+	void exit();
+	void pay(const Dictionary& p_data);
+	void start_push();
+	void stop_push();
+	void add_tags(const StringArray& p_tags);
+	void remove_tags(const StringArray& p_tags);
+	void add_alias(const String& p_alias);
+	void remove_alias(const String& p_alias);
+	void share(const Dictionary& p_data);
+	void analytics(const Dictionary& p_data);
+	void download(const String& p_url, bool p_show_confirm, bool p_force);
 
-	// request an sdk operation, and return error code(string), ok = success
-	String request(Variant p_params);
+	static Sdk* get_singleton();
 
-	int get_pending_event_count();
-	Variant pop_pending_event();
-	void post_event(Variant p_event);
-
-	static Platform* get_singleton();
-
-	Platform();
-	virtual ~Platform();
+	Sdk();
+	virtual ~Sdk();
 };
 
-#endif // PLATFORM_H
+#endif // SDK_H
 #endif // MODULE_SDK_ENABLED
-
