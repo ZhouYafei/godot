@@ -166,6 +166,7 @@
     <ClInclude Include="..\..\core\io\json.h" />
     <ClInclude Include="..\..\core\io\marshalls.h" />
     <ClInclude Include="..\..\core\io\md5.h" />
+    <ClInclude Include="..\..\core\io\networked_multiplayer_peer.h" />
     <ClInclude Include="..\..\core\io\packet_peer.h" />
     <ClInclude Include="..\..\core\io\packet_peer_udp.h" />
     <ClInclude Include="..\..\core\io\resource_format_binary.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="..\..\core\io\json.cpp" />
     <ClCompile Include="..\..\core\io\marshalls.cpp" />
     <ClCompile Include="..\..\core\io\md5.cpp" />
+    <ClCompile Include="..\..\core\io\networked_multiplayer_peer.cpp" />
     <ClCompile Include="..\..\core\io\packet_peer.cpp" />
     <ClCompile Include="..\..\core\io\packet_peer_udp.cpp" />
     <ClCompile Include="..\..\core\io\resource_format_binary.cpp" />

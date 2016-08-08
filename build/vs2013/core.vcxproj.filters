@@ -456,6 +456,9 @@
     <ClInclude Include="..\..\core\method_ptrcall.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\io\networked_multiplayer_peer.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\array.cpp">
@@ -813,6 +816,9 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\io\sha256.c">
+      <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\io\networked_multiplayer_peer.cpp">
       <Filter>core\io</Filter>
     </ClCompile>
   </ItemGroup>

@@ -52,6 +52,9 @@
     <Filter Include="modules\cscript">
       <UniqueIdentifier>{b97628e5-675c-4235-b8aa-1f761399a1d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\visual_script">
+      <UniqueIdentifier>{b7c6830a-72ce-4e49-8916-fb2009ceb089}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\modules\register_module_types.cpp">
@@ -312,6 +315,30 @@
     <ClCompile Include="..\..\modules\sdk\sdk.cpp">
       <Filter>modules\sdk</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\register_types.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script_builtin_funcs.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script_editor.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script_flow_control.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script_func_nodes.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script_nodes.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script_yield_nodes.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -562,6 +589,30 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\sdk\sdk.h">
       <Filter>modules\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\register_types.h">
+      <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script.h">
+      <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script_builtin_funcs.h">
+      <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script_editor.h">
+      <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script_flow_control.h">
+      <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script_func_nodes.h">
+      <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script_nodes.h">
+      <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script_yield_nodes.h">
+      <Filter>modules\visual_script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
