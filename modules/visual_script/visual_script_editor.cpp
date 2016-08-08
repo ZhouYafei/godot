@@ -6,6 +6,8 @@
 #include "os/input.h"
 #include "os/keyboard.h"
 
+#ifdef TOOLS_ENABLED
+
 class VisualScriptEditorSignalEdit : public Object {
 
 	OBJ_TYPE(VisualScriptEditorSignalEdit,Object)
@@ -2619,4 +2621,6 @@ void VisualScriptEditor::register_editor() {
 
 
 }
+
+#endif // TOOLS_ENABLED
 

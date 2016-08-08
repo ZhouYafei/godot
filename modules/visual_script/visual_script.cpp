@@ -281,7 +281,9 @@ void VisualScript::_node_ports_changed(int p_id) {
 		}
 	}
 
+#ifdef TOOLS_ENABLED
 	set_edited(true); //something changed, let's set as edited
+#endif
 	emit_signal("node_ports_changed",function,p_id);
 
 }

@@ -7,6 +7,8 @@
 #include "scene/gui/graph_edit.h"
 #include "tools/editor/create_dialog.h"
 
+#ifdef TOOLS_ENABLED
+
 class VisualScriptEditorSignalEdit;
 class VisualScriptEditorVariableEdit;
 
@@ -180,5 +182,7 @@ public:
 	VisualScriptEditor();
 	~VisualScriptEditor();
 };
+
+#endif // TOOLS_ENABLED
 
 #endif // VisualSCRIPT_EDITOR_H
