@@ -142,9 +142,9 @@ void StyleBoxTexture::draw(RID p_canvas_item,const Rect2& p_rect,const Color& p_
 	r.size.x+=expand_margin[MARGIN_LEFT]+expand_margin[MARGIN_RIGHT];
 	r.size.y+=expand_margin[MARGIN_TOP]+expand_margin[MARGIN_BOTTOM];
 	if(region_rect.size.length() != 0)
-		VisualServer::get_singleton()->canvas_item_add_style_box( p_canvas_item,r,region_rect,texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center);
+		VisualServer::get_singleton()->canvas_item_add_style_box( p_canvas_item,r,region_rect,texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center,modulate);
 	else
-		VisualServer::get_singleton()->canvas_item_add_style_box( p_canvas_item,r,texture->get_region(),texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center);
+		VisualServer::get_singleton()->canvas_item_add_style_box( p_canvas_item,r,texture->get_region(),texture->get_rid(),Vector2(margin[MARGIN_LEFT],margin[MARGIN_TOP]),Vector2(margin[MARGIN_RIGHT],margin[MARGIN_BOTTOM]),draw_center,modulate);
 }
 
 void StyleBoxTexture::set_draw_center(bool p_draw) {
@@ -196,6 +196,19 @@ Rect2 StyleBoxTexture::get_region_rect() const {
 }
 
 
+void StyleBoxTexture::set_modulate(const Color& p_modulate) {
+	if (modulate==p_modulate)
+		return;
+	modulate=p_modulate;
+	emit_changed();
+}
+
+Color StyleBoxTexture::get_modulate() const {
+
+	return modulate;
+}
+
+
 void StyleBoxTexture::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_texture","texture:Texture"),&StyleBoxTexture::set_texture);
@@ -213,6 +226,10 @@ void StyleBoxTexture::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("set_draw_center","enable"),&StyleBoxTexture::set_draw_center);
 	ObjectTypeDB::bind_method(_MD("get_draw_center"),&StyleBoxTexture::get_draw_center);
 
+	ObjectTypeDB::bind_method(_MD("set_modulate","color"),&StyleBoxTexture::set_modulate);
+	ObjectTypeDB::bind_method(_MD("get_modulate"),&StyleBoxTexture::get_modulate);
+
+
 	ADD_SIGNAL(MethodInfo("texture_changed"));
 
 	ADD_PROPERTY( PropertyInfo( Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture" ), _SCS("set_texture"),_SCS("get_texture") );
@@ -225,6 +242,7 @@ void StyleBoxTexture::_bind_methods() {
 	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/right", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_RIGHT );
 	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/top", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_TOP );
 	ADD_PROPERTYI( PropertyInfo( Variant::REAL, "expand_margin/bottom", PROPERTY_HINT_RANGE,"-2047,2048,1" ), _SCS("set_expand_margin_size"),_SCS("get_expand_margin_size"), MARGIN_BOTTOM );
+	ADD_PROPERTY( PropertyInfo( Variant::COLOR, "modulate/color" ), _SCS("set_modulate"),_SCS("get_modulate"));
 	ADD_PROPERTY( PropertyInfo( Variant::BOOL, "draw_center" ) , _SCS("set_draw_center"),_SCS("get_draw_center"));
 
 }
@@ -238,6 +256,7 @@ StyleBoxTexture::StyleBoxTexture() {
 	}
 	draw_center=true;
 	region_rect=Rect2(Vector2(0,0),Size2(0,0));
+	modulate=Color(1,1,1,1);
 
 }
 StyleBoxTexture::~StyleBoxTexture() {

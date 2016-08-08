@@ -44,7 +44,7 @@ void GDScriptLanguage::get_string_delimiters(List<String> *p_delimiters) const {
 
 
 }
-String GDScriptLanguage::get_template(const String& p_class_name, const String& p_base_class_name) const {
+Ref<Script> GDScriptLanguage::get_template(const String& p_class_name, const String& p_base_class_name) const {
 
 	String _template = String()+
 	"\nextends %BASE%\n\n"+
@@ -58,7 +58,14 @@ String GDScriptLanguage::get_template(const String& p_class_name, const String& 
 	"\n"+
 	"\n";
 
-	return _template.replace("%BASE%",p_base_class_name);
+	_template = _template.replace("%BASE%",p_base_class_name);
+
+	Ref<GDScript> script;
+	script.instance();
+	script->set_source_code(_template);
+
+	return script;
+
 }
 
 
@@ -352,7 +359,7 @@ void GDScriptLanguage::get_public_functions(List<MethodInfo> *p_functions) const
 	}
 	{
 		MethodInfo mi;
-		mi.name="yield";
+		mi.name="yield:GDFunctionState";
 		mi.arguments.push_back(PropertyInfo(Variant::OBJECT,"object"));
 		mi.arguments.push_back(PropertyInfo(Variant::STRING,"signal"));
 		mi.default_arguments.push_back(Variant::NIL);
@@ -383,7 +390,7 @@ String GDScriptLanguage::make_function(const String& p_class,const String& p_nam
 		for(int i=0;i<p_args.size();i++) {
 			if (i>0)
 				s+=", ";
-			s+=p_args[i];
+			s+=p_args[i].get_slice(":",0);
 		}
 		s+=" ";
 	}
@@ -2437,7 +2444,24 @@ Error GDScriptLanguage::complete_code(const String& p_code, const String& p_base
 				}
 			}
 		} break;
+		case GDParser::COMPLETION_YIELD: {
 
+			const GDParser::Node *node = p.get_completion_node();
+
+			GDCompletionIdentifier t;
+			if (!_guess_expression_type(context,node,p.get_completion_line(),t))
+				break;
+
+			if (t.type==Variant::OBJECT && t.obj_type!=StringName()) {
+
+				List<MethodInfo> sigs;
+				ObjectTypeDB::get_signal_list(t.obj_type,&sigs);
+				for (List<MethodInfo>::Element *E=sigs.front();E;E=E->next()) {
+					options.insert("\""+E->get().name+"\"");
+				}
+			}
+
+		} break;
 
 	}
 

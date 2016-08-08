@@ -959,6 +959,8 @@ bool EditorSettings::_save_text_editor_theme(String p_file) {
 	cf->set_value(theme_section, "word_highlighted_color", ((Color)get("text_editor/word_highlighted_color")).to_html());
 	cf->set_value(theme_section, "search_result_color", ((Color)get("text_editor/search_result_color")).to_html());
 	cf->set_value(theme_section, "search_result_border_color", ((Color)get("text_editor/search_result_border_color")).to_html());
+
+
 	Error err = cf->save(p_file);
 
 	if (err == OK) {
