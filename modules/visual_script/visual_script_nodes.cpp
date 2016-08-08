@@ -2144,8 +2144,8 @@ public:
 	virtual bool is_output_port_unsequenced(int p_idx) const { return out_unsequenced[p_idx]; }
 	virtual bool get_output_port_unsequenced(int p_idx,Variant* r_value,Variant* p_working_mem,String &r_error) const {
 
+#ifdef TOOLS_ENABLED
 		if (!node->get_script_instance() || !node->get_script_instance()->has_method(VisualScriptLanguage::singleton->_get_output_port_unsequenced)) {
-#ifdef DEBUG_ENABLED
 			r_error=RTR("Custom node has no _get_output_port_unsequenced(idx,wmem), but unsequenced ports were specified.");
 			return false;
 		}
