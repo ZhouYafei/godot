@@ -286,6 +286,7 @@ String LuaScript::get_source_code() const {
 
 	return source;
 }
+
 void LuaScript::set_source_code(const String& p_code) {
 
 	source=p_code;
@@ -293,6 +294,21 @@ void LuaScript::set_source_code(const String& p_code) {
 	source_changed_cache=true;
 	//print_line("SC CHANGED "+get_path());
 #endif
+
+}
+
+
+bool LuaScript::has_method(const StringName& p_method) const {
+
+	return true;
+}
+
+MethodInfo LuaScript::get_method_info(const StringName& p_method) const {
+
+	return MethodInfo();
+}
+
+void LuaScript::get_method_list(List<MethodInfo> *p_list) const {
 
 }
 

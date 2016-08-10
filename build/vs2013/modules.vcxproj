@@ -204,6 +204,7 @@
     </ClCompile>
     <ClCompile Include="..\..\modules\ocean\osprite.cpp" />
     <ClCompile Include="..\..\modules\ocean\osprite_collision.cpp" />
+    <ClCompile Include="..\..\modules\ocean\osprite_path.cpp" />
     <ClCompile Include="..\..\modules\ocean\osprite_resource.cpp" />
     <ClCompile Include="..\..\modules\ocean\register_types.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_ocean.obj</ObjectFileName>
@@ -313,6 +314,7 @@
     <ClInclude Include="..\..\modules\luascript\register_types.h" />
     <ClInclude Include="..\..\modules\ocean\osprite.h" />
     <ClInclude Include="..\..\modules\ocean\osprite_collision.h" />
+    <ClInclude Include="..\..\modules\ocean\osprite_path.h" />
     <ClInclude Include="..\..\modules\ocean\register_types.h" />
     <ClInclude Include="..\..\modules\register_module_types.h" />
     <ClInclude Include="..\..\modules\sdk\register_types.h" />

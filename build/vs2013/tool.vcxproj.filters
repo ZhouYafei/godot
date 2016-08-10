@@ -444,6 +444,9 @@
     <ClCompile Include="..\..\tools\editor\filesystem_dock.cpp">
       <Filter>tools\editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tools\editor\plugins\script_text_editor.cpp">
+      <Filter>tools\editor\plugins</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tools\collada\collada.h">

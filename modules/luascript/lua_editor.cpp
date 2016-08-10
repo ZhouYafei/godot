@@ -45,7 +45,8 @@ void LuaScriptLanguage::get_string_delimiters(List<String> *p_delimiters) const 
 
 
 }
-String LuaScriptLanguage::get_template(const String& p_class_name, const String& p_base_class_name) const {
+
+Ref<Script> LuaScriptLanguage::get_template(const String& p_class_name, const String& p_base_class_name) const {
 
 	String _template = String()+
 	"\nlocal node = extends '%BASE%'\n\n"+
@@ -59,7 +60,14 @@ String LuaScriptLanguage::get_template(const String& p_class_name, const String&
 	"\n"
 	"\n";
 
-	return _template.replace("%BASE%",p_base_class_name);
+	_template = _template.replace("%BASE%",p_base_class_name);
+
+	Ref<LuaScript> script;
+	script.instance();
+	script->set_source_code(_template);
+
+	return script;
+
 }
 
 bool LuaScriptLanguage::validate(const String& p_script, int &r_line_error,int &r_col_error,String& r_test_error, const String& p_path,List<String> *r_functions) const {

@@ -242,6 +242,7 @@
     <ClCompile Include="..\..\tools\editor\plugins\sample_library_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\sample_player_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\script_editor_plugin.cpp" />
+    <ClCompile Include="..\..\tools\editor\plugins\script_text_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\shader_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\shader_graph_editor_plugin.cpp" />
     <ClCompile Include="..\..\tools\editor\plugins\spatial_editor_plugin.cpp" />
