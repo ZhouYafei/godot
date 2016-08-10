@@ -161,6 +161,11 @@ private:
 	int text_space;
 	TextAlign text_align;
 
+	// pos/rot interfaces
+	Point2 pos_diff;
+	real_t rot_diff;
+	bool ignore_rotate;
+
 	void _dispose();
 	void _animation_process(float p_delta);
 	void _animation_draw();
@@ -238,6 +243,22 @@ public:
 
 	TextAlign get_text_align() const;
 	void set_text_align(TextAlign p_align);
+
+	// pos/rot interfaces
+	void set_rot_diff(real_t p_diff);
+	real_t get_rot_diff() const;
+
+	void set_ignored_rot(bool p_enable);
+	bool is_ignored_rot() const;
+
+	void set_pos_diff(const Point2& p_diff);
+	const Point2& get_pos_diff() const;
+
+	void set_pos(const Point2& p_pos);
+	const Point2& get_pos() const;
+
+	void set_rot(real_t p_radians);
+	real_t get_rot() const;
 	
 	OSprite();
 	virtual ~OSprite();

@@ -34,6 +34,7 @@
 
 #include "osprite.h"
 #include "osprite_collision.h"
+#include "osprite_path.h"
 
 #include "core/os/file_access.h"
 #include "core/io/resource_loader.h"
@@ -79,19 +80,26 @@ public:
 
 static ResourceFormatLoaderOSprite *resource_loader_osprite = NULL;
 static OSpriteCollision *osprite_collision = NULL;
+static OSpritePath *osprite_path = NULL;
 
 void register_ocean_types() {
 
 	ObjectTypeDB::register_type<OSprite>();
 	ObjectTypeDB::register_type<OSpriteCollision>();
 	ObjectTypeDB::register_type<OSprite::OSpriteResource>();
+	ObjectTypeDB::register_type<OSpritePath>();
+
 	resource_loader_osprite = memnew( ResourceFormatLoaderOSprite );
 	ResourceLoader::add_resource_format_loader(resource_loader_osprite);
 	osprite_collision = memnew (OSpriteCollision);
+	osprite_path = memnew (OSpritePath);
+	Globals::get_singleton()->add_singleton( Globals::Singleton("OSpritePath",osprite_path ) );
 }
 
 void unregister_ocean_types() {
 
+	if (osprite_path != NULL)
+		memdelete (osprite_path);
 	if (OSpriteCollision::get_singleton() != NULL)
 		memdelete (osprite_collision);
 	if (resource_loader_osprite)

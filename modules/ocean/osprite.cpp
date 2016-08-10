@@ -704,6 +704,17 @@ void OSprite::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_text_align"), &OSprite::get_text_align, false);
 	ObjectTypeDB::bind_method(_MD("set_text_align", "align"), &OSprite::set_text_align, false);
 
+	ObjectTypeDB::bind_method(_MD("set_rot_diff","diff"), &OSprite::set_rot_diff);
+	ObjectTypeDB::bind_method(_MD("get_rot_diff"), &OSprite::get_rot_diff);
+	ObjectTypeDB::bind_method(_MD("set_ignored_rot","enable"), &OSprite::set_ignored_rot);
+	ObjectTypeDB::bind_method(_MD("is_ignored_rot"), &OSprite::is_ignored_rot);
+	ObjectTypeDB::bind_method(_MD("set_pos_diff","diff"), &OSprite::set_pos_diff);
+	ObjectTypeDB::bind_method(_MD("get_pos_diff"), &OSprite::get_pos_diff);
+	ObjectTypeDB::bind_method(_MD("set_pos","pos"), &OSprite::set_pos);
+	ObjectTypeDB::bind_method(_MD("get_pos"), &OSprite::get_pos);
+	ObjectTypeDB::bind_method(_MD("set_rot","radian"), &OSprite::set_rot);
+	ObjectTypeDB::bind_method(_MD("get_rot"), &OSprite::get_rot);
+
 	ADD_PROPERTY( PropertyInfo( Variant::INT, "playback/process_mode", PROPERTY_HINT_ENUM, "Fixed,Idle"), _SCS("set_animation_process_mode"), _SCS("get_animation_process_mode"));
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "playback/speed", PROPERTY_HINT_RANGE, "-64,64,0.01"), _SCS("set_speed"), _SCS("get_speed"));
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "playback/active"), _SCS("set_active"), _SCS("is_active"));
@@ -871,6 +882,58 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 	return result;
 }
 
+void OSprite::set_rot_diff(real_t p_diff) {
+
+	rot_diff = p_diff;
+	set_rot(get_rot());
+}
+
+real_t OSprite::get_rot_diff() const {
+
+	return rot_diff;
+}
+
+void OSprite::set_ignored_rot(bool p_enable) {
+
+	ignore_rotate = true;
+}
+
+bool OSprite::is_ignored_rot() const {
+
+	return ignore_rotate;
+}
+
+void OSprite::set_pos_diff(const Point2& p_diff) {
+
+	pos_diff = p_diff;
+	set_pos(get_pos());
+}
+
+const Point2& OSprite::get_pos_diff() const {
+
+	return pos_diff;
+}
+
+void OSprite::set_pos(const Point2& p_pos) {
+
+	Node2D::set_pos(p_pos + pos_diff);
+}
+
+const Point2& OSprite::get_pos() const {
+
+	return Node2D::get_pos() - pos_diff;
+}
+
+void OSprite::set_rot(real_t p_radians) {
+
+	Node2D::set_rot(p_radians + rot_diff);
+}
+
+real_t OSprite::get_rot() const {
+
+	return Node2D::get_rot() - rot_diff;
+}
+
 OSprite::OSprite() {
 
 	res = RES();
@@ -898,6 +961,10 @@ OSprite::OSprite() {
 	text = "";
 	text_space = 0;
 	text_align = ALIGN_CENTER;
+
+	pos_diff = Point2(0,0);
+	rot_diff = 0;
+	ignore_rotate = false;
 }
 
 OSprite::~OSprite() {
