@@ -84,6 +84,9 @@ struct CostCompare {
 
 void GDScriptLanguage::_profiler_enter(GDFunction *p_function, int p_line) {
 
+	if (Thread::get_main_ID()!=Thread::get_caller_ID())
+		return; //no support for other threads than main for now
+
 	if(profiler_stoped)
 		return;
 	ERR_FAIL_COND(stack_level >= MAX_STACK_LEVEL);
@@ -106,6 +109,9 @@ void GDScriptLanguage::_profiler_enter(GDFunction *p_function, int p_line) {
 }
 
 void GDScriptLanguage::_profiler_leave() {
+
+	if (Thread::get_main_ID()!=Thread::get_caller_ID())
+		return; //no support for other threads than main for now
 
 	if(stack_level == 0)
 		return;
