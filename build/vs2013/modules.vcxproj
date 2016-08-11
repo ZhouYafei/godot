@@ -144,7 +144,11 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)register_types_btree.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\modules\cscript\godot_c.cpp" />
-    <ClCompile Include="..\..\modules\cscript\register_types.cpp" />
+    <ClCompile Include="..\..\modules\cscript\register_types.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_cscript.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)register_types_cscript.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)register_types_cscript.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\..\modules\digest\crypt\crypt.cpp" />
     <ClCompile Include="..\..\modules\digest\register_types.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)register_types_digest.obj</ObjectFileName>
