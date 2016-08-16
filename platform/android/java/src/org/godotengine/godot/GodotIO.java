@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.File;
 import android.app.*;
 import android.content.*;
 import android.view.*;
@@ -485,12 +486,17 @@ public class GodotIO {
 			} else if(p_uri.endsWith(".apk")) {
 
 				type = "application/vnd.android.package-archive";
+
 			}
 
 			Intent intent = new Intent();
 			intent.setAction(Intent.ACTION_VIEW);
 			if (!type.equals("")) {
-				intent.setDataAndType(Uri.parse(path), type);
+
+				if(p_uri.endsWith(".apk"))
+					intent.setDataAndType(Uri.fromFile(new File(path)), type);
+				else
+					intent.setDataAndType(Uri.parse(path), type);
 			} else {
 				intent.setData(Uri.parse(path));
 			}
