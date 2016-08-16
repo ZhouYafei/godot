@@ -478,10 +478,13 @@ public class GodotIO {
 			if (path.startsWith("/")) {
 				//absolute path to filesystem, prepend file://
 				path="file://"+path;
-				if (p_uri.endsWith(".png") || p_uri.endsWith(".jpg") || p_uri.endsWith(".gif") || p_uri.endsWith(".webp")) {
+			}
+			if (p_uri.endsWith(".png") || p_uri.endsWith(".jpg") || p_uri.endsWith(".gif") || p_uri.endsWith(".webp")) {
 
-					type="image/*";
-				}
+				type="image/*";
+			} else if(p_uri.endsWith(".apk")) {
+
+				type = "application/vnd.android.package-archive";
 			}
 
 			Intent intent = new Intent();
