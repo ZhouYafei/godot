@@ -39,9 +39,9 @@ class OSpritePath : public Object {
 	List<Stat *> fishs;
 
 	struct GroupStat;
-	struct NormalStat;
+	struct FishStat;
 
-	Stat *_get_stat(Node *p_fish);
+	Stat *_get_stat(Node *p_fish) const;
 
 protected:
 
@@ -51,6 +51,7 @@ public:
 
 	bool set_stat(Node *p_fish, const String& p_key, const Variant& p_value);
 	Variant get_stat(Node *p_fish, const String& p_key);
+	real_t get_length(Node *p_fish) const;
 
 	bool add_fish(const Dictionary& p_params);
 	bool add_group_fish(const Dictionary& p_params);
@@ -58,6 +59,7 @@ public:
 	bool seek(Node *p_fish, float p_pos);
 
 	void move(float p_delta);
+	void clear();
 
 	OSpritePath() {};
 };

@@ -262,6 +262,8 @@ public:
 		, real_t p_delay = 0
 	);
 
+	static real_t run_equation(TransitionType p_trans_type, EaseType p_ease_type, real_t t, real_t b, real_t c, real_t d);
+
 	Tween();
 	~Tween();
 };

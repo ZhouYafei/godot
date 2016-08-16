@@ -528,7 +528,7 @@ void OSprite::reset() {
 
 void OSprite::seek(float p_pos) {
 
-	_animation_process(p_pos);
+	_animation_process(p_pos - current_pos);
 }
 
 float OSprite::tell() const {
