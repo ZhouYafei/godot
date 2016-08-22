@@ -923,7 +923,6 @@ GDScript::GDScript() : script_list(this) {
 		GDScriptLanguage::get_singleton()->lock->unlock();
 	}
 #endif
-	instances.set_check_enabled(false);
 }
 
 GDScript::~GDScript() {
