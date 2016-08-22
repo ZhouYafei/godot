@@ -35,6 +35,9 @@
 #include "scene/resources/world_2d.h"
 #include "os/thread_safe.h"
 #include "self_list.h"
+#include "io/networked_multiplayer_peer.h"
+
+
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
@@ -173,8 +176,57 @@ private:
 
 	List<Ref<SceneTreeTimer> > timers;
 
+
+	///network///
+
+	enum NetworkCommands {
+		NETWORK_COMMAND_REMOTE_CALL,
+		NETWORK_COMMAND_REMOTE_SET,
+		NETWORK_COMMAND_SIMPLIFY_PATH,
+		NETWORK_COMMAND_CONFIRM_PATH,
+	};
+
+	Ref<NetworkedMultiplayerPeer> network_peer;
+
+	Set<int> connected_peers;
+	void _network_peer_connected(int p_id);
+	void _network_peer_disconnected(int p_id);
+
+	void _connected_to_server();
+	void _connection_failed();
+	void _server_disconnected();
+
+	//path sent caches
+	struct PathSentCache {
+		Map<int,bool> confirmed_peers;
+		int id;
+	};
+
+	HashMap<NodePath,PathSentCache> path_send_cache;
+	int last_send_cache_id;
+
+	//path get caches
+	struct PathGetCache {
+		struct NodeInfo {
+			NodePath path;
+			ObjectID instance;
+		};
+
+		Map<int,NodeInfo> nodes;
+	};
+
+	Map<int,PathGetCache> path_get_cache;
+
+	void _network_process_packet(int p_from, const Array& p_packet);
+	void _network_poll();
+
 	static SceneTree *singleton;
 friend class Node;
+
+
+
+
+	void _rpc(Node* p_from,int p_to,bool p_unreliable,bool p_set,const StringName& p_name,const Variant** p_arg,int p_argcount);
 
 	void tree_changed();
 	void node_removed(Node *p_node);
@@ -250,6 +302,7 @@ friend class Viewport;
 
 #endif
 protected:
+
 
 	void _notification(int p_notification);
 	static void _bind_methods();
@@ -365,6 +418,15 @@ public:
 	static SceneTree* get_singleton() { return singleton; }
 
 	void drop_files(const Vector<String>& p_files,int p_from_screen=0);
+
+	//network API
+
+	void set_network_peer(const Ref<NetworkedMultiplayerPeer>& p_network_peer);
+	bool is_network_server() const;
+	int get_network_unique_id() const;
+
+	void set_refuse_new_network_connections(bool p_refuse);
+	bool is_refusing_new_network_connections() const;
 
 	SceneTree();
 	~SceneTree();

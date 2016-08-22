@@ -53,6 +53,21 @@ public:
 		PAUSE_MODE_PROCESS
 	};
 
+	enum NetworkMode {
+
+		NETWORK_MODE_INHERIT,
+		NETWORK_MODE_MASTER,
+		NETWORK_MODE_SLAVE
+	};
+
+	enum RPCMode {
+
+		RPC_MODE_DISABLED, //no rpc for this method, calls to this will be blocked (default)
+		RPC_MODE_REMOTE, // using rpc() on it will call method / set property in all other peers
+		RPC_MODE_SYNC, // using rpc() on it will call method / set property in all other peers and locally
+		RPC_MODE_MASTER, // usinc rpc() on it will call method on wherever the master is, be it local or remote
+		RPC_MODE_SLAVE, // usinc rpc() on it will call method for all slaves, be it local or remote
+	};
 
 	struct Comparator {
 
@@ -67,6 +82,8 @@ private:
 		SceneTree::Group *group;
 		GroupData() { persistent=false; }
 	};
+
+
 
 	struct Data {
 
@@ -98,6 +115,13 @@ private:
 
 		PauseMode pause_mode;
 		Node *pause_owner;
+
+		NetworkMode network_mode;
+		Node *network_owner;
+		Map<StringName,RPCMode> rpc_methods;
+		Map<StringName,RPCMode> rpc_properties;
+
+
 		// variables used to properly sort the node when processing, ignored otherwise
 		//should move all the stuff below to bits
 		bool fixed_process;
@@ -112,6 +136,8 @@ private:
 		bool use_placeholder;
 
 		bool display_folded;
+
+		mutable NodePath *path_cache;
 
 	} data;
 
@@ -134,6 +160,7 @@ private:
 	void _propagate_validate_owner();
 	void _print_stray_nodes();
 	void _propagate_pause_owner(Node*p_owner);
+	void _propagate_network_owner(Node*p_owner);
 	Array _get_node_and_resource(const NodePath& p_path);
 
 	void _duplicate_signals(const Node* p_original,Node* p_copy) const;
@@ -142,6 +169,11 @@ private:
 
 	Array _get_children() const;
 	Array _get_groups() const;
+
+	Variant _rpc_bind(const Variant** p_args, int p_argcount, Variant::CallError& r_error);
+	Variant _rpc_unreliable_bind(const Variant** p_args, int p_argcount, Variant::CallError& r_error);
+	Variant _rpc_id_bind(const Variant** p_args, int p_argcount, Variant::CallError& r_error);
+	Variant _rpc_unreliable_id_bind(const Variant** p_args, int p_argcount, Variant::CallError& r_error);
 
 friend class SceneTree;
 
@@ -186,6 +218,7 @@ public:
 		NOTIFICATION_INSTANCED=20,
 		NOTIFICATION_DRAG_BEGIN=21,
 		NOTIFICATION_DRAG_END=22,
+		NOTIFICATION_PATH_CHANGED=23,
 	};
 
 	/* NODE/TREE */
@@ -331,7 +364,32 @@ public:
 
 	void set_display_folded(bool p_folded);
 	bool is_displayed_folded() const;
-	/* CANVAS */
+	/* NETWORK */
+
+	void set_network_mode(NetworkMode p_mode);
+	NetworkMode get_network_mode() const;
+	bool is_network_master() const;
+
+	void rpc_config(const StringName& p_method,RPCMode p_mode); // config a local method for RPC
+	void rset_config(const StringName& p_property,RPCMode p_mode); // config a local property for RPC
+
+	void rpc(const StringName& p_method,VARIANT_ARG_LIST); //rpc call, honors RPCMode
+	void rpc_unreliable(const StringName& p_method,VARIANT_ARG_LIST); //rpc call, honors RPCMode
+	void rpc_id(int p_peer_id,const StringName& p_method,VARIANT_ARG_LIST); //rpc call, honors RPCMode
+	void rpc_unreliable_id(int p_peer_id,const StringName& p_method,VARIANT_ARG_LIST); //rpc call, honors RPCMode
+
+	void rpcp(int p_peer_id,bool p_unreliable,const StringName& p_method,const Variant** p_arg,int p_argcount);
+
+	void rset(const StringName& p_property, const Variant& p_value); //remote set call, honors RPCMode
+	void rset_unreliable(const StringName& p_property,const Variant& p_value); //remote set call, honors RPCMode
+	void rset_id(int p_peer_id,const StringName& p_property,const Variant& p_value); //remote set call, honors RPCMode
+	void rset_unreliable_id(int p_peer_id,const StringName& p_property,const Variant& p_value); //remote set call, honors RPCMode
+
+	void rsetp(int p_peer_id,bool p_unreliable,const StringName& p_property,const Variant& p_value);
+
+	bool can_call_rpc(const StringName& p_method) const;
+	bool can_call_rset(const StringName& p_property) const;
+
 
 	Node();
 	~Node();

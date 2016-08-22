@@ -1518,7 +1518,7 @@ static void _make_function_hint(const GDParser::FunctionNode* p_func,int p_argid
 }
 
 
-static void _find_type_arguments(const GDParser::Node*p_node,int p_line,const StringName& p_method,const GDCompletionIdentifier& id, int p_argidx, Set<String>& result, String& arghint) {
+static void _find_type_arguments(GDCompletionContext& context,const GDParser::Node*p_node,int p_line,const StringName& p_method,const GDCompletionIdentifier& id, int p_argidx, Set<String>& result, String& arghint) {
 
 
 	//print_line("find type arguments?");
@@ -1755,8 +1755,30 @@ static void _find_type_arguments(const GDParser::Node*p_node,int p_line,const St
 				if (p_argidx==0) {
 					List<MethodInfo> sigs;
 					ObjectTypeDB::get_signal_list(id.obj_type,&sigs);
+
+					if (id.script.is_valid()) {
+						id.script->get_script_signal_list(&sigs);
+					} else if (id.value.get_type()==Variant::OBJECT) {
+						Object *obj = id.value;
+						if (obj && !obj->get_script().is_null()) {
+							Ref<Script> scr=obj->get_script();
+							if (scr.is_valid()) {
+								scr->get_script_signal_list(&sigs);
+							}
+						}
+					}
+
 					for (List<MethodInfo>::Element *E=sigs.front();E;E=E->next()) {
 						result.insert("\""+E->get().name+"\"");
+					}
+
+				} else if (p_argidx==2){
+
+
+					if (context._class) {
+						for(int i=0;i<context._class->functions.size();i++) {
+							result.insert("\""+context._class->functions[i]->name+"\"");
+						}
 					}
 				}
 				/*if (p_argidx==2) {
@@ -1999,7 +2021,7 @@ static void _find_call_arguments(GDCompletionContext& context,const GDParser::No
 						if (!context._class->owner)
 							ci.value=context.base;
 
-						_find_type_arguments(p_node,p_line,id->name,ci,p_argidx,result,arghint);
+						_find_type_arguments(context,p_node,p_line,id->name,ci,p_argidx,result,arghint);
 						//guess type..
 						/*
 						List<MethodInfo> methods;
@@ -2022,7 +2044,7 @@ static void _find_call_arguments(GDCompletionContext& context,const GDParser::No
 			GDCompletionIdentifier ci;
 			if (_guess_expression_type(context,op->arguments[0],p_line,ci)) {
 
-				_find_type_arguments(p_node,p_line,id->name,ci,p_argidx,result,arghint);
+				_find_type_arguments(context,p_node,p_line,id->name,ci,p_argidx,result,arghint);
 				return;
 			}
 

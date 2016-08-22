@@ -12,29 +12,43 @@ protected:
 public:
 
 	enum {
-		TARGET_ALL_PEERS=0xFFFFFF // send to this for all peers
+		TARGET_PEER_BROADCAST=0,
+		TARGET_PEER_SERVER=1
 	};
-
 	enum TransferMode {
 		TRANSFER_MODE_UNRELIABLE,
+		TRANSFER_MODE_UNRELIABLE_ORDERED,
 		TRANSFER_MODE_RELIABLE,
-		TRANSFER_MODE_ORDERED
 	};
 
-	virtual void set_transfer_mode(TransferMode p_mode)=0;
-	virtual void set_target_peer(int p_peer)=0;
-	virtual void set_channel(int p_channel)=0;
+	enum ConnectionStatus {
+		CONNECTION_DISCONNECTED,
+		CONNECTION_CONNECTING,
+		CONNECTION_CONNECTED,
+	};
 
+
+	virtual void set_transfer_mode(TransferMode p_mode)=0;
+	virtual void set_target_peer(int p_peer_id)=0;
 
 	virtual int get_packet_peer() const=0;
-	virtual int get_packet_channel() const=0;
 
+	virtual bool is_server() const=0;
 
 	virtual void poll()=0;
+
+	virtual int get_unique_id() const=0;
+
+	virtual void set_refuse_new_connections(bool p_enable)=0;
+	virtual bool is_refusing_new_connections() const=0;
+
+
+	virtual ConnectionStatus get_connection_status() const=0;
 
 	NetworkedMultiplayerPeer();
 };
 
 VARIANT_ENUM_CAST( NetworkedMultiplayerPeer::TransferMode )
+VARIANT_ENUM_CAST( NetworkedMultiplayerPeer::ConnectionStatus )
 
 #endif // NetworkedMultiplayerPeer_H

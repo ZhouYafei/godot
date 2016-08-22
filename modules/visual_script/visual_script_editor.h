@@ -13,6 +13,7 @@ class VisualScriptEditorSignalEdit;
 class VisualScriptEditorVariableEdit;
 
 
+#ifdef TOOLS_ENABLED
 
 class VisualScriptEditor : public ScriptEditorBase {
 	OBJ_TYPE(VisualScriptEditor,ScriptEditorBase)
@@ -182,6 +183,7 @@ public:
 	VisualScriptEditor();
 	~VisualScriptEditor();
 };
+#endif
 
 #endif // TOOLS_ENABLED
 
