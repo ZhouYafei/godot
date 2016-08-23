@@ -526,3 +526,6 @@ void OSpritePath::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("move","delta"),&OSpritePath::move);
 	ObjectTypeDB::bind_method(_MD("clear"),&OSpritePath::clear);
 }
+
+OSpritePath::~OSpritePath() {
+}
