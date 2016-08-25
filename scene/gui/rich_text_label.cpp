@@ -278,7 +278,7 @@ if (m_height > line_height) {\
 							cw=tab_size*font->get_char_size(' ').width;
 						}
 
-						if (end>0 && w+cw+begin > p_width ) {
+						if (end>0 && w+cw+begin+wofs > p_width ) {
 							break; //don't allow lines longer than assigned width
 						}
 
