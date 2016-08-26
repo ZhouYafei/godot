@@ -56,6 +56,7 @@ public:
 	int get_app_id();
 	String get_app_key();
 	void tip(const String& p_tip);
+	String get_network_type();
 	void login();
 	void login_custom(const String& p_extension);
 	void switch_login();

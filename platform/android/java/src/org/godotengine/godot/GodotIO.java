@@ -35,6 +35,7 @@ import android.content.res.AssetManager;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
+import java.lang.Runtime;
 import android.app.*;
 import android.content.*;
 import android.view.*;
@@ -476,10 +477,6 @@ public class GodotIO {
 			Log.v("MyApp", "TRYING TO OPEN URI: " + p_uri);
 			String path = p_uri;
 			String type="";
-			if (path.startsWith("/")) {
-				//absolute path to filesystem, prepend file://
-				path="file://"+path;
-			}
 			if (p_uri.endsWith(".png") || p_uri.endsWith(".jpg") || p_uri.endsWith(".gif") || p_uri.endsWith(".webp")) {
 
 				type="image/*";
@@ -493,8 +490,18 @@ public class GodotIO {
 			intent.setAction(Intent.ACTION_VIEW);
 			if (!type.equals("")) {
 
-				if(p_uri.endsWith(".apk"))
-					intent.setDataAndType(Uri.fromFile(new File(path)), type);
+				if(p_uri.endsWith(".apk")) {
+
+					try {
+						String[] cmds= {"chmod", "777", path};
+						Runtime.getRuntime().exec(cmds);
+					} catch (IOException e) {
+
+						e.printStackTrace();
+					}
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.setDataAndType(Uri.parse("file://"+path), type);
+				}
 				else
 					intent.setDataAndType(Uri.parse(path), type);
 			} else {
