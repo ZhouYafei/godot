@@ -11,6 +11,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
+
 /***
  * 记得将游戏工程中的AndroidManifest.xml中application节点，增加一个android:name="U8Application"
  * 如果游戏有自己的Application。那么通过实现IApplicationListener接口来实现，而不要使用继承Application。
@@ -42,6 +47,7 @@ public class SDK extends Godot.SingletonBase {
 			// SDK common
 			"init",
 			"tip",
+			"get_network_type",
 			"is_support",
 			"get_curr_channel",
 			"get_logic_channel",
@@ -99,6 +105,53 @@ public class SDK extends Godot.SingletonBase {
 				Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show();
 			}
 		});
+	}
+	// 获取网络连接类型
+	public String get_network_type() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if(connectivityManager == null)
+			return "none";
+		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+		if(info == null)
+			return "none";
+		int type = info.getType();
+		int sub = info.getSubtype();
+
+		switch(type) {
+			case ConnectivityManager.TYPE_WIFI:
+				return "wifi";
+			case ConnectivityManager.TYPE_ETHERNET:
+				return "ethernet";
+			case ConnectivityManager.TYPE_BLUETOOTH:
+				return "bluetooth";
+			case ConnectivityManager.TYPE_WIMAX:
+				return "wimax";
+			case ConnectivityManager.TYPE_MOBILE: {
+				switch(sub) {
+					case TelephonyManager.NETWORK_TYPE_1xRTT:
+					case TelephonyManager.NETWORK_TYPE_CDMA:
+					case TelephonyManager.NETWORK_TYPE_EDGE:
+					case TelephonyManager.NETWORK_TYPE_GPRS:
+					case TelephonyManager.NETWORK_TYPE_IDEN:
+						return "2G";
+					case TelephonyManager.NETWORK_TYPE_HSDPA:
+					case TelephonyManager.NETWORK_TYPE_HSUPA:
+					case TelephonyManager.NETWORK_TYPE_HSPA:
+					case TelephonyManager.NETWORK_TYPE_EVDO_0:
+					case TelephonyManager.NETWORK_TYPE_EVDO_A:
+					case TelephonyManager.NETWORK_TYPE_UMTS:
+						return "3G";
+					case TelephonyManager.NETWORK_TYPE_LTE: // 4G
+					case TelephonyManager.NETWORK_TYPE_EHRPD: // 3G ++ interop / with 4G
+					case TelephonyManager.NETWORK_TYPE_HSPAP: // 3G ++ but marketed as 4G
+						return "4G";
+					default:
+						return "unknown";
+				}
+			}
+			default:
+				return "unknown";
+		}
 	}
 	// U8SDK 初始化，必须在onCreate中调用
 	private void initSDK() {

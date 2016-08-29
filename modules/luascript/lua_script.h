@@ -172,6 +172,8 @@ public:
 	virtual void get_script_signal_list(List<MethodInfo,DefaultAllocator> *) const {}
 	virtual bool get_property_default_value(const StringName& p_property,Variant& r_value) const;
 
+	virtual void get_script_method_list(List<MethodInfo> *p_list) const {}
+
 	virtual String get_node_type() const;
 	void set_script_path(const String& p_path) { path=p_path; } //because subclasses need a path too...
 	Error load_source_code(const String& p_path);
@@ -242,6 +244,11 @@ public:
 	virtual Variant call(const StringName& p_method,const Variant** p_args,int p_argcount,Variant::CallError &r_error);
 	virtual void call_multilevel(const StringName& p_method,const Variant** p_args,int p_argcount);
 	virtual void call_multilevel_reversed(const StringName& p_method,const Variant** p_args,int p_argcount);
+
+	virtual bool is_placeholder() const { return true; }
+
+	virtual RPCMode get_rpc_mode(const StringName& p_method) const { return RPC_MODE_DISABLED; }
+	virtual RPCMode get_rset_mode(const StringName& p_variable) const { return RPC_MODE_DISABLED; }
 
 //	Variant debug_get_member_by_index(int p_idx) const { return members[p_idx]; }
 

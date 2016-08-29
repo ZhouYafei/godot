@@ -1787,6 +1787,7 @@ Error GDCompiler::_parse_class(GDScript *p_script, GDScript *p_owner, const GDPa
 	if (p_keep_state) {
 
 		print_line("RELOAD KEEP "+p_script->path);
+		p_script->thread_lock->lock();
 		for (Set<Object*>::Element *E=p_script->instances.front();E;) {
 
 			Set<Object*>::Element *N = E->next();
@@ -1828,6 +1829,7 @@ Error GDCompiler::_parse_class(GDScript *p_script, GDScript *p_owner, const GDPa
 				GDInstance *gi = static_cast<GDInstance*>(si);
 				gi->reload_members();
 			}
+			p_script->thread_lock->unlock();
 
 			E=N;
 

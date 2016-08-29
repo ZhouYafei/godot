@@ -89,7 +89,7 @@ env_base.android_launcher_chunk=""
 env_base.android_permission_chunk=""
 env_base.android_appattributes_chunk=""
 env_base.android_metadata_chunk=""
-env_base.disabled_modules=["behavior_tree"]
+env_base.disabled_modules=["behavior_tree","enet"]
 env_base.use_ptrcall=False
 env_base.split_drivers=False
 

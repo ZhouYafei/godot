@@ -410,6 +410,9 @@ private:
 				}
 				if ( (aux->right->color==BLACK) && (aux->left->color==BLACK) ) {
 					_set_color(aux,RED);
+					// bug?
+					if(node==node->parent)
+						break;
 					node=node->parent;
 				} else {
 					if (aux->right->color==BLACK) {

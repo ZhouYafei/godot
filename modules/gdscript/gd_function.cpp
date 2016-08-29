@@ -662,7 +662,7 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 					base->call_ptr(*methodname,(const Variant**)argptrs,argc,NULL,err);
 				}
 #ifdef DEBUG_ENABLED
-				if (GDScriptLanguage::get_singleton()->profiling) {
+				if (GDScriptLanguage::get_singleton() && GDScriptLanguage::get_singleton()->profiling) {
 					function_call_time+=OS::get_singleton()->get_ticks_usec() - call_time;
 				}
 #endif

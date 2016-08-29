@@ -608,7 +608,7 @@ Error GDScript::reload(bool p_keep_state) {
 	int instance_size = instances.size();
 	thread_lock->unlock();
 	ERR_FAIL_COND_V(instance_size > 0,ERR_ALREADY_IN_USE);
-	ERR_FAIL_COND_V(!p_keep_state && instances.size(),ERR_ALREADY_IN_USE);
+	ERR_FAIL_COND_V(!p_keep_state && instance_size,ERR_ALREADY_IN_USE);
 
 	String basedir=path;
 
@@ -1771,6 +1771,7 @@ void GDScriptLanguage::reload_tool_script(const Ref<Script>& p_script,bool p_sof
 			//save state and remove script from instances
 			Map<ObjectID,List<Pair<StringName,Variant> > >& map = to_reload[E->get()];
 
+			E->get()->thread_lock->lock();
 			while(E->get()->instances.front()) {
 				Object *obj = E->get()->instances.front()->get();
 				//save instance info
@@ -1782,6 +1783,7 @@ void GDScriptLanguage::reload_tool_script(const Ref<Script>& p_script,bool p_sof
 					obj->set_script(RefPtr());
 				}
 			}
+			E->get()->thread_lock->unlock();
 
 			//same thing for placeholders
 #ifdef TOOLS_ENABLED

@@ -191,6 +191,11 @@ void Sdk::tip(const String& p_tip) {
 	printf("SDK: tip '%s'\n", p_tip.utf8().get_data());
 }
 
+String Sdk::get_network_type() {
+
+	return "wifi";
+}
+
 void Sdk::login() {
 
 	login_custom("");
@@ -299,6 +304,7 @@ void Sdk::_bind_methods() {
  	ObjectTypeDB::bind_method(_MD("get_app_id"),&Sdk::get_app_id);
  	ObjectTypeDB::bind_method(_MD("get_app_key"),&Sdk::get_app_key);
  	ObjectTypeDB::bind_method(_MD("tip", "tip"),&Sdk::tip);
+ 	ObjectTypeDB::bind_method(_MD("get_network_type"),&Sdk::get_network_type);
  	ObjectTypeDB::bind_method(_MD("login"),&Sdk::login);
  	ObjectTypeDB::bind_method(_MD("login_custom", "extension"),&Sdk::login_custom);
  	ObjectTypeDB::bind_method(_MD("switch_login"),&Sdk::switch_login);

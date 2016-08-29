@@ -62,6 +62,7 @@ public:
 	void clear();
 
 	OSpritePath() {};
+	virtual ~OSpritePath();
 };
 
 
