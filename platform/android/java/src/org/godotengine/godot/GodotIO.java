@@ -476,15 +476,8 @@ public class GodotIO {
 		try {
 			Log.v("MyApp", "TRYING TO OPEN URI: " + p_uri);
 			String path = p_uri;
-			String type="";
-			if (p_uri.endsWith(".png") || p_uri.endsWith(".jpg") || p_uri.endsWith(".gif") || p_uri.endsWith(".webp")) {
 
-				type="image/*";
-			} else if(p_uri.endsWith(".apk")) {
-
-				type = "application/vnd.android.package-archive";
-
-			}
+			String type = MimeTypes.getMimeType(p_uri);
 
 			Intent intent = new Intent();
 			intent.setAction(Intent.ACTION_VIEW);
