@@ -48,7 +48,11 @@ void OSpriteCollision::_notification(int p_what) {
 	case NOTIFICATION_FIXED_PROCESS:
 	case NOTIFICATION_PROCESS: {
 
-		_check_collision();
+		delta_time += get_process_delta_time();
+		if(delta_time >= 0.1) {
+			_check_collision();
+			delta_time -= 0.1;
+		}
 	}
 	break;
 	}
@@ -62,6 +66,7 @@ OSpriteCollision *OSpriteCollision::get_singleton() {
 OSpriteCollision::OSpriteCollision() {
 
 	singleton = this;
+	delta_time = 0;
 
 	collision_objects.resize(OSprite::COLLISION_MAX);
 

@@ -42,6 +42,8 @@ class OSpriteCollision : public Node {
 	typedef Vector<CollisionIds> CollisionObjects;
 	CollisionObjects collision_objects;
 
+	float delta_time;
+
 	void _set_process(bool p_mode);
 	void _check_collision();
 	bool _is_collision(size_t left, size_t right);
