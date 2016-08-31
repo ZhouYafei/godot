@@ -419,7 +419,7 @@ public class MimeTypes {
 
 	public final static String getMimeType(String p_uri) {
 
-		String ext = p_uri.substring(p_uri.lastIndexOf(".") + 1).toUpperCase();
+		String ext = p_uri.substring(p_uri.lastIndexOf(".") + 1).toLowerCase();
 		Object o = types.get(ext);
 		return (o == null) ? "" : o.toString();
 	}

@@ -496,6 +496,7 @@ public class GodotIO {
 					intent.setDataAndType(Uri.parse("file://"+path), type);
 				}
 				else
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.setDataAndType(Uri.parse(path), type);
 			} else {
 				intent.setData(Uri.parse(path));
