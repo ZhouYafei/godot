@@ -1072,11 +1072,21 @@ int Tree::draw_item(const Point2i& p_pos,const Point2& p_draw_ofs, const Size2& 
 			if (p_item->cells[i].selected && select_mode!=SELECT_ROW) {
 
 				Rect2i r(item_rect.pos,item_rect.size);
+				if (p_item->cells[i].text.size() > 0){
+					float icon_width = p_item->cells[i].get_icon_size().width;
+					r.pos.x += icon_width;
+					r.size.x -= icon_width;
+				}
 				//r.grow(cache.selected->get_margin(MARGIN_LEFT));
-				if (has_focus())
+				if (has_focus()){
 					cache.selected_focus->draw(ci,r );
-				else
+					p_item->set_meta("__focus_rect", Rect2(r.pos,r.size));
+				} else {
 					cache.selected->draw(ci,r );
+				}
+				if (text_editor->is_visible()){
+					text_editor->set_pos(get_global_pos() + r.pos);
+				}
 			}
 
 			if (p_item->cells[i].custom_bg_color) {
@@ -2328,9 +2338,22 @@ void Tree::_input_event(InputEvent p_event) {
 							range_drag_enabled=false;
 							Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
 							warp_mouse(range_drag_capture_pos);
-						} else
-							edit_selected();
+						} else {
 
+							if (delayed_text_editor) {
+								uint64_t diff = OS::get_singleton()->get_ticks_msec() - first_selection_time;
+								if (diff >= 400 && diff <= 800)
+									edit_selected();
+								// fast double click
+								else if (diff < 400) {
+									emit_signal("item_double_clicked");
+								}
+
+								first_selection_time = OS::get_singleton()->get_ticks_msec();
+							} else {
+								edit_selected();
+							}
+						}
 						pressing_for_editor=false;
 
 					}
@@ -2468,16 +2491,7 @@ bool Tree::edit_selected() {
 	if (!s->cells[col].editable)
 		return false;
 
-	Rect2 rect;
-	rect.pos.y = get_item_offset(s) - get_scroll().y;
-
-	for(int i=0;i<col;i++) {
-
-		rect.pos.x+=get_column_width(i);
-	}
-
-	rect.size.width=get_column_width(col);
-	rect.size.height=compute_item_height(s)+cache.vseparation;
+	Rect2 rect = s->get_meta("__focus_rect");
 
 	popup_edited_item=s;
 	popup_edited_item_col=col;
@@ -2848,7 +2862,6 @@ void Tree::item_changed(int p_column,TreeItem *p_item) {
 
 void Tree::item_selected(int p_column,TreeItem *p_item) {
 
-
 	if (select_mode==SELECT_MULTI) {
 
 		if (!p_item->cells[p_column].selectable)
@@ -2856,8 +2869,11 @@ void Tree::item_selected(int p_column,TreeItem *p_item) {
 
 		p_item->cells[p_column].selected=true;
 		//emit_signal("multi_selected",p_item,p_column,true); - NO this is for TreeItem::select
+		if (delayed_text_editor)
+			first_selection_time = OS::get_singleton()->get_ticks_msec();
 
 	} else {
+
 		select_single_item(p_item,root,p_column);
 	}
 	update();
@@ -3128,7 +3144,7 @@ void Tree::ensure_cursor_is_visible() {
 	int screenh=get_size().height-h_scroll->get_combined_minimum_size().height;
 
 	if (ofs+h>v_scroll->get_val()+screenh)
-		v_scroll->set_val(ofs-screenh+h);
+		v_scroll->call_deferred("set_val", ofs-screenh+h);
 	else if (ofs < v_scroll->get_val())
 		v_scroll->set_val(ofs);
 }
@@ -3503,6 +3519,16 @@ bool Tree::get_allow_rmb_select() const{
 	return allow_rmb_select;
 }
 
+
+void Tree::set_delayed_text_editor(bool enabled) {
+	delayed_text_editor = enabled;
+}
+
+bool Tree::is_delayed_text_editor_enabled() const {
+	return delayed_text_editor;
+}
+
+
 void Tree::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("_range_click_timeout"),&Tree::_range_click_timeout);
@@ -3556,6 +3582,9 @@ void Tree::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("set_allow_rmb_select","allow"),&Tree::set_allow_rmb_select);
 	ObjectTypeDB::bind_method(_MD("get_allow_rmb_select"),&Tree::get_allow_rmb_select);
 
+	ObjectTypeDB::bind_method(_MD("set_delayed_text_editor","enable"),&Tree::set_delayed_text_editor);
+	ObjectTypeDB::bind_method(_MD("is_delayed_text_editor_enabled"),&Tree::is_delayed_text_editor_enabled);
+
 
 	ObjectTypeDB::bind_method(_MD("set_single_select_cell_editing_only_when_already_selected","enable"),&Tree::set_single_select_cell_editing_only_when_already_selected);
 	ObjectTypeDB::bind_method(_MD("get_single_select_cell_editing_only_when_already_selected"),&Tree::get_single_select_cell_editing_only_when_already_selected);
@@ -3566,6 +3595,7 @@ void Tree::_bind_methods() {
 	ADD_SIGNAL( MethodInfo("item_rmb_selected",PropertyInfo(Variant::VECTOR2,"pos")));
 	ADD_SIGNAL( MethodInfo("empty_tree_rmb_selected",PropertyInfo(Variant::VECTOR2,"pos")));
 	ADD_SIGNAL( MethodInfo("item_edited"));
+	ADD_SIGNAL( MethodInfo("item_double_clicked"));
 	ADD_SIGNAL( MethodInfo("item_collapsed",PropertyInfo(Variant::OBJECT,"item")));
 	//ADD_SIGNAL( MethodInfo("item_doubleclicked" ) );
 	ADD_SIGNAL( MethodInfo("button_pressed",PropertyInfo(Variant::OBJECT,"item"),PropertyInfo(Variant::INT,"column"),PropertyInfo(Variant::INT,"id")));
@@ -3669,6 +3699,9 @@ Tree::Tree() {
 	force_select_on_already_selected=false;
 
 	allow_rmb_select=false;
+
+	first_selection_time = 0;
+	delayed_text_editor = false;
 }
 
 

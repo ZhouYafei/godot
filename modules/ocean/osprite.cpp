@@ -926,6 +926,8 @@ const Point2& OSprite::get_pos() const {
 
 void OSprite::set_rot(real_t p_radians) {
 
+	if(ignore_rotate)
+		return;
 	Node2D::set_rot(p_radians + rot_diff);
 }
 
