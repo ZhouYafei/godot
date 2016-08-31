@@ -474,10 +474,11 @@ public class GodotIO {
 	public int openURI(String p_uri) {
 
 		try {
-			Log.v("MyApp", "TRYING TO OPEN URI: " + p_uri);
+			Log.v("Godot", "TRYING TO OPEN URI: " + p_uri);
 			String path = p_uri;
 
 			String type = MimeTypes.getMimeType(p_uri);
+			Log.v("Godot", "mime type is: " + type);
 
 			Intent intent = new Intent();
 			intent.setAction(Intent.ACTION_VIEW);
