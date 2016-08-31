@@ -317,7 +317,7 @@ public:
 			int existing = animation->track_find_key(track,new_time,true);
 
 			setting=true;
-			undo_redo->create_action(TTR("Move Add Key"),false);
+			undo_redo->create_action(TTR("Move Add Key"),UndoRedo::MERGE_ENDS);
 
 			Variant val = animation->track_get_key_value(track,key);
 			float trans = animation->track_get_key_transition(track,key);
@@ -345,7 +345,7 @@ public:
 			float val = p_value;
 			float prev_val = animation->track_get_key_transition(track,key);
 			setting=true;
-			undo_redo->create_action(TTR("Anim Change Transition"),true);
+			undo_redo->create_action(TTR("Anim Change Transition"),UndoRedo::MERGE_ENDS);
 			undo_redo->add_do_method(animation.ptr(),"track_set_key_transition",track,key,val);
 			undo_redo->add_undo_method(animation.ptr(),"track_set_key_transition",track,key,prev_val);
 			undo_redo->add_do_method(this,"_update_obj",animation);
@@ -388,7 +388,7 @@ public:
 					}
 
 					setting=true;
-					undo_redo->create_action(TTR("Anim Change Value"),true);
+					undo_redo->create_action(TTR("Anim Change Value"),UndoRedo::MERGE_ENDS);
 					Variant prev =  animation->track_get_key_value(track,key);
 					undo_redo->add_do_method(animation.ptr(),"track_set_key_value",track,key,value);
 					undo_redo->add_undo_method(animation.ptr(),"track_set_key_value",track,key,prev);
@@ -464,7 +464,11 @@ public:
 					}
 				}
 
-				undo_redo->create_action(TTR("Anim Change Call"),mergeable);
+				if (mergeable)
+					undo_redo->create_action(TTR("Anim Change Call"),UndoRedo::MERGE_ENDS);
+				else
+					undo_redo->create_action(TTR("Anim Change Call"));
+
 				Variant prev =  animation->track_get_key_value(track,key);
 				setting=true;
 				undo_redo->add_do_method(animation.ptr(),"track_set_key_value",track,key,d_new);
@@ -1716,9 +1720,9 @@ void AnimationKeyEditor::_curve_transition_changed(float p_what) {
 	if (selection.size()==0)
 		return;
 	if (selection.size()==1)
-		undo_redo->create_action(TTR("Edit Node Curve"),true);
+		undo_redo->create_action(TTR("Edit Node Curve"),UndoRedo::MERGE_ENDS);
 	else
-		undo_redo->create_action(TTR("Edit Selection Curve"),true);
+		undo_redo->create_action(TTR("Edit Selection Curve"),UndoRedo::MERGE_ENDS);
 
 	for(Map<SelectedKey,KeyInfo>::Element *E=selection.front();E;E=E->next()) {
 

@@ -55,6 +55,8 @@ void BaseButton::_input_event(InputEvent p_event) {
 
 				if (b.pressed) {
 
+					emit_signal("button_down");
+
 					if (!toggle_mode) { //mouse press attempt
 
 						status.press_attempt=true;
@@ -86,6 +88,8 @@ void BaseButton::_input_event(InputEvent p_event) {
 
 				} else {
 
+					emit_signal("button_up");
+
 					if (status.press_attempt && status.pressing_inside) {
 //						released();
 						emit_signal("released");
@@ -100,9 +104,11 @@ void BaseButton::_input_event(InputEvent p_event) {
 
 				status.press_attempt=true;
 				status.pressing_inside=true;
+				emit_signal("button_down");
 
 			} else {
 
+				emit_signal("button_up");
 
 				if (status.press_attempt &&status.pressing_inside) {
 
@@ -173,6 +179,7 @@ void BaseButton::_input_event(InputEvent p_event) {
 					status.pressing_button++;
 					status.press_attempt=true;
 					status.pressing_inside=true;
+					emit_signal("button_down");
 
 				} else if (status.press_attempt) {
 
@@ -184,6 +191,8 @@ void BaseButton::_input_event(InputEvent p_event) {
 
 					status.press_attempt=false;
 					status.pressing_inside=false;
+
+					emit_signal("button_up");
 
 					if (!toggle_mode) { //mouse press attempt
 
@@ -469,6 +478,8 @@ void BaseButton::_bind_methods() {
 
 	ADD_SIGNAL( MethodInfo("pressed" ) );
 	ADD_SIGNAL( MethodInfo("released" ) );
+	ADD_SIGNAL( MethodInfo("button_up") );
+	ADD_SIGNAL( MethodInfo("button_down") );
 	ADD_SIGNAL( MethodInfo("toggled", PropertyInfo( Variant::BOOL,"pressed") ) );
 	ADD_SIGNAL( MethodInfo("hovered", PropertyInfo( Variant::BOOL,"hovering") ) );
 	ADD_PROPERTYNZ( PropertyInfo( Variant::BOOL, "disabled"), _SCS("set_disabled"), _SCS("is_disabled"));

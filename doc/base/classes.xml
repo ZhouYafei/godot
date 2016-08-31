@@ -5922,14 +5922,24 @@
 		</method>
 	</methods>
 	<signals>
+		<signal name="button_down">
+			<description>
+				Emitted when the button starts being held down.
+			</description>
+		</signal>
+		<signal name="button_up">
+			<description>
+				Emitted when the button stops being held down.
+			</description>
+		</signal>
 		<signal name="pressed">
 			<description>
-				This signal is emitted every time the button is pressed or toggled.
+				This signal is emitted every time the button is toggled or pressed (i.e. activated, so on [code]button_down[/code] if "Click on press" is active and on [code]button_up[/code] otherwise).
 			</description>
 		</signal>
 		<signal name="released">
 			<description>
-				This signal is emitted when the button was released.
+				Emitted when the button was released. This is only emitted by non-toggle buttons and if "Click on press" is active.
 			</description>
 		</signal>
 		<signal name="toggled">
@@ -6876,6 +6886,14 @@
 			</argument>
 			<description>
 				Set the scrolling limit in pixels.
+			</description>
+		</method>
+		<method name="set_limit_smoothing_enabled">
+			<argument index="0" name="enable" type="bool">
+			</argument>
+			<description>
+				Smooth camera when reaching camera limits.
+				This requires camera smoothing being enabled to have a noticeable effect.
 			</description>
 		</method>
 		<method name="set_offset">
@@ -22349,6 +22367,27 @@
 				Return the global position of the 2D node.
 			</description>
 		</method>
+		<method name="get_global_rot" qualifiers="const">
+				<return type="float">
+				</return>
+				<description>
+					Return the global rotation in radians of the 2D node.
+				</description>
+		</method>
+		<method name="get_global_rotd" qualifiers="const">
+				<return type="float">
+				</return>
+				<description>
+					Return the global rotation in degrees of the 2D node.
+				</description>
+		</method>
+		<method name="get_global_scale" qualifiers="const">
+				<return type="Vector2">
+				</return>
+				<description>
+					Return the global scale of the 2D node.
+				</description>
+		</method>
 		<method name="get_pos" qualifiers="const">
 			<return type="Vector2">
 			</return>
@@ -22451,6 +22490,27 @@
 			<description>
 				Set the global position of the 2D node to 'pos'.
 			</description>
+		</method>
+		<method name="set_global_rot">
+				<argument index="0" name="radians" type="float">
+				</argument>
+				<description>
+					Set the global rotation in radians of the 2D node.
+				</description>
+		</method>
+		<method name="set_global_rotd">
+				<argument index="0" name="degrees" type="float">
+				</argument>
+				<description>
+					Set the global rotation in degrees of the 2D node.
+				</description>
+		</method>
+		<method name="set_global_scale">
+				<argument index="0" name="scale" type="Vector2">
+				</argument>
+				<description>
+					Set the global scale of the 2D node.
+				</description>
 		</method>
 		<method name="set_global_transform">
 			<argument index="0" name="xform" type="Matrix32">
