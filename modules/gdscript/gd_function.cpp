@@ -139,8 +139,24 @@ static String _get_var_type(const Variant* p_type) {
 
 }
 
+
+class GDProf {
+
+public:
+	GDProf(GDFunction *p_func, int p_line) {
+		GDScriptLanguage::get_singleton()->_profiler_enter(p_func, p_line);
+	}
+
+	~GDProf() {
+		GDScriptLanguage::get_singleton()->_profiler_leave();
+	}
+};
+
 Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError& r_err, CallState *p_state) {
 
+#ifdef _MSC_VER
+	GDProf prof(this, _initial_line);
+#endif
 
 	if (!_code_ptr) {
 
@@ -249,9 +265,6 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 
 	String err_text;
 
-#ifdef ENABLE_PROFILER
-	GDScriptLanguage::get_singleton()->_profiler_enter(this, line);
-#endif
 #ifdef DEBUG_ENABLED
 
 	if (ScriptDebugger::get_singleton())
@@ -1160,9 +1173,7 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 	}
 
 #endif
-#ifdef ENABLE_PROFILER
-	GDScriptLanguage::get_singleton()->_profiler_leave();
-#endif
+
 	if (ScriptDebugger::get_singleton())
 		GDScriptLanguage::get_singleton()->exit_function();
 

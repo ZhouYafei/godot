@@ -29,7 +29,6 @@
 #ifndef GD_SCRIPT_H
 #define GD_SCRIPT_H
 
-#define ENABLE_PROFILER
 struct FuncInfo;
 
 #include "script_language.h"
@@ -275,13 +274,10 @@ class GDScriptLanguage : public ScriptLanguage {
 
 	};
 
-#ifdef ENABLE_PROFILER
 
 	typedef HashMap<size_t, FuncInfo*> MapFuncInfos;
 	MapFuncInfos func_infos;
 	bool profiler_stoped;
-
-#endif
 
 	int _debug_parse_err_line;
 	String _debug_parse_err_file;
@@ -302,6 +298,7 @@ friend class GDScript;
 
 	SelfList<GDScript>::List script_list;
 friend class GDFunction;
+friend class GDProf;
 
 	SelfList<GDFunction>::List function_list;
 	bool profiling;
@@ -444,13 +441,9 @@ public:
 
 	void profiler_start();
 	void profiler_stop();
-#ifdef ENABLE_PROFILER
 	bool is_profiler_stoped() const { return profiler_stoped; }
-#else
-	bool is_profiler_stoped() const { return false; }
-#endif
 	void profiler_clean();
-	void profiler_dump(const String& p_path = "");
+	String profiler_dump(const String& p_path = "");
 
 	GDScriptLanguage();
 	~GDScriptLanguage();

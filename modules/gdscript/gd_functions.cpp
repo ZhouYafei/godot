@@ -1152,7 +1152,7 @@ void GDFunctions::call(Function p_func,const Variant **p_args,int p_arg_count,Va
 			}
 			else if(what == "dump") {
 				String path = *p_args[1];
-				GDScriptLanguage::get_singleton()->profiler_dump(path);
+				r_ret = GDScriptLanguage::get_singleton()->profiler_dump(path);
 			}
 
 		} break;

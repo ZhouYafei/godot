@@ -44,8 +44,6 @@ static void _get_time_counter(uint64_t& t) {
 #endif
 }
 
-#ifdef ENABLE_PROFILER
-
 typedef struct FuncInfo {
 	String path;
 	int line;
@@ -152,10 +150,10 @@ void GDScriptLanguage::profiler_stop() {
 	profiler_stoped = true;
 }
 
-void GDScriptLanguage::profiler_dump(const String& p_path) {
+String GDScriptLanguage::profiler_dump(const String& p_path) {
 
 	if(func_infos.empty())
-		return;
+		return profiler_stoped ? "Profiler disabled." : "No profiler information.";
 
 #ifdef _WIN32
 	uint64_t ticks_per_second;
@@ -176,6 +174,7 @@ void GDScriptLanguage::profiler_dump(const String& p_path) {
 	FileAccessRef f = FileAccess::open(p_path.empty() ? "user://profiler.txt" : p_path, FileAccess::WRITE, &err);
 
 	String format(L"file:%s func:%s line:%d\n    cost %fs times:%d\n");
+	String ret = "";
 
 	for(FuncInfos::Element *E = sort_funcs.front(); E; E = E->next()) {
 
@@ -194,30 +193,9 @@ void GDScriptLanguage::profiler_dump(const String& p_path) {
 		args.push_back(us / 1000000.0);
 		args.push_back(info.times);
 		f->store_string(format.sprintf(args, &error));
+		ret += format.sprintf(args, &error);
 	}
 
 	printf("Profiler file save as user://profiler.txt\n");
+	return String("Profiler information: \n") + ret;
 }
-#else
-
-void GDScriptLanguage::profiler_start() {
-}
-
-void GDScriptLanguage::profiler_stop() {
-
-}
-
-void GDScriptLanguage::_profiler_enter(GDFunction *p_function, int p_line) {
-}
-
-void GDScriptLanguage::_profiler_end() {
-}
-
-void GDScriptLanguage::profiler_clean() {
-}
-
-void GDScriptLanguage::profiler_dump() {
-}
-
-#endif
-
