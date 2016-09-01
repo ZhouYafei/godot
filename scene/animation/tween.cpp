@@ -608,11 +608,17 @@ void Tween::_tween_process(float p_delta) {
 			reset_all();
 	}
 
+	typedef List<InterpolateData>::Element Iterator;
+	List<Iterator *> erased;
+
 	for(List<InterpolateData>::Element *E=interpolates.front();E;E=E->next()) {
 
 		InterpolateData& data = E->get();
-		if(!data.active || data.finish)
+		if(!data.active || data.finish) {
+			if(data.finish && !repeat)
+				erased.push_back(E);
 			continue;
+		}
 
 		Object *object = ObjectDB::get_instance(data.id);
 		if(object == NULL)
@@ -689,6 +695,16 @@ void Tween::_tween_process(float p_delta) {
 				call_deferred("remove", object, data.key);
 		}
 	}
+
+	for(List<Iterator *>::Element *E = erased.front(); E; E = E->next()) {
+
+		Iterator *itr = E->get();
+		InterpolateData& data = itr->get();
+		uint64_t key = (uint64_t(data.id) << 32) + data.key.hash();
+		map_interpolates.erase(key);
+		interpolates.erase(itr);
+	}
+
 	pending_update --;
 }
 

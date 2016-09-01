@@ -895,7 +895,7 @@ real_t OSprite::get_rot_diff() const {
 
 void OSprite::set_ignored_rot(bool p_enable) {
 
-	ignore_rotate = true;
+	ignore_rotate = p_enable;
 }
 
 bool OSprite::is_ignored_rot() const {
