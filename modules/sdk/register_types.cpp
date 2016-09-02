@@ -49,13 +49,14 @@ void register_sdk_types() {
 #elif defined(ANDROID)
 #else
 	_sdk = memnew(Sdk);
-#endif
 	Globals::get_singleton()->add_singleton( Globals::Singleton("SDK",_sdk ) );
+#endif
 }
 
 void unregister_sdk_types() {
 
-	memdelete(_sdk);
+	if(_sdk != NULL)
+		memdelete(_sdk);
 }
 
 #else

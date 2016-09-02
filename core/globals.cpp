@@ -1335,6 +1335,7 @@ void Globals::add_singleton(const Singleton &p_singleton) {
 
 	singletons.push_back(p_singleton);
 	singleton_ptrs[p_singleton.name]=p_singleton.ptr;
+	print_line("Globals::add_singleton : " + p_singleton.name);
 }
 
 Object* Globals::get_singleton_object(const String& p_name) const {

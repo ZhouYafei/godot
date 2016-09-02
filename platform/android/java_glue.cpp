@@ -1571,9 +1571,11 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_audio(JNIEnv * env, j
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_singleton(JNIEnv * env, jobject obj, jstring name,jobject p_object){
 
 	String singname = env->GetStringUTFChars( name, NULL );
+	print_line("Register global singleton: " + singname);
 	JNISingleton *s = memnew( JNISingleton );
 	s->set_instance(env->NewGlobalRef(p_object));
 	jni_singletons[singname]=s;
+
 
 	Globals::get_singleton()->add_singleton(Globals::Singleton(singname,s));
 	Globals::get_singleton()->set(singname,s);
@@ -1678,7 +1680,7 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_method(JNIEnv * env, 
 
 	int stringCount = env->GetArrayLength(args);
 
-	print_line("Singl:  "+singname+" Method: "+mname+" RetVal: "+retval);
+	print_line("Singleton:  "+singname+" Method: "+mname+" RetVal: "+retval);
 	for (int i=0; i<stringCount; i++) {
 
 		jstring string = (jstring) env->GetObjectArrayElement(args, i);

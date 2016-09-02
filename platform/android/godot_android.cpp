@@ -922,6 +922,7 @@ void android_main(struct android_app* state) {
 JNIEXPORT void JNICALL Java_org_godotengine_godot_Godot_registerSingleton(JNIEnv * env, jobject obj, jstring name,jobject p_object){
 
 	String singname = env->GetStringUTFChars( name, NULL );
+	print_line("Register global singleton: " + singname);
 	JNISingleton *s = memnew( JNISingleton );
 	s->update_env(env);
 	s->set_instance(env->NewGlobalRef(p_object));

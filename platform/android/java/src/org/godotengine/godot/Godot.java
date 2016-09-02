@@ -153,20 +153,21 @@ public class Godot extends Activity implements SensorEventListener, IDownloaderC
 			Method[] methods = clazz.getDeclaredMethods();
 			for (Method method : methods) {
 				boolean found=false;
-				Log.d("XXX","METHOD: %s\n" + method.getName());
+				Log.d("Godot","FINDING METHOD: " + method.getName());
 
 				for (String s : p_methods) {
-				Log.d("XXX", "METHOD CMP WITH: %s\n" + s);
 					if (s.equals(method.getName())) {
 						found=true;
-						Log.d("XXX","METHOD CMP VALID");
+						// Log.d("Godot","METHOD CMP VALID");
 						break;
 					}
 				}
-				if (!found)
+				if (!found) {
+					Log.d("Godot", "METHOD NOT FOUND: " + method.getName());
 					continue;
+				}
 
-				Log.d("XXX","METHOD FOUND: %s\n" + method.getName());
+				Log.d("Godot","METHOD FOUND: " + method.getName());
 
 				List<String> ptr = new ArrayList<String>();
 
@@ -324,7 +325,7 @@ public class Godot extends Activity implements SensorEventListener, IDownloaderC
                 byte[] len = new byte[4];
                 int r = is.read(len);
 		if (r<4) {
-                    Log.d("XXX","**ERROR** Wrong cmdline length.\n");
+                    Log.d("Godot","**ERROR** Wrong cmdline length.\n");
 		    Log.d("GODOT", "**ERROR** Wrong cmdline length.\n");
                     return new String[0];
                 }
