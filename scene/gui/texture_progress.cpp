@@ -339,6 +339,7 @@ TextureProgress::TextureProgress()
 	expand=false;
 	modulate=Color(1,1,1,1);
 	mode=FILL_LEFT_TO_RIGHT;
+	rad_init_angle=0;
 	rad_center_off=Point2();
 	rad_max_degrees=360;
 }
