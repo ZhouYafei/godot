@@ -122,20 +122,20 @@ void Sdk::on_result(int p_code, const String& p_msg) {
 		sendCallback(CALLBACK_INIT, d);
 		return;
 	case CODE_INIT_FAIL:
-		tip("SDK初始化失败");
+		tip("SDK init failure");
 		break;
 	case CODE_LOGIN_FAIL:
 		// 这里不需要提示，一般SDK有提示
 		// sdk.tip("SDK登录失败");
 		break;
    	case CODE_SHARE_SUCCESS:
-    	tip("分享成功");
+    	tip("share success");
     	break;
     case CODE_SHARE_FAILED:
-    	tip("分享失败");
+    	tip("share failed");
     	break;
 	case CODE_PAY_FAIL:
-		tip("支付失败");
+		tip("pay failure");
 		break;
 	case CODE_PAY_SUCCESS:
 		// 一般这里不用提示
@@ -283,6 +283,8 @@ void Sdk::remove_alias(const String& p_alias) {
 void Sdk::share(const Dictionary& p_data) {
 
 	p_data;
+
+	on_result(CODE_SHARE_SUCCESS, "share success");
 }
 
 void Sdk::analytics(const Dictionary& p_data) {
