@@ -79,7 +79,10 @@ public class Dictionary extends HashMap<String, Object> {
 	};
 
 	public String getString(String key) {
-		return get(key).toString();
+		Object v = get(key);
+		if(v == null)
+			return "";
+		return v.toString();
 	}
 
 	public Integer getInt(String key) {

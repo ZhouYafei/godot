@@ -396,17 +396,28 @@ public class SDK extends Godot.SingletonBase {
 
 				ShareParams params = new ShareParams();
 				try {
-					params.setTitle(data.getString("title"));
-					params.setTitleUrl(data.getString("title_url"));
-					params.setSourceName(data.getString("source_name"));
-					params.setSourceUrl(data.getString("source_url"));
-					params.setContent(data.getString("content"));
-					params.setImgUrl(data.getString("image_url"));
-					params.setDialogMode(data.getBoolean("dialog_mode"));
-					params.setNotifyIcon(data.getInt("notify_icon"));
-					params.setNotifyIconText(data.getString("notify_icon_text"));
-					params.setComment(data.getString("comment"));
-					params.setUrl(data.getString("url"));
+					if(data.containsKey("title"))
+						params.setTitle(data.getString("title"));
+					if(data.containsKey("title_url"))
+						params.setTitleUrl(data.getString("title_url"));
+					if(data.containsKey("source_name"))
+						params.setSourceName(data.getString("source_name"));
+					if(data.containsKey("source_url"))
+						params.setSourceUrl(data.getString("source_url"));
+					if(data.containsKey("content"))
+						params.setContent(data.getString("content"));
+					if(data.containsKey("image_url"))
+						params.setImgUrl(data.getString("image_url"));
+					if(data.containsKey("dialog_mode"))
+						params.setDialogMode(data.getBoolean("dialog_mode"));
+					if(data.containsKey("notify_icon"))
+						params.setNotifyIcon(data.getInt("notify_icon"));
+					if(data.containsKey("notify_icon_text"))
+						params.setNotifyIconText(data.getString("notify_icon_text"));
+					if(data.containsKey("comment"))
+						params.setComment(data.getString("comment"));
+					if(data.containsKey("url"))
+						params.setUrl(data.getString("url"));
 					if(data.containsKey("platform"))
 						params.setPlatform(data.getString("platform"));
 					if(data.containsKey("silent"))
