@@ -1157,6 +1157,7 @@ void OS_OSX::initialize(const VideoMode& p_desired,int p_video_driver,int p_audi
 #endif
 	
 	input = memnew( InputDefault );
+	joystick_osx = memnew( JoystickOSX );
 
 	_ensure_data_dir();
 
@@ -1199,7 +1200,7 @@ void OS_OSX::finalize() {
 	spatial_sound_2d_server->finish();
 	memdelete(spatial_sound_2d_server);
 
-
+	memdelete(joystick_osx);
 	memdelete(input);
 
 	memdelete(sample_manager);
@@ -1774,7 +1775,7 @@ void OS_OSX::run() {
 	while (!force_quit) {
 
 		process_events(); // get rid of pending events
-//		process_joysticks();
+		last_id = joystick_osx->process_joysticks(last_id);
 		if (Main::iteration()==true)
 			break;
 	};
@@ -1807,6 +1808,10 @@ void OS_OSX::set_mouse_mode(MouseMode p_mode) {
 OS::MouseMode OS_OSX::get_mouse_mode() const {
 
     return mouse_mode;
+}
+
+String OS_OSX::get_joy_guid(int p_device) const {
+	return input->get_joy_guid_remapped(p_device);
 }
 
 OS_OSX* OS_OSX::singleton=NULL;

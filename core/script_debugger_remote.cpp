@@ -222,8 +222,8 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script,bool p_can_continue) {
 
 						if (F->get().get_type()==Variant::OBJECT) {
 							packet_peer_stream->put_var("*"+E->get());
-							String type = F->get().operator Object *()->get_type();
-							packet_peer_stream->put_var(type+"("+String::num(safe_get_instance_id(F->get()))+")");
+							String pretty_print = F->get().operator String();
+							packet_peer_stream->put_var(pretty_print.ascii().get_data());
 						} else {
 							packet_peer_stream->put_var(E->get());
 							packet_peer_stream->put_var(F->get());
@@ -246,9 +246,8 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script,bool p_can_continue) {
 
 						if (F->get().get_type()==Variant::OBJECT) {
 							packet_peer_stream->put_var("*"+E->get());
-							Object *obj = F->get().operator Object *();
-							String type = (obj != NULL) ? obj->get_type() : "Object";
-							packet_peer_stream->put_var(type+"("+String::num(safe_get_instance_id(F->get()))+")");
+							String pretty_print = F->get().operator String();
+							packet_peer_stream->put_var(pretty_print.ascii().get_data());
 						} else {
 							packet_peer_stream->put_var(E->get());
 							packet_peer_stream->put_var(F->get());
