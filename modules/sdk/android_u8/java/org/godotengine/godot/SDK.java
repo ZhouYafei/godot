@@ -407,6 +407,10 @@ public class SDK extends Godot.SingletonBase {
 					params.setNotifyIconText(data.getString("notify_icon_text"));
 					params.setComment(data.getString("comment"));
 					params.setUrl(data.getString("url"));
+					if(data.containsKey("platform"))
+						params.setPlatform(data.getString("platform"));
+					if(data.containsKey("silent"))
+						params.setSilent(data.getBoolean("silent"));
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
