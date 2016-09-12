@@ -342,6 +342,9 @@
     <ClCompile Include="..\..\modules\ocean\osprite_path.cpp">
       <Filter>modules\ocean</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\visual_script\visual_script_expression.cpp">
+      <Filter>modules\visual_script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -619,6 +622,9 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\ocean\osprite_path.h">
       <Filter>modules\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\visual_script\visual_script_expression.h">
+      <Filter>modules\visual_script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

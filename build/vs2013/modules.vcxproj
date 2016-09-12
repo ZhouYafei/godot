@@ -265,6 +265,7 @@
     <ClCompile Include="..\..\modules\visual_script\visual_script.cpp" />
     <ClCompile Include="..\..\modules\visual_script\visual_script_builtin_funcs.cpp" />
     <ClCompile Include="..\..\modules\visual_script\visual_script_editor.cpp" />
+    <ClCompile Include="..\..\modules\visual_script\visual_script_expression.cpp" />
     <ClCompile Include="..\..\modules\visual_script\visual_script_flow_control.cpp" />
     <ClCompile Include="..\..\modules\visual_script\visual_script_func_nodes.cpp" />
     <ClCompile Include="..\..\modules\visual_script\visual_script_nodes.cpp" />
@@ -359,6 +360,7 @@
     <ClInclude Include="..\..\modules\visual_script\visual_script.h" />
     <ClInclude Include="..\..\modules\visual_script\visual_script_builtin_funcs.h" />
     <ClInclude Include="..\..\modules\visual_script\visual_script_editor.h" />
+    <ClInclude Include="..\..\modules\visual_script\visual_script_expression.h" />
     <ClInclude Include="..\..\modules\visual_script\visual_script_flow_control.h" />
     <ClInclude Include="..\..\modules\visual_script\visual_script_func_nodes.h" />
     <ClInclude Include="..\..\modules\visual_script\visual_script_nodes.h" />
