@@ -1197,7 +1197,7 @@ ProjectManager::ProjectManager() {
 
 
 	set_area_as_parent_rect();
-	set_theme(create_default_theme());
+	set_theme(create_editor_theme());
 
 	gui_base = memnew( Control );
 	add_child(gui_base);
@@ -1390,7 +1390,7 @@ ProjectManager::ProjectManager() {
 
 	SceneTree::get_singleton()->connect("files_dropped", this, "_files_dropped");
 
-	gui_base->set_theme(create_editor_theme());
+	gui_base->set_theme(create_custom_theme());
 }
 
 
