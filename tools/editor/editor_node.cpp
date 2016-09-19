@@ -179,17 +179,6 @@ void EditorNode::_unhandled_input(const InputEvent& p_event) {
 	if (p_event.type==InputEvent::KEY && p_event.key.pressed && !p_event.key.echo && !gui_base->get_viewport()->gui_has_modal_stack()) {
 
 
-		if (ED_IS_SHORTCUT("editor/fullscreen_mode", p_event)) {
-			if (distraction_free_mode) {
-				distraction_free_mode = false;
-				_update_top_menu_visibility();
-			} else {
-				set_docks_visible(!get_docks_visible());
-			}
-		}
-		if (ED_IS_SHORTCUT("editor/distraction_free_mode", p_event)) {
-			set_distraction_free_mode(!get_distraction_free_mode());
-		}
 		if (ED_IS_SHORTCUT("editor/next_tab", p_event)) {
 			int next_tab = editor_data.get_edited_scene() + 1;
 			next_tab %= editor_data.get_edited_scene_count();
@@ -1231,6 +1220,7 @@ void EditorNode::_dialog_action(String p_file) {
 
 				//_save_scene(p_file);
 				_save_scene_with_preview(p_file);
+				_call_build();
 				_run(true);
 			}
 		} break;
@@ -1377,6 +1367,7 @@ void EditorNode::_dialog_action(String p_file) {
 			unzClose(pkg);
 
 		} break;
+
 		case RESOURCE_SAVE:
 		case RESOURCE_SAVE_AS: {
 
@@ -2649,6 +2640,7 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 		} break;
 		case RUN_PLAY: {
 			_menu_option_confirm(RUN_STOP,true);
+			_call_build();
 			_run(false);
 
 		} break;
@@ -2684,6 +2676,7 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 		} break;
 		case RUN_PLAY_SCENE: {
 			_menu_option_confirm(RUN_STOP,true);
+			_call_build();
 			_run(true);
 
 		} break;
@@ -2695,6 +2688,7 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 			}
 			if (run_native->is_deploy_debug_remote_enabled()){
 				_menu_option_confirm(RUN_STOP,true);
+				_call_build();
 				emit_signal("play_pressed");
 				editor_run.run_native_notify();
 			}
@@ -2818,6 +2812,12 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 
 			file_templates->popup_centered_ratio();
+
+		} break;
+		case SETTINGS_TOGGLE_FULLSCREN: {
+
+			OS::get_singleton()->set_window_fullscreen( !OS::get_singleton()->is_window_fullscreen() );
+
 
 		} break;
 		case SETTINGS_PICK_MAIN_SCENE: {
@@ -3005,6 +3005,8 @@ void EditorNode::add_editor_plugin(EditorPlugin *p_editor) {
 		singleton->main_editor_buttons.push_back(tb);
 		singleton->main_editor_button_vb->add_child(tb);
 		singleton->editor_table.push_back(p_editor);
+
+		singleton->distraction_free->raise();
 	}
 	singleton->editor_data.add_editor_plugin( p_editor );
 	singleton->add_child(p_editor);
@@ -3017,7 +3019,7 @@ void EditorNode::remove_editor_plugin(EditorPlugin *p_editor) {
 
 		for(int i=0;i<singleton->main_editor_buttons.size();i++) {
 
-			if (p_editor->get_name()==singleton->main_editor_buttons[i]->get_name()) {
+			if (p_editor->get_name()==singleton->main_editor_buttons[i]->get_text()) {
 
 				memdelete( singleton->main_editor_buttons[i] );
 				singleton->main_editor_buttons.remove(i);
@@ -4047,6 +4049,7 @@ void EditorNode::_quick_opened() {
 
 void EditorNode::_quick_run() {
 
+	_call_build();
 	_run(false,quick_run->get_selected());
 }
 
@@ -4610,7 +4613,10 @@ void EditorNode::_update_dock_slots_visibility() {
 }
 
 void EditorNode::_update_top_menu_visibility() {
-	if (distraction_free_mode) {
+
+	return; // I think removing top menu is too much
+	/*
+	if (distraction_free->is_pressed()) {
 		play_cc->hide();
 		menu_hb->hide();
 		scene_tabs->hide();
@@ -4618,7 +4624,7 @@ void EditorNode::_update_top_menu_visibility() {
 		play_cc->show();
 		menu_hb->show();
 		scene_tabs->show();
-	}
+	}*/
 }
 
 void EditorNode::_load_docks_from_config(Ref<ConfigFile> p_layout, const String& p_section) {
@@ -4994,8 +5000,14 @@ bool EditorNode::get_docks_visible() const {
 	return docks_visible;
 }
 
+void EditorNode::_toggle_distraction_free_mode() {
+
+	set_distraction_free_mode( distraction_free->is_pressed() );
+}
+
 void EditorNode::set_distraction_free_mode(bool p_enter) {
-	distraction_free_mode = p_enter;
+
+	distraction_free->set_pressed(p_enter);
 
 	if (p_enter) {
 		if (docks_visible) {
@@ -5008,7 +5020,7 @@ void EditorNode::set_distraction_free_mode(bool p_enter) {
 }
 
 bool EditorNode::get_distraction_free_mode() const {
-	return distraction_free_mode;
+	return distraction_free->is_pressed();
 }
 
 void EditorNode::add_control_to_dock(DockSlot p_slot,Control* p_control) {
@@ -5240,6 +5252,24 @@ void EditorNode::add_plugin_init_callback(EditorPluginInitializeCallback p_callb
 EditorPluginInitializeCallback EditorNode::plugin_init_callbacks[EditorNode::MAX_INIT_CALLBACKS];
 
 
+int EditorNode::build_callback_count=0;
+
+void EditorNode::add_build_callback(EditorBuildCallback p_callback) {
+
+	ERR_FAIL_COND(build_callback_count==MAX_INIT_CALLBACKS);
+
+	build_callbacks[build_callback_count++]=p_callback;
+}
+
+EditorPluginInitializeCallback EditorNode::build_callbacks[EditorNode::MAX_BUILD_CALLBACKS];
+
+void EditorNode::_call_build() {
+
+	for(int i=0;i<build_callback_count;i++) {
+		build_callbacks[i]();
+	}
+}
+
 void EditorNode::_bind_methods() {
 
 
@@ -5308,6 +5338,7 @@ void EditorNode::_bind_methods() {
 	ObjectTypeDB::bind_method("_clear_search_box",&EditorNode::_clear_search_box);
 	ObjectTypeDB::bind_method("_clear_undo_history",&EditorNode::_clear_undo_history);
 	ObjectTypeDB::bind_method("_dropped_files",&EditorNode::_dropped_files);
+	ObjectTypeDB::bind_method("_toggle_distraction_free_mode",&EditorNode::_toggle_distraction_free_mode);
 
 
 
@@ -5352,7 +5383,7 @@ EditorNode::EditorNode() {
 	changing_scene=false;
 	_initializing_addons=false;
 	docks_visible = true;
-	distraction_free_mode=false;
+
 
 	FileAccess::set_backup_save(true);
 
@@ -5361,17 +5392,25 @@ EditorNode::EditorNode() {
 	// load settings
 	if (!EditorSettings::get_singleton())
 		EditorSettings::create();
+
+	bool use_single_dock_column = false;
 	{
 		int dpi_mode = EditorSettings::get_singleton()->get("global/hidpi_mode");
 		if (dpi_mode==0) {
-			editor_set_hidpi( OS::get_singleton()->get_screen_dpi(0) > 150 );
+			editor_set_scale( OS::get_singleton()->get_screen_dpi(0) > 150 && OS::get_singleton()->get_screen_size(OS::get_singleton()->get_current_screen()).x>2000 ? 2.0 : 1.0 );
+
+			use_single_dock_column = OS::get_singleton()->get_screen_size(OS::get_singleton()->get_current_screen()).x<1200;
+
+		} else if (dpi_mode==1) {
+			editor_set_scale(0.75);
 		} else if (dpi_mode==2) {
-			editor_set_hidpi(true);
-		} else {
-			editor_set_hidpi(false);
+			editor_set_scale(1.0);
+		} else if (dpi_mode==3) {
+			editor_set_scale(1.5);
+		} else if (dpi_mode==4) {
+			editor_set_scale(2.0);
 		}
 	}
-
 
 
 	ResourceLoader::set_abort_on_missing_resources(false);
@@ -5680,8 +5719,6 @@ EditorNode::EditorNode() {
 	prev_scene->set_pos(Point2(3,24));
 	prev_scene->hide();
 
-	ED_SHORTCUT("editor/fullscreen_mode",TTR("Fullscreen Mode"),KEY_MASK_SHIFT|KEY_F11);
-	ED_SHORTCUT("editor/distraction_free_mode",TTR("Distraction Free Mode"),KEY_MASK_CMD|KEY_MASK_SHIFT|KEY_F11);
 
 
 	ED_SHORTCUT("editor/next_tab", TTR("Next tab"), KEY_MASK_CMD+KEY_TAB);
@@ -5751,6 +5788,13 @@ EditorNode::EditorNode() {
 	main_editor_button_vb = memnew( HBoxContainer );
 	editor_region->add_child(main_editor_button_vb);
 	menu_hb->add_child(editor_region);
+
+	distraction_free = memnew( ToolButton );
+	main_editor_button_vb->add_child(distraction_free);
+	distraction_free->set_shortcut( ED_SHORTCUT("editor/distraction_free_mode",TTR("Distraction Free Mode"),KEY_MASK_CMD|KEY_MASK_SHIFT|KEY_F11) );
+	distraction_free->connect("pressed",this,"_toggle_distraction_free_mode");
+	distraction_free->set_icon(gui_base->get_icon("DistractionFree","EditorIcons"));
+	distraction_free->set_toggle_mode(true);
 
 	//menu_hb->add_spacer();
 #if 0
@@ -5992,6 +6036,9 @@ EditorNode::EditorNode() {
 	p->add_child(editor_layouts);
 	editor_layouts->connect("item_pressed",this,"_layout_menu_option");
 	p->add_submenu_item(TTR("Editor Layout"), "Layouts");
+
+	p->add_shortcut(ED_SHORTCUT("editor/fullscreen_mode",TTR("Toggle Fullscreen"),KEY_MASK_SHIFT|KEY_F11),SETTINGS_TOGGLE_FULLSCREN);
+
 	p->add_separator();
 	p->add_item(TTR("Install Export Templates"),SETTINGS_LOAD_EXPORT_TEMPLATES);
 	p->add_separator();
@@ -6184,12 +6231,24 @@ EditorNode::EditorNode() {
 
 	node_dock = memnew( NodeDock );
 	//node_dock->set_undoredo(&editor_data.get_undo_redo());
-	dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(node_dock);
+	if (use_single_dock_column) {
+		dock_slot[DOCK_SLOT_RIGHT_UL]->add_child(node_dock);
+	} else {
+		dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(node_dock);
+	}
 
 	scenes_dock = memnew( FileSystemDock(this) );
 	scenes_dock->set_name(TTR("FileSystem"));
 	scenes_dock->set_display_mode(int(EditorSettings::get_singleton()->get("filesystem_dock/display_mode")));
-	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scenes_dock);
+
+	if (use_single_dock_column) {
+		dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(scenes_dock);
+		left_r_vsplit->hide();
+		dock_slot[DOCK_SLOT_LEFT_UR]->hide();
+		dock_slot[DOCK_SLOT_LEFT_BR]->hide();
+	} else {
+		dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scenes_dock);
+	}
 	//prop_pallete->add_child(scenes_dock);
 	scenes_dock->connect("open",this,"open_request");
 	scenes_dock->connect("instance",this,"_instance_request");

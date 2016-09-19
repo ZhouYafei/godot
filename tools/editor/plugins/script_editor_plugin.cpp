@@ -43,6 +43,17 @@
 /*** SCRIPT EDITOR ****/
 
 
+
+void ScriptEditorBase::_bind_methods() {
+
+	ADD_SIGNAL(MethodInfo("name_changed"));
+	ADD_SIGNAL(MethodInfo("request_help_search",PropertyInfo(Variant::STRING,"topic")));
+	ADD_SIGNAL(MethodInfo("request_open_script_at_line",PropertyInfo(Variant::OBJECT,"script"),PropertyInfo(Variant::INT,"line")));
+	ADD_SIGNAL(MethodInfo("request_save_history"));
+	ADD_SIGNAL(MethodInfo("go_to_help",PropertyInfo(Variant::STRING,"what")));
+
+}
+
 static bool _can_open_in_editor(Script* p_script) {
 
 	String path = p_script->get_path();
@@ -344,6 +355,34 @@ void ScriptEditor::_update_history_arrows() {
 
 	script_back->set_disabled( history_pos<=0 );
 	script_forward->set_disabled( history_pos>=history.size()-1 );
+}
+
+void ScriptEditor::_save_history() {
+
+
+	if (history_pos>=0 && history_pos<history.size() && history[history_pos].control==tab_container->get_current_tab_control()) {
+
+		Node *n = tab_container->get_current_tab_control();
+
+		if (n->cast_to<ScriptEditorBase>()) {
+
+			history[history_pos].state=n->cast_to<ScriptEditorBase>()->get_edit_state();
+		}
+		if (n->cast_to<EditorHelp>()) {
+
+			history[history_pos].state=n->cast_to<EditorHelp>()->get_scroll();
+		}
+	}
+
+	history.resize(history_pos+1);
+	ScriptHistory sh;
+	sh.control=tab_container->get_current_tab_control();
+	sh.state=Variant();
+
+	history.push_back(sh);
+	history_pos++;
+
+	_update_history_arrows();
 }
 
 
@@ -1323,10 +1362,8 @@ struct _ScriptEditorItemData {
 
 void ScriptEditor::_update_script_colors() {
 
-	bool enabled = EditorSettings::get_singleton()->get("text_editor/script_temperature_enabled");
+	bool script_temperature_enabled = EditorSettings::get_singleton()->get("text_editor/script_temperature_enabled");
 	bool highlight_current = EditorSettings::get_singleton()->get("text_editor/highlight_current_script");
-	if (!enabled)
-		return;
 
 	int hist_size = EditorSettings::get_singleton()->get("text_editor/script_temperature_history_size");
 	Color hot_color=EditorSettings::get_singleton()->get("text_editor/script_temperature_hot_color");
@@ -1340,22 +1377,25 @@ void ScriptEditor::_update_script_colors() {
 			continue;
 
 		script_list->set_item_custom_bg_color(i,Color(0,0,0,0));
-		if (!n->has_meta("__editor_pass")) {
-			continue;
-		}
-
-		int pass=n->get_meta("__editor_pass");
-		int h = edit_pass - pass;
-		if (h>hist_size) {
-			continue;
-		}
-		int non_zero_hist_size = ( hist_size == 0 ) ? 1 : hist_size;
-		float v = Math::ease((edit_pass-pass)/float(non_zero_hist_size),0.4);
 
 		bool current = tab_container->get_current_tab() == c;
 		if (current && highlight_current) {
 			script_list->set_item_custom_bg_color(i, EditorSettings::get_singleton()->get("text_editor/current_script_background_color"));
-		} else {
+
+		} else if (script_temperature_enabled) {
+
+			if (!n->has_meta("__editor_pass")) {
+				continue;
+			}
+
+			int pass=n->get_meta("__editor_pass");
+			int h = edit_pass - pass;
+			if (h>hist_size) {
+				continue;
+			}
+			int non_zero_hist_size = ( hist_size == 0 ) ? 1 : hist_size;
+			float v = Math::ease((edit_pass-pass)/float(non_zero_hist_size),0.4);
+
 			script_list->set_item_custom_bg_color(i,hot_color.linear_interpolate(cold_color,v));
 		}
 	}
@@ -1535,6 +1575,11 @@ void ScriptEditor::edit(const Ref<Script>& p_script, bool p_grab_focus) {
 	_save_layout();
 	se->connect("name_changed",this,"_update_script_names");
 	se->connect("request_help_search",this,"_help_search");
+	se->connect("request_open_script_at_line",this,"_goto_script_line");
+	se->connect("go_to_help",this,"_help_class_goto");
+	se->connect("request_save_history",this,"_save_history");
+
+
 
 
 	//test for modification, maybe the script was not edited but was loaded
@@ -1691,6 +1736,7 @@ void ScriptEditor::_editor_settings_changed() {
 
 		se->update_settings();
 	}
+	_update_script_colors();
 
 	ScriptServer::set_reload_scripts_on_save(EDITOR_DEF("text_editor/auto_reload_and_parse_scripts_on_save",true));
 
@@ -1839,7 +1885,6 @@ void ScriptEditor::_help_class_open(const String& p_class) {
 }
 
 void ScriptEditor::_help_class_goto(const String& p_desc) {
-
 
 	String cname=p_desc.get_slice(":",1);
 
@@ -2021,6 +2066,8 @@ void ScriptEditor::_bind_methods() {
 	ObjectTypeDB::bind_method("_goto_script_line",&ScriptEditor::_goto_script_line);
 	ObjectTypeDB::bind_method("_goto_script_line2",&ScriptEditor::_goto_script_line2);
 	ObjectTypeDB::bind_method("_help_search",&ScriptEditor::_help_search);
+	ObjectTypeDB::bind_method("_save_history",&ScriptEditor::_save_history);
+
 
 
 	ObjectTypeDB::bind_method("_breaked",&ScriptEditor::_breaked);
