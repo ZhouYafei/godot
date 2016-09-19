@@ -165,6 +165,8 @@ private:
 	Point2 pos_diff;
 	real_t rot_diff;
 	bool ignore_rotate;
+	Point2 orig_pos;
+	real_t orig_rot;
 
 	void _dispose();
 	void _animation_process(float p_delta);
