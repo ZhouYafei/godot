@@ -2028,7 +2028,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 				if (use_VBO) {
 
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLushort);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=true;
 					normalize=true;
@@ -2037,7 +2036,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 
 				} else {
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLfloat);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=false;
 					datatype=GL_FLOAT;
@@ -2049,7 +2047,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 
 				if (use_VBO) {
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLubyte);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=true;
 					datatype=GL_UNSIGNED_BYTE;
@@ -2057,7 +2054,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 				} else {
 
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLushort);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=false;
 					datatype=GL_UNSIGNED_SHORT;
@@ -7060,6 +7056,10 @@ void RasterizerGLES2::_process_glow_bloom() {
 }
 
 void RasterizerGLES2::_process_hdr() {
+
+	if (framebuffer.luminance.empty()) {
+		return;
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.luminance[0].fbo);
 	glActiveTexture(GL_TEXTURE0);

@@ -3021,6 +3021,10 @@ void EditorNode::remove_editor_plugin(EditorPlugin *p_editor) {
 
 			if (p_editor->get_name()==singleton->main_editor_buttons[i]->get_text()) {
 
+				if (singleton->main_editor_buttons[i]->is_pressed()) {
+					singleton->_editor_select(EDITOR_SCRIPT);
+				}
+
 				memdelete( singleton->main_editor_buttons[i] );
 				singleton->main_editor_buttons.remove(i);
 
@@ -6257,9 +6261,9 @@ EditorNode::EditorNode() {
 
 	overridden_default_layout=-1;
 	default_layout.instance();
-	default_layout->set_value(docks_section, "dock_3", TTR("Scene"));
-	default_layout->set_value(docks_section, "dock_4", TTR("FileSystem"));
-	default_layout->set_value(docks_section, "dock_5", TTR("Inspector"));
+	default_layout->set_value(docks_section, "dock_3", TTR("FileSystem"));
+	default_layout->set_value(docks_section, "dock_5", TTR("Scene"));
+	default_layout->set_value(docks_section, "dock_6", TTR("Inspector")+","+TTR("Node"));
 
 	for(int i=0;i<DOCK_SLOT_MAX/2;i++)
 		default_layout->set_value(docks_section, "dock_hsplit_"+itos(i+1), 0);
