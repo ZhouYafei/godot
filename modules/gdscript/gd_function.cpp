@@ -904,12 +904,17 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 					}
 
 #endif
+#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED)
+				if (ObjectDB::instance_validate(obj)) {
+#endif
 					Error err = obj->connect(signal,gdfs.ptr(),"_signal_callback",varray(gdfs),Object::CONNECT_ONESHOT);
 					if (err!=OK) {
 						err_text="Error connecting to signal: "+signal+" during yield().";
 						break;
 					}
-
+#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED)
+				}
+#endif
 
 				}
 
