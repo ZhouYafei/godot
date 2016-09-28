@@ -190,6 +190,11 @@ bool LuaScript::can_instance() const {
 	return valid; //any script in LuaScript can instance
 }
 
+Ref<Script> LuaScript::get_base_script() const {
+
+	return RES();
+}
+
 StringName LuaScript::get_instance_base_type() const {
 
 	if (native.is_valid())
@@ -906,7 +911,7 @@ void LuaScript::_get_property_list(List<PropertyInfo> *p_properties) const {
 
 void LuaScript::_bind_methods()
 {
-	ObjectTypeDB::bind_native_method(METHOD_FLAGS_DEFAULT,"new",&LuaScript::_new,MethodInfo("new"));	
+	ObjectTypeDB::bind_vararg_method(METHOD_FLAGS_DEFAULT,"new",&LuaScript::_new,MethodInfo(Variant::OBJECT,"new"));
 }
 
 Error LuaScript::load_byte_code(const String& p_path) {

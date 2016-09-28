@@ -459,6 +459,9 @@
     <ClInclude Include="..\..\core\io\networked_multiplayer_peer.h">
       <Filter>core\io</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\math\a_star.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\array.cpp">
@@ -820,6 +823,9 @@
     </ClCompile>
     <ClCompile Include="..\..\core\io\networked_multiplayer_peer.cpp">
       <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\math\a_star.cpp">
+      <Filter>core\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
