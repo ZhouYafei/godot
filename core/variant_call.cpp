@@ -1002,7 +1002,19 @@ void Variant::call_ptr(const StringName& p_method,const Variant** p_args,int p_a
 
 
 #endif
-		ret=_get_obj().obj->call(p_method,p_args,p_argcount,r_error);
+
+#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED)
+		if (ObjectDB::instance_validate(obj)) {
+#endif
+
+		ret=obj->call(p_method,p_args,p_argcount,r_error);
+
+#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED)
+		} else {
+			r_error.error=CallError::CALL_ERROR_INSTANCE_IS_NULL;
+			return;
+		}
+#endif
 
 	//else if (type==Variant::METHOD) {
 
