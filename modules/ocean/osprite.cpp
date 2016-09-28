@@ -250,7 +250,12 @@ int OSprite::_get_frame(const OSpriteResource::Action *&p_action) {
 	static OSprite::OSpriteResource::Data dummy;
 	if(!res.is_valid())
 		return -1;
-	ERR_FAIL_COND_V(!has(current_animation), -1);
+
+	if(!has(current_animation)) {
+
+		ERR_EXPLAIN("Unknown animation: " + current_animation);
+		ERR_FAIL_V(-1);
+	}
 
 	p_action = res->action_names[current_animation];
 	ERR_FAIL_COND_V(p_action == NULL, -1);
