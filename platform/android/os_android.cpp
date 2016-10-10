@@ -47,6 +47,11 @@
 #else
 #include "file_access_jandroid.h"
 #include "dir_access_jandroid.h"
+
+// from java_glue.cpp
+String _get_clipboard();
+void _set_clipboard(const String& p_text);
+
 #endif
 
 int OS_Android::get_video_driver_count() const {
@@ -288,9 +293,21 @@ void OS_Android::set_window_title(const String& p_title) {
 
 }
 
-//interesting byt not yet
-//void set_clipboard(const String& p_text);
-//String get_clipboard() const;
+void OS_Android::set_clipboard(const String& p_text) {
+
+#ifndef ANDROID_NATIVE_ACTIVITY
+	_set_clipboard(p_text);
+#endif
+}
+
+String OS_Android::get_clipboard() const {
+
+#ifndef ANDROID_NATIVE_ACTIVITY
+	return _get_clipboard();
+#else
+	return "";
+#endif
+}
 
 void OS_Android::set_video_mode(const VideoMode& p_video_mode,int p_screen) {
 

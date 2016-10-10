@@ -693,6 +693,8 @@ static jmethodID _isVideoPlaying=0;
 static jmethodID _pauseVideo=0;
 static jmethodID _stopVideo=0;
 static jmethodID _setKeepScreenOn=0;
+static jmethodID _getClipboard=0;
+static jmethodID _setClipboard=0;
 
 static void _gfx_init_func(void* ud, bool gl2) {
 
@@ -760,6 +762,19 @@ static String _get_system_dir(int p_dir) {
 	return String(env->GetStringUTFChars( s, NULL ));
 }
 
+String _get_clipboard() {
+
+	JNIEnv *env = ThreadAndroid::get_env();
+	jstring s =(jstring)env->CallObjectMethod(godot_io,_getClipboard);
+	return String(env->GetStringUTFChars( s, NULL ));
+}
+
+void _set_clipboard(const String& p_text) {
+
+	JNIEnv* env = ThreadAndroid::get_env();
+	jstring jStr = env->NewStringUTF(p_text.utf8().get_data());
+	env->CallVoidMethod(godot_io, _setClipboard, jStr);
+}
 
 static void _hide_vk() {
 
@@ -852,6 +867,8 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_initialize(JNIEnv * e
 			_isVideoPlaying = env->GetMethodID(c,"isVideoPlaying","()Z");
 			_pauseVideo = env->GetMethodID(c,"pauseVideo","()V");
 			_stopVideo = env->GetMethodID(c,"stopVideo","()V");
+			_getClipboard = env->GetMethodID(c,"getClipboard","()Ljava/lang/String;");
+			_setClipboard = env->GetMethodID(c,"setClipboard","(Ljava/lang/String;)V");
 		}
 
 		ThreadAndroid::make_default(jvm);

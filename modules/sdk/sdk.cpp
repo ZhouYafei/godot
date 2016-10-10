@@ -1,4 +1,4 @@
-/*************************************************************************/
+﻿/*************************************************************************/
 /*  sdk.cpp                                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
@@ -38,39 +38,39 @@ static const char *CALLBACK_PAY = "pay";
 static const char *CALLBACK_RESULT = "result";
 
 enum U8Codes {
-	CODE_NO_NETWORK = 0,			// û����������
-	CODE_INIT_SUCCESS = 1,			// ��ʼ���ɹ�
-	CODE_INIT_FAIL = 2,				// ��ʼ��ʧ��
-	CODE_UNINIT = 3,				// û�г�ʼ��
-	CODE_LOGIN_SUCCESS = 4,			// ��¼�ɹ�
-	CODE_LOGIN_FAIL = 5,			// ��¼ʧ��
-	CODE_LOGIN_TIMEOUT = 6,			// ��¼��ʱ
-	CODE_UNLOGIN = 7,				// û�е�¼
-	CODE_LOGOUT_SUCCESS = 8,		// �ǳ��ɹ�
-	CODE_LOGOUT_FAIL = 9,			// �ǳ�ʧ��
-	CODE_PAY_SUCCESS = 10,			// ֧���ɹ�
-	CODE_PAY_FAIL = 11,				// ֧��ʧ��
-	CODE_TAG_ADD_SUC = 12,			// ����Tag�ɹ�
-	CODE_TAG_ADD_FAIL = 13,			// ����Tagʧ��
-	CODE_TAG_DEL_SUC = 14,			// ɾ��Tag�ɹ�
-	CODE_TAG_DEL_FAIL = 15,			// ɾ��Tagʧ��
-	CODE_ALIAS_ADD_SUC = 16,		// ����Alias�ɹ�
-	CODE_ALIAS_ADD_FAIL = 17,		// ����Aliasʧ��
-	CODE_ALIAS_REMOVE_SUC = 18,		// ɾ��Alias�ɹ�
-	CODE_ALIAS_REMOVE_FAIL = 19,	// ɾ��Aliasʧ��
-	CODE_PUSH_MSG_RECIEVED = 20,	// Push �յ�msg
-	CODE_PARAM_ERROR = 21,			// ���� ����
-	CODE_PARAM_NOT_COMPLETE = 22,	// ������ȫ
-	CODE_SHARE_SUCCESS = 23,		// �����ɹ�
-	CODE_SHARE_FAILED = 24,			// ����ʧ��
-	CODE_UPDATE_SUCCESS = 25,		// ���³ɹ�
-	CODE_UPDATE_FAILED = 26,		// ����ʧ��
-	CODE_REAL_NAME_REG_SUC = 27,	// ʵ��ע��ɹ�
-	CODE_REAL_NAME_REG_FAILED = 28,	// ʵ��ע��ʧ��
-	CODE_ADDICTION_ANTI_RESULT = 29,// �����Բ�ѯ���
-	CODE_PUSH_ENABLED = 30,			// ����enable�ɹ��Ļص���Я��һ�������������������ͣ��������Device Token
-	CODE_POST_GIFT_SUC = 31,		// �ύ����һ���ɹ�
-	CODE_POST_GIFT_FAILED = 32,		// �ύ����һ���ʧ��
+	CODE_NO_NETWORK = 0,			// 没有网络连接
+	CODE_INIT_SUCCESS = 1,			// 初始化成功
+	CODE_INIT_FAIL = 2,				// 初始化失败
+	CODE_UNINIT = 3,				// 没有初始化
+	CODE_LOGIN_SUCCESS = 4,			// 登录成功
+	CODE_LOGIN_FAIL = 5,			// 登录失败
+	CODE_LOGIN_TIMEOUT = 6,			// 登录超时
+	CODE_UNLOGIN = 7,				// 没有登录
+	CODE_LOGOUT_SUCCESS = 8,		// 登出成功
+	CODE_LOGOUT_FAIL = 9,			// 登出失败
+	CODE_PAY_SUCCESS = 10,			// 支付成功
+	CODE_PAY_FAIL = 11,				// 支付失败
+	CODE_TAG_ADD_SUC = 12,			// 添加Tag成功
+	CODE_TAG_ADD_FAIL = 13,			// 添加Tag失败
+	CODE_TAG_DEL_SUC = 14,			// 删除Tag成功
+	CODE_TAG_DEL_FAIL = 15,			// 删除Tag失败
+	CODE_ALIAS_ADD_SUC = 16,		// 添加Alias成功
+	CODE_ALIAS_ADD_FAIL = 17,		// 添加Alias失败
+	CODE_ALIAS_REMOVE_SUC = 18,		// 删除Alias成功
+	CODE_ALIAS_REMOVE_FAIL = 19,	// 删除Alias失败
+	CODE_PUSH_MSG_RECIEVED = 20,	// Push 收到msg
+	CODE_PARAM_ERROR = 21,			// 参数 错误
+	CODE_PARAM_NOT_COMPLETE = 22,	// 参数不全
+	CODE_SHARE_SUCCESS = 23,		// 分享成功
+	CODE_SHARE_FAILED = 24,			// 分享失败
+	CODE_UPDATE_SUCCESS = 25,		// 更新成功
+	CODE_UPDATE_FAILED = 26,		// 更新失败
+	CODE_REAL_NAME_REG_SUC = 27,	// 实名注册成功
+	CODE_REAL_NAME_REG_FAILED = 28,	// 实名注册失败
+	CODE_ADDICTION_ANTI_RESULT = 29,// 房沉迷查询结果
+	CODE_PUSH_ENABLED = 30,			// 推送enable成功的回调，携带一个参数，比如友盟推送，这参数是Device Token
+	CODE_POST_GIFT_SUC = 31,		// 提交礼包兑换码成功
+	CODE_POST_GIFT_FAILED = 32,		// 提交礼包兑换码失败
 };
 static const char *U8CodeStrings[] = {
 	"no_network",
@@ -125,8 +125,8 @@ void Sdk::on_result(int p_code, const String& p_msg) {
 		tip("SDK init failure");
 		break;
 	case CODE_LOGIN_FAIL:
-		// ���ﲻ��Ҫ��ʾ��һ��SDK����ʾ
-		// sdk.tip("SDK��¼ʧ��");
+		// 这里不需要提示，一般SDK有提示
+		// sdk.tip("SDK登录失败");
 		break;
    	case CODE_SHARE_SUCCESS:
     	tip("share success");
@@ -138,8 +138,8 @@ void Sdk::on_result(int p_code, const String& p_msg) {
 		tip("pay failure");
 		break;
 	case CODE_PAY_SUCCESS:
-		// һ�����ﲻ����ʾ
-		// context.tip("֧���ɹ�,����ʱ����������ӳ�");
+		// 一般这里不用提示
+		// context.tip("支付成功,到账时间可能稍有延迟");
  		break;
 	}
 	sendCallback(CALLBACK_RESULT, d);
