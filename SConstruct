@@ -25,7 +25,6 @@ platform_list = [] # list of platforms
 platform_opts = {} # options for each platform
 platform_flags = {} # flags for each platform
 
-
 active_platforms=[]
 active_platform_ids=[]
 platform_exporters=[]
@@ -64,12 +63,12 @@ methods.save_active_platforms(active_platforms,active_platform_ids)
 
 custom_tools=['default']
 
-platform_arg = ARGUMENTS.get("platform", False)
+platform_arg = ARGUMENTS.get("platform", ARGUMENTS.get("p", False))
 
 if (os.name=="posix"):
 	pass
 elif (os.name=="nt"):
-	if (os.getenv("VSINSTALLDIR")==None or platform_arg=="android"):
+	if (not methods.msvc_is_detected() or platform_arg=="android"):
 		custom_tools=['mingw']
 
 env_base=Environment(tools=custom_tools);

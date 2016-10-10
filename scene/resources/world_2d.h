@@ -33,6 +33,7 @@
 #ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d_server.h"
 #endif
+#include "globals.h"
 
 class SpatialIndexer2D;
 class VisibilityNotifier2D;

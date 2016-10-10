@@ -1651,7 +1651,7 @@ void TextEdit::_input_event(const InputEvent& p_input_event) {
 					update();
 				}
 
-				if (mb.button_index==BUTTON_RIGHT) {
+				if (mb.button_index==BUTTON_RIGHT && context_menu_enabled) {
 
 					menu->set_pos(get_global_transform().xform(get_local_mouse_pos()));
 					menu->set_size(Vector2(1,1));
@@ -4215,12 +4215,15 @@ void TextEdit::_confirm_completion() {
 
 
 void TextEdit::_cancel_code_hint() {
+
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 0);
 	completion_hint="";
 	update();
 }
 
 void TextEdit::_cancel_completion() {
 
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 0);
 	if (!completion_active)
 		return;
 
@@ -4400,6 +4403,7 @@ void TextEdit::query_code_comple() {
 
 void TextEdit::set_code_hint(const String& p_hint) {
 
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 1);
 	completion_hint=p_hint;
 	completion_hint_offset=-0xFFFF;
 	update();
@@ -4407,7 +4411,7 @@ void TextEdit::set_code_hint(const String& p_hint) {
 
 void TextEdit::code_complete(const Vector<String> &p_strings) {
 
-
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 1);
 	completion_strings=p_strings;
 	completion_active=true;
 	completion_current="";
@@ -4588,6 +4592,9 @@ bool TextEdit::is_selecting_identifiers_on_hover_enabled() const {
 	return select_identifiers_enabled;
 }
 
+void TextEdit::set_context_menu_enabled(bool p_enable) {
+	context_menu_enabled = p_enable;
+}
 
 PopupMenu *TextEdit::get_menu() const {
 	return menu;
@@ -4810,6 +4817,7 @@ TextEdit::TextEdit()  {
 	window_has_focus=true;
 	select_identifiers_enabled=false;
 
+	context_menu_enabled=true;
 	menu = memnew( PopupMenu );
 	add_child(menu);
 	menu->add_item(TTR("Cut"),MENU_CUT,KEY_MASK_CMD|KEY_X);

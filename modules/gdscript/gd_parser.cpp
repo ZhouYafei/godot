@@ -307,6 +307,10 @@ GDParser::Node* GDParser::_parse_expression(Node *p_parent,bool p_static,bool p_
 				_set_error("expected string constant as 'preload' argument.");
 				return NULL;
 			}
+			if (path.begins_with("/")) {
+				_set_error("Paths cannot start with '/', absolute paths must start with \'res://\', \'user://\', or \'local://\'");
+				return NULL;
+			}
 			if (!path.is_abs_path() && base_path!="")
 				path=base_path+"/"+path;
 			path = path.replace("///","//").simplify_path();
@@ -2116,6 +2120,10 @@ void GDParser::_parse_extends(ClassNode *p_class) {
 			_set_error("'extends' constant must be a string.");
 			return;
 		}
+		if (((String)(constant)).begins_with("/")) {
+			_set_error("Paths cannot start with '/', absolute paths must start with \'res://\', \'user://\', or \'local://\'");
+			return;
+		}
 
 		p_class->extends_file=constant;
 		tokenizer->advance();
@@ -3108,6 +3116,16 @@ void GDParser::_parse_class(ClassNode *p_class) {
 							}
 							member._export.type=cn->value.get_type();
 							member._export.usage|=PROPERTY_USAGE_SCRIPT_VARIABLE;
+							if (cn->value.get_type()==Variant::OBJECT) {
+								Object *obj = cn->value;
+								Resource *res = obj->cast_to<Resource>();
+								if(res==NULL) {
+									_set_error("Exported constant not a type or resource.");
+									return;
+								}
+								member._export.hint=PROPERTY_HINT_RESOURCE_TYPE;
+								member._export.hint_string=res->get_type();
+							}
 						}
 					}
 #ifdef TOOLS_ENABLED
