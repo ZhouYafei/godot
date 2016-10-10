@@ -45,7 +45,7 @@ import android.util.Log;
 import android.util.DisplayMetrics;
 import android.graphics.*;
 import android.text.method.*;
-import android.text.*;
+// import android.text.*;
 import android.media.*;
 import android.hardware.*;
 import android.content.*;
@@ -673,6 +673,18 @@ public class GodotIO {
 		if (what.equals(""))
 			return "";
 		return Environment.getExternalStoragePublicDirectory(what).getAbsolutePath();
+	}
+
+	public String getClipboard() {
+
+        ClipboardManager clipMgr = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        return clipMgr.getText().toString();
+	}
+
+	public void setClipboard(String p_text) {
+
+        ClipboardManager clipMgr = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        clipMgr.setText(p_text);
 	}
 
 	protected static final String PREFS_FILE = "device_id.xml";
