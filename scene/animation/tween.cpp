@@ -901,7 +901,7 @@ bool Tween::remove(Object *p_object, String p_key) {
 		}
 	}
 	for(List<List<InterpolateData>::Element *>::Element *E=for_removal.front();E;E=E->next()) {
-		InterpolateData& data = E->get();
+		InterpolateData& data = E->get()->get();
 		uint64_t key = (uint64_t(data.id) << 32) + data.key.hash();
 		map_interpolates.erase(key);
 		interpolates.erase(E->get());
