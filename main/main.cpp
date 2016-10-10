@@ -57,7 +57,6 @@
 #include "tools/editor/editor_node.h"
 #include "tools/editor/project_manager.h"
 
-#include "tools/pck/pck_packer.h"
 #endif
 
 #include "io/file_access_network.h"
@@ -567,6 +566,16 @@ Error Main::setup(const char *execpath,int argc, char *argv[],bool p_second_phas
 				goto error;
 
 			}
+		} else if (I->get()=="-epid") {
+			if (I->next()) {
+
+				int editor_pid=I->next()->get().to_int();
+				Globals::get_singleton()->set("editor_pid",editor_pid);
+				N=I->next()->next();
+			} else {
+				goto error;
+
+			}
 		} else {
 
 			//test for game path
@@ -993,8 +1002,11 @@ Error Main::setup2() {
 		}
 	}
 #ifdef TOOLS_ENABLED
+	ObjectTypeDB::set_current_api(ObjectTypeDB::API_EDITOR);
 	EditorNode::register_editor_types();
-	ObjectTypeDB::register_type<PCKPacker>(); // todo: move somewhere else
+
+	ObjectTypeDB::set_current_api(ObjectTypeDB::API_CORE);
+
 #endif
 
 	MAIN_PRINT("Main: Load Scripts, Modules, Drivers");
@@ -1020,6 +1032,8 @@ Error Main::setup2() {
 	}
 	_start_success=true;
 	locale=String();
+
+	ObjectTypeDB::set_current_api(ObjectTypeDB::API_NONE); //no more api is registered at this point
 
 	MAIN_PRINT("Main: Done");
 
@@ -1295,9 +1309,10 @@ bool Main::start() {
 		}
 
 
+		String local_game_path;
 		if (game_path!="" && !project_manager_request) {
 
-			String local_game_path=game_path.replace("\\","/");
+			local_game_path=game_path.replace("\\","/");
 
 			if (!local_game_path.begins_with("res://")) {
 				bool absolute=(local_game_path.size()>1) && (local_game_path[0]=='/' || local_game_path[1]==':');
@@ -1364,106 +1379,99 @@ bool Main::start() {
 				OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
 
 				//editor_node->set_edited_scene(game);
-			} else {
+			}
 #endif
+		}
 
-				{
-					//autoload
-					List<PropertyInfo> props;
-					Globals::get_singleton()->get_property_list(&props);
+		if (!project_manager_request && !editor) {
+			if (game_path!="" || script!="") {
+				//autoload
+				List<PropertyInfo> props;
+				Globals::get_singleton()->get_property_list(&props);
 
-					//first pass, add the constants so they exist before any script is loaded
-					for(List<PropertyInfo>::Element *E=props.front();E;E=E->next()) {
+				//first pass, add the constants so they exist before any script is loaded
+				for(List<PropertyInfo>::Element *E=props.front();E;E=E->next()) {
 
-						String s = E->get().name;
-						if (!s.begins_with("autoload/"))
-							continue;
-						String name = s.get_slicec('/',1);
-						String path = Globals::get_singleton()->get(s);
-						bool global_var=false;
-						if (path.begins_with("*")) {
-							global_var=true;
-						}
-
-						if (global_var) {
-							for(int i=0;i<ScriptServer::get_language_count();i++) {
-								ScriptServer::get_language(i)->add_global_constant(name,Variant());
-							}
-						}
-
+					String s = E->get().name;
+					if (!s.begins_with("autoload/"))
+						continue;
+					String name = s.get_slicec('/',1);
+					String path = Globals::get_singleton()->get(s);
+					bool global_var=false;
+					if (path.begins_with("*")) {
+						global_var=true;
 					}
 
-					//second pass, load into global constants
-					List<Node*> to_add;
-					for(List<PropertyInfo>::Element *E=props.front();E;E=E->next()) {
-
-						String s = E->get().name;
-						if (!s.begins_with("autoload/"))
-							continue;
-						String name = s.get_slicec('/',1);
-						String path = Globals::get_singleton()->get(s);
-						bool global_var=false;
-						if (path.begins_with("*")) {
-							global_var=true;
-							path=path.substr(1,path.length()-1);
+					if (global_var) {
+						for(int i=0;i<ScriptServer::get_language_count();i++) {
+							ScriptServer::get_language(i)->add_global_constant(name,Variant());
 						}
-
-						RES res = ResourceLoader::load(path);
-						ERR_EXPLAIN("Can't autoload: "+path);
-						ERR_CONTINUE(res.is_null());
-						Node *n=NULL;
-						if (res->is_type("PackedScene")) {
-							Ref<PackedScene> ps = res;
-							n=ps->instance();
-						} else if (res->is_type("Script")) {
-							Ref<Script> s = res;
-							StringName ibt = s->get_instance_base_type();
-							bool valid_type = ObjectTypeDB::is_type(ibt,"Node");
-							ERR_EXPLAIN("Script does not inherit a Node: "+path);
-							ERR_CONTINUE( !valid_type );
-
-							Object *obj = ObjectTypeDB::instance(ibt);
-
-							ERR_EXPLAIN("Cannot instance script for autoload, expected 'Node' inheritance, got: "+String(ibt));
-							ERR_CONTINUE( obj==NULL );
-
-							n = obj->cast_to<Node>();
-
-							// script object, add to global constant first
-							//	gd_parser(check from constants) needs this global variable
-							if (global_var) {
-								for(int i=0;i<ScriptServer::get_language_count();i++) {
-									ScriptServer::get_language(i)->add_global_constant(name,n);
-								}
-							}
-							n->set_script(s.get_ref_ptr());
-						}
-
-						ERR_EXPLAIN("Path in autoload not a node or script: "+path);
-						ERR_CONTINUE(!n);
-						n->set_name(name);
-
-						//defer so references are all valid on _ready()
-						//sml->get_root()->add_child(n);
-						to_add.push_back(n);
-
-						if (global_var && !res->is_type("Script")) {
-							for(int i=0;i<ScriptServer::get_language_count();i++) {
-								ScriptServer::get_language(i)->add_global_constant(name,n);
-							}
-						}
-
 					}
-
-					for(List<Node*>::Element *E=to_add.front();E;E=E->next()) {
-
-						sml->get_root()->add_child(E->get());
-					}
-
-
 
 				}
 
+				//second pass, load into global constants
+				List<Node*> to_add;
+				for(List<PropertyInfo>::Element *E=props.front();E;E=E->next()) {
+
+					String s = E->get().name;
+					if (!s.begins_with("autoload/"))
+						continue;
+					String name = s.get_slicec('/',1);
+					String path = Globals::get_singleton()->get(s);
+					bool global_var=false;
+					if (path.begins_with("*")) {
+						global_var=true;
+						path=path.substr(1,path.length()-1);
+					}
+
+					RES res = ResourceLoader::load(path);
+					ERR_EXPLAIN("Can't autoload: "+path);
+					ERR_CONTINUE(res.is_null());
+					Node *n=NULL;
+					if (res->is_type("PackedScene")) {
+						Ref<PackedScene> ps = res;
+						n=ps->instance();
+					} else if (res->is_type("Script")) {
+						Ref<Script> s = res;
+						StringName ibt = s->get_instance_base_type();
+						bool valid_type = ObjectTypeDB::is_type(ibt,"Node");
+						ERR_EXPLAIN("Script does not inherit a Node: "+path);
+						ERR_CONTINUE( !valid_type );
+
+						Object *obj = ObjectTypeDB::instance(ibt);
+
+						ERR_EXPLAIN("Cannot instance script for autoload, expected 'Node' inheritance, got: "+String(ibt));
+						ERR_CONTINUE( obj==NULL );
+
+						n = obj->cast_to<Node>();
+						n->set_script(s.get_ref_ptr());
+					}
+
+					ERR_EXPLAIN("Path in autoload not a node or script: "+path);
+					ERR_CONTINUE(!n);
+					n->set_name(name);
+
+					//defer so references are all valid on _ready()
+					//sml->get_root()->add_child(n);
+					to_add.push_back(n);
+
+					if (global_var) {
+						for(int i=0;i<ScriptServer::get_language_count();i++) {
+							ScriptServer::get_language(i)->add_global_constant(name,n);
+						}
+					}
+
+				}
+
+				for(List<Node*>::Element *E=to_add.front();E;E=E->next()) {
+
+					sml->get_root()->add_child(E->get());
+				}
+				//singletons
+			}
+
+			if (game_path!="") {
 				Node *scene=NULL;
 				Ref<PackedScene> scenedata = ResourceLoader::load(local_game_path);
 				if (scenedata.is_valid())
@@ -1480,12 +1488,7 @@ bool Main::start() {
 					if (icon.load(iconpath)==OK)
 						OS::get_singleton()->set_icon(icon);
 				}
-
-
-				//singletons
-#ifdef TOOLS_ENABLED
 			}
-#endif
 		}
 
 #ifdef TOOLS_ENABLED
@@ -1768,4 +1771,3 @@ void Main::cleanup() {
 
 
 }
-

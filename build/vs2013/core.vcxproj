@@ -186,6 +186,7 @@
     <ClInclude Include="..\..\core\list.h" />
     <ClInclude Include="..\..\core\map.h" />
     <ClInclude Include="..\..\core\math\aabb.h" />
+    <ClInclude Include="..\..\core\math\a_star.h" />
     <ClInclude Include="..\..\core\math\bsp_tree.h" />
     <ClInclude Include="..\..\core\math\camera_matrix.h" />
     <ClInclude Include="..\..\core\math\face3.h" />
@@ -320,6 +321,7 @@
     <ClCompile Include="..\..\core\io\xml_parser.cpp" />
     <ClCompile Include="..\..\core\io\zip.c" />
     <ClCompile Include="..\..\core\math\aabb.cpp" />
+    <ClCompile Include="..\..\core\math\a_star.cpp" />
     <ClCompile Include="..\..\core\math\bsp_tree.cpp" />
     <ClCompile Include="..\..\core\math\camera_matrix.cpp" />
     <ClCompile Include="..\..\core\math\face3.cpp" />

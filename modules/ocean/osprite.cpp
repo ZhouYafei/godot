@@ -250,7 +250,12 @@ int OSprite::_get_frame(const OSpriteResource::Action *&p_action) {
 	static OSprite::OSpriteResource::Data dummy;
 	if(!res.is_valid())
 		return -1;
-	ERR_FAIL_COND_V(!has(current_animation), -1);
+
+	if(!has(current_animation)) {
+
+		ERR_EXPLAIN("Unknown animation: " + current_animation);
+		ERR_FAIL_V(-1);
+	}
 
 	p_action = res->action_names[current_animation];
 	ERR_FAIL_COND_V(p_action == NULL, -1);
@@ -380,6 +385,8 @@ void OSprite::_notification(int p_what) {
 		if (active && has(current_animation)) {
 			play(current_animation, loop, forward);
 		}
+		orig_pos = Node2D::get_pos();
+		orig_rot = Node2D::get_rot();
 	} break;
 	case NOTIFICATION_PROCESS: {
 		if (animation_process_mode == ANIMATION_PROCESS_FIXED)
@@ -885,7 +892,7 @@ Array OSprite::_get_collisions(bool p_global_pos) const {
 void OSprite::set_rot_diff(real_t p_diff) {
 
 	rot_diff = p_diff;
-	set_rot(get_rot());
+	set_rot(orig_rot);
 }
 
 real_t OSprite::get_rot_diff() const {
@@ -906,7 +913,7 @@ bool OSprite::is_ignored_rot() const {
 void OSprite::set_pos_diff(const Point2& p_diff) {
 
 	pos_diff = p_diff;
-	set_pos(get_pos());
+	set_pos(orig_pos);
 }
 
 const Point2& OSprite::get_pos_diff() const {
@@ -916,24 +923,26 @@ const Point2& OSprite::get_pos_diff() const {
 
 void OSprite::set_pos(const Point2& p_pos) {
 
+	orig_pos = p_pos;
 	Node2D::set_pos(p_pos + pos_diff);
 }
 
 const Point2& OSprite::get_pos() const {
 
-	return Node2D::get_pos() - pos_diff;
+	return orig_pos;
 }
 
 void OSprite::set_rot(real_t p_radians) {
 
 	if(ignore_rotate)
 		return;
+	orig_rot = p_radians;
 	Node2D::set_rot(p_radians + rot_diff);
 }
 
 real_t OSprite::get_rot() const {
 
-	return Node2D::get_rot() - rot_diff;
+	return orig_rot;
 }
 
 OSprite::OSprite() {

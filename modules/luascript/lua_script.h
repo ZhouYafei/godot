@@ -154,6 +154,7 @@ public:
 	Variant _new(const Variant** p_args,int p_argcount,Variant::CallError& r_error);
 	virtual bool can_instance() const;
 
+	virtual Ref<Script> get_base_script() const; //for script inheritance
 	virtual StringName get_instance_base_type() const; // this may not work in all scripts, will return empty if so
 	virtual ScriptInstance* instance_create(Object *p_this);
 	virtual bool instance_has(const Object *p_this) const;
@@ -173,6 +174,7 @@ public:
 	virtual bool get_property_default_value(const StringName& p_property,Variant& r_value) const;
 
 	virtual void get_script_method_list(List<MethodInfo> *p_list) const {}
+	virtual void get_script_property_list(List<PropertyInfo> *p_list) const {}
 
 	virtual String get_node_type() const;
 	void set_script_path(const String& p_path) { path=p_path; } //because subclasses need a path too...

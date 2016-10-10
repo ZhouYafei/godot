@@ -214,6 +214,12 @@ void CustomPropertyEditor::_menu_option(int p_which) {
 						}
 					}
 				} break;
+				case OBJ_MENU_NEW_SCRIPT: {
+
+					if (owner->cast_to<Node>())
+						EditorNode::get_singleton()->get_scene_tree_dock()->open_script_dialog(owner->cast_to<Node>());
+
+				} break;
 				default: {
 
 
@@ -850,8 +856,10 @@ bool CustomPropertyEditor::edit(Object* p_owner,const String& p_name,Variant::Ty
 			menu->clear();
 			menu->set_size(Size2(1,1));
 
-
-			if (hint_text!="") {
+			if (p_name=="script/script" && hint_text=="Script" && owner->cast_to<Node>()) {
+				menu->add_icon_item(get_icon("Script","EditorIcons"),TTR("New Script"),OBJ_MENU_NEW_SCRIPT);
+				menu->add_separator();
+			} else if (hint_text!="") {
 				int idx=0;
 
 				for(int i=0;i<hint_text.get_slice_count(",");i++) {
@@ -3041,7 +3049,7 @@ void PropertyEditor::update_tree() {
 					if (E) {
 						descr=E->get().brief_description;
 					}
-					class_descr_cache[type]=descr.world_wrap(80);
+					class_descr_cache[type]=descr.word_wrap(80);
 
 				}
 
@@ -3134,7 +3142,7 @@ void PropertyEditor::update_tree() {
 					if (E) {
 						for(int i=0;i<E->get().methods.size();i++) {
 							if (E->get().methods[i].name==setter.operator String()) {
-								descr=E->get().methods[i].description.strip_edges().world_wrap(80);
+								descr=E->get().methods[i].description.strip_edges().word_wrap(80);
 							}
 						}
 					}
@@ -3174,6 +3182,7 @@ void PropertyEditor::update_tree() {
 
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CHECK );
 				item->set_text(1,TTR("On"));
+				item->set_tooltip(1, obj->get(p.name) ? "True" : "False");
 				item->set_checked( 1, obj->get( p.name ) );
 				if (show_type_icons)
 					item->set_icon( 0, get_icon("Bool","EditorIcons") );
@@ -3820,6 +3829,7 @@ void PropertyEditor::_item_edited() {
 		case Variant::BOOL: {
 
 			_edit_set(name,item->is_checked(1));
+			item->set_tooltip(1, item->is_checked(1) ? "True" : "False");
 		} break;
 		case Variant::INT:
 		case Variant::REAL: {

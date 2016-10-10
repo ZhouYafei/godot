@@ -68,7 +68,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\drivers\builtin_openssl2;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;GLEW_STATIC;DEBUG_MEMORY_ENABLED;SCI_NAMESPACE;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\drivers\builtin_openssl2;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;GLEW_STATIC;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -107,7 +107,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\core\math;..\..\tools;..\..\drivers;..\..;..\..\platform\windows;..\..\platform\windows\include;..\..\drivers\freetype;..\..\drivers\freetype\include;..\..\drivers\builtin_zlib\zlib;..\..\drivers\builtin_openssl2;..\..\platform\windows\vorbis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FREETYPE_ENABLED;DEBUG_ENABLED;D3D_DEBUG_INFO;WINDOWS_ENABLED;RTAUDIO_ENABLED;TYPED_METHOD_BIND;GLES2_ENABLED;GLEW_ENABLED;GLEW_STATIC;MSVC;MUSEPACK_ENABLED;OLD_SCENE_FORMAT_ENABLED;SQUISH_ENABLED;VORBIS_ENABLED;OPUS_ENABLED;PNG_ENABLED;DDS_ENABLED;PVR_ENABLED;JPG_ENABLED;WEBP_ENABLED;SPEEX_ENABLED;TOOLS_ENABLED;GDSCRIPT_ENABLED;MINIZIP_ENABLED;XML_ENABLED;PHYSICAL_ENABLED;REAL_T_IS_DOUBLE;OPENSSL_ENABLED;OPENSSL_NO_ASM;OPENSSL_THREADS;L_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -147,13 +147,17 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)export_windows.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)export_windows.obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="..\..\platform\winrt\export\export.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)export_winrt.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)export_winrt.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)export_winrt.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\..\platform\x11\export\export.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)export_x11.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)export_x11.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(IntDir)export_x11.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\tools\collada\collada.cpp" />
-    <ClCompile Include="..\..\tools\docdump\doc_dump.cpp" />
     <ClCompile Include="..\..\tools\doc\doc_data.cpp" />
     <ClCompile Include="..\..\tools\editor\animation_editor.cpp" />
     <ClCompile Include="..\..\tools\editor\array_property_edit.cpp" />
@@ -259,6 +263,7 @@
     <ClCompile Include="..\..\tools\editor\project_manager.cpp" />
     <ClCompile Include="..\..\tools\editor\project_settings.cpp" />
     <ClCompile Include="..\..\tools\editor\property_editor.cpp" />
+    <ClCompile Include="..\..\tools\editor\property_selector.cpp" />
     <ClCompile Include="..\..\tools\editor\pvrtc_compress.cpp" />
     <ClCompile Include="..\..\tools\editor\quick_open.cpp" />
     <ClCompile Include="..\..\tools\editor\register_exporters.cpp" />
@@ -279,9 +284,9 @@
     <ClInclude Include="..\..\platform\javascript\export\export.h" />
     <ClInclude Include="..\..\platform\osx\export\export.h" />
     <ClInclude Include="..\..\platform\windows\export\export.h" />
+    <ClInclude Include="..\..\platform\winrt\export\export.h" />
     <ClInclude Include="..\..\platform\x11\export\export.h" />
     <ClInclude Include="..\..\tools\collada\collada.h" />
-    <ClInclude Include="..\..\tools\docdump\doc_dump.h" />
     <ClInclude Include="..\..\tools\doc\doc_data.h" />
     <ClInclude Include="..\..\tools\editor\animation_editor.h" />
     <ClInclude Include="..\..\tools\editor\array_property_edit.h" />
@@ -387,6 +392,7 @@
     <ClInclude Include="..\..\tools\editor\project_manager.h" />
     <ClInclude Include="..\..\tools\editor\project_settings.h" />
     <ClInclude Include="..\..\tools\editor\property_editor.h" />
+    <ClInclude Include="..\..\tools\editor\property_selector.h" />
     <ClInclude Include="..\..\tools\editor\pvrtc_compress.h" />
     <ClInclude Include="..\..\tools\editor\quick_open.h" />
     <ClInclude Include="..\..\tools\editor\register_exporters.h" />

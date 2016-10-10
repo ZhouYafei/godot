@@ -1932,9 +1932,6 @@ Error Image::_decompress_bc() {
 
 		rofs+=len*8;
 		wofs+=wd*ht*4;
-
-		wd/=2;
-		ht/=2;
 	}
 	w=DVector<uint8_t>::Write();
 	r=DVector<uint8_t>::Read();

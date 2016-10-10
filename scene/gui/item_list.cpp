@@ -959,7 +959,23 @@ void ItemList::_notification(int p_what) {
 			shape_changed=false;
 		}
 
+		//ensure_selected_visible needs to be checked before we draw the list.
+		if (ensure_selected_visible && current>=0 && current <=items.size()) {
 
+			Rect2 r = items[current].rect_cache;
+			int from = scroll_bar->get_val();
+			int to = from + scroll_bar->get_page();
+
+			if (r.pos.y < from) {
+				scroll_bar->set_val(r.pos.y);
+			} else if (r.pos.y+r.size.y > to) {
+				scroll_bar->set_val(r.pos.y+r.size.y - (to-from));
+			}
+
+
+		}
+
+		ensure_selected_visible=false;		
 
 		Vector2 base_ofs = bg->get_offset();
 		base_ofs.y-=int(scroll_bar->get_val());
@@ -1147,25 +1163,6 @@ void ItemList::_notification(int p_what) {
 		for(int i=0;i<separators.size();i++) {
 			draw_line(Vector2(bg->get_margin(MARGIN_LEFT),base_ofs.y+separators[i]),Vector2(size.width-bg->get_margin(MARGIN_LEFT),base_ofs.y+separators[i]),guide_color);
 		}
-
-
-		if (ensure_selected_visible && current>=0 && current <=items.size()) {
-
-			Rect2 r = items[current].rect_cache;
-			int from = scroll_bar->get_val();
-			int to = from + scroll_bar->get_page();
-
-			if (r.pos.y < from) {
-				scroll_bar->set_val(r.pos.y);
-			} else if (r.pos.y+r.size.y > to) {
-				scroll_bar->set_val(r.pos.y+r.size.y - (to-from));
-			}
-
-
-		}
-
-		ensure_selected_visible=false;
-
 	}
 }
 
@@ -1357,6 +1354,8 @@ void ItemList::_bind_methods(){
 	ObjectTypeDB::bind_method(_MD("get_item_at_pos","pos","exact"),&ItemList::get_item_at_pos,DEFVAL(false));
 
 	ObjectTypeDB::bind_method(_MD("ensure_current_is_visible"),&ItemList::ensure_current_is_visible);
+
+	ObjectTypeDB::bind_method(_MD("get_v_scroll"),&ItemList::get_v_scroll);
 
 	ObjectTypeDB::bind_method(_MD("_scroll_changed"),&ItemList::_scroll_changed);
 	ObjectTypeDB::bind_method(_MD("_input_event"),&ItemList::_input_event);

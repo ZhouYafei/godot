@@ -36,6 +36,7 @@
 #include "servers/visual/particle_system_sw.h"
 #include "gl_context/context_gl.h"
 #include <string.h>
+#include <stdlib.h>
 
 #ifdef GLEW_ENABLED
 #define   _GL_HALF_FLOAT_OES      0x140B
@@ -2028,7 +2029,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 				if (use_VBO) {
 
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLushort);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=true;
 					normalize=true;
@@ -2037,7 +2037,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 
 				} else {
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLfloat);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=false;
 					datatype=GL_FLOAT;
@@ -2049,7 +2048,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 
 				if (use_VBO) {
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLubyte);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=true;
 					datatype=GL_UNSIGNED_BYTE;
@@ -2057,7 +2055,6 @@ void RasterizerGLES2::mesh_add_surface(RID p_mesh,VS::PrimitiveType p_primitive,
 				} else {
 
 					elem_size=VS::ARRAY_WEIGHTS_SIZE*sizeof(GLushort);
-					elem_count=VS::ARRAY_WEIGHTS_SIZE;
 					valid_local=false;
 					bind=false;
 					datatype=GL_UNSIGNED_SHORT;
@@ -4696,7 +4693,7 @@ void RasterizerGLES2::_update_shader( Shader* p_shader) const {
 			enablers.push_back("#define USE_LIGHT_SHADER_CODE\n");
 		}
 		if (light_flags.uses_shadow_color) {
-			enablers.push_back("#define USE_LIGHT_SHADOW_COLOR\n");
+			enablers.push_back("#define USE_OUTPUT_SHADOW_COLOR\n");
 		}
 		if (light_flags.uses_time || fragment_flags.uses_time || vertex_flags.uses_time) {
 			enablers.push_back("#define USE_TIME\n");
@@ -4739,7 +4736,7 @@ void RasterizerGLES2::_update_shader( Shader* p_shader) const {
 			enablers.push_back("#define USE_TEXPIXEL_SIZE\n");
 		}
 		if (light_flags.uses_shadow_color) {
-			enablers.push_back("#define USE_LIGHT_SHADOW_COLOR\n");
+			enablers.push_back("#define USE_OUTPUT_SHADOW_COLOR\n");
 		}
 
 		if (vertex_flags.uses_worldvec) {
@@ -5240,7 +5237,6 @@ bool RasterizerGLES2::_setup_material(const Geometry *p_geometry,const Material 
 
 		material_shader.set_conditional(MaterialShaderGLES2::USE_FOG,current_env && current_env->fx_enabled[VS::ENV_FX_FOG]);
 		//glDepthMask( true );
-
 	}
 
 
@@ -5490,9 +5486,16 @@ void RasterizerGLES2::_setup_light(uint16_t p_light) {
 	}
 
 
-	light_data[VL_LIGHT_ATTENUATION][0]=l->vars[VS::LIGHT_PARAM_ENERGY];
-	light_data[VL_LIGHT_ATTENUATION][1]=l->vars[VS::LIGHT_PARAM_RADIUS];
-	light_data[VL_LIGHT_ATTENUATION][2]=l->vars[VS::LIGHT_PARAM_ATTENUATION];
+	light_data[VL_LIGHT_ATTENUATION][0] = l->vars[VS::LIGHT_PARAM_ENERGY];
+
+	if (l->type == VS::LIGHT_DIRECTIONAL) {
+		light_data[VL_LIGHT_ATTENUATION][1] = l->directional_shadow_param[VS::LIGHT_DIRECTIONAL_SHADOW_PARAM_MAX_DISTANCE];
+	}
+	else{
+		light_data[VL_LIGHT_ATTENUATION][1] = l->vars[VS::LIGHT_PARAM_RADIUS];
+	}
+
+	light_data[VL_LIGHT_ATTENUATION][2] = l->vars[VS::LIGHT_PARAM_ATTENUATION];
 
 	light_data[VL_LIGHT_SPOT_ATTENUATION][0]=Math::cos(Math::deg2rad(l->vars[VS::LIGHT_PARAM_SPOT_ANGLE]));
 	light_data[VL_LIGHT_SPOT_ATTENUATION][1]=l->vars[VS::LIGHT_PARAM_SPOT_ATTENUATION];
@@ -6817,7 +6820,7 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 			}
 		}
 
-		if (e->instance->billboard || e->instance->depth_scale) {
+		if (e->instance->billboard || e->instance->billboard_y || e->instance->depth_scale) {
 
 			Transform xf=e->instance->transform;
 			if (e->instance->depth_scale) {
@@ -6846,6 +6849,21 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list,const Trans
 					xf.set_look_at(xf.origin, xf.origin + p_view_transform.get_basis().get_axis(2), p_view_transform.get_basis().get_axis(1));
 				}
 
+				xf.basis.scale(scale);
+			}
+			
+			if (e->instance->billboard_y) {
+				
+				Vector3 scale = xf.basis.get_scale();
+				Vector3 look_at =  p_view_transform.get_origin();
+				look_at.y = 0.0;
+				Vector3 look_at_norm = look_at.normalized();
+				
+				if (current_rt && current_rt_vflip) {
+					xf.set_look_at(xf.origin,xf.origin + look_at_norm, Vector3(0.0, -1.0, 0.0));
+				} else {
+					xf.set_look_at(xf.origin,xf.origin + look_at_norm, Vector3(0.0, 1.0, 0.0));
+				}
 				xf.basis.scale(scale);
 			}
 			material_shader.set_uniform(MaterialShaderGLES2::WORLD_TRANSFORM, xf);
@@ -7046,6 +7064,10 @@ void RasterizerGLES2::_process_glow_bloom() {
 }
 
 void RasterizerGLES2::_process_hdr() {
+
+	if (framebuffer.luminance.empty()) {
+		return;
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.luminance[0].fbo);
 	glActiveTexture(GL_TEXTURE0);
@@ -10845,14 +10867,52 @@ void RasterizerGLES2::init() {
 		print_line(String("GLES2: Using GLEW ") + (const char*) glewGetString(GLEW_VERSION));
 	}
 
+	// Godot makes use of functions from ARB_framebuffer_object extension which is not implemented by all drivers.
+	// On the other hand, these drivers might implement the older EXT_framebuffer_object extension
+	// with which current source code is backward compatible.
+
+	bool framebuffer_object_is_supported = glewIsSupported("GL_ARB_framebuffer_object");
+
+	if ( !framebuffer_object_is_supported ) {
+		WARN_PRINT("GL_ARB_framebuffer_object not supported by your graphics card.");
+
+		if ( glewIsSupported("GL_EXT_framebuffer_object") ) {
+			// falling-back to the older EXT function if present
+			WARN_PRINT("Falling-back to GL_EXT_framebuffer_object.");
+
+			glIsRenderbuffer = glIsRenderbufferEXT;
+			glBindRenderbuffer = glBindRenderbufferEXT;
+			glDeleteRenderbuffers = glDeleteRenderbuffersEXT;
+			glGenRenderbuffers = glGenRenderbuffersEXT;
+			glRenderbufferStorage = glRenderbufferStorageEXT;
+			glGetRenderbufferParameteriv = glGetRenderbufferParameterivEXT;
+			glIsFramebuffer = glIsFramebufferEXT;
+			glBindFramebuffer = glBindFramebufferEXT;
+			glDeleteFramebuffers = glDeleteFramebuffersEXT;
+			glGenFramebuffers = glGenFramebuffersEXT;
+			glCheckFramebufferStatus = glCheckFramebufferStatusEXT;
+			glFramebufferTexture1D = glFramebufferTexture1DEXT;
+			glFramebufferTexture2D = glFramebufferTexture2DEXT;
+			glFramebufferTexture3D = glFramebufferTexture3DEXT;
+			glFramebufferRenderbuffer = glFramebufferRenderbufferEXT;
+			glGetFramebufferAttachmentParameteriv = glGetFramebufferAttachmentParameterivEXT;
+			glGenerateMipmap = glGenerateMipmapEXT;
+
+			framebuffer_object_is_supported = true;
+		}
+		else {
+			ERR_PRINT("Framebuffer Object is not supported by your graphics card.");
+		}
+	}
+
 	// Check for GL 2.1 compatibility, if not bail out
-	if (!glewIsSupported("GL_VERSION_2_1")) {
+	if (!(glewIsSupported("GL_VERSION_2_1") && framebuffer_object_is_supported)) {
 		ERR_PRINT("Your system's graphic drivers seem not to support OpenGL 2.1 / GLES 2.0, sorry :(\n"
-			  "Try a drivers update, buy a new GPU or try software rendering on Linux; Godot will now crash with a segmentation fault.");
+			  "Try a drivers update, buy a new GPU or try software rendering on Linux; Godot is now going to terminate.");
 		OS::get_singleton()->alert("Your system's graphic drivers seem not to support OpenGL 2.1 / GLES 2.0, sorry :(\n"
 					   "Godot Engine will self-destruct as soon as you acknowledge this error message.",
 					   "Fatal error: Insufficient OpenGL / GLES drivers");
-		// TODO: If it's even possible, we should stop the execution without segfault and memory leaks :)
+		exit(1);
 	}
 #endif
 
@@ -10887,6 +10947,11 @@ void RasterizerGLES2::init() {
 	canvas_shader.set_conditional(CanvasShaderGLES2::USE_GLES_OVER_GL,true);
 	canvas_shadow_shader.set_conditional(CanvasShadowShaderGLES2::USE_GLES_OVER_GL,true);
 	copy_shader.set_conditional(CopyShaderGLES2::USE_GLES_OVER_GL,true);
+#endif
+
+#ifdef ANGLE_ENABLED
+	// Fix for ANGLE
+	material_shader.set_conditional(MaterialShaderGLES2::DISABLE_FRONT_FACING, true);
 #endif
 
 
@@ -10976,7 +11041,11 @@ void RasterizerGLES2::init() {
 
 
 	srgb_supported=extensions.has("GL_EXT_sRGB");
+#ifndef ANGLE_ENABLED
 	s3tc_srgb_supported =  s3tc_supported && extensions.has("GL_EXT_texture_compression_s3tc");
+#else
+	s3tc_srgb_supported = s3tc_supported;
+#endif
 	latc_supported = extensions.has("GL_EXT_texture_compression_latc");
 	anisotropic_level=1.0;
 	use_anisotropic_filter=extensions.has("GL_EXT_texture_filter_anisotropic");

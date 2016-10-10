@@ -10,9 +10,6 @@
     <Filter Include="tools\doc">
       <UniqueIdentifier>{32c57b28-2826-4d6f-be47-8d9cc38a2246}</UniqueIdentifier>
     </Filter>
-    <Filter Include="tools\docdump">
-      <UniqueIdentifier>{aa912fb6-d02e-4597-88bb-4f7f5381d9cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="tools\editor">
       <UniqueIdentifier>{e93dc091-704b-42f1-862e-3d4367c9a7dd}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,9 @@
     <Filter Include="platform\x11\export">
       <UniqueIdentifier>{1800122f-cecb-41f7-8b05-db1c929c3fb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform\export">
+      <UniqueIdentifier>{6d1a8e7a-743d-41f9-9668-6ce67d1817ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\tools\collada\collada.cpp">
@@ -74,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="..\..\tools\doc\doc_data.cpp">
       <Filter>tools\doc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tools\docdump\doc_dump.cpp">
-      <Filter>tools\docdump</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tools\editor\animation_editor.cpp">
       <Filter>tools\editor</Filter>
@@ -447,6 +444,12 @@
     <ClCompile Include="..\..\tools\editor\plugins\script_text_editor.cpp">
       <Filter>tools\editor\plugins</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tools\editor\property_selector.cpp">
+      <Filter>tools\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\platform\winrt\export\export.cpp">
+      <Filter>platform\export</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tools\collada\collada.h">
@@ -454,9 +457,6 @@
     </ClInclude>
     <ClInclude Include="..\..\tools\doc\doc_data.h">
       <Filter>tools\doc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\tools\docdump\doc_dump.h">
-      <Filter>tools\docdump</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\animation_editor.h">
       <Filter>tools\editor</Filter>
@@ -826,6 +826,12 @@
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\filesystem_dock.h">
       <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tools\editor\property_selector.h">
+      <Filter>tools\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\platform\winrt\export\export.h">
+      <Filter>platform\export</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

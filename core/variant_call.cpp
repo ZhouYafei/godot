@@ -346,6 +346,7 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM0R(Vector2,angle);
 //	VCALL_LOCALMEM1R(Vector2,cross);
 	VCALL_LOCALMEM0R(Vector2,abs);
+	VCALL_LOCALMEM1R(Vector2,clamped);
 
 	VCALL_LOCALMEM0R(Rect2,get_area);
 	VCALL_LOCALMEM1R(Rect2,intersects);
@@ -374,6 +375,7 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM0R(Vector3, ceil);
 	VCALL_LOCALMEM1R(Vector3, distance_to);
 	VCALL_LOCALMEM1R(Vector3, distance_squared_to);
+	VCALL_LOCALMEM1R(Vector3, angle_to);
 	VCALL_LOCALMEM1R(Vector3, slide);
 	VCALL_LOCALMEM1R(Vector3, reflect);
 
@@ -464,8 +466,8 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM0R(Array,hash);
 	VCALL_LOCALMEM1(Array,push_back);
 	VCALL_LOCALMEM1(Array,push_front);
-	VCALL_LOCALMEM0(Array,pop_back);
-	VCALL_LOCALMEM0(Array,pop_front);
+	VCALL_LOCALMEM0R(Array,pop_back);
+	VCALL_LOCALMEM0R(Array,pop_front);
 	VCALL_LOCALMEM1(Array,append);
 	VCALL_LOCALMEM1(Array,resize);
 	VCALL_LOCALMEM2(Array,insert);
@@ -520,6 +522,7 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM1(ByteArray,append);
 	VCALL_LOCALMEM1(ByteArray,append_array);
 	VCALL_LOCALMEM0(ByteArray,invert);
+	VCALL_LOCALMEM2R(ByteArray,subarray);
 
 	VCALL_LOCALMEM0R(IntArray,size);
 	VCALL_LOCALMEM2(IntArray,set);
@@ -1001,7 +1004,19 @@ void Variant::call_ptr(const StringName& p_method,const Variant** p_args,int p_a
 
 
 #endif
-		ret=_get_obj().obj->call(p_method,p_args,p_argcount,r_error);
+
+#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED)
+		if (ObjectDB::instance_validate(obj)) {
+#endif
+
+		ret=obj->call(p_method,p_args,p_argcount,r_error);
+
+#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED)
+		} else {
+			r_error.error=CallError::CALL_ERROR_INSTANCE_IS_NULL;
+			return;
+		}
+#endif
 
 	//else if (type==Variant::METHOD) {
 
@@ -1468,6 +1483,7 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC1(VECTOR2,VECTOR2,Vector2,reflect,VECTOR2,"vec",varray());
 	//ADDFUNC1(VECTOR2,REAL,Vector2,cross,VECTOR2,"with",varray());
 	ADDFUNC0(VECTOR2,VECTOR2,Vector2,abs,varray());
+	ADDFUNC1(VECTOR2,VECTOR2,Vector2,clamped,REAL,"length",varray());
 
 	ADDFUNC0(RECT2,REAL,Rect2,get_area,varray());
 	ADDFUNC1(RECT2,BOOL,Rect2,intersects,RECT2,"b",varray());
@@ -1496,6 +1512,7 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC0(VECTOR3,VECTOR3,Vector3,ceil,varray());
 	ADDFUNC1(VECTOR3,REAL,Vector3,distance_to,VECTOR3,"b",varray());
 	ADDFUNC1(VECTOR3,REAL,Vector3,distance_squared_to,VECTOR3,"b",varray());
+	ADDFUNC1(VECTOR3,REAL,Vector3,angle_to,VECTOR3,"to",varray());
 	ADDFUNC1(VECTOR3,VECTOR3,Vector3,slide,VECTOR3,"by",varray());
 	ADDFUNC1(VECTOR3,VECTOR3,Vector3,reflect,VECTOR3,"by",varray());
 
@@ -1608,6 +1625,7 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC2(RAW_ARRAY,INT,ByteArray,insert,INT,"idx",INT,"byte",varray());
 	ADDFUNC1(RAW_ARRAY,NIL,ByteArray,resize,INT,"idx",varray());
 	ADDFUNC0(RAW_ARRAY,NIL,ByteArray,invert,varray());
+	ADDFUNC2(RAW_ARRAY,RAW_ARRAY,ByteArray,subarray,INT,"from",INT,"to",varray());
 
 	ADDFUNC0(RAW_ARRAY,STRING,ByteArray,get_string_from_ascii,varray());
 	ADDFUNC0(RAW_ARRAY,STRING,ByteArray,get_string_from_utf8,varray());

@@ -181,6 +181,7 @@
     <ClCompile Include="..\..\scene\3d\proximity_group.cpp" />
     <ClCompile Include="..\..\scene\3d\quad.cpp" />
     <ClCompile Include="..\..\scene\3d\ray_cast.cpp" />
+    <ClCompile Include="..\..\scene\3d\remote_transform.cpp" />
     <ClCompile Include="..\..\scene\3d\room_instance.cpp" />
     <ClCompile Include="..\..\scene\3d\scenario_fx.cpp" />
     <ClCompile Include="..\..\scene\3d\skeleton.cpp" />
@@ -213,6 +214,7 @@
     <ClCompile Include="..\..\scene\gui\check_button.cpp" />
     <ClCompile Include="..\..\scene\gui\color_picker.cpp" />
     <ClCompile Include="..\..\scene\gui\color_ramp_edit.cpp" />
+    <ClCompile Include="..\..\scene\gui\color_rect.cpp" />
     <ClCompile Include="..\..\scene\gui\container.cpp" />
     <ClCompile Include="..\..\scene\gui\control.cpp" />
     <ClCompile Include="..\..\scene\gui\dialogs.cpp" />
@@ -382,6 +384,7 @@
     <ClInclude Include="..\..\scene\3d\proximity_group.h" />
     <ClInclude Include="..\..\scene\3d\quad.h" />
     <ClInclude Include="..\..\scene\3d\ray_cast.h" />
+    <ClInclude Include="..\..\scene\3d\remote_transform.h" />
     <ClInclude Include="..\..\scene\3d\room_instance.h" />
     <ClInclude Include="..\..\scene\3d\scenario_fx.h" />
     <ClInclude Include="..\..\scene\3d\skeleton.h" />
@@ -413,6 +416,7 @@
     <ClInclude Include="..\..\scene\gui\check_button.h" />
     <ClInclude Include="..\..\scene\gui\color_picker.h" />
     <ClInclude Include="..\..\scene\gui\color_ramp_edit.h" />
+    <ClInclude Include="..\..\scene\gui\color_rect.h" />
     <ClInclude Include="..\..\scene\gui\container.h" />
     <ClInclude Include="..\..\scene\gui\control.h" />
     <ClInclude Include="..\..\scene\gui\dialogs.h" />
