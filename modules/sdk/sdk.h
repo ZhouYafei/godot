@@ -74,6 +74,8 @@ public:
 	void share(const Dictionary& p_data);
 	void analytics(const Dictionary& p_data);
 	void download(const String& p_url, bool p_show_confirm, bool p_force);
+	String get_clipboard();
+	void set_clipboard(const String& p_text);
 
 	static Sdk* get_singleton();
 

@@ -16,6 +16,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
+import org.godotengine.godot.input.Clipboard;
+
 /***
  * 记得将游戏工程中的AndroidManifest.xml中application节点，增加一个android:name="U8Application"
  * 如果游戏有自己的Application。那么通过实现IApplicationListener接口来实现，而不要使用继承Application。
@@ -35,8 +37,6 @@ public class SDK extends Godot.SingletonBase {
 	private String sdkCallback = "";
 	private Activity activity = null;
 
-//	 private Dialog dialog = null;
-
 	static public Godot.SingletonBase initialize(Activity p_activity) {
 		return new SDK(p_activity);
 	}
@@ -53,6 +53,8 @@ public class SDK extends Godot.SingletonBase {
 			"get_logic_channel",
 			"get_app_id",
 			"get_app_key",
+			"get_clipboard",
+			"set_clipboard",
 			// U8User plugin
 			"login",
 			"login_custom",
@@ -201,6 +203,18 @@ public class SDK extends Godot.SingletonBase {
 	public String get_app_key() {
 		return U8SDK.getInstance().getAppKey();
 	}
+	// 获取剪贴板
+	public String get_clipboard() {
+
+		return Clipboard.getInstance(activity).getText();
+	}
+	// 设置剪贴板
+	public void set_clipboard(String p_text) {
+
+		Clipboard cb = Clipboard.getInstance(activity);
+		cb.setText(p_text);
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	// U8User plugin implements
 	///////////////////////////////////////////////////////////////////////////

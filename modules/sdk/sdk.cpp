@@ -297,6 +297,16 @@ void Sdk::download(const String& p_url, bool p_show_confirm, bool p_force) {
 	p_url; p_show_confirm; p_force;
 }
 
+String Sdk::get_clipboard() {
+
+	return OS::get_singleton()->get_clipboard();
+}
+
+void Sdk::set_clipboard(const String& p_text) {
+
+	OS::get_singleton()->set_clipboard(p_text);
+}
+
 void Sdk::_bind_methods() {
 
  	ObjectTypeDB::bind_method(_MD("init", "inst_id", "callback"),&Sdk::init);
@@ -324,6 +334,8 @@ void Sdk::_bind_methods() {
  	ObjectTypeDB::bind_method(_MD("share", "share_params"),&Sdk::share);
  	ObjectTypeDB::bind_method(_MD("analytics", "params"),&Sdk::analytics);
  	ObjectTypeDB::bind_method(_MD("download", "url", "show_confirm", "force"),&Sdk::download);
+ 	ObjectTypeDB::bind_method(_MD("get_clipboard"),&Sdk::get_clipboard);
+ 	ObjectTypeDB::bind_method(_MD("set_clipboard", "text"),&Sdk::set_clipboard);
 }
 
 Sdk *Sdk::get_singleton() {
