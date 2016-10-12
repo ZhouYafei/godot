@@ -29,6 +29,7 @@
 #ifdef MODULE_SDK_ENABLED
 
 #include "sdk.h"
+#include "os/os.h"
 
 static const char *CALLBACK_INIT = "init";
 static const char *CALLBACK_LOGIN = "login";
