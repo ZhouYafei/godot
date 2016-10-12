@@ -678,7 +678,7 @@ void Tween::_tween_process(float p_delta) {
 					object->call(data.key, (const Variant **) arg, data.args, error);
 				}
 				if (!repeat)
-					call_deferred("remove", object, data.key);
+					erased.push_back(E);
 			}
 			continue;
 		}
@@ -692,7 +692,7 @@ void Tween::_tween_process(float p_delta) {
 			emit_signal("tween_complete",object,data.key);
 			// not repeat mode, remove completed action
 			if (!repeat)
-				call_deferred("remove", object, data.key);
+				erased.push_back(E);
 		}
 	}
 
