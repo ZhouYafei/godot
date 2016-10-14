@@ -47,15 +47,19 @@ void Tween::_add_interpolate(InterpolateData& p_data) {
 	map_interpolates[key] = interpolates.back();
 }
 
-void Tween::_add_pending_command(StringName p_key
+void Tween::_add_pending_command(StringName p_callback, StringName p_key
 	,const Variant& p_arg1 ,const Variant& p_arg2 ,const Variant& p_arg3 ,const Variant& p_arg4 ,const Variant& p_arg5
 	,const Variant& p_arg6 ,const Variant& p_arg7 ,const Variant& p_arg8 ,const Variant& p_arg9 ,const Variant& p_arg10
 ) {
 
 	pending_commands.push_back(PendingCommand());
 	PendingCommand& cmd = pending_commands.back()->get();
-	cmd.objbits = 0;
+	// p_arg1 always is owner object
+	cmd.id = (p_arg1.operator Object *())->get_instance_ID();
 	cmd.key = p_key;
+	cmd.callback = p_callback;
+	cmd.objbits = 0;
+
 	int& count = cmd.args;
 	if(p_arg10.get_type() != Variant::NIL)
 		count = 10;
@@ -147,7 +151,7 @@ void Tween::_process_pending_commands() {
 			&cmd.arg[8],
 			&cmd.arg[9],
 		};
-		this->call(cmd.key, (const Variant **) arg, cmd.args, err);
+		this->call(cmd.callback, (const Variant **) arg, cmd.args, err);
 	}
 	pending_commands.clear();
 }
@@ -889,22 +893,45 @@ bool Tween::remove(Object *p_object, String p_key) {
 		call_deferred("remove", p_object, p_key);
 		return true;
 	}
-	List<List<InterpolateData>::Element *> for_removal;
-	for(List<InterpolateData>::Element *E=interpolates.front();E;E=E->next()) {
 
-		InterpolateData& data = E->get();
-		Object *object = ObjectDB::get_instance(data.id);
-		if(object == NULL)
-			continue;
-		if(object == p_object && (data.key == p_key || p_key == "")) {
-			for_removal.push_back(E);
+
+	// handle pending_commands
+	{
+		List<List<PendingCommand>::Element *> for_removal;
+		for(List<PendingCommand>::Element *E=pending_commands.front();E;E=E->next()) {
+
+			PendingCommand& cmd = E->get();
+			Object *object = ObjectDB::get_instance(cmd.id);
+			if(object == NULL || (object == p_object && (cmd.key == p_key || p_key == ""))) {
+				for_removal.push_back(E);
+			}
+		}
+
+		for(List<List<PendingCommand>::Element *>::Element *E = for_removal.front(); E; E = E->next()) {
+
+			pending_commands.erase(E->get());
 		}
 	}
-	for(List<List<InterpolateData>::Element *>::Element *E=for_removal.front();E;E=E->next()) {
-		InterpolateData& data = E->get()->get();
-		uint64_t key = (uint64_t(data.id) << 32) + data.key.hash();
-		map_interpolates.erase(key);
-		interpolates.erase(E->get());
+
+	// handle interpolates
+	{
+		List<List<InterpolateData>::Element *> for_removal;
+		for(List<InterpolateData>::Element *E=interpolates.front();E;E=E->next()) {
+
+			InterpolateData& data = E->get();
+			Object *object = ObjectDB::get_instance(data.id);
+			if(object == NULL || (object == p_object && (data.key == p_key || p_key == ""))) {
+				for_removal.push_back(E);
+			}
+		}
+
+		for(List<List<InterpolateData>::Element *>::Element *E=for_removal.front();E;E=E->next()) {
+
+			InterpolateData& data = E->get()->get();
+			uint64_t key = (uint64_t(data.id) << 32) + data.key.hash();
+			map_interpolates.erase(key);
+			interpolates.erase(E->get());
+		}
 	}
 	return true;
 }
@@ -1105,7 +1132,7 @@ bool Tween::interpolate_property(Object *p_object
 	, real_t p_delay
 ) {
 	if(pending_update != 0) {
-		_add_pending_command("interpolate_property"
+		_add_pending_command("interpolate_property", p_property
 			, p_object
 			, p_property
 			, p_initial_val
@@ -1165,7 +1192,7 @@ bool Tween::interpolate_method(Object *p_object
 	, real_t p_delay
 ) {
 	if(pending_update != 0) {
-		_add_pending_command("interpolate_method"
+		_add_pending_command("interpolate_method", p_method
 			, p_object
 			, p_method
 			, p_initial_val
@@ -1221,7 +1248,7 @@ bool Tween::interpolate_callback(Object *p_object
 ) {
 
 	if(pending_update != 0) {
-		_add_pending_command("interpolate_callback"
+		_add_pending_command("interpolate_callback", p_callback
 			, p_object
 			, p_times_in_sec
 			, p_callback
@@ -1287,7 +1314,7 @@ bool Tween::interpolate_deferred_callback(Object *p_object
 ) {
 
 	if(pending_update != 0) {
-		_add_pending_command("interpolate_deferred_callback"
+		_add_pending_command("interpolate_deferred_callback", p_callback
 			, p_object
 			, p_times_in_sec
 			, p_callback
@@ -1356,7 +1383,7 @@ bool Tween::follow_property(Object *p_object
 	, real_t p_delay
 ) {
 	if(pending_update != 0) {
-		_add_pending_command("follow_property"
+		_add_pending_command("follow_property", p_property
 			, p_object
 			, p_property
 			, p_initial_val
@@ -1424,7 +1451,7 @@ bool Tween::follow_method(Object *p_object
 	, real_t p_delay
 ) {
 	if(pending_update != 0) {
-		_add_pending_command("follow_method"
+		_add_pending_command("follow_method", p_method
 			, p_object
 			, p_method
 			, p_initial_val
@@ -1493,7 +1520,7 @@ bool Tween::targeting_property(Object *p_object
 	, real_t p_delay
 ) {
 	if(pending_update != 0) {
-		_add_pending_command("targeting_property"
+		_add_pending_command("targeting_property", p_property
 			, p_object
 			, p_property
 			, p_initial
@@ -1566,7 +1593,7 @@ bool Tween::targeting_method(Object *p_object
 	, real_t p_delay
 ) {
 	if(pending_update != 0) {
-		_add_pending_command("targeting_method"
+		_add_pending_command("targeting_method", p_method
 			, p_object
 			, p_method
 			, p_initial

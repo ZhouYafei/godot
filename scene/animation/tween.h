@@ -114,14 +114,16 @@ private:
 	InterpolateMaps map_interpolates;
 
 	struct PendingCommand {
+		ObjectID id;
 		StringName key;
+		StringName callback;
 		int args;
 		int objbits;
 		Variant arg[10];
 	};
 	List<PendingCommand> pending_commands;
 
-	void _add_pending_command(StringName p_key
+	void _add_pending_command(StringName p_callback, StringName p_key
 		,const Variant& p_arg1=Variant()
 		,const Variant& p_arg2=Variant()
 		,const Variant& p_arg3=Variant()
