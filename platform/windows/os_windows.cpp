@@ -29,7 +29,6 @@
 #include "drivers/gles2/rasterizer_gles2.h"
 
 #include "os_windows.h"
-#include "drivers/nedmalloc/memory_pool_static_nedmalloc.h"
 #include "drivers/unix/memory_pool_static_malloc.h"
 #include "os/memory_pool_dynamic_static.h"
 #include "drivers/windows/thread_windows.h"
@@ -2473,6 +2472,9 @@ OS_Windows::OS_Windows(HINSTANCE _hInstance) {
 
 #ifdef RTAUDIO_ENABLED
 	AudioDriverManagerSW::add_driver(&driver_rtaudio);
+#endif
+#ifdef XAUDIO2_ENABLED
+	AudioDriverManagerSW::add_driver(&driver_xaudio2);
 #endif
 
 }

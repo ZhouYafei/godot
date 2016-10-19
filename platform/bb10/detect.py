@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 import string
 import methods
@@ -32,11 +32,9 @@ def get_opts():
 def get_flags():
 
 	return [
-		#('lua', 'yes'),
 		('tools', 'no'),
-		('nedmalloc', 'no'),
-		('theora', 'no'),
-
+		('builtin_zlib', 'yes'),
+		('module_theora_enabled', 'no'),
 	]
 
 def configure(env):

@@ -28,9 +28,6 @@ def get_opts():
 def get_flags():
 
 	return [
-	('legacygl', 'yes'),
-	('builtin_zlib', 'no'),
-	('glew', 'yes'),
 	]
 
 
@@ -83,10 +80,6 @@ def configure(env):
 		env['AS'] = basecmd+"as"
 
 
-#	env.Append(CPPPATH=['#platform/osx/include/freetype2', '#platform/osx/include'])
-#	env.Append(LIBPATH=['#platform/osx/lib'])
-
-
 	env.Append(CPPFLAGS=["-DAPPLE_STYLE_KEYS"])
 	env.Append(CPPFLAGS=['-DUNIX_ENABLED','-DGLES2_ENABLED','-DOSX_ENABLED'])
 	env.Append(LIBS=['pthread'])
@@ -109,4 +102,4 @@ def configure(env):
 	env.Append( BUILDERS = { 'GLSL120GLES' : env.Builder(action = methods.build_gles2_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )
 	#env.Append( BUILDERS = { 'HLSL9' : env.Builder(action = methods.build_hlsl_dx9_headers, suffix = 'hlsl.h',src_suffix = '.hlsl') } )
 
-	env["x86_opt_gcc"]=True
+	env["x86_libtheora_opt_gcc"]=True

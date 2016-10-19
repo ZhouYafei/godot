@@ -44,8 +44,8 @@
 #ifdef PHYSICAL_ENABLED
 #include "servers/physics_2d/physics_2d_server_sw.h"
 #endif
-#include "servers/audio/audio_driver_dummy.h"
 #include "audio_driver_winrt.h"
+#include "drivers/xaudio2/audio_driver_xaudio2.h"
 
 #include "gl_context_egl.h"
 
@@ -125,7 +125,7 @@ private:
 
 	MainLoop *main_loop;
 
-	AudioDriverWinRT audio_driver;
+	AudioDriverXAudio2 audio_driver;
 	AudioServerSW *audio_server;
 	SampleManagerMallocSW *sample_manager;
 	SpatialSoundServerSW *spatial_sound_server;
