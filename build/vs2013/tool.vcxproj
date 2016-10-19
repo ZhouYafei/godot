@@ -276,7 +276,6 @@
     <ClCompile Include="..\..\tools\editor\script_editor_debugger.cpp" />
     <ClCompile Include="..\..\tools\editor\settings_config_dialog.cpp" />
     <ClCompile Include="..\..\tools\editor\spatial_editor_gizmos.cpp" />
-    <ClCompile Include="..\..\tools\pck\pck_packer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\platform\android\export\export.h" />
@@ -405,7 +404,6 @@
     <ClInclude Include="..\..\tools\editor\script_editor_debugger.h" />
     <ClInclude Include="..\..\tools\editor\settings_config_dialog.h" />
     <ClInclude Include="..\..\tools\editor\spatial_editor_gizmos.h" />
-    <ClInclude Include="..\..\tools\pck\pck_packer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

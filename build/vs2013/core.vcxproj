@@ -169,6 +169,7 @@
     <ClInclude Include="..\..\core\io\networked_multiplayer_peer.h" />
     <ClInclude Include="..\..\core\io\packet_peer.h" />
     <ClInclude Include="..\..\core\io\packet_peer_udp.h" />
+    <ClInclude Include="..\..\core\io\pck_packer.h" />
     <ClInclude Include="..\..\core\io\resource_format_binary.h" />
     <ClInclude Include="..\..\core\io\resource_format_xml.h" />
     <ClInclude Include="..\..\core\io\resource_loader.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="..\..\core\io\networked_multiplayer_peer.cpp" />
     <ClCompile Include="..\..\core\io\packet_peer.cpp" />
     <ClCompile Include="..\..\core\io\packet_peer_udp.cpp" />
+    <ClCompile Include="..\..\core\io\pck_packer.cpp" />
     <ClCompile Include="..\..\core\io\resource_format_binary.cpp" />
     <ClCompile Include="..\..\core\io\resource_format_xml.cpp" />
     <ClCompile Include="..\..\core\io\resource_loader.cpp" />

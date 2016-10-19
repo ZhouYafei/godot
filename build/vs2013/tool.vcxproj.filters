@@ -22,9 +22,6 @@
     <Filter Include="tools\editor\plugins">
       <UniqueIdentifier>{62bb706b-4033-4056-865a-2e5edda85293}</UniqueIdentifier>
     </Filter>
-    <Filter Include="tools\pck">
-      <UniqueIdentifier>{431098f1-6afc-4138-97a9-0a19933e17bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="platform">
       <UniqueIdentifier>{787bff56-d243-4c44-8af0-5c9417817caf}</UniqueIdentifier>
     </Filter>
@@ -335,9 +332,6 @@
     </ClCompile>
     <ClCompile Include="..\..\tools\editor\plugins\tile_set_editor_plugin.cpp">
       <Filter>tools\editor\plugins</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tools\pck\pck_packer.cpp">
-      <Filter>tools\pck</Filter>
     </ClCompile>
     <ClCompile Include="..\..\platform\android\export\export.cpp">
       <Filter>platform\android\export</Filter>
@@ -727,9 +721,6 @@
     </ClInclude>
     <ClInclude Include="..\..\tools\editor\plugins\tile_set_editor_plugin.h">
       <Filter>tools\editor\plugins</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\tools\pck\pck_packer.h">
-      <Filter>tools\pck</Filter>
     </ClInclude>
     <ClInclude Include="..\..\platform\android\export\export.h">
       <Filter>platform\android\export</Filter>

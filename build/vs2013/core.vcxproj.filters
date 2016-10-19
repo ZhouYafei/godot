@@ -462,6 +462,9 @@
     <ClInclude Include="..\..\core\math\a_star.h">
       <Filter>core\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\io\pck_packer.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\array.cpp">
@@ -826,6 +829,9 @@
     </ClCompile>
     <ClCompile Include="..\..\core\math\a_star.cpp">
       <Filter>core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\io\pck_packer.cpp">
+      <Filter>core\io</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
