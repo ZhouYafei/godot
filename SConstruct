@@ -90,7 +90,24 @@ env_base.android_launcher_chunk=""
 env_base.android_permission_chunk=""
 env_base.android_appattributes_chunk=""
 env_base.android_metadata_chunk=""
-env_base.disabled_modules=["behavior_tree","enet"]
+env_base.disabled_modules=[
+	"behavior_tree",
+	"chibi",
+	"cscript",
+	"enet",
+	"gridmap",
+	"luascript",
+	"mpc",
+	"openssl",
+	"opus",
+	"pbm",
+	"pvr",
+	"theora",
+	"visual_script",
+	"webp",
+]
+#@call D:\Python27\Scripts\scons.bat spawn_jobs=yes platform=windows tools=yes target=release_debug theora=no speex=no pvr=no openssl=no musepack=no phys=no
+
 env_base.use_ptrcall=False
 env_base.split_drivers=False
 

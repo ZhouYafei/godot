@@ -29,9 +29,6 @@
 #ifndef STREAM_PEER_OPEN_SSL_H
 #define STREAM_PEER_OPEN_SSL_H
 
-#ifdef OPENSSL_ENABLED
-
-
 #include <stdio.h> // If you don't know what this is for stop reading now.
 #include "io/stream_peer_ssl.h"
 #include "globals.h"
@@ -41,6 +38,7 @@
 #include <openssl/bio.h> // BIO objects for I/O
 #include <openssl/ssl.h> // SSL and SSL_CTX for SSL connections
 #include <openssl/err.h> // Error reporting
+#include <openssl/x509v3.h>
 
 class StreamPeerOpenSSL : public StreamPeerSSL {
 private:
@@ -108,5 +106,4 @@ public:
 	~StreamPeerOpenSSL();
 };
 
-#endif
 #endif // STREAM_PEER_SSL_H

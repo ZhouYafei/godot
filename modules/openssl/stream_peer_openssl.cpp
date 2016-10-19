@@ -26,9 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-#ifdef OPENSSL_ENABLED
 #include "stream_peer_openssl.h"
-#include <openssl/x509v3.h>
 //hostname matching code from curl
 
 
@@ -646,5 +644,3 @@ void StreamPeerOpenSSL::finalize_ssl(){
 	}
 	certs.clear();
 }
-
-#endif

@@ -33,7 +33,7 @@
 #include "hq2x.h"
 #include "print_string.h"
 #include <stdio.h>
-#include "squish/squish.h"
+#include "thirdparty/squish/squish.h"
 
 
 const char* Image::format_names[Image::FORMAT_MAX]={

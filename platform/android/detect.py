@@ -131,11 +131,12 @@ def configure(env):
 		gcc_path=gcc_path+"/darwin-x86_64/bin"
 		env['SHLINKFLAGS'][1] = '-shared'
 		env['SHLIBSUFFIX'] = '.so'
-	elif (os.platform.startswith('win')):
-                if (platform.machine().endswith('64')):
-			gcc_path=gcc_path+"/windows-x86_64/bin"
-                else:
-			gcc_path=gcc_path+"/windows-x86/bin"
+	elif (sys.platform.startswith('win')):
+		# if (platform.machine().endswith('64')):
+		# 	gcc_path=gcc_path+"/windows-x86_64/bin"
+		# else:
+		# 	gcc_path=gcc_path+"/windows-x86/bin"
+		gcc_path=gcc_path+"/windows/bin"
 
 	env['ENV']['PATH'] = gcc_path+":"+env['ENV']['PATH']
 	if env['android_arch']=='x86':

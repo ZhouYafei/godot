@@ -32,7 +32,7 @@
 #include "png/image_loader_png.h"
 #include "png/resource_saver_png.h"
 
-#ifdef SQUISH_ENABLED
+#ifdef TOOLS_ENABLED
 #include "convex_decomp/b2d_decompose.h"
 #endif
 
