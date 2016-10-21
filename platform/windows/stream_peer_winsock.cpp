@@ -102,6 +102,7 @@ Error StreamPeerWinsock::_poll_connection(bool p_block) const {
 			status = STATUS_CONNECTED;
 			return OK;
 		};
+		(const_cast<StreamPeerWinsock *>(this))->set_nodelay(true);
 
 		return OK;
 	} else {
@@ -325,6 +326,8 @@ Error StreamPeerWinsock::connect(const IP_Address& p_host, uint16_t p_port) {
 			disconnect();
 			return FAILED;
 		};
+		set_nodelay(true);
+		
 		status = STATUS_CONNECTING;
 	} else {
 		status = STATUS_CONNECTED;

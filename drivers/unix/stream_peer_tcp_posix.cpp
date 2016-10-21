@@ -111,6 +111,7 @@ Error StreamPeerTCPPosix::_poll_connection(bool p_block) const {
 			status = STATUS_CONNECTED;
 			return OK;
 		};
+		(const_cast<StreamPeerTCPPosix *>(this))->set_nodelay(true);
 
 		return OK;
 	} else {
@@ -166,6 +167,7 @@ Error StreamPeerTCPPosix::connect(const IP_Address& p_host, uint16_t p_port) {
 		disconnect();
 		return FAILED;
 	};
+	set_nodelay(true);
 
 	if (errno == EINPROGRESS) {
 		status = STATUS_CONNECTING;
