@@ -36,6 +36,7 @@
 #include "os/os.h"
 #include "io/file_access_pack.h"
 #include "io/file_access_network.h"
+#include "path_remap.h"
 
 Globals *Globals::singleton=NULL;
 
@@ -54,7 +55,7 @@ String Globals::localize_path(const String& p_path) const {
 	if (resource_path=="")
 		return p_path; //not initialied yet
 
-	if (p_path.begins_with("res://") || p_path.begins_with("user://"))
+	if (p_path.begins_with("res://") || p_path.begins_with("user://") || p_path.is_abs_path())
 		return p_path.simplify_path();
 
 
@@ -803,6 +804,9 @@ Error Globals::_load_settings_binary(const String p_path) {
 
 	set_registering_order(true);
 
+	// update path remap after load settings
+	if(PathRemap::get_singleton() != NULL)
+		PathRemap::get_singleton()->load_remaps();
 
 	return OK;
 }
@@ -900,6 +904,10 @@ Error Globals::_load_settings(const String p_path) {
 	memdelete(f);
 
 	set_registering_order(true);
+
+	// update path remap after load settings
+	if(PathRemap::get_singleton() != NULL)
+		PathRemap::get_singleton()->load_remaps();
 
 	return OK;
 }
@@ -1430,6 +1438,9 @@ void Globals::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("has_singleton","name"),&Globals::has_singleton);
 	ObjectTypeDB::bind_method(_MD("get_singleton","name"),&Globals::get_singleton_object);
 	ObjectTypeDB::bind_method(_MD("load_resource_pack","pack"),&Globals::_load_resource_pack);
+
+	ObjectTypeDB::bind_method(_MD("load_settings","path"),&Globals::_load_settings);
+	ObjectTypeDB::bind_method(_MD("load_settings_binary","path"),&Globals::_load_settings_binary);
 
 	ObjectTypeDB::bind_method(_MD("save_custom","file"),&Globals::_save_custom_bnd);
 
