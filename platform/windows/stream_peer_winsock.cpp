@@ -102,11 +102,11 @@ Error StreamPeerWinsock::_poll_connection(bool p_block) const {
 			status = STATUS_CONNECTED;
 			return OK;
 		};
-		(const_cast<StreamPeerWinsock *>(this))->set_nodelay(true);
 
 		return OK;
 	} else {
 
+		(const_cast<StreamPeerWinsock *>(this))->set_nodelay(true);
 		status = STATUS_CONNECTED;
 		return OK;
 	};
