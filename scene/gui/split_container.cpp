@@ -280,6 +280,8 @@ void SplitContainer::_notification(int p_what) {
 				return;
 			int sep=dragger_visibility!=DRAGGER_HIDDEN_COLLAPSED?get_constant("separation"):0;
 			Ref<Texture> tex = get_icon("grabber");
+			if(!tex.is_valid())
+				return;
 			Size2 size=get_size();
 			if (vertical) {
 
