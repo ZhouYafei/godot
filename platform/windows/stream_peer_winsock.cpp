@@ -326,10 +326,10 @@ Error StreamPeerWinsock::connect(const IP_Address& p_host, uint16_t p_port) {
 			disconnect();
 			return FAILED;
 		};
-		set_nodelay(true);
 		
 		status = STATUS_CONNECTING;
 	} else {
+		set_nodelay(true);
 		status = STATUS_CONNECTED;
 	};
 
