@@ -6710,7 +6710,7 @@ EditorNode::EditorNode() {
 
 
 
-	Node::set_human_readable_collision_renaming(true);
+	//Node::set_human_readable_collision_renaming(true);
 
 
 	pick_main_scene = memnew( ConfirmationDialog );
