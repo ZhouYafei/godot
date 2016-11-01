@@ -279,6 +279,8 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM0R(String,get_file);
 	VCALL_LOCALMEM0R(String,xml_escape);
 	VCALL_LOCALMEM0R(String,xml_unescape);
+	VCALL_LOCALMEM0R(String,http_escape);
+	VCALL_LOCALMEM0R(String,http_unescape);
 	VCALL_LOCALMEM0R(String,c_escape);
 	VCALL_LOCALMEM0R(String,c_unescape);
 	VCALL_LOCALMEM0R(String,json_escape);
@@ -1442,6 +1444,8 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC0(STRING,STRING,String,get_file,varray());
 	ADDFUNC0(STRING,STRING,String,xml_escape,varray());
 	ADDFUNC0(STRING,STRING,String,xml_unescape,varray());
+	ADDFUNC0(STRING,STRING,String,http_escape,varray());
+	ADDFUNC0(STRING,STRING,String,http_unescape,varray());
 	ADDFUNC0(STRING,STRING,String,c_escape,varray());
 	ADDFUNC0(STRING,STRING,String,c_unescape,varray());
 	ADDFUNC0(STRING,STRING,String,json_escape,varray());
