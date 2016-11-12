@@ -187,6 +187,10 @@ String Sdk::get_app_key() {
 	return "";
 }
 
+String Sdk::get_app_signature() {
+	return "";
+}
+
 void Sdk::tip(const String& p_tip) {
 
 	printf("SDK: tip '%s'\n", p_tip.utf8().get_data());
@@ -316,6 +320,7 @@ void Sdk::_bind_methods() {
  	ObjectTypeDB::bind_method(_MD("get_logic_channel"),&Sdk::get_logic_channel);
  	ObjectTypeDB::bind_method(_MD("get_app_id"),&Sdk::get_app_id);
  	ObjectTypeDB::bind_method(_MD("get_app_key"),&Sdk::get_app_key);
+ 	ObjectTypeDB::bind_method(_MD("get_app_signature"),&Sdk::get_app_signature);
  	ObjectTypeDB::bind_method(_MD("tip", "tip"),&Sdk::tip);
  	ObjectTypeDB::bind_method(_MD("get_network_type"),&Sdk::get_network_type);
  	ObjectTypeDB::bind_method(_MD("login"),&Sdk::login);

@@ -55,6 +55,7 @@ public:
 	int get_logic_channel();
 	int get_app_id();
 	String get_app_key();
+	String get_app_signature();
 	void tip(const String& p_tip);
 	String get_network_type();
 	void login();

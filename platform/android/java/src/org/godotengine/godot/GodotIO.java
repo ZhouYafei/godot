@@ -53,6 +53,11 @@ import android.content.pm.ActivityInfo;
 import org.godotengine.godot.input.*;
 //android.os.Build
 
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
+
 // Wrapper for native library
 
 public class GodotIO {
@@ -693,7 +698,48 @@ public class GodotIO {
 	public static String unique_id="";
 	public String getUniqueID() {
 
-		return  unique_id;
+		if(unique_id == null){
+			generateDeviceID(applicationContext);
+		}
+		return unique_id;
+	}
+
+	public static void generateDeviceID(Context context){
+		
+        if( unique_id ==null ) {
+            synchronized (GodotIO.class) {
+                if( unique_id == null) {
+                    final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0);
+                    final String id = prefs.getString("device_id", null );
+
+                    if (id != null) {
+                        // Use the ids previously computed and stored in the prefs file
+                        unique_id = id;
+                    } else {
+                        final String androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+
+                        // Use the Android ID unless it's broken, in which case fallback on deviceId,
+                        // unless it's not available, then fallback on a random number which we store
+                        // to a prefs file
+                        try {
+                            if (!"9774d56d682e549c".equals(androidId)) {
+                                unique_id = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString();
+                            } else {
+                                final String deviceId = ((TelephonyManager) context.getSystemService( Context.TELEPHONY_SERVICE )).getDeviceId();
+                                unique_id = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")).toString() : UUID.randomUUID().toString();
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        // Write the value out to the prefs file
+                        prefs.edit().putString("device_id", unique_id.toString()).commit();
+
+                    }
+                }
+            }
+        }
+		
 	}
 
 }
