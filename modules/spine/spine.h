@@ -95,7 +95,7 @@ private:
 	SpineBatcher batcher;
 
 	NodePath avatar_path;
-	HashMap<size_t, float *> avatar_uvmap;
+	Map<size_t, float *> avatar_uvmap;
 
 	float current_pos;
 

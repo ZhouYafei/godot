@@ -289,7 +289,7 @@ class GDScriptLanguage : public ScriptLanguage {
 	};
 
 
-	typedef HashMap<size_t, FuncInfo*> MapFuncInfos;
+	typedef Map<size_t, FuncInfo*> MapFuncInfos;
 	MapFuncInfos func_infos;
 	bool profiler_stoped;
 

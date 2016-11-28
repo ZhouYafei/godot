@@ -78,9 +78,11 @@ private:
 	RasterizerGLES2* rasterizer_gles22;
 
 	VisualServer *visual_server;
+#ifdef PHYSICAL_ENABLED
 	PhysicsServer* physics_server;
 	Physics2DServer *physics_2d_server;
-
+#endif
+	
 	AudioServerSW *audio_server;
 	SampleManagerMallocSW *sample_manager;
 	SpatialSoundServerSW *spatial_sound_server;

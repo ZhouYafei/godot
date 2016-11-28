@@ -36,7 +36,7 @@ class OSpriteCollision : public Node {
 	OBJ_TYPE(OSpriteCollision, Node)
 
 	typedef Set<size_t> CollisionIds;
-	typedef HashMap<size_t, CollisionIds> CollisionMaps;
+	typedef Map<size_t, CollisionIds> CollisionMaps;
 	CollisionMaps objects;
 
 	typedef Vector<CollisionIds> CollisionObjects;

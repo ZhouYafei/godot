@@ -73,7 +73,7 @@ public:
 			*r_error=ERR_CANT_OPEN;
 
 		RES res;
-		Error err;
+		Error err = OK;
 
 		if(p_path.ends_with(".txt")) {
 
