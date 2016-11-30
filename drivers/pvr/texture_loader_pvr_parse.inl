@@ -137,21 +137,6 @@ struct PVRTexHeaderV2
 	uint32_t bitmaskAlpha;
 	uint32_t pvrTag;
 	uint32_t numSurfaces;
-	//ERR_FAIL_COND_V(hsize!=52,RES());
-	//uint32_t height = f->get_32();
-	//uint32_t width = f->get_32();
-	//uint32_t mipmaps = f->get_32();
-	//uint32_t flags = f->get_32();
-	//uint32_t surfsize = f->get_32();
-	//uint32_t bpp = f->get_32();
-	//uint32_t rmask = f->get_32();
-	//uint32_t gmask = f->get_32();
-	//uint32_t bmask = f->get_32();
-	//uint32_t amask = f->get_32();
-	//uint8_t pvrid[5]={0,0,0,0,0};
-	//f->get_buffer(pvrid,4);
-	//ERR_FAIL_COND_V(String((char*)pvrid)!="PVR!",RES());
-	//uint32_t surfcount = f->get_32();
 };
 #pragma pack(pop)
 
@@ -369,9 +354,9 @@ static Image::Format _convertFormat(PVRV3PixelFormat format, PVRV3ChannelType ch
 	case ePVRTPF_RGB888:
 		return Image::FORMAT_RGB;
 	case ePVRTPF_RGBI8:
-		return Image::FORMAT_INDEXED;
+		return Image::FORMAT_GRAYSCALE;
 	case ePVRTPF_RGBAI88:
-		return Image::FORMAT_INDEXED_ALPHA;
+		return Image::FORMAT_GRAYSCALE_ALPHA;
 	case ePVRTPF_BGRA8888:
 		return Image::FORMAT_BGRA_8888;
 	case ePVRTPF_A8:
@@ -565,97 +550,3 @@ static size_t _getMipLevelSize(const PVRTexHeaderV3 &header, int miplevel)
 	else
 		return _getBitsPerPixel(header.pixelFormat) * width * height * depth / 8;
 }
-
-//	Image::Format format=Image::FORMAT_MAX;
-//
-//
-//	switch(flags&0xFF) {
-//
-//        case kPVR2TexturePixelFormat_RGBA_4444:
-//            format=Image::FORMAT_RGBA_4444;
-//            break;
-//        case kPVR2TexturePixelFormat_RGBA_5551:
-//            format=Image::FORMAT_RGBA_5551;
-//            break;
-//        case kPVR2TexturePixelFormat_RGB_565:
-//            format=Image::FORMAT_RGB_565;
-//            break;
-//        //case kPVR2TexturePixelFormat_RGB_555:
-//        //    format=Image::FORMAT_RGB_555;
-//        //    break;
-//        //case kPVR2TexturePixelFormat_BGRA_8888:
-//        //    format=Image::FORMAT_BGRA_8888;
-//        //    break;
-//        case kPVR2TexturePixelFormat_A_8:
-//            format=Image::FORMAT_ALPHA_8;
-//            break;
-//		case kPVR2TexturePixelFormat_PVRTC_2BPP_RGBA:
-//		case 0xC:
-//            format=(flags&PVR_HAS_ALPHA)?Image::FORMAT_PVRTC2_ALPHA:Image::FORMAT_PVRTC2;
-//            break;
-//
-//		case kPVR2TexturePixelFormat_PVRTC_4BPP_RGBA:
-//		case 0xD:
-//            format=(flags&PVR_HAS_ALPHA)?Image::FORMAT_PVRTC4_ALPHA:Image::FORMAT_PVRTC4;
-//            break;
-//
-//		case kPVR2TexturePixelFormat_I_8:
-//			format=Image::FORMAT_GRAYSCALE;
-//            break;
-//
-//		case kPVR2TexturePixelFormat_AI_88:
-//			format=Image::FORMAT_GRAYSCALE_ALPHA;
-//            break;
-//
-//		case 0x20:
-//		case 0x80:
-//		case 0x81:
-//			format=Image::FORMAT_BC1;
-//            break;
-//
-//		case 0x21:
-//		case 0x22:
-//		case 0x82:
-//		case 0x83:
-//			format=Image::FORMAT_BC2;
-//            break;
-//
-//		case 0x23:
-//		case 0x24:
-//		case 0x84:
-//		case 0x85:
-//			format=Image::FORMAT_BC3;
-//            break;
-//
-//		case 0x4:
-//		case kPVR2TexturePixelFormat_RGB_888:
-//			format=Image::FORMAT_RGB;
-//            break;
-//
-//		case 0x5:
-//		case kPVR2TexturePixelFormat_RGBA_8888:
-//			format=Image::FORMAT_RGBA;
-//            break;
-//
-//		case 0x36:
-//			format=Image::FORMAT_ETC;
-//            break;
-//
-//		default:
-//			ERR_EXPLAIN("Unsupported format in PVR texture: "+itos(flags&0xFF));
-//			ERR_FAIL_V(RES());
-//
-//	}
-//
-//	w = DVector<uint8_t>::Write();
-//
-//	int tex_flags=Texture::FLAG_FILTER|Texture::FLAG_REPEAT;
-//
-//	if (mipmaps)
-//		tex_flags|=Texture::FLAG_MIPMAPS;
-//
-//
-//	print_line("flip: "+itos(flags&PVR_VFLIP));
-//
-//	Image image(width,height,mipmaps,format,data);
-//	ERR_FAIL_COND_V(image.empty(),RES());
