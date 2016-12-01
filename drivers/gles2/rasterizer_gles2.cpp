@@ -474,18 +474,21 @@ Image RasterizerGLES2::_get_gl_image_and_format(const Image& p_image, Image::For
         case Image::FORMAT_RGBA_4444: {
 			r_gl_components=2;
 			r_gl_format=GL_RGBA;
+			r_gl_internal_format=GL_RGBA;
             r_gl_type=GL_UNSIGNED_SHORT_4_4_4_4;
 			r_has_alpha_cache=true;
         } break;
         case Image::FORMAT_RGBA_5551: {
 			r_gl_components=2;
 			r_gl_format=GL_RGBA;
+			r_gl_internal_format=GL_RGBA;
             r_gl_type=GL_UNSIGNED_SHORT_5_5_5_1;
 			r_has_alpha_cache=true;
         } break;
         case Image::FORMAT_RGB_565: {
 			r_gl_components=2;
 			r_gl_format=GL_RGB;
+			r_gl_internal_format=GL_RGB;
             r_gl_type=GL_UNSIGNED_SHORT_5_6_5;
         } break;
    //     case Image::FORMAT_RGB_555: {
