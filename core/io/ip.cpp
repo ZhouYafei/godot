@@ -32,6 +32,7 @@
 #include "hash_map.h"
 
 VARIANT_ENUM_CAST(IP::ResolverStatus);
+VARIANT_ENUM_CAST(IP::AddressType);
 VARIANT_ENUM_CAST(IP_Address::AddrType);
 
 /************* RESOLVER ******************/
@@ -213,7 +214,7 @@ Array IP::_get_local_addresses() const {
 void IP::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("resolve_hostname","host"),&IP::resolve_hostname);
-	ObjectTypeDB::bind_method(_MD("resolve_hostname_queue_item","host"),&IP::resolve_hostname_queue_item);
+	ObjectTypeDB::bind_method(_MD("resolve_hostname_queue_item","host","type"),&IP::resolve_hostname_queue_item);
 	ObjectTypeDB::bind_method(_MD("get_resolve_item_status","id"),&IP::get_resolve_item_status);
 	ObjectTypeDB::bind_method(_MD("get_resolve_item_address","id"),&IP::get_resolve_item_address);
 	ObjectTypeDB::bind_method(_MD("erase_resolve_item","id"),&IP::erase_resolve_item);
@@ -228,6 +229,9 @@ void IP::_bind_methods() {
 	BIND_CONSTANT( RESOLVER_MAX_QUERIES );
 	BIND_CONSTANT( RESOLVER_INVALID_ID );
 
+	BIND_CONSTANT( ADDRESS_IPV4 );
+	BIND_CONSTANT( ADDRESS_IPV6 );
+	BIND_CONSTANT( ADDRESS_ANY );
 }
 
 
