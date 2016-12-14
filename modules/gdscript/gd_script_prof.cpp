@@ -138,9 +138,11 @@ void GDScriptLanguage::profiler_clean() {
 
 	// cleanup profiler function infos
 	{
-		const size_t *K = NULL;
-		while(K = func_infos.next(K))
-			memdelete(func_infos[*K]);
+		for(MapFuncInfos::Element *E = func_infos.front(); E; E = E->next()) {
+
+			FuncInfo *info = E->get();
+			memdelete(info);
+		}
 		func_infos.clear();
 	}
 }
@@ -164,9 +166,10 @@ String GDScriptLanguage::profiler_dump(const String& p_path) {
 	typedef List<FuncInfo *> FuncInfos;
 	FuncInfos sort_funcs;
 
-	const size_t *K = NULL;
-	while(K = func_infos.next(K))
-		sort_funcs.push_back(func_infos[*K]);
+	for(MapFuncInfos::Element *E = func_infos.front(); E; E = E->next()) {
+
+		sort_funcs.push_back(E->get());
+	}
 
 	sort_funcs.sort_custom<CostCompare>();
 

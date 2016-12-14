@@ -287,7 +287,7 @@ Image::BColor Image::_get_pixelw(int p_x,int p_y,int p_width,const unsigned char
             } pixel;
 
             pixel *p = (pixel *) (p_data + ofs * sizeof(pixel));
-            result=BColor(p->r, p->g, p->b, p->a);
+            result=BColor(p->r << 4, p->g << 4, p->b << 4, p->a << 4);
         } break;
         case FORMAT_RGBA_5551: {
             typedef struct {
@@ -297,7 +297,7 @@ Image::BColor Image::_get_pixelw(int p_x,int p_y,int p_width,const unsigned char
                 uint16_t a:1;
             } pixel;
             pixel *p = (pixel *) (p_data + ofs * sizeof(pixel));
-            result=BColor(p->r, p->g, p->b, p->a);
+            result=BColor(p->r << 3, p->g << 3, p->b << 3, p->a << 7);
         } break;
         case FORMAT_RGB_565: {
 
@@ -308,7 +308,7 @@ Image::BColor Image::_get_pixelw(int p_x,int p_y,int p_width,const unsigned char
             } pixel;
 
             pixel *p = (pixel *) (p_data + ofs * sizeof(pixel));
-            result=BColor(p->r, p->g, p->b, 255);
+            result=BColor(p->r << 3, p->g << 2, p->b << 3, 255);
         } break;
         case FORMAT_BGRA_8888: {
 

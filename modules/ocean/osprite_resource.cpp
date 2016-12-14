@@ -202,7 +202,9 @@ bool OSprite::OSpriteResource::_load_texture_pack(const String& p_path, bool p_p
 		String path = String::num(idx++) + ".json";
 
 		String tex_path;
-#if defined(IPHONE_ENABLED) || defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
+#if defined(IPHONE_ENABLED)
+		tex_path = pack_path + path.basename() + ".pvr";
+#elif defined(ANDROID_ENABLED) || defined(ARMLINUX_ENABLED)
 		tex_path = pack_path + path.basename() + ".pkm";
 #else
 		tex_path = pack_path + path.basename() + ".dds";

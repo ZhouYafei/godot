@@ -132,7 +132,7 @@ struct OSpritePath::FishStat : public OSpritePath::Stat {
 	// ÕıĞò/µ¹ĞòÓÎ¶¯
 	bool forward;
 
-	typedef struct {
+	typedef struct Tween {
 		float delta;
 		float weight;
 

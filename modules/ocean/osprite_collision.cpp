@@ -88,7 +88,7 @@ void OSpriteCollision::add(OSprite *sprite, OSprite::CollisionMode p_mode) {
 		_set_process(true);
 
 	size_t id = (size_t) sprite;
-	objects.set(id, CollisionIds());
+	objects.insert(id, CollisionIds());
 	collision_objects[mode].insert(id);
 }
 

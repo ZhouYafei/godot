@@ -31,6 +31,7 @@ def get_opts():
 		('ios_exceptions', 'Use exceptions when compiling on playbook', 'yes'),
 		('ios_triple', 'Triple for ios toolchain', ''),
 		('ios_sim', 'Build simulator binary', 'no'),
+		('bitcode', 'Build with bitcode support', 'yes'),
 	]
 
 def get_flags():
@@ -58,20 +59,20 @@ def configure(env):
 	if (env["ios_sim"]=="yes" or env["arch"] == "x86"): # i386, simulator
 		env["arch"]="x86"
 		env["bits"]="32"
-		env['CCFLAGS'] = string.split('-arch i386 -fobjc-abi-version=2 -fobjc-legacy-dispatch -fmessage-length=0 -fpascal-strings -fasm-blocks  -Wall -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -isysroot $IPHONESDK -mios-simulator-version-min=4.3 -DCUSTOM_MATRIX_TRANSFORM_H=\\\"build/iphone/matrix4_iphone.h\\\" -DCUSTOM_VECTOR3_TRANSFORM_H=\\\"build/iphone/vector3_iphone.h\\\"')
+		env['CCFLAGS'] = string.split('-arch i386 -fobjc-abi-version=2 -fobjc-legacy-dispatch -fmessage-length=0 -fpascal-strings -fasm-blocks  -Wall -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -isysroot $IPHONESDK -mios-simulator-version-min=7.0 -DCUSTOM_MATRIX_TRANSFORM_H=\\\"build/iphone/matrix4_iphone.h\\\" -DCUSTOM_VECTOR3_TRANSFORM_H=\\\"build/iphone/vector3_iphone.h\\\"')
 	elif (env["arch"]=="arm64"): # arm64
 		env["bits"] = "64"
-		env['CCFLAGS'] = string.split('-fno-objc-arc -arch arm64 -fmessage-length=0 -fno-strict-aliasing -fdiagnostics-print-source-range-info -fdiagnostics-show-category=id -fdiagnostics-parseable-fixits -Wno-trigraphs -fpascal-strings -Wmissing-prototypes -Wreturn-type -Wparentheses -Wswitch -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-shorten-64-to-32 -fvisibility=hidden -Wno-sign-conversion -MMD -MT dependencies -miphoneos-version-min=5.1.1 -isysroot $IPHONESDK')
+		env['CCFLAGS'] = string.split('-fno-objc-arc -arch arm64 -fmessage-length=0 -fno-strict-aliasing -fdiagnostics-print-source-range-info -fdiagnostics-show-category=id -fdiagnostics-parseable-fixits -Wno-trigraphs -fpascal-strings -Wmissing-prototypes -Wreturn-type -Wparentheses -Wswitch -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-shorten-64-to-32 -fvisibility=hidden -Wno-sign-conversion -MMD -MT dependencies -miphoneos-version-min=7.0 -isysroot $IPHONESDK')
 		env.Append(CPPFLAGS=['-DNEED_LONG_INT'])
 		env.Append(CPPFLAGS=['-DLIBYUV_DISABLE_NEON'])
 	else: # armv7
 		env["arch"] = "arm"
 		env["bits"] = "32"
-		env['CCFLAGS'] = string.split('-fno-objc-arc -arch armv7 -fmessage-length=0 -fno-strict-aliasing -fdiagnostics-print-source-range-info -fdiagnostics-show-category=id -fdiagnostics-parseable-fixits -Wno-trigraphs -fpascal-strings -Wmissing-prototypes -Wreturn-type -Wparentheses -Wswitch -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-shorten-64-to-32 -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk -fvisibility=hidden -Wno-sign-conversion -mthumb "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -miphoneos-version-min=5.1.1 -MMD -MT dependencies -isysroot $IPHONESDK')
+		env['CCFLAGS'] = string.split('-fno-objc-arc -arch armv7 -fmessage-length=0 -fno-strict-aliasing -fdiagnostics-print-source-range-info -fdiagnostics-show-category=id -fdiagnostics-parseable-fixits -Wno-trigraphs -fpascal-strings -Wmissing-prototypes -Wreturn-type -Wparentheses -Wswitch -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-shorten-64-to-32 -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk -fvisibility=hidden -Wno-sign-conversion -mthumb "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -miphoneos-version-min=7.0 -MMD -MT dependencies -isysroot $IPHONESDK')
 
 	if (env["arch"]=="x86"):
 		env['IPHONEPLATFORM'] = 'iPhoneSimulator'
-		env.Append(LINKFLAGS=['-arch', 'i386', '-mios-simulator-version-min=4.3',
+		env.Append(LINKFLAGS=['-arch', 'i386', '-mios-simulator-version-min=7.0',
 							'-isysroot', '$IPHONESDK',
 							#'-mmacosx-version-min=10.6',
 							'-Xlinker',
@@ -92,7 +93,7 @@ def configure(env):
 							'-F$IPHONESDK',
 							])
 	elif (env["arch"]=="arm64"):
-		env.Append(LINKFLAGS=['-arch', 'arm64', '-Wl,-dead_strip', '-miphoneos-version-min=5.1.1',
+		env.Append(LINKFLAGS=['-arch', 'arm64', '-Wl,-dead_strip', '-miphoneos-version-min=7.0',
 							'-isysroot', '$IPHONESDK',
 							#'-stdlib=libc++',
 							'-framework', 'Foundation',
@@ -110,7 +111,7 @@ def configure(env):
 							'-framework', 'CoreMedia',
 							])
 	else:
-		env.Append(LINKFLAGS=['-arch', 'armv7', '-Wl,-dead_strip', '-miphoneos-version-min=5.1.1',
+		env.Append(LINKFLAGS=['-arch', 'armv7', '-Wl,-dead_strip', '-miphoneos-version-min=7.0',
 							'-isysroot', '$IPHONESDK',
 							'-framework', 'Foundation',
 							'-framework', 'UIKit',
@@ -180,6 +181,9 @@ def configure(env):
 		env.Append(CPPFLAGS=['-fno-exceptions'])
 	#env['neon_enabled']=True
 	env['S_compiler'] = '$IPHONEPATH/Developer/usr/bin/gcc'
+
+	if(env["bitcode"]=="yes"):
+		env.Append(CCFLAGS=["-fembed-bitcode"])
 
 	import methods
 	env.Append( BUILDERS = { 'GLSL120' : env.Builder(action = methods.build_legacygl_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )

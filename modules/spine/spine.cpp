@@ -90,9 +90,9 @@ void Spine::_spine_dispose() {
 		stop();
 	}
 
-	size_t k = 0;
-	while(avatar_uvmap.next(&k)) {
-		float *uvs = avatar_uvmap[k];
+	for(Map<size_t, float *>::Element *E = avatar_uvmap.front(); E; E = E->next()) {
+
+		float *uvs = E->get();
 		memdelete_arr(uvs);
 	}
 	avatar_uvmap.clear();
@@ -1102,6 +1102,7 @@ bool Spine::add_attachment_node(const String& p_bone_name, const Variant& p_node
 	Node2D *node = obj->cast_to<Node2D>();
 	ERR_FAIL_COND_V(node == NULL, false);
 
+#if !defined(IPHONE_ENABLED) && !defined(OSX_ENABLED)
 	if (obj->has_meta("spine_meta")) {
 
 		AttachmentNode *info = (AttachmentNode *) ((size_t) obj->get_meta("spine_meta"));
@@ -1116,6 +1117,7 @@ bool Spine::add_attachment_node(const String& p_bone_name, const Variant& p_node
 			return true;
 		}
 	}
+#endif // IPHONE_ENABLED
 	attachment_nodes.push_back(AttachmentNode());
 	AttachmentNode& info = attachment_nodes.back()->get();
 	info.E = attachment_nodes.back();
@@ -1125,8 +1127,9 @@ bool Spine::add_attachment_node(const String& p_bone_name, const Variant& p_node
 	info.ofs = p_ofs;
 	info.scale = p_scale;
 	info.rot = p_rot;
+#if !defined(IPHONE_ENABLED) && !defined(OSX_ENABLED)
 	obj->set_meta("spine_meta", (size_t) &info);
-
+#endif
 	return true;
 }
 
@@ -1140,6 +1143,7 @@ bool Spine::remove_attachment_node(const String& p_bone_name, const Variant& p_n
 	Node2D *node = obj->cast_to<Node2D>();
 	ERR_FAIL_COND_V(node == NULL, false);
 
+#if !defined(IPHONE_ENABLED) && !defined(OSX_ENABLED)
 	if (!obj->has_meta("spine_meta"))
 		return false;
 
@@ -1148,7 +1152,7 @@ bool Spine::remove_attachment_node(const String& p_bone_name, const Variant& p_n
 	obj->set_meta("spine_meta", NULL);
 	memdelete(info->ref);
 	attachment_nodes.erase(info->E);
-
+#endif // IPHONE_ENABLED
 	return false;
 }
 

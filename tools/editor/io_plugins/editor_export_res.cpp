@@ -122,6 +122,7 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 	// save json to marshal-binary
 	else if(p_path.ends_with(".json") || p_path.ends_with(".schema")) {
 
+		String ext = p_path.ends_with(".json") ? "json" : "schema";
 		// skip spine json file
 		{
 			FileAccessRef fa(FileAccess::open(p_path,FileAccess::READ));
@@ -129,6 +130,26 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 			// ignore spine json file
 			if (fa->file_exists(p_path.replace(".json", ".atlas")))
 				return Vector<uint8_t>();
+		}
+
+		if (cache_map.has(p_path)) {
+
+			Dictionary info=cache_map[p_path];
+			String md5 = info["md5"];
+			String base_extension = info["base_extension"];
+
+			String cache_path = EditorSettings::get_singleton()->get_settings_path()+"/tmp/"+md5+"."+base_extension;
+
+			Vector<uint8_t> data = FileAccess::get_file_as_array(cache_path);
+			if (!data.empty()) {
+
+				// check file checksum
+				if (FileAccess::get_md5(p_path) == md5) {
+					print_line("CACHED: " + p_path);
+					p_path = p_path.replace(ext, base_extension);
+					return data;
+				}
+			}
 		}
 
 		Vector<uint8_t> file = FileAccess::get_file_as_array(p_path);
@@ -161,6 +182,29 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 
 		err = encode_variant(var,buff.ptr(),len);
 		ERR_FAIL_COND_V( err != OK, Vector<uint8_t>() );
+
+		// Use file checksum(md5) for cache exported binary file
+		String md5 = FileAccess::get_md5(p_path);
+		String new_path = EditorSettings::get_singleton()->get_settings_path()+"/tmp/";
+		new_path += md5 + "." + ext;
+
+		int flg=0;
+		if (EditorSettings::get_singleton()->get("on_save/compress_binary_resources"))
+			flg|=ResourceSaver::FLAG_COMPRESS;
+		if (EditorSettings::get_singleton()->get("on_save/save_paths_as_relative"))
+			flg|=ResourceSaver::FLAG_RELATIVE_PATHS;
+
+		FileAccess *f=FileAccess::open(new_path,FileAccess::WRITE);
+		if(f == NULL)
+			return Vector<uint8_t>();
+		f->store_buffer(buff.ptr(), buff.size());
+		f->close();
+
+		// Add cache information
+		Dictionary d;
+		d["md5"] = md5;
+		d["base_extension"] = ext;
+		cache_map[p_path] = d;
 
 		return buff;
 
