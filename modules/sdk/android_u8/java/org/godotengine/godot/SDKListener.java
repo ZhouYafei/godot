@@ -50,6 +50,9 @@ public class SDKListener implements IU8SDKListener {
 			put(U8Code.CODE_PUSH_ENABLED, "push_enabled");
 			put(U8Code.CODE_POST_GIFT_SUC, "post_gift_suc");
 			put(U8Code.CODE_POST_GIFT_FAILED, "post_gift_failed");
+			put(U8Code.CODE_PAY_CANCEL, "pay_cancel");
+			put(U8Code.CODE_PAY_UNKNOWN, "pay_unknown");
+			put(U8Code.CODE_PAYING, "paying");
 		}
 	};
 
@@ -64,7 +67,10 @@ public class SDKListener implements IU8SDKListener {
 			@Override public void run() {
 				Dictionary d = new Dictionary();
 				d.put("code", code);
-				d.put("what", U8CodeStrings.get(code));
+				if(U8CodeStrings.containsKey(code))
+					d.put("what", U8CodeStrings.get(code));
+				else
+					d.put("what", "unknown code: " + code);
 				d.put("msg", msg);
 
 				switch(code) {

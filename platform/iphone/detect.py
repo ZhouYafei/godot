@@ -31,6 +31,7 @@ def get_opts():
 		('ios_exceptions', 'Use exceptions when compiling on playbook', 'yes'),
 		('ios_triple', 'Triple for ios toolchain', ''),
 		('ios_sim', 'Build simulator binary', 'no'),
+		('bitcode', 'Build with bitcode support', 'yes'),
 	]
 
 def get_flags():
@@ -146,7 +147,7 @@ def configure(env):
 		env.Append(LINKFLAGS=['-O3']) #
 
 	elif env["target"] == "release_debug":
-		env.Append(CCFLAGS=['-Os', '-DNS_BLOCK_ASSERTIONS=1','-Wall','-DDEBUG_ENABLED'])
+		env.Append(CCFLAGS=['-Os', '-DNS_BLOCK_ASSERTIONS=1', '-gdwarf-2', '-Wall', '-DDEBUG_ENABLED'])
 		env.Append(LINKFLAGS=['-Os'])
 		env.Append(CPPFLAGS=['-DDEBUG_MEMORY_ENABLED'])
 
@@ -180,6 +181,9 @@ def configure(env):
 		env.Append(CPPFLAGS=['-fno-exceptions'])
 	#env['neon_enabled']=True
 	env['S_compiler'] = '$IPHONEPATH/Developer/usr/bin/gcc'
+
+	if(env["bitcode"]=="yes"):
+		env.Append(CCFLAGS=["-fembed-bitcode"])
 
 	import methods
 	env.Append( BUILDERS = { 'GLSL120' : env.Builder(action = methods.build_legacygl_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )

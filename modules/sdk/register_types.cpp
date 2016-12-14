@@ -46,7 +46,7 @@ void register_sdk_types() {
 #if defined(PLATFORM_IOS_91_ENABLED)
 	ObjectTypeDB::register_type<Platform91>();
 	_platform = memnew(Platform91);
-#elif defined(ANDROID)
+#elif defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED)
 #else
 	_sdk = memnew(Sdk);
 	Globals::get_singleton()->add_singleton( Globals::Singleton("SDK",_sdk ) );
