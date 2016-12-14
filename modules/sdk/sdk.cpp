@@ -72,6 +72,9 @@ enum U8Codes {
 	CODE_PUSH_ENABLED = 30,			// 推送enable成功的回调，携带一个参数，比如友盟推送，这参数是Device Token
 	CODE_POST_GIFT_SUC = 31,		// 提交礼包兑换码成功
 	CODE_POST_GIFT_FAILED = 32,		// 提交礼包兑换码失败
+	CODE_PAY_CANCEL = 33,			// 取消支付
+	CODE_PAY_UNKNOWN = 34,			// 支付未知
+	CODE_PAYING = 35,				// 支付中
 };
 static const char *U8CodeStrings[] = {
 	"no_network",
@@ -107,15 +110,20 @@ static const char *U8CodeStrings[] = {
 	"push_enabled",
 	"post_gift_suc",
 	"post_gift_failed",
+	"pay_cancel",
+	"pay_unknown",
+	"paying",
 };
 
 Sdk *Sdk::instance = NULL;
+
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 void Sdk::on_result(int p_code, const String& p_msg) {
 
 	Dictionary d;
 	d["code"] = p_code;
-	d["what"] = U8CodeStrings[p_code];
+	d["what"] = (p_code >= ARRAY_SIZE(U8CodeStrings)) ? ("unknown code : " + String::num(p_code)) : U8CodeStrings[p_code];
 	d["msg"] = p_msg;
 
 	switch(p_code) {
