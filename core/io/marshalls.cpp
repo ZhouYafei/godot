@@ -1190,6 +1190,7 @@ Error encode_variant(const Variant& p_variant, uint8_t *r_buffer, int &r_len) {
 
 			List<Variant> keys;
 			d.get_key_list(&keys);
+			keys.sort();
 
 
 			for(List<Variant>::Element *E=keys.front();E;E=E->next()) {
