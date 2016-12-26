@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  Dictionary.java                                                      */
+/*  Clipboard.java                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -26,86 +26,73 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-package org.godotengine.godot;
+package org.godotengine.godot.input;
 
-import java.util.HashMap;
-import java.util.Set;
+import android.app.Activity;
+
+import android.content.Context;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.util.Log;
+import com.u8.sdk.U8SDK;
 
 
-public class Dictionary extends HashMap<String, Object> {
+public class Clipboard {
+    private static final String TAG = "Clipboard";
 
-	protected String[] keys_cache;
+    private Activity activity;
+    private String clipdata;
+    private static Clipboard instance;
+    private ClipboardManager clipboard;
 
-	public String[] get_keys() {
+    private Clipboard(final Activity activity) {
+        this.activity = activity;
+        U8SDK.getInstance().runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+            }
+        });
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-		String[] ret = new String[size()];
-		int i=0;
-		Set<String> keys = keySet();
-		for (String key : keys) {
+    public static Clipboard getInstance(Activity activity) {
+        if (instance == null) {
+            instance = new Clipboard(activity);
+        }
+        return instance;
+    }
 
-			ret[i] = key;
-			i++;
-		};
+    public boolean setText(String text) {
+        final String ss = text;
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText("text", ss);
+            clipboard.setPrimaryClip(clip);
+        }
+        return true;
+    }
 
-		return ret;
-	};
+    public String getText() {
+        if (clipboard != null) {
+            ClipData clip = clipboard.getPrimaryClip();
+            ClipData.Item item = clip.getItemAt(0);
+            String text = item.getText().toString();
+            clipdata = text;
+        } else {
+            if (clipdata == null) {
+                clipdata = "请不要频繁操作！";
+            }
+        }
+        Log.e(TAG, "getText: " + clipdata);
+        return clipdata;
+    }
 
-	public Object[] get_values() {
-
-		Object[] ret = new Object[size()];
-		int i=0;
-		Set<String> keys = keySet();
-		for (String key : keys) {
-
-			ret[i] = get(key);
-			i++;
-		};
-
-		return ret;
-	};
-
-	public void set_keys(String[] keys) {
-		keys_cache = keys;
-	};
-
-	public void set_values(Object[] vals) {
-
-		int i=0;
-		for (String key : keys_cache) {
-			put(key, vals[i]);
-			i++;
-		};
-		keys_cache = null;
-	};
-
-	public String getString(String key) {
-		Object v = get(key);
-		if(v == null)
-			return "";
-		return v.toString();
-	}
-
-	public Integer getInt(String key) {
-		return Integer.parseInt(getString(key));
-	}
-
-	public boolean getBoolean(String key) {
-		return getString(key).equalsIgnoreCase("true");
-	}
-
-	public double getDouble(String key) {
-		return Double.valueOf(getString(key));
-	}
-
-	public boolean isDictionary(String key) {
-		Object v = get(key);
-		return (v != null) && v.getClass.equals(Dictionary.getClass());
-	}
-
-	public Dictionary getDictionary(String key) {
-		Object v = get(key);
-		if(v == null || !v.getClass.equals(Dictionary.getClass()))
-			return null;
-		return (Dictionary) v;
-	}
-};
+    public boolean hasText() {
+        /* Lazy implementation... */
+        return this.getText() != null;
+    }
+}
