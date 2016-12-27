@@ -156,21 +156,31 @@ Vector<uint8_t> EditorExportResources::custom_export(String& p_path,const Ref<Ed
 		String text;
 		ERR_FAIL_COND_V(text.parse_utf8((const char *) &file[0], file.size()), Vector<uint8_t>());
 		text = text.strip_edges();
+		if(text.length() == 0)
+			return Vector<uint8_t>();
 
 		Variant var;
-		Dictionary dict(true);
-		Array arr(true);
 
-		if(text[0] == '[') {
+		switch(text[0]) {
+		case '[': {
+			Array arr(true);
 			if(arr.parse_json(text) == OK)
 				var = arr;
 			else
 				return Vector<uint8_t>();
-		} else {
+			}
+			break;
+
+		case '{': {
+			Dictionary dict(true);
 			if(dict.parse_json(text) == OK)
 				var = dict;
 			else
 				return Vector<uint8_t>();
+			}
+			break;
+		default:
+			return Vector<uint8_t>();
 		}
 
 		int len;
