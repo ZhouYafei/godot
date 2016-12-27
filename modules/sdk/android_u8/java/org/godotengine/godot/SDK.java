@@ -1,5 +1,8 @@
 package org.godotengine.godot;
 
+import java.util.Map;
+import java.util.HashMap;
+
 // u8sdk begin
 import com.u8.sdk.*;
 import com.u8.sdk.plugin.*;
@@ -17,16 +20,6 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import org.godotengine.godot.input.Clipboard;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
-import java.util.Enumeration;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import android.content.pm.ApplicationInfo;
 
 /***
  * 记得将游戏工程中的AndroidManifest.xml中application节点，增加一个android:name="U8Application"
@@ -63,7 +56,6 @@ public class SDK extends Godot.SingletonBase {
 			"get_logic_channel",
 			"get_app_id",
 			"get_app_key",
-			"get_app_signature",
 			"get_clipboard",
 			"set_clipboard",
 			// U8User plugin
@@ -214,59 +206,6 @@ public class SDK extends Godot.SingletonBase {
 	public String get_app_key() {
 		return U8SDK.getInstance().getAppKey();
 	}
-	// 获取应用的签名信息 md5(META-INF/MANIFEST.MF)
-	public String get_app_signature() {
-
-		ApplicationInfo appinfo = activity.getApplicationInfo();
-		String sourceDir = appinfo.sourceDir;
-		ZipFile zipfile = null;
-		try {
-			zipfile = new ZipFile(sourceDir);
-			if(zipfile == null)
-				return "";
-		    MessageDigest md5 = MessageDigest.getInstance("MD5");
-			Enumeration<?> entries = zipfile.entries();
-			while (entries.hasMoreElements()) {
-				ZipEntry entry = ((ZipEntry) entries.nextElement());
-				String entryName = entry.getName();
-
-				if (entryName.startsWith("META-INF/MANIFEST.MF")) {
-					// 利用ZipInputStream读取文件
-					int size = (int) entry.getSize();
-					if (size > 0) {
-						BufferedReader br = new BufferedReader(new InputStreamReader(zipfile.getInputStream(entry)));
-						char[] s = new char[size];
-						br.read(s, 0, size);
-
-						byte[] buf = new byte[size];
-						for(int i = 0; i < size; i++)
-							buf[i] = (byte) s[i];
-						md5.update(buf);
-						br.close();  
-					}
-					break;
-				}
-			}
-			zipfile.close();
-
-			byte[] messageDigest = md5.digest();
-			// Create Hex String
-			StringBuffer hexString = new StringBuffer();
-			for (int i=0; i<messageDigest.length; i++) {
-				String hex = Integer.toHexString(0xFF & messageDigest[i]);
-				if(hex.length() == 1)
-					hexString.append('0');
-				hexString.append(hex);
-			}
-			return hexString.toString();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch(NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return "";
- 	}
 	// 获取剪贴板
 	public String get_clipboard() {
 
@@ -510,6 +449,16 @@ public class SDK extends Godot.SingletonBase {
 	///////////////////////////////////////////////////////////////////////////
 	// U8Analytics plugin implements
 	///////////////////////////////////////////////////////////////////////////
+	private Map<String, String> dict_to_map(Dictionary dict) {
+		Map<String, String> map = new HashMap<String, String>();
+		String[] keys = dict.get_keys();
+		for(int i = 0; i < keys.length; i++) {
+			String k = keys[i];
+			String v = dict.getString(k);
+			map.put(k, v);
+		}
+		return map;
+	}
 	// 统计分析
 	public void analytics(final Dictionary data) {
 		Log.d("U8SDK", "SDK.analytics");
@@ -542,6 +491,64 @@ public class SDK extends Godot.SingletonBase {
 					U8Analytics.getInstance().logout();
 				else if(type.equals("levelup"))
 					U8Analytics.getInstance().levelup(data.getInt("level"));
+				else if(type.equals("event")) {
+					String eventId = data.getString("event_id");
+					if(!data.containsKey("params")) {
+						// public void onEvent(String eventId);
+						U8Analytics.getInstance().onEvent(eventId);
+					} else {
+						if(!data.isDictionary("params")) {
+							// public void onEvent(String eventId, String params);
+							U8Analytics.getInstance().onEvent(eventId, data.getString("params"));							
+						} else {
+							// public void onEvent(String eventId, Map<String, String> params);
+							Map<String, String> params = dict_to_map(data.getDictionary("params"));
+							U8Analytics.getInstance().onEvent(eventId, params);
+						}
+					}
+				}
+				else if(type.equals("event_value")) {
+					// public void onEventValue(String eventId, Map<String, String> paramMap, int paramInt);
+					String eventId = data.getString("event_id");
+					Map<String, String> paramMap = dict_to_map(data.getDictionary("param_map"));
+					int paramInt = data.getInt("param_int");
+					U8Analytics.getInstance().onEventValue(eventId, paramMap, paramInt);
+				}
+				else if(type.equals("event_begin")) {
+					String eventId = data.getString("event_id");
+					if(!data.containsKey("params")) {
+						// public void onEventBegin(String eventId);
+						U8Analytics.getInstance().onEventBegin(eventId);
+					} else {
+						// public void onEventBegin(String eventId, String params);
+						String params = data.getString("params");
+						U8Analytics.getInstance().onEventBegin(eventId, params);						
+					}
+				}
+				else if(type.equals("event_end")) {
+					String eventId = data.getString("event_id");
+					if(!data.containsKey("params")) {
+						// public void onEventEnd(String eventId);
+						U8Analytics.getInstance().onEventEnd(eventId);					
+					} else {
+						// public void onEventEnd(String eventId, String params);
+						String params = data.getString("params");
+						U8Analytics.getInstance().onEventEnd(eventId, params);						
+					}
+				}
+				else if(type.equals("event_kv_begin")) {
+					// public void onKVEventBegin(String eventId, Map<String, String> paramMap, String paramString);
+					String eventId = data.getString("event_id");
+					Map<String, String> paramMap = dict_to_map(data.getDictionary("param_map"));
+					String paramString = data.getString("param_string");
+					U8Analytics.getInstance().onKVEventBegin(eventId, paramMap, paramString);
+				}
+				else if(type.equals("event_kv_end")) {
+					// public void onKVEventEnd(String eventId, String params);
+					String eventId = data.getString("event_id");
+					String params = data.getString("params");
+					U8Analytics.getInstance().onKVEventEnd(eventId, params);
+				}
 			}
 		});
 	}
