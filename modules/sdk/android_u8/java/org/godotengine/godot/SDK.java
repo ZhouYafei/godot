@@ -464,90 +464,93 @@ public class SDK extends Godot.SingletonBase {
 		Log.d("U8SDK", "SDK.analytics");
 		U8SDK.getInstance().runOnMainThread(new Runnable() {
 			@Override public void run() {
-				String type = data.getString("type");
-				if(type.equals("start_level"))
-					U8Analytics.getInstance().startLevel(data.getString("level"));
-				else if(type.equals("fail_level"))
-					U8Analytics.getInstance().failLevel(data.getString("level"));
-				else if(type.equals("finish_level"))
-					U8Analytics.getInstance().finishLevel(data.getString("level"));
-				else if(type.equals("start_task"))
-					U8Analytics.getInstance().startTask(data.getString("task"), data.getString("type"));
-				else if(type.equals("fail_task"))
-					U8Analytics.getInstance().failTask(data.getString("task"));
-				else if(type.equals("finish_task"))
-					U8Analytics.getInstance().finishTask(data.getString("task"));
-				else if(type.equals("pay"))
-					U8Analytics.getInstance().pay(data.getDouble("money"), data.getInt("num"));
-				else if(type.equals("buy"))
-					U8Analytics.getInstance().buy(data.getString("item"), data.getInt("num"), data.getDouble("price"));
-				else if(type.equals("use"))
-					U8Analytics.getInstance().use(data.getString("item"), data.getInt("num"), data.getDouble("price"));
-				else if(type.equals("bonus"))
-					U8Analytics.getInstance().bonus(data.getString("item"), data.getInt("num"), data.getDouble("price"), data.getInt("trigger"));
-				else if(type.equals("login"))
-					U8Analytics.getInstance().login(data.getString("user_id"));
-				else if(type.equals("logout"))
-					U8Analytics.getInstance().logout();
-				else if(type.equals("levelup"))
-					U8Analytics.getInstance().levelup(data.getInt("level"));
-				else if(type.equals("event")) {
-					String eventId = data.getString("event_id");
-					if(!data.containsKey("params")) {
-						// public void onEvent(String eventId);
-						U8Analytics.getInstance().onEvent(eventId);
-					} else {
-						if(!data.isDictionary("params")) {
-							// public void onEvent(String eventId, String params);
-							U8Analytics.getInstance().onEvent(eventId, data.getString("params"));							
+				try {
+					String what = data.getString("what");
+					if(what.equals("start_level"))
+						U8Analytics.getInstance().startLevel(data.getString("level"));
+					else if(what.equals("fail_level"))
+						U8Analytics.getInstance().failLevel(data.getString("level"));
+					else if(what.equals("finish_level"))
+						U8Analytics.getInstance().finishLevel(data.getString("level"));
+					else if(what.equals("start_task"))
+						U8Analytics.getInstance().startTask(data.getString("task"), data.getString("type"));
+					else if(what.equals("fail_task"))
+						U8Analytics.getInstance().failTask(data.getString("task"));
+					else if(what.equals("finish_task"))
+						U8Analytics.getInstance().finishTask(data.getString("task"));
+					else if(what.equals("pay"))
+						U8Analytics.getInstance().pay(data.getDouble("money"), data.getInt("num"));
+					else if(what.equals("buy"))
+						U8Analytics.getInstance().buy(data.getString("item"), data.getInt("num"), data.getDouble("price"));
+					else if(what.equals("use"))
+						U8Analytics.getInstance().use(data.getString("item"), data.getInt("num"), data.getDouble("price"));
+					else if(what.equals("bonus"))
+						U8Analytics.getInstance().bonus(data.getString("item"), data.getInt("num"), data.getDouble("price"), data.getInt("trigger"));
+					else if(what.equals("login"))
+						U8Analytics.getInstance().login(data.getString("user_id"));
+					else if(what.equals("logout"))
+						U8Analytics.getInstance().logout();
+					else if(what.equals("levelup"))
+						U8Analytics.getInstance().levelup(data.getInt("level"));
+					else if(what.equals("event")) {
+						String eventId = data.getString("event_id");
+						if(data.containsKey("label")) {
+							// public void onEvent(String eventId, String label);
+							U8Analytics.getInstance().onEvent(eventId, data.getString("label"));
+						}
+						else if(data.containsKey("map")) {
+							// public void onEvent(String eventId, Map<String, String> map);
+							Map<String, String> map = dict_to_map(data.getDictionary("map"));
+							U8Analytics.getInstance().onEvent(eventId, map);
 						} else {
-							// public void onEvent(String eventId, Map<String, String> params);
-							Map<String, String> params = dict_to_map(data.getDictionary("params"));
-							U8Analytics.getInstance().onEvent(eventId, params);
+							// public void onEvent(String eventId);
+							U8Analytics.getInstance().onEvent(eventId);
 						}
 					}
-				}
-				else if(type.equals("event_value")) {
-					// public void onEventValue(String eventId, Map<String, String> paramMap, int paramInt);
-					String eventId = data.getString("event_id");
-					Map<String, String> paramMap = dict_to_map(data.getDictionary("param_map"));
-					int paramInt = data.getInt("param_int");
-					U8Analytics.getInstance().onEventValue(eventId, paramMap, paramInt);
-				}
-				else if(type.equals("event_begin")) {
-					String eventId = data.getString("event_id");
-					if(!data.containsKey("params")) {
-						// public void onEventBegin(String eventId);
-						U8Analytics.getInstance().onEventBegin(eventId);
-					} else {
-						// public void onEventBegin(String eventId, String params);
-						String params = data.getString("params");
-						U8Analytics.getInstance().onEventBegin(eventId, params);						
+					else if(what.equals("event_value")) {
+						// public void onEventValue(String eventId, Map<String, String> map, int duration);
+						String eventId = data.getString("event_id");
+						Map<String, String> map = dict_to_map(data.getDictionary("map"));
+						int duration = data.getInt("duration");
+						U8Analytics.getInstance().onEventValue(eventId, map, duration);
 					}
-				}
-				else if(type.equals("event_end")) {
-					String eventId = data.getString("event_id");
-					if(!data.containsKey("params")) {
-						// public void onEventEnd(String eventId);
-						U8Analytics.getInstance().onEventEnd(eventId);					
-					} else {
-						// public void onEventEnd(String eventId, String params);
-						String params = data.getString("params");
-						U8Analytics.getInstance().onEventEnd(eventId, params);						
+					else if(what.equals("event_begin")) {
+						String eventId = data.getString("event_id");
+						if(data.containsKey("label")) {
+							// public void onEventBegin(String eventId, String label);
+							String label = data.getString("label");
+							U8Analytics.getInstance().onEventBegin(eventId, label);
+						} else {
+							// public void onEventBegin(String eventId);
+							U8Analytics.getInstance().onEventBegin(eventId);
+						}
 					}
-				}
-				else if(type.equals("event_kv_begin")) {
-					// public void onKVEventBegin(String eventId, Map<String, String> paramMap, String paramString);
-					String eventId = data.getString("event_id");
-					Map<String, String> paramMap = dict_to_map(data.getDictionary("param_map"));
-					String paramString = data.getString("param_string");
-					U8Analytics.getInstance().onKVEventBegin(eventId, paramMap, paramString);
-				}
-				else if(type.equals("event_kv_end")) {
-					// public void onKVEventEnd(String eventId, String params);
-					String eventId = data.getString("event_id");
-					String params = data.getString("params");
-					U8Analytics.getInstance().onKVEventEnd(eventId, params);
+					else if(what.equals("event_end")) {
+						String eventId = data.getString("event_id");
+						if(data.containsKey("label")) {
+							// public void onEventEnd(String eventId, String label);
+							String label = data.getString("label");
+							U8Analytics.getInstance().onEventEnd(eventId, label);
+						} else {
+							// public void onEventEnd(String eventId);
+							U8Analytics.getInstance().onEventEnd(eventId);					
+						}
+					}
+					else if(what.equals("event_kv_begin")) {
+						// public void onKVEventBegin(String eventId, Map<String, String> map, String label);
+						String eventId = data.getString("event_id");
+						Map<String, String> map = dict_to_map(data.getDictionary("map"));
+						String label = data.getString("label");
+						U8Analytics.getInstance().onKVEventBegin(eventId, map, label);
+					}
+					else if(what.equals("event_kv_end")) {
+						// public void onKVEventEnd(String eventId, String label);
+						String eventId = data.getString("event_id");
+						String label = data.getString("label");
+						U8Analytics.getInstance().onKVEventEnd(eventId, label);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
