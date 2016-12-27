@@ -65,7 +65,7 @@ struct OSpritePath::Stat {
 	// 移动倍率（config.fps * (move_speed / config.speed)）
 	float ratio;
 	// 每帧的点坐标信息
-	Vector<int> points;
+	DVector<int> points;
 };
 
 OSpritePath::Stat::Stat()
