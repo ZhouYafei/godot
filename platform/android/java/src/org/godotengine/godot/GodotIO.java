@@ -487,7 +487,10 @@ public class GodotIO {
 
 			Intent intent = new Intent();
 			intent.setAction(Intent.ACTION_VIEW);
-			if (!type.equals("")) {
+			if((path.indexOf("http://") == 0) || (path.indexOf("https://") == 0) || (type.equals(""))) {
+
+				intent.setData(Uri.parse(path));
+			} else {
 
 				if(p_uri.endsWith(".apk")) {
 
@@ -501,8 +504,6 @@ public class GodotIO {
 				}
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.setDataAndType(Uri.parse("file://"+path), type);
-			} else {
-				intent.setData(Uri.parse(path));
 			}
 
 			activity.startActivity(intent);
