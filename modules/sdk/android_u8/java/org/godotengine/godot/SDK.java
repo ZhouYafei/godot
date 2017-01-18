@@ -380,6 +380,7 @@ public class SDK extends Godot.SingletonBase {
 
 				PayParams params = new PayParams();
 				try {
+					params.setType(data.getString("type"));
 					params.setProductId(data.getString("product_id"));
 					params.setProductName(data.getString("product_name"));
 					params.setProductDesc(data.getString("product_desc"));
