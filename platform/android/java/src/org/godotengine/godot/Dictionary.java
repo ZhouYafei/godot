@@ -99,12 +99,12 @@ public class Dictionary extends HashMap<String, Object> {
 
 	public boolean isDictionary(String key) {
 		Object v = get(key);
-		return (v != null) && v.getClass.equals(Dictionary.getClass());
+		return (v != null) && v.getClass().equals(Dictionary.this.getClass());
 	}
 
 	public Dictionary getDictionary(String key) {
 		Object v = get(key);
-		if(v == null || !v.getClass.equals(Dictionary.getClass()))
+		if(v == null || !v.getClass().equals(Dictionary.this.getClass()))
 			return null;
 		return (Dictionary) v;
 	}
