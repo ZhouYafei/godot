@@ -1165,6 +1165,7 @@ Ref<ResourceInteractiveLoader> ResourceFormatLoaderBinary::load_interactive(cons
 
 	if (err!=OK) {
 
+		print_line("Unable to open binary resource file: "+p_path);
 		ERR_FAIL_COND_V(err!=OK,Ref<ResourceInteractiveLoader>());
 	}
 
