@@ -21,6 +21,16 @@ import android.telephony.TelephonyManager;
 
 import org.godotengine.godot.input.Clipboard;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
+import java.util.Enumeration;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import android.content.pm.ApplicationInfo;
+
 /***
  * 记得将游戏工程中的AndroidManifest.xml中application节点，增加一个android:name="U8Application"
  * 如果游戏有自己的Application。那么通过实现IApplicationListener接口来实现，而不要使用继承Application。
@@ -56,6 +66,7 @@ public class SDK extends Godot.SingletonBase {
 			"get_logic_channel",
 			"get_app_id",
 			"get_app_key",
+			"get_app_signature",
 			"get_clipboard",
 			"set_clipboard",
 			// U8User plugin
@@ -206,6 +217,59 @@ public class SDK extends Godot.SingletonBase {
 	public String get_app_key() {
 		return U8SDK.getInstance().getAppKey();
 	}
+	// 获取应用的签名信息 md5(META-INF/MANIFEST.MF)
+	public String get_app_signature() {
+
+		ApplicationInfo appinfo = activity.getApplicationInfo();
+		String sourceDir = appinfo.sourceDir;
+		ZipFile zipfile = null;
+		try {
+			zipfile = new ZipFile(sourceDir);
+			if(zipfile == null)
+				return "";
+		    MessageDigest md5 = MessageDigest.getInstance("MD5");
+			Enumeration<?> entries = zipfile.entries();
+			while (entries.hasMoreElements()) {
+				ZipEntry entry = ((ZipEntry) entries.nextElement());
+				String entryName = entry.getName();
+
+				if (entryName.startsWith("META-INF/MANIFEST.MF")) {
+					// 利用ZipInputStream读取文件
+					int size = (int) entry.getSize();
+					if (size > 0) {
+						BufferedReader br = new BufferedReader(new InputStreamReader(zipfile.getInputStream(entry)));
+						char[] s = new char[size];
+						br.read(s, 0, size);
+
+						byte[] buf = new byte[size];
+						for(int i = 0; i < size; i++)
+							buf[i] = (byte) s[i];
+						md5.update(buf);
+						br.close();  
+					}
+					break;
+				}
+			}
+			zipfile.close();
+
+			byte[] messageDigest = md5.digest();
+			// Create Hex String
+			StringBuffer hexString = new StringBuffer();
+			for (int i=0; i<messageDigest.length; i++) {
+				String hex = Integer.toHexString(0xFF & messageDigest[i]);
+				if(hex.length() == 1)
+					hexString.append('0');
+				hexString.append(hex);
+			}
+			return hexString.toString();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
+ 	}
 	// 获取剪贴板
 	public String get_clipboard() {
 
@@ -316,6 +380,7 @@ public class SDK extends Godot.SingletonBase {
 
 				PayParams params = new PayParams();
 				try {
+					params.setType(data.getString("type"));
 					params.setProductId(data.getString("product_id"));
 					params.setProductName(data.getString("product_name"));
 					params.setProductDesc(data.getString("product_desc"));

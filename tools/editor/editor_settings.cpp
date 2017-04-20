@@ -544,6 +544,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("global/default_project_export_path","");
 	hints["global/default_project_export_path"]=PropertyInfo(Variant::STRING,"global/default_project_export_path",PROPERTY_HINT_GLOBAL_DIR);
 	set("global/show_script_in_scene_tabs",false);
+	set("global/file_access_save_backup",false);
 
 
 	set("text_editor/color_theme","Default");
