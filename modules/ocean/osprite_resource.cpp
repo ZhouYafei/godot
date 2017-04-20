@@ -65,6 +65,8 @@ void OSprite::OSpriteResource::_post_process() {
 			Pool& pool = data.pools[j];
 			if(pool.frame == -1)
 				continue;
+            if(pool.frame >= frames.size())
+                continue;
 			Frame& frame = frames[pool.frame];
 			// use previous valid pool data
 			if(frame.tex.is_null()) {

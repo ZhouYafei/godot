@@ -88,6 +88,8 @@ void OSprite::_animation_draw() {
 			int pos = _string_find(pattern, ch);
 			if(pos == -1 || pos >= total_frames)
 				continue;
+           if(action->from + pos <= 0 || action->from + pos >= data.pools.size())
+                continue;
 			const OSpriteResource::Pool& pool = data.pools[action->from + pos];
 			if(pool.frame == -1)
 				continue;
@@ -147,7 +149,7 @@ void OSprite::_animation_draw() {
 	}
 
 	const OSpriteResource::Pool& pool = data.pools[index];
-	if(pool.frame == -1)
+	if(pool.frame == -1 || pool.frame >= res->frames.size())
 		return;
 	const OSpriteResource::Frame& frame = res->frames[pool.frame];
 
