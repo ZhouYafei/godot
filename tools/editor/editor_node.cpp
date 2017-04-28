@@ -5394,9 +5394,6 @@ EditorNode::EditorNode() {
 	_initializing_addons=false;
 	docks_visible = true;
 
-
-	FileAccess::set_backup_save(true);
-
 	PathRemap::get_singleton()->clear_remaps();; //editor uses no remaps
 	TranslationServer::get_singleton()->set_enabled(false);
 	// load settings
@@ -6745,6 +6742,8 @@ EditorNode::EditorNode() {
 
 	FileAccess::set_file_close_fail_notify_callback(_file_access_close_error_notify);
 
+	bool file_access_save_backup = EditorSettings::get_singleton()->get("global/file_access_save_backup");
+	FileAccess::set_backup_save(file_access_save_backup);
 
 }
 

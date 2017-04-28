@@ -275,6 +275,18 @@ void Sdk::set_clipboard(const String& p_text) {
 	OS::get_singleton()->set_clipboard(p_text);
 }
 
+String Sdk::get_install_params() {
+	return "{}";
+}
+
+String Sdk::get_agent_id() {
+	return "1";
+}
+
+String Sdk::get_agent_channel() {
+	return "1";
+}
+
 void Sdk::_bind_methods() {
 
  	ObjectTypeDB::bind_method(_MD("init", "inst_id", "callback"),&Sdk::init);
@@ -305,6 +317,9 @@ void Sdk::_bind_methods() {
  	ObjectTypeDB::bind_method(_MD("download", "url", "show_confirm", "force"),&Sdk::download);
  	ObjectTypeDB::bind_method(_MD("get_clipboard"),&Sdk::get_clipboard);
  	ObjectTypeDB::bind_method(_MD("set_clipboard", "text"),&Sdk::set_clipboard);
+	ObjectTypeDB::bind_method(_MD("get_install_params"),&Sdk::get_install_params);
+	ObjectTypeDB::bind_method(_MD("get_agent_id"),&Sdk::get_agent_id);
+	ObjectTypeDB::bind_method(_MD("get_agent_channel"),&Sdk::get_agent_channel);
 }
 
 Sdk *Sdk::get_singleton() {

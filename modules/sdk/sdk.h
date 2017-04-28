@@ -123,6 +123,9 @@ public:
 	virtual void download(const String& p_url, bool p_show_confirm, bool p_force);
 	virtual String get_clipboard();
 	virtual void set_clipboard(const String& p_text);
+	virtual String get_install_params();
+	virtual String get_agent_id();
+	virtual String get_agent_channel();
 
 	static Sdk* get_singleton();
 

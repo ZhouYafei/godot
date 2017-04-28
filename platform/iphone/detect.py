@@ -147,9 +147,11 @@ def configure(env):
 		env.Append(LINKFLAGS=['-O3']) #
 
 	elif env["target"] == "release_debug":
-		env.Append(CCFLAGS=['-Os', '-DNS_BLOCK_ASSERTIONS=1', '-gdwarf-2', '-Wall', '-DDEBUG_ENABLED'])
+		# env.Append(CCFLAGS=['-D_DEBUG', '-DDEBUG=1', '-gdwarf-2', '-Wall', '-O0', '-DDEBUG_ENABLED'])
+		# env.Append(CPPFLAGS=['-DDEBUG_MEMORY_ENABLED'])
+		env.Append(CCFLAGS=['-O3', '-DNS_BLOCK_ASSERTIONS=1', '-gdwarf-2', '-Wall', '-DDEBUG_ENABLED'])
 		env.Append(LINKFLAGS=['-Os'])
-		env.Append(CPPFLAGS=['-DDEBUG_MEMORY_ENABLED'])
+		# env.Append(CPPFLAGS=['-DDEBUG_MEMORY_ENABLED'])
 
 	elif (env["target"]=="debug"):
 

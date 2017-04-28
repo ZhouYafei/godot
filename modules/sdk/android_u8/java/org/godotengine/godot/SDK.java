@@ -64,6 +64,8 @@ public class SDK extends Godot.SingletonBase {
 			"is_support",
 			"get_curr_channel",
 			"get_logic_channel",
+			"get_agent_id",
+			"get_agent_channel",
 			"get_app_id",
 			"get_app_key",
 			"get_app_signature",
@@ -208,6 +210,14 @@ public class SDK extends Godot.SingletonBase {
 	// 获取CPS,CPA,CPD等非SDK联运渠道的逻辑渠道号
 	public int get_logic_channel() {
 		return U8SDK.getInstance().getLogicChannel();
+	}
+	// 获取渠道代理id
+	public String get_agent_id() {
+		return U8SDK.getInstance().getAgentId();
+	}
+	// 获取渠道代理推广id
+	public String get_agent_channel() {
+		return U8SDK.getInstance().getAgentChannel();
 	}
 	// 获取u8server配置的AppID
 	public int get_app_id() {
