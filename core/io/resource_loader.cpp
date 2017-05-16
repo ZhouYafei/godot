@@ -213,11 +213,22 @@ RES ResourceLoader::load(const String &p_path, const String& p_type_hint, bool p
 		return res;
 	}
 
-	if (found) {
-		ERR_EXPLAIN("Failed loading resource: "+p_path);
-	} else {
-		ERR_EXPLAIN("No loader found for resource: "+p_path);
+	for (int i=0;i<loader_count;i++) {
+
+		List<String> extensions;
+		loader[i]->get_recognized_extensions(&extensions);
+		for(List<String>::Element *E=extensions.front();E;E=E->next()) {
+			String ext = E->get();
+			print_line("valid extension : " + ext);
+		}
 	}
+
+	if (found) {
+		print_line("Failed loading resource: "+p_path);
+	} else {
+		print_line("No loader found for resource: "+p_path);
+	}
+	print_line("load file failed: " + p_path);
 	ERR_FAIL_V(RES());
 	return RES();
 }

@@ -256,9 +256,11 @@ public:
 	void set_pos_diff(const Point2& p_diff);
 	const Point2& get_pos_diff() const;
 
+#ifndef TOOLS_ENABLED
 	void set_pos(const Point2& p_pos);
 	const Point2& get_pos() const;
-
+#endif
+	
 	void set_rot(real_t p_radians);
 	real_t get_rot() const;
 	

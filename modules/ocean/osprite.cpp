@@ -923,6 +923,7 @@ const Point2& OSprite::get_pos_diff() const {
 	return pos_diff;
 }
 
+#ifndef TOOLS_ENABLED
 void OSprite::set_pos(const Point2& p_pos) {
 
 	orig_pos = p_pos;
@@ -933,6 +934,7 @@ const Point2& OSprite::get_pos() const {
 
 	return orig_pos;
 }
+#endif
 
 void OSprite::set_rot(real_t p_radians) {
 
