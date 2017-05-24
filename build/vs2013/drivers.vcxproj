@@ -839,6 +839,70 @@
     <ClCompile Include="..\..\drivers\gl_context\glew.c" />
     <ClCompile Include="..\..\drivers\jpegd\image_loader_jpegd.cpp" />
     <ClCompile Include="..\..\drivers\jpegd\jpgd.cpp" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcapimin.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcapistd.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jccoefct.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jccolor.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcdctmgr.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jchuff.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcinit.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcmainct.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcmarker.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcmaster.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcomapi.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcparam.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcphuff.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcprepct.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcsample.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jctrans.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdapimin.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdapistd.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdatadst.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdatasrc.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdcoefct.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdcolor.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jddctmgr.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdhuff.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdinput.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmainct.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmarker.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmaster.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmerge.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdphuff.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdpostct.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdsample.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdtrans.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jerror.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jfdctflt.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jfdctfst.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jfdctint.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctflt.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctfst.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctint.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctred.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemansi.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemdos.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemmac.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemmgr.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemname.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemnobs.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jpegtran.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jquant1.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jquant2.c" />
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jutils.c" />
+    <ClCompile Include="..\..\drivers\jpegd\resource_saver_jpg.cpp" />
     <ClCompile Include="..\..\drivers\lua\src\lapi.c" />
     <ClCompile Include="..\..\drivers\lua\src\lauxlib.c" />
     <ClCompile Include="..\..\drivers\lua\src\lbaselib.c" />
@@ -1889,6 +1953,22 @@
     <ClInclude Include="..\..\drivers\gl_context\wglew.h" />
     <ClInclude Include="..\..\drivers\jpegd\image_loader_jpegd.h" />
     <ClInclude Include="..\..\drivers\jpegd\jpgd.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jchuff.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.cw.mac.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.cw.win.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.gcc.linux.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.vc.win.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jdct.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jdhuff.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jerror.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jinclude.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jmemsys.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jmorecfg.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jpegint.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jpeglib.h" />
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jversion.h" />
+    <ClInclude Include="..\..\drivers\jpegd\resource_saver_jpg.h" />
     <ClInclude Include="..\..\drivers\lua\src\lapi.h" />
     <ClInclude Include="..\..\drivers\lua\src\lauxlib.h" />
     <ClInclude Include="..\..\drivers\lua\src\lcode.h" />

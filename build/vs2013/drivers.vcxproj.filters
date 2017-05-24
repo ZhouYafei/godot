@@ -403,6 +403,9 @@
     <Filter Include="drivers\freetype\src\winfonts">
       <UniqueIdentifier>{f5faf92e-ca0b-4fed-b308-b970013f6753}</UniqueIdentifier>
     </Filter>
+    <Filter Include="drivers\jpegd\libjpeg">
+      <UniqueIdentifier>{6b92082d-228f-4594-a783-5d9fd927ddf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\drivers\register_driver_types.cpp">
@@ -3975,6 +3978,162 @@
     <ClCompile Include="..\..\drivers\freetype\src\autofit\autofit.c">
       <Filter>drivers\freetype\src\autofit</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\resource_saver_jpg.cpp">
+      <Filter>drivers\jpegd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcapimin.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcapistd.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jccoefct.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jccolor.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcdctmgr.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jchuff.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcinit.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcmainct.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcmarker.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcmaster.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcomapi.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcparam.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcphuff.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcprepct.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jcsample.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jctrans.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdapimin.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdapistd.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdatadst.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdatasrc.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdcoefct.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdcolor.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jddctmgr.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdhuff.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdinput.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmainct.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmarker.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmaster.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdmerge.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdphuff.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdpostct.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdsample.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jdtrans.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jerror.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jfdctflt.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jfdctfst.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jfdctint.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctflt.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctfst.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctint.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jidctred.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemansi.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemdos.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemmac.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemmgr.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemname.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jmemnobs.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jpegtran.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jquant1.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jquant2.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\drivers\jpegd\libjpeg\jutils.c">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\drivers\register_driver_types.h">
@@ -6070,6 +6229,54 @@
     </ClInclude>
     <ClInclude Include="..\..\drivers\freetype\include\freetype\tttags.h">
       <Filter>drivers\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\resource_saver_jpg.h">
+      <Filter>drivers\jpegd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jchuff.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.cw.mac.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.cw.win.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.gcc.linux.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jconfig.vc.win.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jdct.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jdhuff.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jerror.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jinclude.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jmemsys.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jmorecfg.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jpegint.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jpeglib.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\drivers\jpegd\libjpeg\jversion.h">
+      <Filter>drivers\jpegd\libjpeg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
