@@ -69,6 +69,9 @@ const char* Image::format_names[Image::FORMAT_MAX]={
 };
 
 SavePNGFunc Image::save_png_func = NULL;
+#ifdef JPG_ENABLED
+SavePNGFunc Image::save_jpg_func = NULL;
+#endif
 
 void Image::_put_pixel(int p_x,int p_y, const BColor& p_color, unsigned char *p_data) {
 
@@ -1647,6 +1650,16 @@ Error Image::save_png(const String& p_path) {
 
 	return save_png_func(p_path, *this);
 };
+
+#ifdef JPG_ENABLED
+Error Image::save_jpg(const String& p_path) {
+
+	if (save_jpg_func == NULL)
+		return ERR_UNAVAILABLE;
+
+	return save_jpg_func(p_path, *this);
+}
+#endif
 
 bool Image::operator==(const Image& p_image) const {
 

@@ -627,6 +627,7 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_PTR3R(Image,brushed);
 	VCALL_PTR1R(Image,load);
 	VCALL_PTR1R(Image,save_png);
+	VCALL_PTR1R(Image,save_jpg);
 	VCALL_PTR3(Image,brush_transfer);
 	VCALL_PTR1R(Image,get_rect);
 	VCALL_PTR1R(Image,compressed);
@@ -1559,6 +1560,9 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC3(IMAGE, IMAGE, Image, brushed, IMAGE, "src", IMAGE, "brush", VECTOR2, "pos", varray(0));
 	ADDFUNC1(IMAGE, INT, Image, load, STRING, "path", varray(0));
 	ADDFUNC1(IMAGE, INT, Image, save_png, STRING, "path", varray(0));
+#ifdef JPG_ENABLED
+	ADDFUNC1(IMAGE, INT, Image, save_jpg, STRING, "path", varray(0));
+#endif
 	ADDFUNC3(IMAGE, NIL, Image, brush_transfer, IMAGE, "src", IMAGE, "brush", VECTOR2, "pos", varray(0));
 	ADDFUNC0(IMAGE, RECT2, Image, get_used_rect, varray(0));
 	ADDFUNC1(IMAGE, IMAGE, Image, get_rect, RECT2, "area", varray(0));

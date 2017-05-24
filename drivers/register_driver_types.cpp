@@ -32,6 +32,7 @@
 #include "webp/image_loader_webp.h"
 #include "png/resource_saver_png.h"
 #include "jpegd/image_loader_jpegd.h"
+#include "jpegd/resource_saver_jpg.h"
 #include "dds/texture_loader_dds.h"
 #include "etc1/texture_loader_pkm.h"
 #include "pvr/texture_loader_pvr.h"
@@ -91,6 +92,7 @@ static ImageLoaderWEBP *image_loader_webp=NULL;
 
 #ifdef JPG_ENABLED
 static ImageLoaderJPG *image_loader_jpg=NULL;
+static ResourceSaverJPG *image_saver_jpg=NULL;
 #endif
 
 #ifdef DDS_ENABLED
@@ -162,6 +164,9 @@ void register_core_driver_types() {
 
 	image_loader_jpg = memnew( ImageLoaderJPG );
 	ImageLoader::add_image_format_loader( image_loader_jpg );
+
+	image_saver_jpg = memnew( ResourceSaverJPG );
+	ResourceSaver::add_resource_format_saver(image_saver_jpg);
 #endif
 
 

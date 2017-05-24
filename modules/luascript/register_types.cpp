@@ -101,6 +101,8 @@ void register_luascript_types() {
 
 }
 void unregister_luascript_types() {
+
+	ScriptServer::unregister_language(script_language_lua);
 	if (script_language_lua)
 		memdelete( script_language_lua );
 	if (resource_loader_lua)

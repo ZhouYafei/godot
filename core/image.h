@@ -53,6 +53,9 @@ class Image {
 public:
 
 	static SavePNGFunc save_png_func;
+#ifdef JPG_ENABLED
+	static SavePNGFunc save_jpg_func;
+#endif
 
 	enum Format {
 		FORMAT_GRAYSCALE, ///< one byte per pixel, 0-255
@@ -295,6 +298,10 @@ public:
 
 	Error load(const String& p_path);
 	Error save_png(const String& p_path);
+
+#ifdef JPG_ENABLED
+	Error save_jpg(const String& p_path);
+#endif
 
 	/**
 	 * create an empty image
