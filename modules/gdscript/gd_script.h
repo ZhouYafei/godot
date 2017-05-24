@@ -110,7 +110,6 @@ friend class GDScriptLanguage;
 
 	int subclass_count;
 	Set<Object*> instances;
-	Mutex *thread_lock;
 	//exported members
 	String source;
 	String path;
@@ -303,6 +302,8 @@ class GDScriptLanguage : public ScriptLanguage {
 	void _add_global(const StringName& p_name,const Variant& p_value);
 	void _profiler_enter(GDFunction *p_function, int p_line);
 	void _profiler_leave();
+
+friend class GDInstance;
 
 	Mutex *lock;
 

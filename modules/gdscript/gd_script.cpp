@@ -111,18 +111,26 @@ GDInstance* GDScript::_create_instance(const Variant** p_args,int p_argcount,Obj
 
 	/* STEP 2, INITIALIZE AND CONSRTUCT */
 
-	thread_lock->lock();
+#ifndef NO_THREADS
+	GDScriptLanguage::singleton->lock->lock();
+#endif
 	instances.insert(instance->owner);
-	thread_lock->unlock();
+#ifndef NO_THREADS
+	GDScriptLanguage::singleton->lock->unlock();
+#endif
 
 	initializer->call(instance,p_args,p_argcount,r_error);
 
 	if (r_error.error!=Variant::CallError::CALL_OK) {
 		instance->script=Ref<GDScript>();
 		instance->owner->set_script_instance(NULL);
-		thread_lock->lock();
+#ifndef NO_THREADS
+		GDScriptLanguage::singleton->lock->lock();
+#endif
 		instances.erase(p_owner);
-		thread_lock->unlock();
+#ifndef NO_THREADS
+		GDScriptLanguage::singleton->lock->unlock();
+#endif
 		ERR_FAIL_COND_V(r_error.error!=Variant::CallError::CALL_OK, NULL); //error constructing
 	}
 
@@ -409,9 +417,13 @@ ScriptInstance* GDScript::instance_create(Object *p_this) {
 }
 bool GDScript::instance_has(const Object *p_this) const {
 
-	thread_lock->lock();
+#ifndef NO_THREADS
+		GDScriptLanguage::singleton->lock->lock();
+#endif
 	bool result = instances.has((Object*)p_this);
-	thread_lock->unlock();
+#ifndef NO_THREADS
+		GDScriptLanguage::singleton->lock->unlock();
+#endif
 	return result;
 }
 
@@ -604,10 +616,13 @@ void GDScript::_set_subclass_path(Ref<GDScript>& p_sc,const String& p_path) {
 Error GDScript::reload(bool p_keep_state) {
 
 
-	thread_lock->lock();
+#ifndef NO_THREADS
+	GDScriptLanguage::singleton->lock->lock();
+#endif
 	int instance_size = instances.size();
-	thread_lock->unlock();
-	ERR_FAIL_COND_V(instance_size > 0,ERR_ALREADY_IN_USE);
+#ifndef NO_THREADS
+	GDScriptLanguage::singleton->lock->unlock();
+#endif
 	ERR_FAIL_COND_V(!p_keep_state && instance_size,ERR_ALREADY_IN_USE);
 
 	String basedir=path;
@@ -955,7 +970,6 @@ GDScript::GDScript() : script_list(this) {
 #ifdef TOOLS_ENABLED
 	source_changed_cache=false;
 #endif
-	thread_lock = Mutex::create();
 
 #ifdef DEBUG_ENABLED
 	if (GDScriptLanguage::get_singleton()->lock) {
@@ -988,7 +1002,6 @@ GDScript::~GDScript() {
 		GDScriptLanguage::get_singleton()->lock->unlock();
 	}
 #endif
-	memdelete(thread_lock);
 }
 
 
@@ -1448,9 +1461,13 @@ GDInstance::GDInstance() {
 
 GDInstance::~GDInstance() {
 	if (script.is_valid() && owner) {
-		script->thread_lock->lock();
+#ifndef NO_THREADS
+	GDScriptLanguage::singleton->lock->lock();
+#endif
 		script->instances.erase(owner);
-		script->thread_lock->unlock();
+#ifndef NO_THREADS
+	GDScriptLanguage::singleton->lock->unlock();
+#endif
 	}
 }
 
@@ -1771,7 +1788,6 @@ void GDScriptLanguage::reload_tool_script(const Ref<Script>& p_script,bool p_sof
 			//save state and remove script from instances
 			Map<ObjectID,List<Pair<StringName,Variant> > >& map = to_reload[E->get()];
 
-			E->get()->thread_lock->lock();
 			while(E->get()->instances.front()) {
 				Object *obj = E->get()->instances.front()->get();
 				//save instance info
@@ -1783,7 +1799,6 @@ void GDScriptLanguage::reload_tool_script(const Ref<Script>& p_script,bool p_sof
 					obj->set_script(RefPtr());
 				}
 			}
-			E->get()->thread_lock->unlock();
 
 			//same thing for placeholders
 #ifdef TOOLS_ENABLED
