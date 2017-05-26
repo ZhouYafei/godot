@@ -56,6 +56,8 @@
 #import "Appirater.h"
 #endif
 
+#include "audio_driver_iphone.h"
+
 Error _shell_open(String);
 void _set_keep_screen_on(bool p_enabled);
 
@@ -314,7 +316,8 @@ static int frame_count = 0;
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
 	printf("********************* did enter foreground\n");
-	//OS::get_singleton()->get_main_loop()->notification(MainLoop::NOTIFICATION_WM_FOCUS_IN);
+	if (OS::get_singleton()->get_main_loop())
+		OS::get_singleton()->get_main_loop()->notification(MainLoop::NOTIFICATION_WM_FOCUS_IN);
 	[view_controller.view startAnimation];
 }
 
@@ -324,6 +327,7 @@ static int frame_count = 0;
 	//OS::get_singleton()->get_main_loop()->notification(MainLoop::NOTIFICATION_WM_FOCUS_OUT);
 	[view_controller.view stopAnimation]; // FIXME: pause seems to be recommended elsewhere
 }
+
 
 - (void) applicationDidBecomeActive:(UIApplication *)application
 {
@@ -338,6 +342,8 @@ static int frame_count = 0;
 	if (OSIPhone::get_singleton()->native_video_is_playing()) {
 		OSIPhone::get_singleton()->native_video_unpause();
 	};
+	if(AudioDriverIphone::get_singleton() != NULL)
+		AudioDriverIphone::get_singleton()->start();
 }
 
 - (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration {

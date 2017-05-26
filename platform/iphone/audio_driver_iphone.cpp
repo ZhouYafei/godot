@@ -149,6 +149,8 @@ OSStatus AudioDriverIphone::output_callback(void *inRefCon,
 
 void AudioDriverIphone::start() {
 	active = true;
+	OSStatus result = AudioOutputUnitStart(audio_unit);
+	ERR_FAIL_COND(result != noErr);
 };
 
 int AudioDriverIphone::get_mix_rate() const {
