@@ -78,10 +78,14 @@ public class Clipboard {
 
     public String getText() {
         if (clipboard != null) {
-            ClipData clip = clipboard.getPrimaryClip();
-            ClipData.Item item = clip.getItemAt(0);
-            String text = item.getText().toString();
-            clipdata = text;
+            try {
+                ClipData clip = clipboard.getPrimaryClip();
+                ClipData.Item item = clip.getItemAt(0);
+                String text = item.getText().toString();
+                clipdata = text;
+            } catch(NullPointerException e) {
+                clipdata = "";
+            }
         } else {
             if (clipdata == null) {
                 clipdata = "请不要频繁操作！";
