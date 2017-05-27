@@ -120,6 +120,7 @@ private:
 
 	const float * _spine_calc_avatar_uvs(spAttachment *p_attachment, spAtlasRegion *p_region);
 	void _spine_get_texture_uvs(spSlot* p_slot, Ref<Texture>& p_texture, const float *&p_uvs);
+	void _update_verties_count();
 
 protected:
 	bool _set(const StringName& p_name, const Variant& p_value);
