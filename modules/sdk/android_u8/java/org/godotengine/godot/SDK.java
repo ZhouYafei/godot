@@ -399,6 +399,10 @@ public class SDK extends Godot.SingletonBase {
 						params.setRatio(data.getInt("ratio"));
 					else
 						params.setRatio(0);
+					if(data.containsKey("limit_credit_pay"))
+						params.setLimitCreditPay(data.getString("limit_credit_pay"));
+					else
+						params.setLimitCreditPay("1");
 					params.setBuyNum(data.getInt("count"));
 					params.setCoinNum(data.getInt("coin"));
 					params.setServerId(data.getString("server_id"));
