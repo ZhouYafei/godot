@@ -716,6 +716,47 @@ void Spine::_notification(int p_what) {
 	}
 }
 
+void Spine::_update_verties_count() {
+
+	ERR_FAIL_COND(skeleton == NULL);
+
+	int verties_count = 0;
+	for(int i = 0, n = skeleton->slotsCount; i < n; i++) {
+
+		spSlot* slot = skeleton->drawOrder[i];
+		if (!slot->attachment)
+			continue;
+		switch (slot->attachment->type) {
+
+			case SP_ATTACHMENT_REGION:
+				continue;
+			case SP_ATTACHMENT_MESH:
+			case SP_ATTACHMENT_LINKED_MESH: {
+
+				spMeshAttachment* attachment = (spMeshAttachment*)slot->attachment;
+				verties_count = MAX(verties_count, attachment->verticesCount);
+				break;
+			}
+			case SP_ATTACHMENT_WEIGHTED_MESH:
+			case SP_ATTACHMENT_WEIGHTED_LINKED_MESH: {
+
+				spWeightedMeshAttachment* attachment = (spWeightedMeshAttachment*)slot->attachment;
+				verties_count = MAX(verties_count, attachment->uvsCount);
+				break;
+			}
+			case SP_ATTACHMENT_BOUNDING_BOX: {
+
+				spBoundingBoxAttachment* attachment = (spBoundingBoxAttachment*)slot->attachment;
+				verties_count = MAX(verties_count, attachment->verticesCount);
+				break;
+			}
+		}
+	}
+
+	if(verties_count > world_verts.size())
+		world_verts.resize(verties_count);
+}
+
 void Spine::set_resource(Ref<Spine::SpineResource> p_data) {
 
 	// cleanup
@@ -731,6 +772,8 @@ void Spine::set_resource(Ref<Spine::SpineResource> p_data) {
 	state = spAnimationState_create(spAnimationStateData_create(skeleton->data));
 	state->rendererObject = this;
 	state->listener = spine_animation_callback;
+
+	_update_verties_count();
 
 	if (skin != "")
 		set_skin(skin);
