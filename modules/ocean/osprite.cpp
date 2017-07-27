@@ -80,8 +80,20 @@ void OSprite::_animation_draw() {
 		int total_frames = action->to - action->from + 1;
 		Vector2 offset = Vector2(0, 0);
 
-		int first_char_width = 0;
-		int text_width = 0;
+		int char_width = 0;
+		for(int i = action->from; i < action->to; i++) {
+
+			const OSpriteResource::Pool& pool = data.pools[i];
+			if(pool.frame == -1)
+				continue;
+			const OSpriteResource::Frame& frame = res->frames[pool.frame];
+			if(frame.tex.is_null())
+				continue;
+			if(char_width < frame.region.size.x)
+				char_width = frame.region.size.x;
+		}
+
+		int valid_chars = 0;
 		for(int i = 0; i < text.size(); i++) {
 
 			CharType ch = text[i];
@@ -96,13 +108,9 @@ void OSprite::_animation_draw() {
 			const OSpriteResource::Frame& frame = res->frames[pool.frame];
 			if(frame.tex.is_null())
 				continue;
-
-			text_width += frame.region.size.x;
-			if(i != 0)
-				text_width += text_space;
-			else
-				first_char_width = text_width;
+			valid_chars ++;
 		}
+		int text_width = char_width * valid_chars + text_space * (valid_chars - 1);
 
 		switch(text_align) {
 
@@ -117,7 +125,7 @@ void OSprite::_animation_draw() {
 		case ALIGN_LEFT:
 			break;
 		}
-		offset.x += first_char_width / 2;
+		offset.x += char_width / 2;
 
 		for(int i = 0; i < text.size(); i++) {
 
@@ -143,7 +151,7 @@ void OSprite::_animation_draw() {
 			rect.size += (delta * 2);
 
 			this->draw_texture_rect_region(frame.tex, Rect2(rect.pos + offset, rect.size), src_rect, modulate, frame.rotated);
-			offset.x += src_rect.size.x + text_space;
+			offset.x += char_width + text_space;
 		}
 		return;
 	}
