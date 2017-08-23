@@ -65,7 +65,7 @@ Variant *GDFunction::_get_variant(int p_address,GDInstance *p_instance,GDScript 
 		} break;
 		case ADDR_TYPE_GLOBAL: {
 
-
+			ERR_FAIL_COND_V(GDScriptLanguage::get_singleton() == NULL,NULL);
 			ERR_FAIL_INDEX_V(address,GDScriptLanguage::get_singleton()->get_global_array_size(),NULL);
 
 
@@ -294,7 +294,7 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 	uint64_t function_start_time;
 	uint64_t function_call_time;
 
-	if (GDScriptLanguage::get_singleton()->profiling) {
+	if (GDScriptLanguage::get_singleton() != NULL && GDScriptLanguage::get_singleton()->profiling) {
 		function_start_time=OS::get_singleton()->get_ticks_usec();
 		function_call_time=0;
 		profile.call_count++;
@@ -660,7 +660,7 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 #ifdef DEBUG_ENABLED
 				uint64_t call_time;
 
-				if (GDScriptLanguage::get_singleton()->profiling) {
+				if (GDScriptLanguage::get_singleton() != NULL && GDScriptLanguage::get_singleton()->profiling) {
 					call_time=OS::get_singleton()->get_ticks_usec();
 				}
 
@@ -1167,7 +1167,7 @@ Variant GDFunction::call(GDInstance *p_instance, const Variant **p_args, int p_a
 	}
 
 #ifdef DEBUG_ENABLED
-	if (GDScriptLanguage::get_singleton()->profiling) {
+	if (GDScriptLanguage::get_singleton() != NULL && GDScriptLanguage::get_singleton()->profiling) {
 		uint64_t time_taken = OS::get_singleton()->get_ticks_usec() - function_start_time;
 		profile.total_time+=time_taken;
 		profile.self_time+=time_taken-function_call_time;
