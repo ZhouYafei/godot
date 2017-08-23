@@ -250,10 +250,12 @@ public:
 	void set(int p_index, const T& p_val);
 	void push_back(const T& p_val);
 	void append(const T& p_val) { push_back(p_val); }
-	void append_array(const DVector<T>& p_arr) {
-		int ds = p_arr.size();
+	void append_array(const DVector<T>& p_arr, int p_size = -1) {
+		int ds = (p_size > 0) ? p_size : p_arr.size();
 		if (ds==0)
 			return;
+		if (ds>p_arr.size())
+			ds = p_arr.size();
 		int bs = size();
 		resize( bs + ds);
 		Write w = write();
