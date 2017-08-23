@@ -30,23 +30,28 @@
 #ifndef UART_H
 #define UART_H
 
-#include "core/object.h"
-#include "core/set.h"
+#include "object.h"
+#include "set.h"
+#include "os/thread.h"
+#include "os/thread_safe.h"
 
 class UartInterface;
 
 class Uart : public Object {
 
 	OBJ_TYPE(Uart, Object);
+	_THREAD_SAFE_CLASS_
 
-	int handler;
-	String callback;
-
+	bool quit;
+	Thread *thread;
 	UartInterface *impl;
 
 	Map<int, ByteArray> buffers;
 
 	static Uart* instance;
+
+	void _process();
+	static void _thread_runner(void *p);
 
 protected:
 
@@ -91,8 +96,6 @@ public:
 	int find_port(const String& p_name);
 	bool open_port(int p_index, int p_baudrate = 115200);
 	bool close_port(int p_index);
-
-	void process();
 
 	Uart();
 	virtual ~Uart();

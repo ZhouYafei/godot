@@ -30,6 +30,7 @@
 
 #include "uart.h"
 #include "os/os.h"
+#include "os/thread_safe.h"
 
 #ifdef _MSC_VER
 #include "uart_win32.h"
@@ -48,6 +49,8 @@ int Uart::find_port(const String& p_name) {
 bool Uart::open_port(int p_index, int p_baudrate) {
 
 	ERR_FAIL_COND_V(impl == NULL, false);
+
+	_THREAD_SAFE_METHOD_
 	if(buffers.find(p_index) != NULL)
 		return true;
 
@@ -60,6 +63,8 @@ bool Uart::open_port(int p_index, int p_baudrate) {
 bool Uart::close_port(int p_index) {
 
 	ERR_FAIL_COND_V(impl == NULL, false);
+
+	_THREAD_SAFE_METHOD_
 	if(buffers.find(p_index) == NULL)
 		return true;
 
@@ -142,12 +147,25 @@ String Uart::get_internal_name(int p_index) {
 	return impl->get_internal_name(p_index);
 }
 
-void Uart::process() {
+void Uart::_thread_runner(void *p) {
+
+	Uart *self = (Uart *) p;
+
+	while(!self->quit) {
+
+		self->_process();
+		OS::get_singleton()->delay_usec(100);
+	}
+}
+
+void Uart::_process() {
 
 	ERR_FAIL_COND(impl == NULL);
 
 	ByteArray buf;
 	buf.resize(512);
+
+	_THREAD_SAFE_METHOD_
 	for(Map<int, ByteArray>::Element *E = buffers.front(); E; E = E->next()) {
 
 		int index = E->key();
@@ -199,7 +217,6 @@ void Uart::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("find_port", "name"), &Uart::find_port);
 	ObjectTypeDB::bind_method(_MD("open_port", "index", "baudrate"), &Uart::open_port, 115200);
 	ObjectTypeDB::bind_method(_MD("close_port", "index"), &Uart::close_port);
-	ObjectTypeDB::bind_method(_MD("process", "index"), &Uart::process);
 }
 
 Uart *Uart::get_singleton() {
@@ -214,6 +231,8 @@ Uart::Uart() {
 #else
 	impl = memnew(UartPosix);
 #endif
+	quit = false;
+	thread = Thread::create(_thread_runner, this);
 	instance = this;
 
 	//int index = this->find_port("COM14");
@@ -226,6 +245,13 @@ Uart::Uart() {
 }
 
 Uart::~Uart() {
+
+	if(thread != NULL) {
+
+		quit = true;
+		Thread::wait_to_finish(thread);
+		memdelete(thread);
+	}
 
 	memdelete(impl);
 	instance = NULL;
