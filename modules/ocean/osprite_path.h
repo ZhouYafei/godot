@@ -37,6 +37,7 @@ class OSpritePath : public Object {
 
 	struct Stat;
 	List<Stat *> fishs;
+	Vector2 scale;
 
 	struct GroupStat;
 	struct FishStat;
@@ -60,6 +61,9 @@ public:
 
 	void move(float p_delta);
 	void clear();
+
+	void set_scale(const Vector2& p_scale);
+	Vector2 get_scale() const;
 
 	OSpritePath() {};
 	virtual ~OSpritePath();

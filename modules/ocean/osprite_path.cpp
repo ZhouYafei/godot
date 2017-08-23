@@ -39,10 +39,10 @@ struct OSpritePath::Stat {
 	virtual ~Stat() {}
 
 	virtual int get_index() const;
-	virtual Vector2 get_point_pos(int p_index);
+	virtual Vector2 get_point_pos(int p_index, const Vector2& p_scale);
 
-	virtual bool init() { return false; }
-	virtual bool update();
+	virtual bool init(const OSpritePath *p_path) { return false; }
+	virtual bool update(const OSpritePath *p_path);
 
 	// 记录的fish/sprite的instance id
 	ObjectID fish_id;
@@ -82,15 +82,15 @@ int OSpritePath::Stat::get_index() const {
 	return int(elapsed * ratio);
 }
 
-Vector2 OSpritePath::Stat::get_point_pos(int p_index) {
+Vector2 OSpritePath::Stat::get_point_pos(int p_index, const Vector2& p_scale) {
 
 	int x = points[p_index * 2];
 	int y = points[p_index * 2 + 1];
 	// 缩小100倍（精度为0.01的浮点），按整数方式保存
-	return Vector2(x, y) * Vector2(0.01, 0.01);
+	return Vector2(x, y) * Vector2(0.01, 0.01) * p_scale;
 }
 
-bool OSpritePath::Stat::update() {
+bool OSpritePath::Stat::update(const OSpritePath *p_path) {
 
 	// 延迟判断
 	if(!activated && elapsed >= delay) {
@@ -122,10 +122,10 @@ bool OSpritePath::Stat::update() {
 struct OSpritePath::FishStat : public OSpritePath::Stat {
 
 	virtual int get_index() const;
-	virtual Vector2 get_point_pos(int p_index);
+	virtual Vector2 get_point_pos(int p_index, const Vector2& p_scale);
 
-	virtual bool init();
-	virtual bool update();
+	virtual bool init(const OSpritePath *p_path);
+	virtual bool update(const OSpritePath *p_path);
 
 	// 路径随机化（位移/翻转/旋转 等）
 	Matrix32 mat;
@@ -193,18 +193,18 @@ int OSpritePath::FishStat::get_index() const {
 	return int(elapsed_time * ratio);
 }
 
-Vector2 OSpritePath::FishStat::get_point_pos(int p_index) {
+Vector2 OSpritePath::FishStat::get_point_pos(int p_index, const Vector2& p_scale) {
 
-	return mat.xform(Stat::get_point_pos(p_index));
+	return mat.xform(Stat::get_point_pos(p_index, p_scale));
 }
 
-bool OSpritePath::FishStat::init() {
+bool OSpritePath::FishStat::init(const OSpritePath *p_path) {
 
 	// 设置初始位置/方向
-	Vector2 pos = get_point_pos(0);
+	Vector2 pos = get_point_pos(0, p_path->get_scale());
 	sprite->set_pos(pos);
 	// 朝向的点
-	Vector2 faceto = get_point_pos(1);
+	Vector2 faceto = get_point_pos(1, p_path->get_scale());
 	float rot = pos.angle_to_point(faceto);
 	sprite->set_rot(rot);
 	if(hidden)
@@ -213,9 +213,9 @@ bool OSpritePath::FishStat::init() {
 	return true;
 }
 
-bool OSpritePath::FishStat::update() {
+bool OSpritePath::FishStat::update(const OSpritePath *p_path) {
 
-	if(!Stat::update())
+	if(!Stat::update(p_path))
 		return false;
 
 	int index = get_index();
@@ -231,7 +231,7 @@ bool OSpritePath::FishStat::update() {
 		index = (points.size() / 2 - 1) - index;
 
 	Vector2 last_pos = sprite->get_pos();
-	Vector2 pos = get_point_pos(index);
+	Vector2 pos = get_point_pos(index, p_path->get_scale());
 	// 两次的位置一致，不处理
 	if(last_pos == pos)
 		return true;
@@ -256,8 +256,8 @@ bool OSpritePath::FishStat::update() {
 struct OSpritePath::GroupStat : public OSpritePath::Stat {
 
 	GroupStat() : Stat() {}
-	virtual bool init();
-	virtual bool update();
+	virtual bool init(const OSpritePath *p_path);
+	virtual bool update(const OSpritePath *p_path);
 
 	// 朝向中心点的最后索引
 	int center_index;
@@ -267,14 +267,14 @@ struct OSpritePath::GroupStat : public OSpritePath::Stat {
 	bool center;
 };
 
-bool OSpritePath::GroupStat::init() {
+bool OSpritePath::GroupStat::init(const OSpritePath *p_path) {
 
 	// 设置初始位置/方向
-	Vector2 pos = get_point_pos(0);
+	Vector2 pos = get_point_pos(0, p_path->get_scale());
 	sprite->set_pos(pos);
 	// 朝向的点
 	//	判断是否朝向中心点
-	Vector2 faceto = center ? center_pos : get_point_pos(1);
+	Vector2 faceto = center ? center_pos : get_point_pos(1, p_path->get_scale());
 	float rot = pos.angle_to_point(faceto);
 	sprite->set_rot(rot);
 	if(hidden)
@@ -283,9 +283,9 @@ bool OSpritePath::GroupStat::init() {
 	return true;
 }
 
-bool OSpritePath::GroupStat::update() {
+bool OSpritePath::GroupStat::update(const OSpritePath *p_path) {
 
-	if(!Stat::update())
+	if(!Stat::update(p_path))
 		return false;
 
 	int index = get_index();
@@ -298,7 +298,7 @@ bool OSpritePath::GroupStat::update() {
 	}
 
 	Vector2 last_pos = sprite->get_pos();
-	Vector2 pos = get_point_pos(index);
+	Vector2 pos = get_point_pos(index, p_path->get_scale());
 	// 两次的位置一致，不处理
 	if(last_pos == pos)
 		return true;
@@ -426,7 +426,7 @@ bool OSpritePath::add_fish(const Dictionary& p_params) {
 
 	fishs.push_back(memnew(FishStat(stat)));
 
-	return stat.init();
+	return stat.init(this);
 }
 
 bool OSpritePath::add_group_fish(const Dictionary& p_params) {
@@ -453,7 +453,7 @@ bool OSpritePath::add_group_fish(const Dictionary& p_params) {
 
 	fishs.push_back(memnew(GroupStat(stat)));
 
-	return stat.init();
+	return stat.init(this);
 }
 
 bool OSpritePath::remove_fish(Node *p_fish) {
@@ -477,7 +477,7 @@ bool OSpritePath::seek(Node *p_fish, float p_pos) {
 	ERR_FAIL_COND_V(stat == NULL, false);
 
 	stat->elapsed = p_pos;
-	return stat->update();
+	return stat->update(this);
 }
 
 void OSpritePath::move(float p_delta) {
@@ -490,7 +490,7 @@ void OSpritePath::move(float p_delta) {
 		if(
 			(ObjectDB::get_instance(stat->sprite_id) == NULL) ||
 			(ObjectDB::get_instance(stat->fish_id) == NULL) ||
-			!stat->update()
+			!stat->update(this)
 		)
 		{
 			List<Stat *>::Element *D = E;
@@ -513,6 +513,16 @@ void OSpritePath::clear() {
 	fishs.clear();
 }
 
+void OSpritePath::set_scale(const Vector2& p_scale) {
+
+	scale = p_scale;
+}
+
+Vector2 OSpritePath::get_scale() const {
+
+	return scale;
+}
+
 void OSpritePath::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_stat","fish","key","value"),&OSpritePath::set_stat);
@@ -525,6 +535,8 @@ void OSpritePath::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("seek","fish","pos"),&OSpritePath::seek);
 	ObjectTypeDB::bind_method(_MD("move","delta"),&OSpritePath::move);
 	ObjectTypeDB::bind_method(_MD("clear"),&OSpritePath::clear);
+	ObjectTypeDB::bind_method(_MD("set_scale","scale"),&OSpritePath::set_scale);
+	ObjectTypeDB::bind_method(_MD("get_scale"),&OSpritePath::get_scale);
 }
 
 OSpritePath::~OSpritePath() {
