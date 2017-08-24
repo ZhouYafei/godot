@@ -131,6 +131,7 @@ void register_core_types() {
 	ObjectTypeDB::register_type<MainLoop>();
 //	ObjectTypeDB::register_type<OptimizedSaver>();
 	ObjectTypeDB::register_type<Translation>();
+	ObjectTypeDB::register_type<BracketTranslation>();
 	ObjectTypeDB::register_type<PHashTranslation>();
 	ObjectTypeDB::register_type<UndoRedo>();
 	ObjectTypeDB::register_type<HTTPClient>();

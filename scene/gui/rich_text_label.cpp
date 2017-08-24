@@ -1131,28 +1131,30 @@ void RichTextLabel::_invalidate_current_line(ItemFrame* p_frame) {
 
 void RichTextLabel::add_text(const String& p_text) {
 
+	String text = XL_MESSAGE(p_text);
+
 	if (current->type==ITEM_TABLE)
 		return; //can't add anything here
 
 	int pos=0;
 
-	while (pos<p_text.length()) {
+	while (pos<text.length()) {
 
-		int end=p_text.find("\n",pos);
+		int end=text.find("\n",pos);
 		String line;
 		bool eol=false;
 		if (end==-1) {
 
-			end=p_text.length();
+			end=text.length();
 		} else {
 
 			eol=true;
 		}
 
-		if (pos==0 && end==p_text.length())
-			line=p_text;
+		if (pos==0 && end==text.length())
+			line=text;
 		else
-			line=p_text.substr(pos,end-pos);
+			line=text.substr(pos,end-pos);
 
 		if (line.length()>0) {
 

@@ -70,6 +70,24 @@ public:
 	Translation();
 };
 
+class BracketTranslation : public Translation {
+
+	OBJ_TYPE( BracketTranslation, Resource );
+
+	Map<StringName, StringName> bracket_map;
+
+protected:
+	static void _bind_methods();
+	virtual StringName get_message(const StringName& p_src_text) const; //overridable for other implementations
+
+public:
+
+	void add_bracket( const StringName& p_src_text, const StringName& p_xlated_text );
+	void erase_bracket( const StringName& p_src_text );
+	int get_backet_count() const;
+
+	BracketTranslation();
+};
 
 class TranslationServer : public Object {
 

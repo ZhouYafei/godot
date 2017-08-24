@@ -153,12 +153,14 @@ bool TreeItem::is_checked(int p_column) const {
 void TreeItem::set_text(int p_column,String p_text) {
 
 	ERR_FAIL_INDEX( p_column, cells.size() );
-	cells[p_column].text=p_text;
+	String text = XL_MESSAGE(p_text);
+
+	cells[p_column].text=text;
 
 	if (cells[p_column].mode==TreeItem::CELL_MODE_RANGE || cells[p_column].mode==TreeItem::CELL_MODE_RANGE_EXPRESSION) {
 
 		cells[p_column].min=0;
-		cells[p_column].max=p_text.get_slice_count(",");
+		cells[p_column].max=text.get_slice_count(",");
 		cells[p_column].step=0;
 	}
 	_changed_notify(p_column);
@@ -175,7 +177,7 @@ String TreeItem::get_text(int p_column) const {
 void TreeItem::set_suffix(int p_column,String p_suffix) {
 
 	ERR_FAIL_INDEX( p_column, cells.size() );
-	cells[p_column].suffix=p_suffix;
+	cells[p_column].suffix=XL_MESSAGE(p_suffix);
 
 	_changed_notify(p_column);
 
@@ -610,7 +612,7 @@ void TreeItem::clear_custom_color(int p_column) {
 void TreeItem::set_tooltip(int p_column, const String& p_tooltip) {
 
 	ERR_FAIL_INDEX( p_column, cells.size() );
-	cells[p_column].tooltip=p_tooltip;
+	cells[p_column].tooltip=XL_MESSAGE(p_tooltip);
 
 }
 

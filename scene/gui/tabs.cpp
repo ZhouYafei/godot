@@ -432,7 +432,7 @@ int Tabs::get_current_tab() const {
 void Tabs::set_tab_title(int p_tab,const String& p_title) {
 
 	ERR_FAIL_INDEX(p_tab,tabs.size());
-	tabs[p_tab].text=p_title;
+	tabs[p_tab].text=XL_MESSAGE(p_title);
 	update();
 	minimum_size_changed();
 
@@ -482,7 +482,7 @@ Ref<Texture> Tabs::get_tab_right_button(int p_tab) const{
 void Tabs::add_tab(const String& p_str,const Ref<Texture>& p_icon) {
 
 	Tab t;
-	t.text=p_str;
+	t.text=XL_MESSAGE(p_str);
 	t.icon=p_icon;
 
 	tabs.push_back(t);

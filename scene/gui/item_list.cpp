@@ -71,7 +71,7 @@ void ItemList::set_item_text(int p_idx,const String& p_text){
 
 	ERR_FAIL_INDEX(p_idx,items.size());
 
-	items[p_idx].text=p_text;
+	items[p_idx].text=XL_MESSAGE(p_text);
 	update();
 	shape_changed=true;
 

@@ -906,6 +906,49 @@ Translation::Translation() {
 }
 
 
+void BracketTranslation::_bind_methods() {
+
+	ObjectTypeDB::bind_method(_MD("add_bracket","src_text","xlated_text"),&BracketTranslation::add_bracket);
+	ObjectTypeDB::bind_method(_MD("erase_bracket","src_text"),&BracketTranslation::erase_bracket);
+	ObjectTypeDB::bind_method(_MD("get_backet_count"),&BracketTranslation::get_backet_count);
+}
+
+StringName BracketTranslation::get_message(const StringName& p_src_text) const {
+
+	StringName text_name = Translation::get_message(p_src_text);
+	if(text_name == "")
+		text_name = p_src_text;
+	if(bracket_map.empty())
+		return text_name;
+
+	String text = text_name;
+	for(const Map<StringName, StringName>::Element *E = bracket_map.front(); E; E = E->next()) {
+
+		const StringName& src_text = E->key();
+		const StringName& xlated_text = E->value();
+
+		text = text.replace(src_text, xlated_text);
+	}
+	return text;
+}
+
+void BracketTranslation::add_bracket( const StringName& p_src_text, const StringName& p_xlated_text ) {
+
+	bracket_map[p_src_text] = p_xlated_text;
+}
+
+void BracketTranslation::erase_bracket( const StringName& p_src_text ) {
+
+	bracket_map.erase(p_src_text);
+}
+
+int BracketTranslation::get_backet_count() const {
+
+	return bracket_map.size();
+}
+
+BracketTranslation::BracketTranslation() {
+}
 
 ///////////////////////////////////////////////
 
