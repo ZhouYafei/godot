@@ -55,6 +55,12 @@
     <Filter Include="modules\visual_script">
       <UniqueIdentifier>{b7c6830a-72ce-4e49-8916-fb2009ceb089}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\qrcode">
+      <UniqueIdentifier>{c371ca93-bca6-4514-81a8-664c487421e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modules\uart">
+      <UniqueIdentifier>{fd05875d-64bd-42dd-843c-9ffd40b351f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\modules\register_module_types.cpp">
@@ -345,6 +351,24 @@
     <ClCompile Include="..\..\modules\visual_script\visual_script_expression.cpp">
       <Filter>modules\visual_script</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\modules\qrcode\register_types.cpp">
+      <Filter>modules\qrcode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\qrcode\qrcode.cpp">
+      <Filter>modules\qrcode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\uart\register_types.cpp">
+      <Filter>modules\uart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\uart\uart.cpp">
+      <Filter>modules\uart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\uart\uart_win32.cpp">
+      <Filter>modules\uart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\modules\uart\uart_interface.cpp">
+      <Filter>modules\uart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\modules\register_module_types.h">
@@ -625,6 +649,24 @@
     </ClInclude>
     <ClInclude Include="..\..\modules\visual_script\visual_script_expression.h">
       <Filter>modules\visual_script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\qrcode\qrcode.h">
+      <Filter>modules\qrcode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\qrcode\register_types.h">
+      <Filter>modules\qrcode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\uart\register_types.h">
+      <Filter>modules\uart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\uart\uart.h">
+      <Filter>modules\uart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\uart\uart_interface.h">
+      <Filter>modules\uart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\modules\uart\uart_win32.h">
+      <Filter>modules\uart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
