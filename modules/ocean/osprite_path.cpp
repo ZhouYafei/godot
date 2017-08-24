@@ -274,7 +274,7 @@ bool OSpritePath::GroupStat::init(const OSpritePath *p_path) {
 	sprite->set_pos(pos);
 	// 朝向的点
 	//	判断是否朝向中心点
-	Vector2 faceto = center ? center_pos : get_point_pos(1, p_path->get_scale());
+	Vector2 faceto = center ? (center_pos * p_path->get_scale()) : get_point_pos(1, p_path->get_scale());
 	float rot = pos.angle_to_point(faceto);
 	sprite->set_rot(rot);
 	if(hidden)
@@ -306,7 +306,7 @@ bool OSpritePath::GroupStat::update(const OSpritePath *p_path) {
 
 	if(center && (index < center_index)) {
 
-		float rot = pos.angle_to_point(center_pos);
+		float rot = pos.angle_to_point(center_pos * p_path->get_scale());
 		sprite->set_rot(rot);
 	} else {
 
@@ -537,6 +537,11 @@ void OSpritePath::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("clear"),&OSpritePath::clear);
 	ObjectTypeDB::bind_method(_MD("set_scale","scale"),&OSpritePath::set_scale);
 	ObjectTypeDB::bind_method(_MD("get_scale"),&OSpritePath::get_scale);
+}
+
+OSpritePath::OSpritePath()
+	: scale(Vector2(1, 1))
+{
 }
 
 OSpritePath::~OSpritePath() {

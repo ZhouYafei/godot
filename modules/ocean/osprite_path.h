@@ -65,7 +65,7 @@ public:
 	void set_scale(const Vector2& p_scale);
 	Vector2 get_scale() const;
 
-	OSpritePath() {};
+	OSpritePath();
 	virtual ~OSpritePath();
 };
 
