@@ -120,7 +120,8 @@ void Uart::_handle_input(int p_index, ByteArray& p_input) {
 			if(keys.size() > 0) {
 
 				//printf("%d %d %s\n", p_index, i, (Variant(keys).operator String()).utf8().get_data());
-				emit_signal("keypressed", p_index, i, keys);
+				call_deferred("emit_signal", "keypressed", p_index, i, keys);
+				//emit_signal("keypressed", p_index, i, keys);
 			}
 		}
 	}
