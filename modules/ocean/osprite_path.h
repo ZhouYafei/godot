@@ -58,6 +58,7 @@ public:
 	bool add_group_fish(const Dictionary& p_params);
 	bool remove_fish(Node *p_fish);
 	bool seek(Node *p_fish, float p_pos);
+	void add_freeze_time(Node *p_fish, real_t p_start, real_t p_duration);
 
 	void move(float p_delta);
 	void clear();
