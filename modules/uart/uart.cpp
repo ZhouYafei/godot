@@ -120,7 +120,8 @@ void Uart::_handle_input(int p_index, ByteArray& p_input) {
 			if(keys.size() > 0) {
 
 				//printf("%d %d %s\n", p_index, i, (Variant(keys).operator String()).utf8().get_data());
-				call_deferred("emit_signal", "keypressed", p_index, i, keys);
+				bool pressed = ai->sig == 0x80;
+				call_deferred("emit_signal", pressed ? "keypressed" : "keyreleased", p_index, i, keys);
 				//emit_signal("keypressed", p_index, i, keys);
 			}
 		}
@@ -155,7 +156,7 @@ void Uart::_thread_runner(void *p) {
 	while(!self->quit) {
 
 		self->_process();
-		OS::get_singleton()->delay_usec(100);
+		OS::get_singleton()->delay_usec(1);
 	}
 }
 
@@ -210,6 +211,7 @@ void Uart::_bind_methods() {
 	BIND_CONSTANT(KEY_CIONOUT);
 
 	ADD_SIGNAL(MethodInfo("keypressed", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::INT, "table"), PropertyInfo(Variant::ARRAY, "keys")));
+	ADD_SIGNAL(MethodInfo("keyreleased", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::INT, "table"), PropertyInfo(Variant::ARRAY, "keys")));
 
 	ObjectTypeDB::bind_method(_MD("get_count"), &Uart::get_count);
 	ObjectTypeDB::bind_method(_MD("get_name", "name"), &Uart::get_name);
