@@ -82,6 +82,8 @@ struct OSpritePath::Stat {
 OSpritePath::Stat::Stat()
 	: activated(false)
 {
+	add_freeze_time(8, 1);
+	add_freeze_time(10, 1);
 }
 
 void OSpritePath::Stat::add_freeze_time(real_t p_start, real_t p_duration) {
@@ -90,18 +92,10 @@ void OSpritePath::Stat::add_freeze_time(real_t p_start, real_t p_duration) {
 	for(List<Freeze>::Element *E = freezes.front(); E; E = E->next()) {
 
 		Freeze& info = E->get();
-		// 如果开始时间 小于 info的结束时间
-		//	覆盖info的结束时间
-		if(p_start <= info.end) {
-			info.end = MAX(info.end, end);
-			return;
-		}	
-		// 如果结束时间 小于 info的开始时间
-		//	覆盖info的开始时间
-		if(end >= info.start) {
-			info.start = MIN(info.start, p_start);
-			return;
-		}
+		if(end < info.start || p_start > info.end)
+			continue;
+		info.start = MIN(info.start, p_start);
+		info.end = MAX(info.end, end);
 	}
 
 	Freeze freeze;
@@ -114,19 +108,21 @@ real_t OSpritePath::Stat::get_elapsed() const {
 
 	real_t elapsed = this->elapsed;
 
+	real_t skipped = 0;
 	bool freezed = false;
 	for(const List<Freeze>::Element *E = freezes.front(); E; E = E->next()) {
 
 		const Freeze& info = E->get();
-		if(elapsed >= info.start) {
+		if((elapsed + skipped) >= info.start) {
 
-			if(elapsed <= info.end) {
+			if((elapsed + skipped) <= info.end) {
 
-				elapsed = info.start;
+				elapsed = info.start - skipped;
 				freezed = true;
 				break;			
 			} else {
 
+				skipped += (info.end - info.start);
 				elapsed -= (info.end - info.start);
 			}
 		}
