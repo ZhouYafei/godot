@@ -82,8 +82,6 @@ struct OSpritePath::Stat {
 OSpritePath::Stat::Stat()
 	: activated(false)
 {
-	add_freeze_time(8, 1);
-	add_freeze_time(10, 1);
 }
 
 void OSpritePath::Stat::add_freeze_time(real_t p_start, real_t p_duration) {
