@@ -106,7 +106,12 @@ size_t MemoryPoolStaticNedMalloc::get_total_usage() {
 
 	return nedalloc::nedmalloc_footprint();
 }
-			
+
+size_t MemoryPoolStaticNedMalloc::get_total_usage_blocks() const {
+
+	return 0;
+}
+
 /* Most likely available only if memory debugger was compiled in */
 int MemoryPoolStaticNedMalloc::get_alloc_count() {
 	

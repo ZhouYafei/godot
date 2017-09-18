@@ -64,6 +64,7 @@ public:
 	virtual void* realloc(void *p_memory,size_t p_bytes); ///< Pointer in
 	virtual size_t get_available_mem() const;
 	virtual size_t get_total_usage();
+	virtual size_t get_total_usage_blocks() const;
 	virtual size_t get_max_usage();
 
 	/* Most likely available only if memory debugger was compiled in */

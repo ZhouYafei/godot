@@ -58,6 +58,7 @@ public:
 	void free(void *p_ptr); ///< Pointer in p_description shold be to a const char const
 	virtual size_t get_available_mem() const;
 	virtual size_t get_total_usage();
+	virtual size_t get_total_usage_blocks() const;
 				
 	/* Most likely available only if memory debugger was compiled in */
 	virtual int get_alloc_count();

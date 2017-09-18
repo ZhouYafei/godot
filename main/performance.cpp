@@ -51,6 +51,8 @@ void Performance::_bind_methods() {
 	BIND_CONSTANT( MEMORY_DYNAMIC );
 	BIND_CONSTANT( MEMORY_STATIC_MAX );
 	BIND_CONSTANT( MEMORY_DYNAMIC_MAX );
+	BIND_CONSTANT( MEMORY_STATIC_BLOCKS );
+	BIND_CONSTANT( MEMORY_DYNAMIC_BLOCKS );
 	BIND_CONSTANT( MEMORY_MESSAGE_BUFFER_MAX );
 	BIND_CONSTANT( OBJECT_COUNT );
 	BIND_CONSTANT( OBJECT_RESOURCE_COUNT );
@@ -88,7 +90,9 @@ String Performance::get_monitor_name(Monitor p_monitor) const {
 		"memory/static",
 		"memory/dynamic",
 		"memory/static_max",
+		"memory/static_blocks",
 		"memory/dynamic_max",
+		"memory/dynamic_blocks",
 		"memory/msg_buf_max",
 		"object/objects",
 		"object/resources",
@@ -129,6 +133,8 @@ float Performance::get_monitor(Monitor p_monitor) const {
 		case MEMORY_DYNAMIC: return Memory::get_dynamic_mem_usage();
 		case MEMORY_STATIC_MAX: return Memory::get_static_mem_max_usage();
 		case MEMORY_DYNAMIC_MAX: return Memory::get_dynamic_mem_available();
+		case MEMORY_STATIC_BLOCKS: return Memory::get_static_mem_usage_blocks();
+		case MEMORY_DYNAMIC_BLOCKS: return Memory::get_dynmaic_mem_usage_blocks();
 		case MEMORY_MESSAGE_BUFFER_MAX: return MessageQueue::get_singleton()->get_max_buffer_usage();
 		case OBJECT_COUNT: return ObjectDB::get_object_count();
 		case OBJECT_RESOURCE_COUNT: return ResourceCache::get_cached_resource_count();
