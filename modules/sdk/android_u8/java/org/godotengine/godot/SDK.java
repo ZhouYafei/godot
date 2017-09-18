@@ -101,7 +101,7 @@ public class SDK extends Godot.SingletonBase {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				tip("初始化SDK");
+				//tip("初始化SDK");
 				// initialize sdk
 				initSDK();
 			}

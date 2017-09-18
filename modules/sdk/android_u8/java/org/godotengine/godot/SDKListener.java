@@ -79,7 +79,7 @@ public class SDKListener implements IU8SDKListener {
 					// sdk.tip("SDK登录失败");
 					break;
 					case U8Code.CODE_SHARE_SUCCESS:
-					sdk.tip("分享成功");
+					//sdk.tip("分享成功");
 					break;
 					case U8Code.CODE_SHARE_FAILED:
 					sdk.tip("分享失败");
@@ -105,7 +105,11 @@ public class SDKListener implements IU8SDKListener {
 		Log.d("U8SDK", "SDK 登录成功,不用做处理，在onAuthResult中处理登录成功, 参数如下:");
 		Log.d("U8SDK", data);
 		this.isSwitchAccount = false;
-		sdk.tip("SDK登录成功");
+		//sdk.tip("SDK登录成功");
+                // 通知引擎，sdk登录成功
+                Dictionary d = new Dictionary();
+                d.put("login_sdk", true);
+                sdk.sendCallback(SDK.CALLBACK_LOGIN, d);
 	}
 
 	// 切换帐号，需要回到登录界面，并弹出SDK登录界面
@@ -118,7 +122,7 @@ public class SDKListener implements IU8SDKListener {
 		Log.d("U8SDK", "SDK 切换帐号并登录成功,不用做处理，在onAuthResult中处理登录成功, 参数如下:");
 		Log.d("U8SDK", data);
 		this.isSwitchAccount = true;		
-		sdk.tip( "切换帐号成功");		
+		//sdk.tip( "切换帐号成功");
 	}
 
 	// 登出，需要回到登录界面，并弹出SDK登录界面
