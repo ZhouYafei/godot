@@ -380,6 +380,11 @@ int OS::get_dynamic_memory_usage() const{
 	return Memory::get_dynamic_mem_usage();
 }
 
+int OS::get_dynmaic_memory_usage_blocks() const {
+
+	return Memory::get_dynmaic_mem_usage_blocks();
+}
+
 int OS::get_static_memory_peak_usage() const {
 
 	return Memory::get_static_mem_max_usage();

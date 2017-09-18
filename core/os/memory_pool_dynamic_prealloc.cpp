@@ -100,6 +100,10 @@ size_t MemoryPoolDynamicPrealloc::get_total_usage() const {
 	return pool_alloc->get_used_mem();
 }
 
+size_t MemoryPoolDynamicPrealloc::get_total_usage_blocks() const {
+
+	return 0;
+}
 
 
 MemoryPoolDynamicPrealloc::MemoryPoolDynamicPrealloc(void * p_mem,int p_size, int p_align, int p_max_entries) {

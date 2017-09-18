@@ -330,6 +330,7 @@ public:
 	virtual int get_static_memory_usage() const;
 	virtual int get_static_memory_peak_usage() const;
 	virtual int get_dynamic_memory_usage() const;
+	virtual int get_dynmaic_memory_usage_blocks() const;
 	virtual int get_free_static_memory() const;
 
 	RenderThreadMode get_render_thread_mode() const { return _render_thread_mode; }

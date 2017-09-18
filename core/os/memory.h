@@ -181,6 +181,7 @@ public:
 	static size_t get_static_mem_available();
 	static size_t get_static_mem_usage();
 	static size_t get_static_mem_max_usage();
+	static size_t get_static_mem_usage_blocks();
 	static void dump_static_mem_to_file(const char* p_file);
 
 	static MID alloc_dynamic(size_t p_bytes, const char *p_descr="");
@@ -188,6 +189,7 @@ public:
 
 	static size_t get_dynamic_mem_available();
 	static size_t get_dynamic_mem_usage();
+	static size_t get_dynmaic_mem_usage_blocks();
 
 };
 
