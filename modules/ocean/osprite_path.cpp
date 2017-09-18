@@ -94,6 +94,7 @@ void OSpritePath::Stat::add_freeze_time(real_t p_start, real_t p_duration) {
 			continue;
 		info.start = MIN(info.start, p_start);
 		info.end = MAX(info.end, end);
+		return;
 	}
 
 	Freeze freeze;
