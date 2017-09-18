@@ -73,7 +73,7 @@ public:
 
 class BracketTranslation : public Translation {
 
-	OBJ_TYPE( BracketTranslation, Resource );
+	OBJ_TYPE( BracketTranslation, Translation );
 
 	Map<StringName, StringName> bracket_map;
 
