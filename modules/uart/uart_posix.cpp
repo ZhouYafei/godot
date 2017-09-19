@@ -100,6 +100,8 @@ void UartPosix::_append_devices(const char *p_base) {
     struct dirent *dp;
     // Enumerate devices
     DIR *dirp = opendir("/dev");
+    if(dirp == NULL)
+        return;
     while((dp = readdir(dirp)) && count < MAX_DEVICES) {
 
         if((strlen(dp->d_name) >= base_len) && (memcmp(p_base, dp->d_name, base_len) == 0)) {

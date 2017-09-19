@@ -169,6 +169,39 @@ Error StreamPeerWinsock::write(const uint8_t* p_data,int p_bytes, int &r_sent, b
 	return OK;
 };
 
+/*-------------------------------------------------------------------------*\
+* Wait for readable/writable/connected socket with timeout
+\*-------------------------------------------------------------------------*/
+#define WAITFD_R        1
+#define WAITFD_W        2
+#define WAITFD_E        4
+#define WAITFD_C        (WAITFD_E|WAITFD_W)
+
+static bool socket_waitfd(int fd, int sw, double tm) {
+
+	fd_set rfds, wfds, efds, *rp = NULL, *wp = NULL, *ep = NULL;
+	struct timeval tv, *tp = NULL;
+	if(tm == 0)
+		return false;
+
+	if (sw & WAITFD_R) { FD_ZERO(&rfds); FD_SET(fd, &rfds); rp = &rfds; }
+	if (sw & WAITFD_W) { FD_ZERO(&wfds); FD_SET(fd, &wfds); wp = &wfds; }
+	if (sw & WAITFD_C) { FD_ZERO(&efds); FD_SET(fd, &efds); ep = &efds; }
+
+	tv.tv_sec = (int) tm;
+	tv.tv_usec = (int) ((tm-tv.tv_sec)*1.0e6);
+	tp = &tv;
+
+	int ret = select(0, rp, wp, ep, tp);
+	if (ret == -1)
+		return WSAGetLastError();
+	if (ret == 0)
+		return true; // timeout
+	if (sw == WAITFD_C && FD_ISSET(fd, &efds))
+		return false;
+	return true;
+}
+
 Error StreamPeerWinsock::read(uint8_t* p_buffer, int p_bytes,int &r_received, bool p_block) {
 
 	if (!is_connected()) {
@@ -206,6 +239,13 @@ Error StreamPeerWinsock::read(uint8_t* p_buffer, int p_bytes,int &r_received, bo
 				ERR_PRINT("Server disconnected!\n");
 				return FAILED;
 			};
+
+			if (!socket_waitfd(sockfd, WAITFD_R, 0.01)) {
+
+				disconnect();
+				ERR_PRINT("Server disconnected!\n");
+				return FAILED;
+			}
 
 			if (!p_block) {
 
