@@ -98,6 +98,8 @@ MemoryPoolDynamic::ID MemoryPoolDynamicStatic::alloc(size_t p_amount,const char*
 
 	ID id = chunk[idx].check*MAX_CHUNKS + (uint64_t)idx;
 
+	total_usage_blocks += 1;
+
 	return id;
 
 }
@@ -113,6 +115,8 @@ void MemoryPoolDynamicStatic::free(ID p_id) {
 	memfree(c->mem);
 
 	c->mem=0;
+
+	total_usage_blocks -= 1;
 
 	if (c->lock>0) {
 
@@ -228,6 +232,12 @@ size_t MemoryPoolDynamicStatic::get_total_usage() const {
 	_THREAD_SAFE_METHOD_
 
 	return total_usage;
+}
+
+size_t MemoryPoolDynamicStatic::get_total_usage_blocks() const {
+	_THREAD_SAFE_METHOD_
+
+	return total_usage_blocks;
 }
 
 MemoryPoolDynamicStatic::MemoryPoolDynamicStatic() {

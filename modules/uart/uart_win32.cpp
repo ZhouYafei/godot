@@ -193,12 +193,12 @@ bool UartWin32::open_port(int p_index, int p_baudrate) {
 	SetupComm(handle, 512, 512);
 
 	// Prepare read / write timeouts
-    timeouts.ReadIntervalTimeout         = 1;
-    timeouts.ReadTotalTimeoutMultiplier  = 1;
-    timeouts.ReadTotalTimeoutConstant    = 1;
-    timeouts.WriteTotalTimeoutMultiplier = 1;
-	timeouts.WriteTotalTimeoutConstant	 = 1;
-    SetCommTimeouts(handle, &timeouts);
+	timeouts.ReadIntervalTimeout         = 10;
+	timeouts.ReadTotalTimeoutMultiplier  = 10;
+	timeouts.ReadTotalTimeoutConstant    = 10;
+	timeouts.WriteTotalTimeoutMultiplier = 10;
+	timeouts.WriteTotalTimeoutConstant	 = 10;
+	SetCommTimeouts(handle, &timeouts);
 
 	PurgeComm(handle, PURGE_TXABORT | PURGE_RXABORT | PURGE_TXCLEAR | PURGE_RXCLEAR);
 

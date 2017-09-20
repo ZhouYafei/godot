@@ -80,6 +80,12 @@ size_t Memory::get_static_mem_usage() {
 
 }
 
+size_t Memory::get_static_mem_usage_blocks() {
+
+	ERR_FAIL_COND_V( !MemoryPoolStatic::get_singleton(), 0);
+	return MemoryPoolStatic::get_singleton()->get_total_usage_blocks();
+}
+
 void Memory::dump_static_mem_to_file(const char* p_file) {
 
 	MemoryPoolStatic::get_singleton()->dump_mem_to_file(p_file);
@@ -112,8 +118,10 @@ size_t Memory::get_dynamic_mem_usage() {
 	return MemoryPoolDynamic::get_singleton()->get_total_usage();
 }
 
+size_t Memory::get_dynmaic_mem_usage_blocks() {
 
-
+	return MemoryPoolDynamic::get_singleton()->get_total_usage_blocks();
+}
 
 _GlobalNil::_GlobalNil() {
 

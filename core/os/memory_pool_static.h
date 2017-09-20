@@ -51,6 +51,7 @@ public:
 
 	virtual size_t get_available_mem() const=0;
 	virtual size_t get_total_usage()=0;
+	virtual size_t get_total_usage_blocks() const=0;
 	virtual size_t get_max_usage()=0;
 
 	/* Most likely available only if memory debugger was compiled in */

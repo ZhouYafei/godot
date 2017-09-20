@@ -30,6 +30,7 @@
 #define TRANSLATION_H
 
 #include "resource.h"
+#include "os/thread_safe.h"
 
 #ifdef TOOLS_ENABLED
 #define _TR(s) (EditorTranslationServer::get_singleton()?String(EditorTranslationServer::get_singleton()->translate(s)):s)
@@ -72,7 +73,7 @@ public:
 
 class BracketTranslation : public Translation {
 
-	OBJ_TYPE( BracketTranslation, Resource );
+	OBJ_TYPE( BracketTranslation, Translation );
 
 	Map<StringName, StringName> bracket_map;
 
@@ -91,6 +92,7 @@ public:
 
 class TranslationServer : public Object {
 
+	_THREAD_SAFE_CLASS_
 	OBJ_TYPE(TranslationServer, Object);
 
 	String locale;

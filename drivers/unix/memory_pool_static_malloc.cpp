@@ -330,6 +330,12 @@ size_t MemoryPoolStaticMalloc::get_total_usage() {
 
 }
 
+size_t MemoryPoolStaticMalloc::get_total_usage_blocks() const {
+
+	MutexLock lock(mutex);
+	return total_pointers;
+}
+
 size_t MemoryPoolStaticMalloc::get_max_usage() {
 
 	return max_mem;

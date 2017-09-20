@@ -52,6 +52,7 @@ public:
 
 	virtual size_t get_available_mem() const;
 	virtual size_t get_total_usage() const;
+	virtual size_t get_total_usage_blocks() const;
 
 	MemoryPoolDynamicPrealloc(void * p_mem,int p_size, int p_align = 16, int p_max_entries=PoolAllocator::DEFAULT_MAX_ALLOCS);
 	~MemoryPoolDynamicPrealloc();

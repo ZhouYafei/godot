@@ -267,9 +267,9 @@ void OSpriteCollision::_check_collision() {
 		for(CollisionIds::Element *F = fishs.front(); F;) {
 
 			size_t fish = F->get();
+			F = F->next();
 			if(!((OSprite *) fish)->is_inside_tree())
 				continue;
-			F = F->next();
 
 			if(_is_collision(bullet, fish)) {
 				_on_collision_enter(bullet, fish);

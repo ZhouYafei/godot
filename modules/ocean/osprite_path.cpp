@@ -44,6 +44,9 @@ struct OSpritePath::Stat {
 	virtual bool init(const OSpritePath *p_path) { return false; }
 	virtual bool update(const OSpritePath *p_path);
 
+	real_t get_elapsed() const;
+	void add_freeze_time(real_t p_start, real_t p_duration);
+
 	// 记录的fish/sprite的instance id
 	ObjectID fish_id;
 	ObjectID sprite_id;
@@ -57,15 +60,23 @@ struct OSpritePath::Stat {
 	// 开场时是否隐藏（activate后渐变显示）
 	bool hidden;
 	// 开场等待时间（单位秒）
-	float delay;
+	real_t delay;
 	// 经过时间
-	float elapsed;
+	real_t elapsed;
 	// 加速倍率（鱼逃跑用）
-	float speed;
+	real_t speed;
 	// 移动倍率（config.fps * (move_speed / config.speed)）
-	float ratio;
+	real_t ratio;
 	// 每帧的点坐标信息
 	DVector<int> points;
+	// 冰冻效果数据
+	typedef struct {
+		// 冰冻开始时间(秒)
+		real_t start;
+		// 冰冻结束时间(秒)
+		real_t end;
+	} Freeze;
+	List<Freeze> freezes;
 };
 
 OSpritePath::Stat::Stat()
@@ -73,9 +84,58 @@ OSpritePath::Stat::Stat()
 {
 }
 
+void OSpritePath::Stat::add_freeze_time(real_t p_start, real_t p_duration) {
+
+	real_t end = p_start + p_duration;
+	for(List<Freeze>::Element *E = freezes.front(); E; E = E->next()) {
+
+		Freeze& info = E->get();
+		if(end < info.start || p_start > info.end)
+			continue;
+		info.start = MIN(info.start, p_start);
+		info.end = MAX(info.end, end);
+		return;
+	}
+
+	Freeze freeze;
+	freeze.start = p_start;
+	freeze.end = end;
+	freezes.push_back(freeze);
+}
+
+real_t OSpritePath::Stat::get_elapsed() const {
+
+	real_t elapsed = this->elapsed;
+
+	real_t skipped = 0;
+	bool freezed = false;
+	for(const List<Freeze>::Element *E = freezes.front(); E; E = E->next()) {
+
+		const Freeze& info = E->get();
+		if((elapsed + skipped) >= info.start) {
+
+			if((elapsed + skipped) <= info.end) {
+
+				elapsed = info.start - skipped;
+				freezed = true;
+				break;			
+			} else {
+
+				skipped += (info.end - info.start);
+				elapsed -= (info.end - info.start);
+			}
+		}
+	}
+
+	// 如果冰冻了，停止动画
+	this->sprite->set_active(!freezed);
+
+	return elapsed - this->delay;
+}
+
 int OSpritePath::Stat::get_index() const {
 
-	float elapsed = this->elapsed - this->delay;
+	float elapsed = this->get_elapsed();
 	// 减去延迟时间
 	if(elapsed < 0)
 		elapsed = 0;
@@ -92,15 +152,16 @@ Vector2 OSpritePath::Stat::get_point_pos(int p_index, const Vector2& p_scale) {
 
 bool OSpritePath::Stat::update(const OSpritePath *p_path) {
 
+	real_t elapsed = this->get_elapsed();
 	// 延迟判断
-	if(!activated && elapsed >= delay) {
+	if(!activated && elapsed >= 0) {
 
 		// 激活sprite
 		if(!sprite->is_active()) {
 
 			sprite->set_active(true);
 			// 定位精灵的播放位置
-			float t = elapsed - delay;
+			float t = elapsed;
 			sprite->seek(t);
 		}
 		float opacity = sprite->get_opacity();
@@ -153,7 +214,7 @@ int OSpritePath::FishStat::get_index() const {
 		return index;
 	// 进行时间片插值（加速/减速游动模拟），比目鱼/乌龟 等
 
-	float elapsed_time = this->elapsed - this->delay;
+	float elapsed_time = this->get_elapsed();
 	// t 是当前phase tween经过的时间
 	// b 是插值的起始值
 	// c 是插值的总量值（b+c=最终值）
@@ -372,7 +433,16 @@ real_t OSpritePath::get_length(Node *p_fish) const {
 	ERR_FAIL_COND_V(stat == NULL, false);
 
 	int num_points = stat->points.size() / 2;
-	return num_points / stat->ratio;
+
+	real_t length = num_points / stat->ratio;
+
+	for(const List<Stat::Freeze>::Element *E = stat->freezes.front(); E; E = E->next()) {
+
+		const Stat::Freeze& info = E->get();
+		length += (info.end - info.start);
+	}
+
+	return length;
 }
 
 bool OSpritePath::add_fish(const Dictionary& p_params) {
@@ -424,6 +494,18 @@ bool OSpritePath::add_fish(const Dictionary& p_params) {
 		stat.tween.delta = 0;
 	}
 
+	if(p_params.has("freezes")) {
+
+		Array freezes = p_params["freezes"];
+		for(int i = 0; i < freezes.size(); i++) {
+
+			Dictionary info = freezes[i];
+			real_t start = info["start"];
+			real_t duration = info["duration"];
+			stat.add_freeze_time(start, duration);		
+		}	
+	}
+
 	fishs.push_back(memnew(FishStat(stat)));
 
 	return stat.init(this);
@@ -450,6 +532,18 @@ bool OSpritePath::add_group_fish(const Dictionary& p_params) {
 	stat.center_index = p_params["center_index"];
 	stat.center_pos = p_params["center_pos"];
 	stat.center = p_params["center"];
+
+	if(p_params.has("freezes")) {
+
+		Array freezes = p_params["freezes"];
+		for(int i = 0; i < freezes.size(); i++) {
+
+			Dictionary info = freezes[i];
+			real_t start = info["start"];
+			real_t duration = info["duration"];
+			stat.add_freeze_time(start, duration);		
+		}	
+	}
 
 	fishs.push_back(memnew(GroupStat(stat)));
 
@@ -478,6 +572,15 @@ bool OSpritePath::seek(Node *p_fish, float p_pos) {
 
 	stat->elapsed = p_pos;
 	return stat->update(this);
+}
+
+void OSpritePath::add_freeze_time(Node *p_fish, real_t p_start, real_t p_duration) {
+
+	Stat *stat = _get_stat(p_fish);
+	ERR_EXPLAIN("Non-exists fish stat");
+	ERR_FAIL_COND(stat == NULL);
+
+	stat->add_freeze_time(p_start, p_duration);
 }
 
 void OSpritePath::move(float p_delta) {
@@ -533,6 +636,7 @@ void OSpritePath::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("add_group_fish","params"),&OSpritePath::add_group_fish);
 	ObjectTypeDB::bind_method(_MD("remove_fish","fish"),&OSpritePath::remove_fish);
 	ObjectTypeDB::bind_method(_MD("seek","fish","pos"),&OSpritePath::seek);
+	ObjectTypeDB::bind_method(_MD("add_freeze_time","fish","start","duration"),&OSpritePath::add_freeze_time);
 	ObjectTypeDB::bind_method(_MD("move","delta"),&OSpritePath::move);
 	ObjectTypeDB::bind_method(_MD("clear"),&OSpritePath::clear);
 	ObjectTypeDB::bind_method(_MD("set_scale","scale"),&OSpritePath::set_scale);

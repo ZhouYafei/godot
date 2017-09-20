@@ -968,21 +968,25 @@ String TranslationServer::get_locale() const {
 
 void TranslationServer::add_translation(const Ref<Translation> &p_translation) {
 
+	_THREAD_SAFE_METHOD_
 	translations.insert(p_translation);
 
 }
 void TranslationServer::remove_translation(const Ref<Translation> &p_translation) {
 
+	_THREAD_SAFE_METHOD_
 	translations.erase(p_translation);
 }
 
 void TranslationServer::clear() {
 
+	_THREAD_SAFE_METHOD_
 	translations.clear();
 };
 
 StringName TranslationServer::translate(const StringName& p_message) const {
 
+	_THREAD_SAFE_METHOD_
 	//translate using locale
 
 	if (!enabled)

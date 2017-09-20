@@ -63,6 +63,7 @@ friend class MID;
 
 	virtual size_t get_available_mem() const=0;
 	virtual size_t get_total_usage() const=0;
+	virtual size_t get_total_usage_blocks() const=0;
 
 	MemoryPoolDynamic();
 public:

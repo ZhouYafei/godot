@@ -61,6 +61,7 @@ class MemoryPoolDynamicStatic : public MemoryPoolDynamic {
 	uint64_t last_check;
 	int last_alloc;
 	size_t total_usage;
+	size_t total_usage_blocks;
 	size_t max_usage;
 
 	Chunk *get_chunk(ID p_id);
@@ -81,6 +82,7 @@ public:
 
 	virtual size_t get_available_mem() const;
 	virtual size_t get_total_usage() const;
+	virtual size_t get_total_usage_blocks() const;
 
 	MemoryPoolDynamicStatic();
 	virtual ~MemoryPoolDynamicStatic();
