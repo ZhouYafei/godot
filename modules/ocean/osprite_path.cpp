@@ -38,13 +38,13 @@ struct OSpritePath::Stat {
 	
 	virtual ~Stat() {}
 
-	virtual int get_index() const;
+	virtual int get_index(const OSpritePath *p_path) const;
 	virtual Vector2 get_point_pos(int p_index, const Vector2& p_scale);
 
 	virtual bool init(const OSpritePath *p_path) { return false; }
 	virtual bool update(const OSpritePath *p_path);
 
-	real_t get_elapsed() const;
+	real_t get_elapsed(const OSpritePath *p_path) const;
 	void add_freeze_time(real_t p_start, real_t p_duration);
 
 	// 记录的fish/sprite的instance id
@@ -77,6 +77,8 @@ struct OSpritePath::Stat {
 		real_t end;
 	} Freeze;
 	List<Freeze> freezes;
+	// 已被冰冻
+	mutable bool freezed;
 };
 
 OSpritePath::Stat::Stat()
@@ -103,7 +105,7 @@ void OSpritePath::Stat::add_freeze_time(real_t p_start, real_t p_duration) {
 	freezes.push_back(freeze);
 }
 
-real_t OSpritePath::Stat::get_elapsed() const {
+real_t OSpritePath::Stat::get_elapsed(const OSpritePath *p_path) const {
 
 	real_t elapsed = this->elapsed;
 
@@ -127,15 +129,22 @@ real_t OSpritePath::Stat::get_elapsed() const {
 		}
 	}
 
+	if(freezed != this->freezed) {
+
+		(const_cast<OSpritePath *> (p_path))->emit_signal("freeze_changed", this->fish, freezed);
+
+		this->freezed = freezed;
+	}
+
 	// 如果冰冻了，停止动画
 	this->sprite->set_active(!freezed);
 
 	return elapsed - this->delay;
 }
 
-int OSpritePath::Stat::get_index() const {
+int OSpritePath::Stat::get_index(const OSpritePath *p_path) const {
 
-	float elapsed = this->get_elapsed();
+	float elapsed = this->get_elapsed(p_path);
 	// 减去延迟时间
 	if(elapsed < 0)
 		elapsed = 0;
@@ -152,7 +161,7 @@ Vector2 OSpritePath::Stat::get_point_pos(int p_index, const Vector2& p_scale) {
 
 bool OSpritePath::Stat::update(const OSpritePath *p_path) {
 
-	real_t elapsed = this->get_elapsed();
+	real_t elapsed = this->get_elapsed(p_path);
 	// 延迟判断
 	if(!activated && elapsed >= 0) {
 
@@ -182,7 +191,7 @@ bool OSpritePath::Stat::update(const OSpritePath *p_path) {
 
 struct OSpritePath::FishStat : public OSpritePath::Stat {
 
-	virtual int get_index() const;
+	virtual int get_index(const OSpritePath *p_path) const;
 	virtual Vector2 get_point_pos(int p_index, const Vector2& p_scale);
 
 	virtual bool init(const OSpritePath *p_path);
@@ -207,14 +216,14 @@ struct OSpritePath::FishStat : public OSpritePath::Stat {
 	Tween tween;
 };
 
-int OSpritePath::FishStat::get_index() const {
+int OSpritePath::FishStat::get_index(const OSpritePath *p_path) const {
 
-	int index = Stat::get_index();
+	int index = Stat::get_index(p_path);
 	if(index == 0 || tween.delta == 0)
 		return index;
 	// 进行时间片插值（加速/减速游动模拟），比目鱼/乌龟 等
 
-	float elapsed_time = this->get_elapsed();
+	float elapsed_time = this->get_elapsed(p_path);
 	// t 是当前phase tween经过的时间
 	// b 是插值的起始值
 	// c 是插值的总量值（b+c=最终值）
@@ -279,7 +288,7 @@ bool OSpritePath::FishStat::update(const OSpritePath *p_path) {
 	if(!Stat::update(p_path))
 		return false;
 
-	int index = get_index();
+	int index = get_index(p_path);
 	// 已经走完路线
 	if(index >= points.size() / 2) {
 
@@ -349,7 +358,7 @@ bool OSpritePath::GroupStat::update(const OSpritePath *p_path) {
 	if(!Stat::update(p_path))
 		return false;
 
-	int index = get_index();
+	int index = get_index(p_path);
 	// 已经走完路线
 	if(index >= points.size() / 2) {
 
@@ -465,6 +474,7 @@ bool OSpritePath::add_fish(const Dictionary& p_params) {
 	stat.points = p_params["points"];
 	stat.forward = p_params["forward"];
 	stat.mat = p_params["mat"];
+	stat.freezed = false;
 
 	// tween插值数据
 	if(p_params.has("tween")) {
@@ -532,6 +542,7 @@ bool OSpritePath::add_group_fish(const Dictionary& p_params) {
 	stat.center_index = p_params["center_index"];
 	stat.center_pos = p_params["center_pos"];
 	stat.center = p_params["center"];
+	stat.freezed = false;
 
 	if(p_params.has("freezes")) {
 
@@ -641,6 +652,8 @@ void OSpritePath::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("clear"),&OSpritePath::clear);
 	ObjectTypeDB::bind_method(_MD("set_scale","scale"),&OSpritePath::set_scale);
 	ObjectTypeDB::bind_method(_MD("get_scale"),&OSpritePath::get_scale);
+
+	ADD_SIGNAL(MethodInfo("freeze_changed", PropertyInfo(Variant::OBJECT, "fish"), PropertyInfo(Variant::BOOL, "freezed")));
 }
 
 OSpritePath::OSpritePath()
