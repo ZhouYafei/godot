@@ -49,6 +49,8 @@
 
 #if __ANDROID_API__ < 21
 #define tcdrain(fd) ioctl(fd, TCSBRK, 1)
+#else
+#define tcdrain(fd)
 #endif
 
 /*************************************************************************/
