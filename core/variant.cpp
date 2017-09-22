@@ -941,9 +941,6 @@ bool Variant::is_one() const {
 void Variant::reference(const Variant& p_variant) {
 
 
-	if (this == &p_variant)
-		return;
-
 	clear();
 
 	type=p_variant.type;
@@ -2663,7 +2660,141 @@ Variant::Variant(const Vector<Color>& p_array) {
 
 void Variant::operator=(const Variant& p_variant) {
 
-	reference(p_variant);
+	if (this == &p_variant)
+		return;
+
+	if (type != p_variant.type) {
+		reference(p_variant);
+		return;
+	}
+
+	switch (p_variant.type) {
+		case NIL: {
+
+			// none
+		} break;
+
+		// atomic types
+		case BOOL: {
+
+			_data._bool = p_variant._data._bool;
+		} break;
+		case INT: {
+
+			_data._int = p_variant._data._int;
+		} break;
+		case REAL: {
+
+			_data._real = p_variant._data._real;
+		} break;
+		case STRING: {
+
+			*reinterpret_cast<String *>(_data._mem) = *reinterpret_cast<const String *>(p_variant._data._mem);
+		} break;
+
+		// math types
+		case VECTOR2: {
+
+			*reinterpret_cast<Vector2 *>(_data._mem) = *reinterpret_cast<const Vector2 *>(p_variant._data._mem);
+		} break;
+		case RECT2: {
+
+			*reinterpret_cast<Rect2 *>(_data._mem) = *reinterpret_cast<const Rect2 *>(p_variant._data._mem);
+		} break;
+		case VECTOR3: {
+
+			*reinterpret_cast<Vector3 *>(_data._mem) = *reinterpret_cast<const Vector3 *>(p_variant._data._mem);
+		} break;
+		case MATRIX32: {
+
+			*_data._matrix32 = *(p_variant._data._matrix32);
+		} break;
+		case PLANE: {
+
+			*reinterpret_cast<Plane *>(_data._mem) = *reinterpret_cast<const Plane *>(p_variant._data._mem);
+		} break;
+		case QUAT: {
+
+			*reinterpret_cast<Quat *>(_data._mem) = *reinterpret_cast<const Quat *>(p_variant._data._mem);
+		} break;
+		case _AABB: {
+
+			*_data._aabb = *(p_variant._data._aabb);
+		} break;
+		case MATRIX3: {
+
+			*_data._matrix3 = *(p_variant._data._matrix3);
+		} break;
+		case TRANSFORM: {
+
+			*_data._transform = *(p_variant._data._transform);
+		} break;
+
+		// misc types
+		case COLOR: {
+
+			*reinterpret_cast<Color *>(_data._mem) = *reinterpret_cast<const Color *>(p_variant._data._mem);
+		} break;
+		case IMAGE: {
+
+			*_data._image = *(p_variant._data._image);
+		} break;
+		case NODE_PATH: {
+
+			*reinterpret_cast<NodePath *>(_data._mem) = *reinterpret_cast<const NodePath *>(p_variant._data._mem);
+		} break;
+		case _RID: {
+
+			*reinterpret_cast<RID *>(_data._mem) = *reinterpret_cast<const RID *>(p_variant._data._mem);
+		} break;
+		case OBJECT: {
+
+			*reinterpret_cast<ObjData *>(_data._mem) = p_variant._get_obj();
+		} break;
+		case INPUT_EVENT: {
+
+			*_data._input_event = *(p_variant._data._input_event);
+		} break;
+		case DICTIONARY: {
+
+			*reinterpret_cast<Dictionary *>(_data._mem) = *reinterpret_cast<const Dictionary *>(p_variant._data._mem);
+		} break;
+		case ARRAY: {
+
+			*reinterpret_cast<Array *>(_data._mem) = *reinterpret_cast<const Array *>(p_variant._data._mem);
+		} break;
+
+		// arrays
+		case RAW_ARRAY: {
+
+			*reinterpret_cast<DVector<uint8_t> *>(_data._mem) = *reinterpret_cast<const DVector<uint8_t> *>(p_variant._data._mem);
+		} break;
+		case INT_ARRAY: {
+
+			*reinterpret_cast<DVector<int> *>(_data._mem) = *reinterpret_cast<const DVector<int> *>(p_variant._data._mem);
+		} break;
+		case REAL_ARRAY: {
+
+			*reinterpret_cast<DVector<real_t> *>(_data._mem) = *reinterpret_cast<const DVector<real_t> *>(p_variant._data._mem);
+		} break;
+		case STRING_ARRAY: {
+
+			*reinterpret_cast<DVector<String> *>(_data._mem) = *reinterpret_cast<const DVector<String> *>(p_variant._data._mem);
+		} break;
+		case VECTOR2_ARRAY: {
+
+			*reinterpret_cast<DVector<Vector2> *>(_data._mem) = *reinterpret_cast<const DVector<Vector2> *>(p_variant._data._mem);
+		} break;
+		case VECTOR3_ARRAY: {
+
+			*reinterpret_cast<DVector<Vector3> *>(_data._mem) = *reinterpret_cast<const DVector<Vector3> *>(p_variant._data._mem);
+		} break;
+		case COLOR_ARRAY: {
+
+			*reinterpret_cast<DVector<Color> *>(_data._mem) = *reinterpret_cast<const DVector<Color> *>(p_variant._data._mem);
+		} break;
+		default: {}
+	}
 }
 
 Variant::Variant(const IP_Address& p_address) {
